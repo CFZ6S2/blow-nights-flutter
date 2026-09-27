@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- AID F0 + "BNFRIND": must match InviteHceService.AID and lib/services/finder_native.dart -->
+<host-apdu-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:description="@string/finder_hce_description"
+    android:requireDeviceUnlock="false">
+    <aid-group
+        android:category="other"
+        android:description="@string/finder_hce_description">
+        <aid-filter android:name="F0424E4652494E44" />
+    </aid-group>
+</host-apdu-service>

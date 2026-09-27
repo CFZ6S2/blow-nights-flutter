@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "133269024822",
+    "project_id": "blownights",
+    "storage_bucket": "blownights.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:133269024822:android:0e223f5592f5adecf8e897",
+        "android_client_info": {
+          "package_name": "com.blownights.finder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "133269024822-u32nf23isv1sqbfa2njd81fs60e1jatv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.blownights.finder",
+            "certificate_hash": "6e7ad62d756c3d936b2559c3adeb81b010a2f45d"
+          }
+        },
+        {
+          "client_id": "133269024822-1sp6010s8ggn238iett51kqi9vc8gpi3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTU5ptt4764xyMedIBw9XGLIQoNmproCc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "133269024822-1sp6010s8ggn238iett51kqi9vc8gpi3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
