@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze-test:
+    name: Analyze & test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      # Same version as the local SDK (C:\dev\flutter); bump both together.
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.5'
+          channel: stable
+          cache: true
+
+      - run: flutter pub get
+
+      # analysis_options.yaml decides what fails; any issue (info included) fails the job.
+      - run: flutter analyze
+
+      # No Firebase or dart_defines.json needed: tests only cover pure Dart (e.g. BLE id rotation vectors).
+      - run: flutter test
