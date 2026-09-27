@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # Same version as the local SDK (C:\dev\flutter); bump both together.
       - uses: subosito/flutter-action@v2
@@ -38,10 +38,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # AGP 9 needs JDK 17+.
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
@@ -53,7 +53,19 @@ jobs:
           channel: stable
           cache: true
 
+      # The project's gradle.properties asks for -Xmx8G (Flutter template) and the Kotlin daemon inherits it: more than
+      # a private-repo runner has, so the first run got Gradle killed (exit 143). ~/.gradle/gradle.properties takes
+      # precedence over the project's, so this only changes CI.
+      - name: Fit Gradle memory to the runner
+        run: |
+          mkdir -p ~/.gradle
+          cat >> ~/.gradle/gradle.properties <<'EOF'
+          org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError
+          kotlin.daemon.jvmargs=-Xmx1536m
+          EOF
+
       # Compile check of everything analyze can't see: Kotlin (friend finder service, HCE, key renewal), Gradle, R8.
-      # Built without dart_defines.json, so this APK has no App Check debug token and can't call Firebase; it is not
-      # uploaded. Builds to install still come from a machine with dart_defines.json.
-      - run: flutter build apk --release
+      # One ABI is enough for that and halves time and memory. Built without dart_defines.json, so this APK has no
+      # App Check debug token and can't call Firebase; it is not uploaded. Builds to install still come from a machine
+      # with dart_defines.json.
+      - run: flutter build apk --release --target-platform android-arm64
