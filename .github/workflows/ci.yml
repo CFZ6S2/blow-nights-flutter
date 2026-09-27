@@ -35,6 +35,8 @@ jobs:
   build-apk:
     name: Build APK
     needs: analyze-test
+    # ~15 min of Actions per run on a private repo: only on pull requests, not on every push to main.
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
