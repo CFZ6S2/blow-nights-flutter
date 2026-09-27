@@ -31,3 +31,29 @@ jobs:
 
       # No Firebase or dart_defines.json needed: tests only cover pure Dart (e.g. BLE id rotation vectors).
       - run: flutter test
+
+  build-apk:
+    name: Build APK
+    needs: analyze-test
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      # AGP 9 needs JDK 17+.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.5'
+          channel: stable
+          cache: true
+
+      # Compile check of everything analyze can't see: Kotlin (friend finder service, HCE, key renewal), Gradle, R8.
+      # Built without dart_defines.json, so this APK has no App Check debug token and can't call Firebase; it is not
+      # uploaded. Builds to install still come from a machine with dart_defines.json.
+      - run: flutter build apk --release
