@@ -26,13 +26,10 @@ const _pending = '—';
 
 /// A closed month's settlement for one city (functions/modules/settlements.js): the partner gets 50% of the net.
 class _CitySettlement {
-  final int payingVenues, venueFeeCents;
   final int stripeFeesCents, ownExpensesCents, generalExpensesCents, previousLossCents, netCents, partnerCents, carryForwardLossCents;
   final String? transferStatus;
   _CitySettlement(Map<String, dynamic> s)
-      : payingVenues = _cents(s['payingVenues']),
-        venueFeeCents = _cents(s['venueFeeCents']),
-        stripeFeesCents = _cents(s['stripeFeesCents']),
+      : stripeFeesCents = _cents(s['stripeFeesCents']),
         ownExpensesCents = _cents(s['ownExpensesCents']),
         generalExpensesCents = _cents(s['generalExpensesCents']),
         previousLossCents = _cents(s['previousLossCents']),
@@ -632,7 +629,6 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
                 ('line_own_costs', -c.settlement!.ownExpensesCents),
                 ('line_general_costs', -c.settlement!.generalExpensesCents),
                 ('line_previous_loss', -c.settlement!.previousLossCents),
-                ('line_venue_fee', c.settlement!.venueFeeCents),
                 ('line_net', c.settlement!.netCents),
                 ('line_partner', c.settlement!.partnerCents),
                 ('line_central', c.settlement!.centralCents),
@@ -641,10 +637,7 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 2),
                   child: Row(children: [
-                    Expanded(
-                      child: Text(context.t('master_partner.$key', params: {'count': c.settlement!.payingVenues}),
-                          style: tw(12, color: key == 'line_carry' ? Tw.amber400 : Tw.slate500)),
-                    ),
+                    Expanded(child: Text(context.t('master_partner.$key'), style: tw(12, color: key == 'line_carry' ? Tw.amber400 : Tw.slate500))),
                     Text('${centsToEur(cents, locale)} €', style: tw(12, color: Tw.slate300).copyWith(fontFamily: 'monospace')),
                   ]),
                 ),

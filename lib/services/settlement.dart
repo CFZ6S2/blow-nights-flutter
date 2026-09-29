@@ -1,9 +1,6 @@
 /// Monthly Master Partner settlement, as functions/lib/settlement.js: the partner gets 50% of its territory's net
-/// (billing minus payment fees and platform costs, plus 20 € per venue that paid its plan), paid when super-admin
-/// closes the month.
+/// profit (billing minus payment fees and platform costs), paid when super-admin closes the month.
 library;
-
-const venueFeeEur = 20;
 
 /// 'YYYY-MM' of a date (device time; the platform settles on the Madrid calendar).
 String monthOf(DateTime d) => '${d.year}-${d.month.toString().padLeft(2, '0')}';
