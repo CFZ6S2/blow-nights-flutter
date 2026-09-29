@@ -4,8 +4,8 @@
 const venuePlanPriceEur = {'basico': 50, 'promo': 100, 'ticketing': 180};
 
 /// What the platform keeps of a venue payment in a city whose partner has a Stripe account: territorialSplit in
-/// functions/modules/stripe.js transfers 55% to the partner. Without one, the platform keeps 100%.
-const platformShareWithPartner = 0.45;
+/// functions/modules/stripe.js transfers 50% to the partner (CONTRATO_MASTER_PARTNER.md). Without one, 100%.
+const platformShareWithPartner = 0.5;
 
 /// A venue's contribution to MRR: only a paid subscription that is currently active (not a test one) to a known plan.
 int venueMrr(Map<String, dynamic> venue) {

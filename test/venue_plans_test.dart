@@ -15,7 +15,7 @@ void main() {
     expect(venueMrr({'subscriptionTier': 'ticketing', 'subscriptionStatus': 'active', 'isTestSubscription': true}), 0);
   });
 
-  test('the platform keeps 45% where a partner has a Stripe account', () {
-    expect(platformShareWithPartner, 0.45);
+  test('the platform keeps 50% where a partner has a Stripe account', () {
+    expect(platformShareWithPartner, 0.5);
   });
 }

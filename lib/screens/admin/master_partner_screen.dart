@@ -413,8 +413,8 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
             ]),
             const SizedBox(height: 16),
             figure(context.t('master_partner.total_income'), centsToEur(c.totalCents, locale), Tw.slate500, Tw.white),
-            figure(context.t('master_partner.your_block_55'), centsToEur(c.partnerCents, locale), Tw.green500, Tw.green400),
-            figure(context.t('master_partner.central_45'), centsToEur(c.centralCents, locale), Tw.slate500, Tw.slate400),
+            figure(context.t('master_partner.your_block'), centsToEur(c.partnerCents, locale), Tw.green500, Tw.green400),
+            figure(context.t('master_partner.central_block'), centsToEur(c.centralCents, locale), Tw.slate500, Tw.slate400),
             if (c.sources.isNotEmpty) ...[
               Divider(height: 1, color: Tw.w(0.05)),
               const SizedBox(height: 12),

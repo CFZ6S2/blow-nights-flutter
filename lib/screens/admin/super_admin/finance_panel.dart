@@ -143,7 +143,7 @@ class _FinancePanelState extends State<FinancePanel> {
       kpi('Gastos Mensuales (A Escote)', Tw.red400, fmt.format(_totalExpenses), 'Servidores, APIs, Infraestructura',
           bg: Tw.red900.withValues(alpha: 0.1), border: Tw.red500.withValues(alpha: 0.3)),
       const SizedBox(height: 16),
-      kpi('Royalties Red Partners', Tw.green400, fmt.format(_royalties), 'Parte de la plataforma en ciudades con partner (45%; el partner recibe el 55%)'),
+      kpi('Royalties Red Partners', Tw.green400, fmt.format(_royalties), 'Parte de la plataforma en ciudades con partner (50%; el partner recibe el otro 50%)'),
       const SizedBox(height: 32),
       AdminCard(
         color: Tw.red900.withValues(alpha: 0.05),
