@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io' show Platform;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:nfc_manager/nfc_manager_android.dart';
@@ -105,29 +106,46 @@ class FinderNative {
   }
 
   /// Reader side of the phone-to-phone invite: SELECT our AID over IsoDep and return the answer.
-  /// Falls back to an NDEF text/URL record so a sticker or wristband written with the code also works.
-  static Future<bool> readInvites(void Function(String payload) onPayload) async {
+  ///
+  /// Reader mode skips the platform NDEF check, as Android's CardReader sample does to read other phones: with that
+  /// check a phone emulating a card is often dropped before the app gets it, so nothing happened on tap. Without it
+  /// there is no cached NDEF, so a sticker or wristband (NFC Forum Type 2, e.g. NTAG) is read page by page instead.
+  /// [onPayload] gets the raw text (the caller parses the invite); [onMiss] says why a tap gave nothing.
+  static Future<bool> readInvites(void Function(String payload) onPayload, {void Function(NfcInviteMiss miss)? onMiss}) async {
     try {
       if (await NfcManager.instance.checkAvailability() != NfcAvailability.enabled) return false;
-      await NfcManager.instance.startSession(
-        pollingOptions: {NfcPollingOption.iso14443},
-        onDiscovered: (tag) async {
+      await NfcManagerAndroid.instance.enableReaderMode(
+        flags: {NfcReaderFlagAndroid.nfcA, NfcReaderFlagAndroid.nfcB, NfcReaderFlagAndroid.skipNdefCheck},
+        onTagDiscovered: (tag) async {
+          HapticFeedback.mediumImpact();
           final iso = IsoDepAndroid.from(tag);
           if (iso != null) {
             try {
               final res = await iso.transceive(Uint8List.fromList([0x00, 0xA4, 0x04, 0x00, _aid.length, ..._aid, 0x00]));
               if (res.length > 2 && res[res.length - 2] == 0x90 && res[res.length - 1] == 0x00) {
                 onPayload(utf8.decode(res.sublist(0, res.length - 2), allowMalformed: true));
-                return;
+              } else {
+                // A phone not showing an invite (or a bank card) answers "not found".
+                debugPrint('finder nfc: SELECT answered ${res.map((b) => b.toRadixString(16).padLeft(2, '0')).join()}');
+                onMiss?.call(NfcInviteMiss.noInvite);
               }
-            } catch (_) {}
-          }
-          for (final r in NdefAndroid.from(tag)?.cachedNdefMessage?.records ?? const []) {
-            if (r.payload.isEmpty) continue;
-            final text = utf8.decode(r.payload, allowMalformed: true);
-            onPayload(text);
+            } catch (e) {
+              debugPrint('finder nfc: IsoDep failed: $e');
+              onMiss?.call(NfcInviteMiss.lost);
+            }
             return;
           }
+          final ul = MifareUltralightAndroid.from(tag);
+          if (ul != null) {
+            try {
+              onPayload(await _readType2(ul));
+            } catch (e) {
+              debugPrint('finder nfc: sticker read failed: $e');
+              onMiss?.call(NfcInviteMiss.lost);
+            }
+            return;
+          }
+          onMiss?.call(NfcInviteMiss.notInvite);
         },
       );
       return true;
@@ -136,9 +154,39 @@ class FinderNative {
     }
   }
 
+  /// User memory of a Type 2 tag from page 4 (4 pages per read) up to the terminator TLV or [maxReads] reads,
+  /// as Latin-1 text: the invite ("BNG1:CODE") is plain ASCII inside the NDEF text/URL record.
+  static Future<String> _readType2(MifareUltralightAndroid ul, {int maxReads = 16}) async {
+    final bytes = <int>[];
+    for (var i = 0; i < maxReads; i++) {
+      final Uint8List chunk;
+      try {
+        chunk = await ul.readPages(pageOffset: 4 + i * 4);
+      } catch (_) {
+        if (bytes.isEmpty) rethrow;
+        break; // read past the end of a small tag
+      }
+      bytes.addAll(chunk);
+      if (chunk.contains(0xFE)) break;
+    }
+    return latin1.decode(bytes);
+  }
+
   static Future<void> stopReading() async {
     try {
-      await NfcManager.instance.stopSession();
+      await NfcManagerAndroid.instance.disableReaderMode();
     } catch (_) {}
   }
+}
+
+/// Why an NFC tap on the join screen gave no invite.
+enum NfcInviteMiss {
+  /// Something answered (a phone, a card) but isn't showing a group invite.
+  noInvite,
+
+  /// The phones moved apart before the answer.
+  lost,
+
+  /// A tag that can't hold an invite.
+  notInvite,
 }
