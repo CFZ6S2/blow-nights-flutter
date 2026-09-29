@@ -13,12 +13,12 @@ void main() {
     expect(isRRPPParty({'isActive': true}), isFalse);
   });
 
-  test('a party shows until visibleUntil, and not once archived or inactive', () {
+  test('a party shows until visibleUntil (it is stored inactive), and not once archived', () {
     expect(rrppPartyVisible({'rrppParty': true, 'visibleUntil': ts('2026-10-11T00:00:00Z')}, now), isTrue);
     expect(rrppPartyVisible({'rrppParty': true, 'visibleUntil': ts('2026-10-10T00:00:00Z')}, now), isFalse);
     expect(rrppPartyVisible({'rrppParty': true, 'visibleUntil': {'seconds': DateTime.parse('2026-10-12T00:00:00Z').millisecondsSinceEpoch ~/ 1000}}, now), isTrue);
     expect(rrppPartyVisible({'rrppParty': true, 'archived': true, 'visibleUntil': ts('2026-10-11T00:00:00Z')}, now), isFalse);
-    expect(rrppPartyVisible({'rrppParty': true, 'isActive': false, 'visibleUntil': ts('2026-10-11T00:00:00Z')}, now), isFalse);
+    expect(rrppPartyVisible({'rrppParty': true, 'isActive': false, 'visibleUntil': ts('2026-10-11T00:00:00Z')}, now), isTrue);
     expect(rrppPartyVisible({'rrppParty': true}, now), isFalse);
   });
 }

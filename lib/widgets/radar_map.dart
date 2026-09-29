@@ -54,6 +54,8 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
   Set<String> _passed = {};
   Set<String> _liked = {};
   List<Map<String, dynamic>> _venues = [];
+  // RRPP parties are stored inactive (functions createRRPPParty), so they come from their own query.
+  List<Map<String, dynamic>> _parties = [];
   Map<String, int> _checkins = {};
   List<Map<String, dynamic>> _chills = [];
   bool _loading = true;
@@ -157,6 +159,17 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
       setState(() => _venues = list);
     }, onError: (_) {}));
 
+    final pq = _db.collection('venues').where('rrppParty', isEqualTo: true).where('visibleUntil', isGreaterThan: Timestamp.now());
+    _subs.add(pq.snapshots().listen((snap) {
+      final list = <Map<String, dynamic>>[];
+      for (final d in snap.docs) {
+        final loc = d.data()['location'];
+        final hasLoc = loc is GeoPoint || (loc is Map && loc['latitude'] != null && loc['longitude'] != null);
+        if (hasLoc) list.add({'id': d.id, ...d.data()});
+      }
+      setState(() => _parties = list);
+    }, onError: (_) {}));
+
     _subs.add(_db.collection('live_sense').snapshots().listen((snap) {
       final counts = <String, int>{};
       for (final d in snap.docs) {
@@ -212,9 +225,10 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
   List<Map<String, dynamic>> get _visibleVenues {
     if (_mode != RadarMode.places) return const [];
     final city = context.read<CityProvider>();
-    return inZone(_venues, city.center, city.cityId, (v) => v).where((v) {
+    return inZone([..._venues, ..._parties], city.center, city.cityId, (v) => v).where((v) {
       final type = v['type'] as String?;
       if (type == null || type.isEmpty) return false;
+      if (!rrppPartyVisible(v)) return false; // archived, or past visibleUntil since it was loaded
       if (_type != 'all') {
         if (_type == 'sauna' && type != 'sauna') return false;
         if (_type == 'club' && type != 'club' && type != 'nightlife') return false;
