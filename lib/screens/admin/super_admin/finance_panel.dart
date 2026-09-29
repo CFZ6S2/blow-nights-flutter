@@ -360,8 +360,9 @@ class _FinancePanelState extends State<FinancePanel> {
         AdminSectionTitle('Liquidación de partners · $_month', color: Tw.green400),
         const SizedBox(height: 8),
         Text(
-          'Cada partner recibe el 50% del beneficio neto de su ciudad: lo facturado menos las comisiones de pago, los gastos de su ciudad, '
-          'su parte de los generales y la pérdida de meses anteriores. Si sale negativo, no cobra y la pérdida pasa al mes siguiente.',
+          'Cada partner recibe el 50% del neto de su ciudad: lo facturado menos las comisiones de pago, los gastos de su ciudad, '
+          'su parte de los generales y la pérdida de meses anteriores, más $venueFeeEur € por cada local que ha pagado su cuota ese mes. '
+          'Si sale negativo, no cobra y la pérdida pasa al mes siguiente.',
           style: tw(12, color: Tw.slate500),
         ),
         const SizedBox(height: 16),
@@ -420,9 +421,10 @@ class _FinancePanelState extends State<FinancePanel> {
         line('Parte de gastos generales', -_int(c, 'generalExpensesCents')),
         line('Pérdida de meses anteriores', -_int(c, 'previousLossCents')),
         line('Total descontado', -settlementCostsCents(c)),
+        line('Comisión por locales (${_int(c, 'payingVenues')} × $venueFeeEur €)', _int(c, 'venueFeeCents')),
         line('Beneficio neto', net, color: net < 0 ? Tw.red400 : Tw.white),
         line('Partner (50%)', _int(c, 'partnerCents'), color: Tw.green400, strong: true),
-        line('Se queda la plataforma', _int(c, 'platformCents')),
+        line('Queda a la plataforma, antes de gastos', _int(c, 'platformCents')),
         if (_int(c, 'carryForwardLossCents') > 0) line('Pérdida que pasa al mes siguiente', _int(c, 'carryForwardLossCents'), color: Tw.amber400),
       ]),
     );
