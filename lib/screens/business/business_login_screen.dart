@@ -45,7 +45,8 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
   final _venueName = TextEditingController();
   final _venueAddress = TextEditingController();
   final _venueTypeOther = TextEditingController();
-  String _cityId = 'madrid';
+  // '' = work the city out from the venue's address (selfRegisterVenue); never Madrid by default.
+  String _cityId = '';
   String _venueType = 'club';
   List<Map<String, dynamic>> _cities = [];
   bool _loading = false;
@@ -217,7 +218,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
           'venueName': _venueName.text,
           'venueAddress': _venueAddress.text,
           'venueType': _venueType == 'other' ? _venueTypeOther.text : _venueType,
-          'cityId': _cityId.isEmpty ? 'madrid' : _cityId,
+          if (_cityId.isNotEmpty) 'cityId': _cityId,
           if (_ref.isNotEmpty) 'referralCode': _ref,
         });
         BusinessLoginScreen.storedRef = null;
@@ -228,7 +229,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
         'name': _name.text,
         'email': _email.text,
         'phone': _phone.text,
-        'cityId': _cityId.isEmpty ? 'madrid' : _cityId,
+        if (_cityId.isNotEmpty) 'cityId': _cityId,
         'type': 'city_manager',
         if (_ref.isNotEmpty) 'referralCode': _ref,
       });
@@ -624,13 +625,13 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
               child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                 Padding(padding: const EdgeInsets.only(left: 4, bottom: 4), child: Label(context.t('business_login_city', fallback: 'Ciudad'), color: Tw.slate500, tracking: 0.2)),
                 AdminSelect<String>(
-                  value: _cityId.isEmpty ? 'madrid' : _cityId,
+                  value: _cityId,
                   items: [
-                    ('madrid', 'Madrid'),
-                    for (final c in _cities.where((c) => c['id'] != 'madrid')) (c['id'] as String, (c['name'] ?? c['id']) as String),
+                    ('', context.t('business_login_city_auto')),
+                    for (final c in _cities) (c['id'] as String, (c['name'] ?? c['id']) as String),
                     ('other', context.t('business_login_other_city', fallback: 'Otra ciudad / Aún no listada')),
                   ],
-                  onChanged: (v) => setState(() => _cityId = v ?? 'madrid'),
+                  onChanged: (v) => setState(() => _cityId = v ?? ''),
                 ),
               ]),
             ),

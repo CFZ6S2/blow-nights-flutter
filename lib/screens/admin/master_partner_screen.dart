@@ -604,7 +604,7 @@ class _AddSubAgentFormState extends State<_AddSubAgentForm> {
   final _name = TextEditingController();
   final _phone = TextEditingController();
   final _suffix = TextEditingController();
-  late String _city = widget.cities.firstOrNull?.cityId ?? 'madrid';
+  late String _city = widget.cities.firstOrNull?.cityId ?? '';
   bool _saving = false;
   String? _error;
 
@@ -694,7 +694,9 @@ class _AddSubAgentFormState extends State<_AddSubAgentForm> {
           _label(context.t('master_partner.label_city', fallback: 'Ciudad Asignada')),
           AdminSelect<String>(
             value: _city,
-            items: widget.cities.isEmpty ? const [('madrid', 'Madrid')] : [for (final c in widget.cities) (c.cityId, c.cityName)],
+            items: widget.cities.isEmpty
+                ? [('', context.t('master_partner.no_cities'))]
+                : [for (final c in widget.cities) (c.cityId, c.cityName)],
             onChanged: (v) => setState(() => _city = v ?? _city),
           ),
           _label(context.t('master_partner.label_code_suffix', fallback: 'Sufijo del Código (Opcional)')),

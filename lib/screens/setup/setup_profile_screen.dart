@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../i18n/i18n.dart';
 import '../../navigation.dart';
@@ -17,7 +16,8 @@ import '../../services/social.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/common.dart';
 
-const citySlugs = ['madrid', 'london', 'barcelona', 'lisboa', 'paris', 'berlin'];
+/// "Mi ciudad no está": the profile is saved without a cityId, so it can still be set once when their city arrives.
+const _noCity = '__none__';
 
 const _appModes = [
   ('party', '🎉', 'mode.party', 'Solo Fiesta', 'mode.party_desc', 'Música, horarios, QRs, amigos'),
@@ -41,7 +41,8 @@ bool needsProfileSetup(AuthProvider auth) {
   if (noSetup.contains(auth.role) || noSetup.contains(auth.profile?.role)) return false;
   final p = auth.profile;
   if (p == null) return true;
-  return p.edad == null || (p.fechaNacimiento ?? '').isEmpty || (p.cityId ?? '').isEmpty || p.needsUpdate;
+  // A city is optional ("Mi ciudad no está"), so it doesn't make a profile incomplete.
+  return p.edad == null || (p.fechaNacimiento ?? '').isEmpty || p.needsUpdate;
 }
 
 /// Port of app/setup-profile/page.tsx
@@ -108,6 +109,9 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
     _extraExisting = [...p.extraPhotos];
     _privateExisting = [...p.privatePhotos];
     if ((p.cityId ?? '').isNotEmpty) _city = p.cityId!;
+    // Suggest the city the user is in (GPS); nothing else is preselected.
+    final cp = context.read<CityProvider>();
+    if (_city.isEmpty && cp.detectedByGPS && cp.currentCity != null) _city = cp.currentCity!.id;
   }
 
   @override
@@ -223,19 +227,14 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
         'fotoUrl': fotoUrl,
         'extraPhotos': extra,
         'privatePhotos': priv,
-        'cityId': _city,
+        if (_city != _noCity) 'cityId': _city,
         'platform': 'blownights',
         'updatedAt': DateTime.now(),
         'needsUpdate': false,
       }, SetOptions(merge: true));
 
-      try {
-        (await SharedPreferences.getInstance()).setString(cityStorageKey, _city);
-      } catch (_) {}
+      // The radar keeps following the GPS, whatever their home city.
       if (!mounted) return;
-      final cp = context.read<CityProvider>();
-      final match = cp.cities.where((c) => c.slug == _city || c.id == _city).firstOrNull;
-      if (match != null) cp.setCurrentCity(match);
       if (widget.editing && Navigator.of(context).canPop()) Navigator.of(context).pop();
     } on FirebaseException catch (e) {
       setState(() => _error = (e.code == 'unauthorized' || e.code == 'retry-limit-exceeded')
@@ -452,20 +451,47 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
           crossAxisSpacing: 12,
           childAspectRatio: 2.2,
           children: [
-            for (final c in citySlugs)
+            for (final (id, name) in _cityOptions(context))
               Opacity(
                 opacity: locked ? 0.6 : 1,
                 child: _selectable(
-                  selected: _city == c,
-                  onTap: locked ? () {} : () => setState(() => _city = c),
+                  selected: _city == id,
+                  onTap: locked ? () {} : () => setState(() => _city = id),
                   child: Center(
-                    child: Label('${c[0].toUpperCase()}${c.substring(1)}', size: 14, color: _city == c ? Tw.white : Tw.slate400, tracking: 0.05),
+                    child: Label(name, size: 14, color: _city == id ? Tw.white : Tw.slate400, tracking: 0.05),
                   ),
                 ),
               ),
           ],
         ),
+        if (!locked) ...[
+          const SizedBox(height: 12),
+          _selectable(
+            selected: _city == _noCity,
+            onTap: () => setState(() => _city = _noCity),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 18),
+              child: Center(
+                child: Label(context.t('setup_city_not_listed'), size: 14, color: _city == _noCity ? Tw.white : Tw.slate400, tracking: 0.05),
+              ),
+            ),
+          ),
+          if (_city == _noCity) ...[
+            const SizedBox(height: 12),
+            Text(context.t('setup_city_not_listed_hint'), textAlign: TextAlign.center, style: tw(12, color: Tw.slate500)),
+          ],
+        ],
       ]);
+
+  /// Active cities, plus the user's own if it isn't active (it's locked once set).
+  List<(String, String)> _cityOptions(BuildContext context) {
+    final cities = context.watch<CityProvider>().cities;
+    final own = context.watch<AuthProvider>().profile?.cityId;
+    return [
+      for (final c in cities) (c.id, c.name.isEmpty ? c.id : c.name),
+      if (own != null && own.isNotEmpty && !cities.any((c) => c.id == own)) (own, '${own[0].toUpperCase()}${own.substring(1)}'),
+    ];
+  }
 
   Widget _stepMode(BuildContext context) => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Text(context.t('setup_mode_question', fallback: '¿Cómo quieres usar Blow Nights?'), textAlign: TextAlign.center, style: tw(14, color: Tw.slate400)),

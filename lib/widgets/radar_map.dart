@@ -15,6 +15,7 @@ import '../models/user_model.dart';
 import '../navigation.dart';
 import '../providers/auth_provider.dart';
 import '../providers/city_provider.dart';
+import '../services/nearby.dart';
 import '../services/social.dart';
 import '../services/venue_hours.dart';
 import '../theme/app_theme.dart';
@@ -56,7 +57,9 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
   List<Map<String, dynamic>> _chills = [];
   bool _loading = true;
   LatLng? _userLocation;
-  LatLng _center = const LatLng(40.485, -3.36);
+  // Wherever the user's zone is (see didChangeDependencies); a wide view until the GPS or a picked city gives one.
+  LatLng _center = const LatLng(46, 2);
+  String? _zoneKey;
   bool? _optimisticAvailable;
 
   bool _openNow = false;
@@ -82,14 +85,28 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
     super.didChangeDependencies();
     final uid = context.watch<AuthProvider>().user?.uid;
     final city = context.watch<CityProvider>();
-    final key = '$uid|${city.citySlug}|${city.cityId}';
+    final key = '$uid';
     if (key != _subsKey) {
       _subsKey = key;
-      _subscribe(uid, city.cityId, city.citySlug);
+      _subscribe(uid);
+    }
+    // Re-centre when the zone itself changes (first GPS fix, another city picked), not on every position update.
+    final zone = city.center;
+    final zoneKey = zone == null ? null : city.cityId ?? 'gps';
+    if (zone != null && zoneKey != _zoneKey) {
+      final first = _zoneKey == null;
+      _zoneKey = zoneKey;
+      _center = LatLng(zone.lat, zone.lng);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        try {
+          first ? _map.move(_center, 14) : _flyTo(_center, 14);
+        } catch (_) {}
+      });
     }
   }
 
-  void _subscribe(String? uid, String? cityId, String? citySlug) {
+  void _subscribe(String? uid) {
     for (final s in _subs) {
       s.cancel();
     }
@@ -122,9 +139,8 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
       setState(() => _liked = snap.docs.map((d) => d.data()['toId']).whereType<String>().toSet());
     }, onError: (_) {}));
 
-    Query<Map<String, dynamic>> vq = _db.collection('venues');
-    if (cityId != null) vq = vq.where('cityId', isEqualTo: cityId);
-    vq = vq.where('isActive', isEqualTo: true).where('type', whereNotIn: _cruisingTypes.toList());
+    // Every active venue and chill; the zone filter happens in _visibleVenues / _visibleChills.
+    final vq = _db.collection('venues').where('isActive', isEqualTo: true).where('type', whereNotIn: _cruisingTypes.toList());
     _subs.add(vq.snapshots().listen((snap) {
       final now = DateTime.now();
       final list = <Map<String, dynamic>>[];
@@ -148,15 +164,12 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
       setState(() => _checkins = counts);
     }, onError: (_) {}));
 
-    if (citySlug != null) {
-      _subs.add(_db
-          .collection('chills')
-          .where('city_slug', isEqualTo: citySlug)
-          .where('status', whereIn: ['active', 'full'])
-          .snapshots()
-          .listen((snap) => setState(() => _chills = snap.docs.map((d) => {'id': d.id, ...d.data()}).toList()),
-              onError: (_) {}));
-    }
+    _subs.add(_db
+        .collection('chills')
+        .where('status', whereIn: ['active', 'full'])
+        .snapshots()
+        .listen((snap) => setState(() => _chills = snap.docs.map((d) => {'id': d.id, ...d.data()}).toList()),
+            onError: (_) {}));
   }
 
   @override
@@ -175,7 +188,8 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
   List<UserProfile> get _usersNearby => _rawUsers.where((u) => !_passed.contains(u.id) && !_liked.contains(u.id)).toList();
 
   List<UserProfile> get _filteredUsers {
-    final me = context.read<AuthProvider>().profile;
+    final pos = context.read<CityProvider>().position;
+    final me = _userLocation ?? (pos == null ? null : LatLng(pos.lat, pos.lng));
     return _usersNearby.where((u) {
       if (u.lat == null || u.lng == null) return false;
       final e = u.edad;
@@ -184,8 +198,8 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
       if (_intentFilter != null && u.intencion != _intentFilter) return false;
       if (_onlyPremium && !['plus', 'black'].contains(u.membershipTier)) return false;
       if (_onlyPhoto && u.fotoUrl.isEmpty) return false;
-      if (me?.lat != null && _userLocation != null) {
-        final d = calculateDistance(_userLocation!.latitude, _userLocation!.longitude, u.lat!, u.lng!);
+      if (me != null) {
+        final d = calculateDistance(me.latitude, me.longitude, u.lat!, u.lng!);
         if (d > _distance) return false;
       }
       if (_query.isNotEmpty && !u.nick.toLowerCase().contains(_query.toLowerCase().trim())) return false;
@@ -195,7 +209,8 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
 
   List<Map<String, dynamic>> get _visibleVenues {
     if (_mode != RadarMode.places) return const [];
-    return _venues.where((v) {
+    final city = context.read<CityProvider>();
+    return inZone(_venues, city.center, city.cityId, (v) => v).where((v) {
       final type = v['type'] as String?;
       if (type == null || type.isEmpty) return false;
       if (_type != 'all') {
@@ -223,7 +238,8 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
   List<Map<String, dynamic>> get _visibleChills {
     if (_mode != RadarMode.places) return const [];
     if (_type != 'all' && _type != 'chill') return const [];
-    return _chills.where((c) => _query.isEmpty || safeStr(c['title']).toLowerCase().contains(_query.toLowerCase().trim())).toList();
+    final city = context.read<CityProvider>();
+    return inZone(_chills, city.center, city.citySlug, (c) => c).where((c) => _query.isEmpty || safeStr(c['title']).toLowerCase().contains(_query.toLowerCase().trim())).toList();
   }
 
   static Map<String, Hours> _hours(Map<String, dynamic> v) {
@@ -245,6 +261,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
       final pos = await Geolocator.getCurrentPosition();
       final target = LatLng(pos.latitude, pos.longitude);
       setState(() => _userLocation = target);
+      if (mounted) context.read<CityProvider>().refreshPosition();
       _flyTo(target, 15);
     } catch (_) {}
   }
@@ -292,7 +309,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
       await _db.collection('chills').doc().set({
         'title': _pinName.text.trim(),
         'type': 'chill',
-        'city_slug': context.read<CityProvider>().citySlug ?? 'madrid',
+        'city_slug': context.read<CityProvider>().citySlug,
         'approx_lat': _center.latitude,
         'approx_lng': _center.longitude,
         'max_capacity': 50,
@@ -351,6 +368,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
             Positioned.fill(child: IgnorePointer(child: Container(color: Tw.slate900))),
           if (_addingPin) _pinOverlay(context),
           if (!_addingPin && _mode != RadarMode.swipe) _bottomControls(),
+          if (_mode != RadarMode.swipe) _locationNeeded(context),
         ]),
       ),
       const SizedBox(height: 16),
@@ -364,6 +382,40 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
     ]);
   }
 
+  /// No GPS and no city picked: there's no zone to show yet.
+  Widget _locationNeeded(BuildContext context) {
+    final city = context.watch<CityProvider>();
+    if (city.center != null || city.positionStatus == PositionStatus.pending) return const SizedBox.shrink();
+    return Positioned(
+      top: 90,
+      left: 24,
+      right: 24,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Tw.slate900.withValues(alpha: 0.95),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Tw.w(0.1)),
+        ),
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          Text(context.t('city.location_needed'), textAlign: TextAlign.center, style: tw(12, weight: bold, color: Tw.slate300)),
+          const SizedBox(height: 12),
+          Pressable(
+            onTap: () {
+              HapticFeedback.selectionClick();
+              city.refreshPosition();
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(color: Tw.fuchsia600, borderRadius: BorderRadius.circular(12)),
+              child: Label(context.t('city.enable_location'), size: 11, weight: black, color: Tw.white),
+            ),
+          ),
+        ]),
+      ),
+    );
+  }
+
   Widget _mapWidget() {
     final venues = _visibleVenues;
     final chills = _visibleChills;
@@ -372,7 +424,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
       mapController: _map,
       options: MapOptions(
         initialCenter: _center,
-        initialZoom: 14,
+        initialZoom: _zoneKey == null ? 3.5 : 14,
         backgroundColor: Basemap.background,
         onPositionChanged: (cam, _) => _center = cam.center,
       ),

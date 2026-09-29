@@ -14,7 +14,8 @@ class CitySelector extends StatelessWidget {
   Widget build(BuildContext context) {
     final city = context.watch<CityProvider>();
     final current = city.currentCity;
-    if (current == null || city.cities.length <= 1) return const SizedBox.shrink();
+    // Nothing to choose between until a city exists; "Cerca de ti" is always an option then.
+    if (city.cities.isEmpty) return const SizedBox.shrink();
     return Builder(
       builder: (btn) => Pressable(
         onTap: () => _open(btn),
@@ -26,9 +27,9 @@ class CitySelector extends StatelessWidget {
             border: Border.all(color: Tw.w(0.1)),
           ),
           child: Row(mainAxisSize: MainAxisSize.min, children: [
-            const Icon(Icons.location_city, size: 14, color: Tw.fuchsia400),
+            Icon(current == null ? Icons.near_me : Icons.location_city, size: 14, color: Tw.fuchsia400),
             const SizedBox(width: 6),
-            Label(current.name),
+            Label(current?.name ?? context.t('city.near_you')),
             const SizedBox(width: 4),
             const Icon(Icons.expand_more, size: 12, color: Tw.slate600),
           ]),
@@ -49,6 +50,8 @@ class CitySelector extends StatelessWidget {
       pageBuilder: (ctx, _, _) {
         final city = ctx.watch<CityProvider>();
         final i18n = ctx.watch<I18n>();
+        // Following the GPS ("Cerca de ti"), even when it found a city; a picked city is checked instead.
+        final followsGps = city.currentCity == null || city.detectedByGPS;
         return Stack(children: [
           Positioned(
             top: origin.dy + box.size.height + 8,
@@ -72,6 +75,30 @@ class CitySelector extends StatelessWidget {
                   ConstrainedBox(
                     constraints: const BoxConstraints(maxHeight: 192),
                     child: ListView(shrinkWrap: true, padding: EdgeInsets.zero, children: [
+                      InkWell(
+                        borderRadius: BorderRadius.circular(12),
+                        onTap: () {
+                          city.setCurrentCity(null);
+                          Navigator.of(ctx).pop();
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                          decoration: BoxDecoration(
+                            color: followsGps ? Tw.fuchsia500.withValues(alpha: 0.15) : null,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(children: [
+                            const Icon(Icons.near_me, size: 16, color: Tw.fuchsia400),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Text(i18n.t('city.near_you'),
+                                  overflow: TextOverflow.ellipsis,
+                                  style: tw(12, weight: bold, color: followsGps ? Tw.fuchsia300 : Tw.slate300)),
+                            ),
+                            if (followsGps) const Icon(Icons.check, size: 14, color: Tw.fuchsia400),
+                          ]),
+                        ),
+                      ),
                       for (final c in city.cities)
                         InkWell(
                           borderRadius: BorderRadius.circular(12),
@@ -82,7 +109,7 @@ class CitySelector extends StatelessWidget {
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                             decoration: BoxDecoration(
-                              color: city.cityId == c.id ? Tw.fuchsia500.withValues(alpha: 0.15) : null,
+                              color: city.cityId == c.id && !followsGps ? Tw.fuchsia500.withValues(alpha: 0.15) : null,
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Row(children: [
@@ -92,11 +119,11 @@ class CitySelector extends StatelessWidget {
                                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                                   Text(c.name,
                                       overflow: TextOverflow.ellipsis,
-                                      style: tw(12, weight: bold, color: city.cityId == c.id ? Tw.fuchsia300 : Tw.slate300)),
+                                      style: tw(12, weight: bold, color: city.cityId == c.id && !followsGps ? Tw.fuchsia300 : Tw.slate300)),
                                   if (c.country != null) Text(c.country!, style: tw(9, color: Tw.slate500)),
                                 ]),
                               ),
-                              if (city.cityId == c.id) const Icon(Icons.check, size: 14, color: Tw.fuchsia400),
+                              if (city.cityId == c.id && !followsGps) const Icon(Icons.check, size: 14, color: Tw.fuchsia400),
                             ]),
                           ),
                         ),

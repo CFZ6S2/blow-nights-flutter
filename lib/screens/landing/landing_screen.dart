@@ -124,9 +124,7 @@ class _LandingScreenState extends State<LandingScreen> {
       _slug = slug;
       _activeVenue = 0;
     });
-    final cp = context.read<CityProvider>();
-    final match = cp.cities.where((c) => c.slug == slug).firstOrNull;
-    if (match != null) cp.setCurrentCity(match);
+    // The showcase is illustrative: picking a city here doesn't change where the radar opens (the user's zone).
   }
 
   void _openRadar([String? slug]) {

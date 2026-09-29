@@ -9,6 +9,7 @@ import '../../models/firestore_utils.dart';
 import '../../navigation.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/city_provider.dart';
+import '../../services/nearby.dart';
 import '../../services/social.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/chill_form.dart';
@@ -46,24 +47,21 @@ class _ChillsScreenState extends State<ChillsScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final uid = context.watch<AuthProvider>().user?.uid;
-    final slug = context.watch<CityProvider>().citySlug;
-    final key = '$uid|$slug';
+    final key = '$uid';
     if (key == _key) return;
     _key = key;
     for (final s in _subs) {
       s.cancel();
     }
     _subs.clear();
-    if (uid == null || slug == null) {
+    if (uid == null) {
       _loading = false;
       return;
     }
     _loading = true;
     _subs.add(_db
         .collection('chills')
-        .where('city_slug', isEqualTo: slug)
         .where('status', whereIn: ['active', 'full'])
-        .orderBy('created_at', descending: true)
         .snapshots()
         .listen((s) => setState(() {
               _chills = s.docs.map((d) => {'id': d.id, ...d.data()}).toList();
@@ -98,12 +96,9 @@ class _ChillsScreenState extends State<ChillsScreen> {
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
     if (auth.loading || _loading) return const _ChillsSkeleton();
-    final lat = auth.profile?.lat, lng = auth.profile?.lng;
-    final sorted = [..._chills];
-    if (lat != null && lng != null) {
-      double d(Map<String, dynamic> c) => calculateDistance(lat, lng, asDouble(c['approx_lat']) ?? 0, asDouble(c['approx_lng']) ?? 0);
-      sorted.sort((a, b) => d(a).compareTo(d(b)));
-    }
+    // The chills in the user's zone, nearest first (inZone sorts by distance to the zone's centre).
+    final zone = context.watch<CityProvider>();
+    final sorted = inZone(_chills, zone.center, zone.citySlug, (c) => c);
     final list = _tab == 'feed' ? sorted : _mine;
     final cityName = context.watch<CityProvider>().currentCity?.name;
 
@@ -194,8 +189,8 @@ class _ChillsScreenState extends State<ChillsScreen> {
                 padding: const EdgeInsets.only(bottom: 12),
                 child: ChillCard(
                   chill: c,
-                  userLat: lat,
-                  userLng: lng,
+                  userLat: zone.position?.lat ?? auth.profile?.lat,
+                  userLng: zone.position?.lng ?? auth.profile?.lng,
                   onTap: () => openRoute(context, AppRoute.chillDetail, args: {'id': c['id'] as String}),
                 ),
               ),

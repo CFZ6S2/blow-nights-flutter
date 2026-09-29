@@ -75,7 +75,8 @@ class _SetupWizardState extends State<SetupWizard> {
         'venueName': _name.text,
         'venueAddress': _address.text,
         'venueType': _type,
-        'cityId': _cityId.isEmpty ? 'madrid' : _cityId,
+        // Empty: selfRegisterVenue works the city out from the address. Never Madrid by default.
+        if (_cityId.isNotEmpty) 'cityId': _cityId,
         'email': auth.user?.email ?? p['email'] ?? '',
         'name': p['name'] ?? p['nick'] ?? '',
         'phone': p['phone'] ?? '',
