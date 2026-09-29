@@ -71,5 +71,7 @@
     "delete_confirm": "Gruppe für alle löschen?",
     "not_found": "Diese Gruppe existiert nicht mehr oder ist abgelaufen",
     "error": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
-  }
+  },
+  "door_camera_denied_app": "We can't use the camera. Validate with the pass PIN or allow the camera in the app settings.",
+  "door_open_settings": "Open settings"
 }

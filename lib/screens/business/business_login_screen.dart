@@ -10,8 +10,9 @@ import '../../theme/app_theme.dart';
 import '../../widgets/address_autocomplete.dart';
 import '../../widgets/admin_ui.dart';
 import '../../widgets/common.dart';
+import 'rrpp_screens.dart';
 
-const _businessRoles = ['venue', 'venueOwner', 'cityAdmin', 'admin', 'superadmin', 'masterPartner', 'door'];
+const _businessRoles = ['venue', 'venueOwner', 'cityAdmin', 'admin', 'superadmin', 'masterPartner', 'door', 'rrpp'];
 
 AppRoute roleRoute(String? role) => switch (role) {
       'superadmin' => AppRoute.superAdmin,
@@ -19,13 +20,16 @@ AppRoute roleRoute(String? role) => switch (role) {
       'masterPartner' => AppRoute.masterPartner,
       'cityAdmin' => AppRoute.cityManager,
       'door' => AppRoute.scanner,
+      'rrpp' => AppRoute.pr,
       _ => AppRoute.venueAdmin,
     };
 
 /// Port of app/business/login/page.tsx (B2B access: venue self-registration, City Manager application, login).
 class BusinessLoginScreen extends StatefulWidget {
   final String? refCode;
-  const BusinessLoginScreen({super.key, this.refCode});
+  /// 'rrpp' | 'venue' | 'cm' opens that sign-up directly (/business/login?type=…).
+  final String? initialType;
+  const BusinessLoginScreen({super.key, this.refCode, this.initialType});
 
   /// sessionStorage 'bn_venue_ref' equivalent (kept for the app session).
   static String? storedRef;
@@ -35,7 +39,12 @@ class BusinessLoginScreen extends StatefulWidget {
 }
 
 class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
-  String _mode = 'landing';
+  late String _mode = switch (widget.initialType) {
+    'rrpp' => 'apply_rrpp',
+    'venue' => 'apply_venue',
+    'cm' => 'apply_cm',
+    _ => 'landing',
+  };
   late String _ref;
   final _email = TextEditingController();
   final _password = TextEditingController();
@@ -59,6 +68,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
   void initState() {
     super.initState();
     if (widget.refCode?.isNotEmpty == true) BusinessLoginScreen.storedRef = widget.refCode;
+    if (_mode == 'apply_cm' || _mode == 'apply_venue') WidgetsBinding.instance.addPostFrameCallback((_) => _loadCities());
     _ref = widget.refCode?.isNotEmpty == true ? widget.refCode! : (BusinessLoginScreen.storedRef ?? '');
   }
 
@@ -273,6 +283,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
       'login' => context.t('business_login_subtitle_login', fallback: 'Accede a tu panel de gestión'),
       'apply_venue' => context.t('business_login_subtitle_venue', fallback: 'Registra tu local y accede al instante'),
       'apply_cm' => context.t('business_login_subtitle_cm', fallback: 'Gestiona Blow Nights en tu ciudad'),
+      'apply_rrpp' => context.t('business_login_subtitle_rrpp', fallback: 'Pases QR para tus eventos, sin local fijo'),
       'success' => context.t('business_login_subtitle_success', fallback: 'Solicitud enviada correctamente'),
       _ => context.t('business_login_subtitle_landing', fallback: 'La plataforma de ocio nocturno que conecta locales con su público'),
     };
@@ -331,6 +342,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
             switch (_mode) {
               'login' => _login(context),
               'apply_venue' || 'apply_cm' => _applyForm(context),
+              'apply_rrpp' => RRPPSignupForm(onBack: () => _setMode('landing')),
               'success' => _success(context),
               _ => _landing(context),
             },
@@ -377,6 +389,9 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
             context.t('business_login_register_venue_desc', fallback: 'Discoteca, bar, pub o sala de eventos. Gestión de eventos, ticketing y accesos.'), () => _setMode('apply_venue')),
         _choice(Icons.language, const [Tw.emerald600, Color(0xFF065F46)], context.t('business_login_become_cm', fallback: 'Ser City Manager'),
             context.t('business_login_become_cm_desc', fallback: 'Opera Blow Nights en tu ciudad. Captación de locales, gestión territorial y revenue share.'), () => _setMode('apply_cm')),
+        _choice(Icons.confirmation_number, const [Tw.teal500, Color(0xFF115E59)], context.t('business_login_become_rrpp', fallback: 'Soy RRPP independiente'),
+            context.t('business_login_become_rrpp_desc', fallback: 'Sin local fijo o con uno que no está en la app. Pases QR a 0,50 € para tus eventos; cobras tú por fuera.'),
+            () => _setMode('apply_rrpp')),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
           child: Row(children: [

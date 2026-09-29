@@ -155,7 +155,7 @@ final Map<AppRoute, Widget Function(Map<String, String> args)> screenRegistry = 
   AppRoute.masterPartner: (_) => const MasterPartnerScreen(),
   AppRoute.venueAdmin: (_) => const VenueAdminScreen(),
   AppRoute.scanner: (a) => ScannerScreen(mode: a['mode'], deviceId: a['device']),
-  AppRoute.business: (a) => BusinessLoginScreen(refCode: a['ref']),
+  AppRoute.business: (a) => BusinessLoginScreen(refCode: a['ref'], initialType: a['type']),
   AppRoute.businessClaim: (a) => ClaimVenueScreen(venue: a['venue']),
   AppRoute.businessStripe: (a) => BusinessStripeScreen(refresh: a['refresh'] != null, returned: a['return'] != null),
   AppRoute.setupStripe: (_) => const SetupStripeScreen(),

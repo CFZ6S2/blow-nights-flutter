@@ -71,5 +71,7 @@
     "delete_confirm": "Vols esborrar el grup per a tothom?",
     "not_found": "Aquest grup ja no existeix o ha caducat",
     "error": "Alguna cosa ha fallat. Torna-ho a provar."
-  }
+  },
+  "door_camera_denied_app": "No podemos usar la cámara. Valida con el PIN del pase o permite la cámara en los ajustes de la app.",
+  "door_open_settings": "Abrir ajustes"
 }

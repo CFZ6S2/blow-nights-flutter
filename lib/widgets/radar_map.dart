@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 
 import '../i18n/i18n.dart';
 import '../models/firestore_utils.dart';
+import '../models/rrpp_party.dart';
 import '../models/user_model.dart';
 import '../navigation.dart';
 import '../providers/auth_provider.dart';
@@ -148,6 +149,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
         final data = d.data();
         final exp = parseDate(data['expiresAt']);
         if (data['type'] == 'chill' && exp != null && exp.isBefore(now)) continue;
+        if (!rrppPartyVisible(data, now)) continue;
         final loc = data['location'];
         final hasLoc = loc is GeoPoint || (loc is Map && loc['latitude'] != null && loc['longitude'] != null);
         if (hasLoc) list.add({'id': d.id, ...data});
@@ -584,14 +586,18 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
     final hasSchedule = days.isNotEmpty && hours.isNotEmpty;
     final isOpen = hasSchedule ? isVenueOpenNow(days, hours).isOpen : true;
     final count = isOpen ? asInt(v['currentCount']) : 0;
-    final unclaimed = v['isClaimed'] == false;
+    final party = isRRPPParty(v);
+    final unclaimed = v['isClaimed'] == false && !party;
     final cruising = _cruisingTypes.contains(type);
     final isBar = {'bar', 'chiringuito', 'cruising_bar'}.contains(type);
     final isClub = type == 'club' || type == 'nightlife';
 
     Color color = Tw.indigo500;
     IconData icon = Icons.place;
-    if (unclaimed) {
+    if (party) {
+      color = Tw.teal400;
+      icon = Icons.celebration;
+    } else if (unclaimed) {
       color = isPaying ? const Color(0xFFEAB308) : Tw.amber400;
       icon = Icons.storefront;
     } else if (cruising) {
@@ -613,7 +619,12 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
     final tooltip = _venueTooltip(v, isOpen, count, unclaimed, days, hours);
     void open() {
       HapticFeedback.selectionClick();
-      openRoute(context, AppRoute.venueDetail, args: {'venueId': v['id'] as String});
+      // An RRPP party isn't a venue: only its details, never a ticket purchase.
+      if (party) {
+        _showPartyCard(v);
+      } else {
+        openRoute(context, AppRoute.venueDetail, args: {'venueId': v['id'] as String});
+      }
     }
 
     if (!isPaying) {
@@ -713,6 +724,38 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
     );
   }
 
+  void _showPartyCard(Map<String, dynamic> v) => showModalBottomSheet<void>(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (ctx) => SafeArea(
+          child: Container(
+            margin: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Tw.slate900.withValues(alpha: 0.95),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Tw.teal500.withValues(alpha: 0.3)),
+            ),
+            child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Label(ctx.t('map_rrpp_party', fallback: 'Fiesta RRPP · entrada con el RRPP'), size: 10, weight: black, color: const Color(0xFF5EEAD4)),
+              const SizedBox(height: 4),
+              Text(safeStr(v['eventTitle']).isNotEmpty ? safeStr(v['eventTitle']) : safeStr(v['name']), style: tw(18, weight: black)),
+              const SizedBox(height: 4),
+              Text([v['eventDate'], v['eventTime']].where((x) => x != null && '$x'.isNotEmpty).join(' · '), style: tw(12, color: Tw.slate300)),
+              Text([safeStr(v['name']), safeStr(v['address'])].where((x) => x.isNotEmpty).join(' · '), style: tw(12, color: Tw.slate400)),
+              if (safeStr(v['rrppName']).isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Text(ctx.t('map_rrpp_party_by', params: {'name': safeStr(v['rrppName'])}, fallback: 'Organiza: ${safeStr(v['rrppName'])}'),
+                      style: tw(12, color: Tw.slate300)),
+                ),
+              const SizedBox(height: 12),
+              Text(ctx.t('map_rrpp_party_ticket', fallback: 'Pide tu entrada al RRPP; esta fiesta no vende entradas en la app.'), style: tw(11, color: Tw.slate500)),
+            ]),
+          ),
+        ),
+      );
+
   Widget _countBadge(int count, double size) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
         decoration: BoxDecoration(
@@ -759,7 +802,9 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
             child: Text('$count ${count == 1 ? 'persona ahora' : 'personas ahora'}', style: tw(10, weight: black, color: Tw.fuchsia400)),
           ),
         const SizedBox(height: 2),
-        unclaimed
+        isRRPPParty(v)
+            ? Label(i18n.t('map_rrpp_party', fallback: 'Fiesta RRPP · entrada con el RRPP'), size: 9, weight: bold, color: const Color(0xFF5EEAD4))
+            : unclaimed
             ? Label(i18n.t('map_pending_verification', fallback: '🟡 Pendiente Verificación'), size: 9, weight: bold, color: Tw.amber400)
             : Label(safeStr(v['type']).isEmpty ? 'Local' : safeStr(v['type']), size: 9, weight: bold),
         if (days.isNotEmpty) Label(scheduleText(), size: 8, weight: bold, color: isOpen ? Tw.green400 : Tw.slate500),

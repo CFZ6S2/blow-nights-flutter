@@ -797,6 +797,15 @@ class _LandingScreenState extends State<LandingScreen> {
           ),
           const SizedBox(height: 16),
           Pressable(
+            onTap: () => openRoute(context, AppRoute.business, args: const {'type': 'rrpp'}),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              decoration: BoxDecoration(color: Tw.w(0.08), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+              child: Label(context.t('landing_clubs_cta_rrpp'), size: 14, weight: semibold, color: Tw.white, tracking: 0.05, align: TextAlign.center),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Pressable(
             onTap: () => openRoute(context, AppRoute.scanner),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),

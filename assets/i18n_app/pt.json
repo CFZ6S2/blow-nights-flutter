@@ -71,5 +71,7 @@
     "delete_confirm": "Apagar o grupo para todos?",
     "not_found": "Este grupo já não existe ou expirou",
     "error": "Algo correu mal. Tenta novamente."
-  }
+  },
+  "door_camera_denied_app": "We can't use the camera. Validate with the pass PIN or allow the camera in the app settings.",
+  "door_open_settings": "Open settings"
 }

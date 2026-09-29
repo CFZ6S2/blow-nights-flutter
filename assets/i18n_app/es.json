@@ -71,5 +71,7 @@
     "delete_confirm": "¿Borrar el grupo para todos?",
     "not_found": "Este grupo ya no existe o ha caducado",
     "error": "Algo ha fallado. Inténtalo de nuevo."
-  }
+  },
+  "door_camera_denied_app": "No podemos usar la cámara. Valida con el PIN del pase o permite la cámara en los ajustes de la app.",
+  "door_open_settings": "Abrir ajustes"
 }

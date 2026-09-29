@@ -71,5 +71,7 @@
     "delete_confirm": "حذف المجموعة للجميع؟",
     "not_found": "هذه المجموعة لم تعد موجودة أو انتهت صلاحيتها",
     "error": "حدث خطأ ما. حاول مرة أخرى."
-  }
+  },
+  "door_camera_denied_app": "We can't use the camera. Validate with the pass PIN or allow the camera in the app settings.",
+  "door_open_settings": "Open settings"
 }

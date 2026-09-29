@@ -10,13 +10,14 @@ import '../../theme/app_theme.dart';
 import '../../widgets/admin_ui.dart';
 import '../../widgets/common.dart';
 import '../../widgets/marketing.dart';
+import 'rrpp_screens.dart';
 
 const whatsappNumber = '34641382137';
 
 void openWhatsApp(String text) =>
     launchUrl(Uri.parse('https://wa.me/$whatsappNumber?text=${Uri.encodeComponent(text)}'), mode: LaunchMode.externalApplication);
 
-/// Port of app/pr/page.tsx: list-link ticket generator (token mode) and the independent RRPP wallet panel.
+/// Port of app/pr/page.tsx: list-link ticket generator (token mode) and, for RRPP accounts, the independent RRPP panel.
 class PromoterScreen extends StatefulWidget {
   final String? token, eventId, venueId;
   final bool success;
@@ -33,37 +34,12 @@ class _PromoterScreenState extends State<PromoterScreen> {
   String _error = '';
   int _count = 0;
 
-  int? _quota;
-  List<Map<String, dynamic>> _tickets = [];
-  bool _loadingWallet = false;
-  late final _venue = TextEditingController(text: widget.venueId ?? '');
-  final _batch = TextEditingController();
-  bool _buying = false;
-  bool _walletLoaded = false;
-
   bool get _tokenMode => widget.token?.isNotEmpty == true && widget.eventId?.isNotEmpty == true;
 
   @override
   void dispose() {
     _client.dispose();
-    _venue.dispose();
-    _batch.dispose();
     super.dispose();
-  }
-
-  Future<void> _loadWallet() async {
-    setState(() => _loadingWallet = true);
-    try {
-      final res = await callFn('getRRPPWallet');
-      setState(() {
-        _quota = (res['quota'] as num?)?.toInt() ?? 0;
-        _tickets = [for (final t in (res['tickets'] as List? ?? const [])) Map<String, dynamic>.from(t as Map)];
-      });
-    } catch (e) {
-      debugPrint('Error cargando cartera RRPP: $e');
-    } finally {
-      if (mounted) setState(() => _loadingWallet = false);
-    }
   }
 
   Future<void> _generateLegacy() async {
@@ -97,51 +73,9 @@ class _PromoterScreenState extends State<PromoterScreen> {
     }
   }
 
-  Future<void> _buyPack(int qty) async {
-    setState(() => _buying = true);
-    try {
-      final res = await callFn('createRRPPQRPackageCheckout', {'quantity': qty, 'origin': webBase});
-      if (res['url'] is String) await openInApp(res['url'] as String);
-    } catch (e) {
-      setState(() => _error = errorMessage(e, 'Error iniciando pago'));
-    } finally {
-      if (mounted) setState(() => _buying = false);
-    }
-  }
-
-  Future<void> _issue() async {
-    if (_venue.text.trim().isEmpty) return setState(() => _error = 'Debes especificar la sala o venueId');
-    final names = _batch.text.split('\n').map((n) => n.trim()).where((n) => n.isNotEmpty).toList();
-    if (names.isEmpty) return setState(() => _error = 'Introduce al menos un nombre de invitado.');
-    setState(() {
-      _loading = true;
-      _error = '';
-      _result = null;
-    });
-    try {
-      final res = await callFn('issueRRPPTickets', {'venueId': _venue.text.trim(), 'guestNames': names});
-      if (res['success'] == true) {
-        _batch.clear();
-        _loadWallet();
-        final tickets = res['tickets'] as List? ?? const [];
-        if (tickets.isNotEmpty) {
-          setState(() => _result = (ticketId: '${(tickets.first as Map)['ticketId']}', clientName: '${tickets.length} pase(s) emitido(s)'));
-        }
-      }
-    } catch (e) {
-      setState(() => _error = errorMessage(e, 'Error emitiendo pases.'));
-    } finally {
-      if (mounted) setState(() => _loading = false);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
-    if (auth.user != null && !_tokenMode && !_walletLoaded) {
-      _walletLoaded = true;
-      WidgetsBinding.instance.addPostFrameCallback((_) => _loadWallet());
-    }
     if (context.watch<PlatformSettings>().flags['moduleRrppLibres'] == false) {
       return _centered(Column(mainAxisSize: MainAxisSize.min, children: [
         const Icon(Icons.pause_circle, size: 48, color: Tw.amber400),
@@ -153,42 +87,45 @@ class _PromoterScreenState extends State<PromoterScreen> {
       ]));
     }
     if (_tokenMode) return _tokenView(context);
-    if (auth.user == null && !auth.loading) {
-      return _centered(Column(mainAxisSize: MainAxisSize.min, children: [
-        Container(
-          width: 64,
-          height: 64,
-          decoration: BoxDecoration(gradient: const LinearGradient(colors: [Tw.emerald500, Tw.teal600]), borderRadius: BorderRadius.circular(16)),
-          child: const Icon(Icons.confirmation_number, size: 30, color: Tw.white),
-        ),
-        const SizedBox(height: 24),
-        Text(context.t('pr_login_required_title', fallback: 'Portal RRPP Independiente'), textAlign: TextAlign.center, style: tw(24, weight: black)),
-        const SizedBox(height: 8),
-        Text(
-          context.t('pr_login_required_desc', fallback: 'Inicia sesión con tu cuenta de RRPP para gestionar tus créditos y emitir pases QR independientes.'),
-          textAlign: TextAlign.center,
-          style: tw(14, color: Tw.slate400),
-        ),
-        const SizedBox(height: 24),
-        AdminButton(
-          label: context.t('login', fallback: 'Iniciar Sesión'),
-          color: Tw.emerald500,
-          textColor: Tw.slate950,
-          expand: true,
-          padding: const EdgeInsets.symmetric(vertical: 14),
-          onTap: () => openRoute(context, AppRoute.login),
-        ),
+    if (auth.loading) return const Scaffold(backgroundColor: Tw.black);
+    if (auth.user != null && auth.role == 'rrpp') return RRPPPanel(success: widget.success);
+    return _centered(Column(mainAxisSize: MainAxisSize.min, children: [
+      Container(
+        width: 64,
+        height: 64,
+        decoration: BoxDecoration(gradient: const LinearGradient(colors: [Tw.emerald500, Tw.teal600]), borderRadius: BorderRadius.circular(16)),
+        child: const Icon(Icons.confirmation_number, size: 30, color: Tw.white),
+      ),
+      const SizedBox(height: 24),
+      Text(context.t('pr_login_required_title', fallback: 'Portal RRPP Independiente'), textAlign: TextAlign.center, style: tw(24, weight: black)),
+      const SizedBox(height: 8),
+      Text(
+        auth.user != null
+            ? context.t('rrpp_not_rrpp_desc', fallback: 'Esta cuenta aún no es de RRPP. Date de alta en un minuto para comprar QR y emitir pases para tus eventos.')
+            : context.t('rrpp_login_desc', fallback: 'Entra con tu cuenta de RRPP o date de alta para comprar QR y emitir pases para tus eventos.'),
+        textAlign: TextAlign.center,
+        style: tw(14, color: Tw.slate400),
+      ),
+      const SizedBox(height: 24),
+      AdminButton(
+        label: context.t('rrpp_signup_cta', fallback: 'Darme de alta como RRPP'),
+        color: Tw.emerald500,
+        textColor: Tw.slate950,
+        expand: true,
+        padding: const EdgeInsets.symmetric(vertical: 14),
+        onTap: () => openRoute(context, AppRoute.business, args: {'type': 'rrpp'}),
+      ),
+      if (auth.user == null) ...[
         const SizedBox(height: 12),
         AdminButton(
-          label: context.t('pr_apply_link', fallback: 'Solicitar Cuenta de RRPP'),
+          label: context.t('login.login_button', fallback: 'Iniciar sesión'),
           color: Tw.w(0.05),
           expand: true,
           padding: const EdgeInsets.symmetric(vertical: 12),
-          onTap: () => openRoute(context, AppRoute.prJoin),
+          onTap: () => openRoute(context, AppRoute.login),
         ),
-      ]));
-    }
-    return _walletView(context);
+      ],
+    ]));
   }
 
   Widget _centered(Widget child) => Scaffold(
@@ -269,200 +206,6 @@ class _PromoterScreenState extends State<PromoterScreen> {
           ]),
         ),
       );
-
-  Future<void> _showBuyModal() => showDialog<void>(
-        context: context,
-        barrierColor: Colors.black.withValues(alpha: 0.8),
-        builder: (ctx) => Dialog(
-          backgroundColor: Tw.slate900,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: Tw.w(0.1))),
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-              Row(children: [
-                Expanded(child: Text('Comprar Paquete de Créditos QR', style: tw(18, weight: black))),
-                IconButton(onPressed: () => Navigator.of(ctx).pop(), icon: const Icon(Icons.close, color: Tw.slate400)),
-              ]),
-              Text('Tarifa plana de 0,50€ por QR. Los pases son válidos para cualquier sala y se escanean en puerta al instante.',
-                  style: tw(12, color: Tw.slate400)),
-              const SizedBox(height: 20),
-              Row(children: [
-                for (final (qty, price) in const [(25, '12,50 €'), (50, '25,00 €'), (100, '50,00 €')]) ...[
-                  Expanded(
-                    child: Pressable(
-                      onTap: _buying
-                          ? () {}
-                          : () {
-                              Navigator.of(ctx).pop();
-                              _buyPack(qty);
-                            },
-                      child: Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.1))),
-                        child: Column(children: [
-                          Text('$qty', style: tw(20, weight: black)),
-                          const Label('Pases', weight: bold),
-                          Text(price, style: tw(12, weight: bold, color: Tw.emerald400)),
-                        ]),
-                      ),
-                    ),
-                  ),
-                  if (qty != 100) const SizedBox(width: 12),
-                ],
-              ]),
-            ]),
-          ),
-        ),
-      );
-
-  Widget _walletView(BuildContext context) {
-    final top = MediaQuery.of(context).padding.top;
-    return Scaffold(
-      backgroundColor: Tw.slate950,
-      body: Column(children: [
-        Container(
-          padding: EdgeInsets.fromLTRB(8, top + 8, 16, 8),
-          decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.4), border: Border(bottom: BorderSide(color: Tw.w(0.1)))),
-          child: Row(children: [
-            IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.slate400)),
-            const Icon(Icons.confirmation_number, color: Tw.emerald400),
-            const SizedBox(width: 8),
-            Expanded(child: Text('RRPP Independiente', style: tw(16, weight: bold))),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              decoration: BoxDecoration(
-                color: Tw.emerald500.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Tw.emerald500.withValues(alpha: 0.3)),
-              ),
-              child: Text.rich(TextSpan(children: [
-                TextSpan(text: 'Saldo: ', style: tw(12, weight: medium, color: Tw.slate400)),
-                TextSpan(text: _quota == null ? '...' : '$_quota QRs', style: tw(13, weight: black, color: Tw.emerald400)),
-              ])),
-            ),
-            const SizedBox(width: 8),
-            AdminButton(
-              label: '+ Comprar QRs',
-              color: Tw.emerald500,
-              textColor: Tw.slate950,
-              fontSize: 11,
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              onTap: _showBuyModal,
-            ),
-          ]),
-        ),
-        Expanded(
-          child: ListView(padding: const EdgeInsets.fromLTRB(20, 24, 20, 80), children: [
-            if (widget.success)
-              _banner('¡Pago completado! Tus créditos QR han sido añadidos a tu cuenta.', Tw.emerald400, icon: Icons.check_circle, center: false),
-            AdminCard(
-              radius: 16,
-              child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                Row(children: [
-                  const Icon(Icons.add_circle, size: 16, color: Tw.emerald400),
-                  const SizedBox(width: 8),
-                  Expanded(child: Text('Emitir Pases QR para Invitados', style: tw(15, weight: bold))),
-                ]),
-                Text('1 QR consumido por invitado', style: tw(12, color: Tw.slate400)),
-                const SizedBox(height: 16),
-                if (_result != null)
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 16),
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Tw.emerald500.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Tw.emerald500.withValues(alpha: 0.3)),
-                    ),
-                    child: Column(children: [
-                      const Icon(Icons.check_circle, size: 30, color: Tw.emerald400),
-                      Text(_result!.clientName, style: tw(14, weight: bold, color: const Color(0xFF6EE7B7))),
-                      Text('Pases listos en tu lista. Los asistentes ya pueden entrar en puerta.', textAlign: TextAlign.center, style: tw(12, color: Tw.slate400)),
-                    ]),
-                  ),
-                if (_error.isNotEmpty) _banner(_error, Tw.red400),
-                const Label('ID de la Sala / Venue', size: 12, weight: bold, tracking: 0.05),
-                const SizedBox(height: 6),
-                TextField(
-                  controller: _venue,
-                  onChanged: (_) => setState(() {}),
-                  style: tw(14),
-                  decoration: adminInputDecoration('ej: sala-kapital o demo-venue', focus: Tw.emerald500).copyWith(fillColor: Colors.black.withValues(alpha: 0.6)),
-                ),
-                const SizedBox(height: 16),
-                const Label('Nombres de Invitados (Uno por línea)', size: 12, weight: bold, tracking: 0.05),
-                const SizedBox(height: 6),
-                TextField(
-                  controller: _batch,
-                  maxLines: 4,
-                  onChanged: (_) => setState(() {}),
-                  style: tw(14).copyWith(fontFamily: 'monospace'),
-                  decoration: adminInputDecoration('Carlos García\nLaura Morales\nDavid Ruiz', focus: Tw.emerald500).copyWith(fillColor: Colors.black.withValues(alpha: 0.6)),
-                ),
-                const SizedBox(height: 16),
-                AdminButton(
-                  label: _loading ? 'Emitiendo pases...' : 'Generar Pases QR',
-                  color: Tw.emerald500,
-                  textColor: Tw.slate950,
-                  expand: true,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  onTap: _loading || _venue.text.trim().isEmpty || _batch.text.trim().isEmpty ? null : _issue,
-                ),
-              ]),
-            ),
-            const SizedBox(height: 32),
-            AdminCard(
-              radius: 16,
-              child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                Row(children: [
-                  Expanded(child: Text('Pases Emitidos Recientes', style: tw(15, weight: bold))),
-                  GestureDetector(
-                    onTap: _loadWallet,
-                    child: Row(children: [
-                      const Icon(Icons.sync, size: 14, color: Tw.slate400),
-                      const SizedBox(width: 4),
-                      Text('Actualizar', style: tw(12, color: Tw.slate400)),
-                    ]),
-                  ),
-                ]),
-                const SizedBox(height: 12),
-                if (_loadingWallet)
-                  Padding(padding: const EdgeInsets.symmetric(vertical: 32), child: Text('Cargando pases...', textAlign: TextAlign.center, style: tw(14, color: Tw.slate500)))
-                else if (_tickets.isEmpty)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 32),
-                    child: Text('Aún no has emitido ningún pase. Introduce invitados arriba para comenzar.', textAlign: TextAlign.center, style: tw(14, color: Tw.slate500)),
-                  )
-                else
-                  for (final t in _tickets)
-                    Container(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Tw.w(0.05)))),
-                      child: Row(children: [
-                        Expanded(
-                          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                            Text('${t['clientName'] ?? ''}', style: tw(14, weight: bold)),
-                            Text('${t['venueName'] ?? t['venueId'] ?? ''} · ${t['tierName'] ?? 'Pase RRPP'}', style: tw(12, color: Tw.slate400)),
-                          ]),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: (t['status'] == 'used' ? Tw.purple500 : Tw.emerald500).withValues(alpha: 0.2),
-                            borderRadius: BorderRadius.circular(99),
-                          ),
-                          child: Label(t['status'] == 'used' ? 'En Sala (Validado)' : 'Listo para entrar',
-                              weight: bold, color: t['status'] == 'used' ? const Color(0xFFD8B4FE) : const Color(0xFF6EE7B7), tracking: 0.05),
-                        ),
-                      ]),
-                    ),
-              ]),
-            ),
-          ]),
-        ),
-      ]),
-    );
-  }
 }
 
 /// Port of app/pr/join/page.tsx (independent RRPP recruitment landing).
@@ -518,7 +261,7 @@ class PrJoinScreen extends StatelessWidget {
             label: context.t('pr_join_hero_cta', fallback: 'Registrarme como RRPP'),
             icon: Icons.arrow_forward,
             gradient: const [Tw.emerald600, Tw.teal600],
-            onTap: () => openRoute(context, AppRoute.login),
+            onTap: () => openRoute(context, AppRoute.business, args: const {'type': 'rrpp'}),
           ),
           const SizedBox(height: 12),
           CtaButton(
@@ -609,7 +352,7 @@ class PrJoinScreen extends StatelessWidget {
             label: context.t('pr_join_cta_register', fallback: 'Crear Cuenta de RRPP'),
             icon: Icons.person_add,
             gradient: const [Tw.emerald600, Tw.teal600],
-            onTap: () => openRoute(context, AppRoute.login),
+            onTap: () => openRoute(context, AppRoute.business, args: const {'type': 'rrpp'}),
           ),
           const SizedBox(height: 12),
           CtaButton(label: context.t('pr_join_cta_whatsapp', fallback: 'Hablar con el Equipo'), leadingIcon: Icons.chat, tint: Tw.emerald400, onTap: () => openWhatsApp(wa)),
@@ -631,7 +374,7 @@ class PrJoinScreen extends StatelessWidget {
           brand: 'RRPP',
           brandColors: const [Tw.emerald400, Tw.teal400],
           cta: context.t('pr_join_nav_cta', fallback: 'Unirme'),
-          onCta: () => openRoute(context, AppRoute.login),
+          onCta: () => openRoute(context, AppRoute.business, args: const {'type': 'rrpp'}),
         ),
       ]),
     );

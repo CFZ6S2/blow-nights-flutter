@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../i18n/i18n.dart';
 import '../../navigation.dart';
@@ -12,6 +14,7 @@ import '../../services/nfc_reader.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/admin_ui.dart';
 import '../../widgets/common.dart';
+import '../business/rrpp_screens.dart';
 
 const _doorBg = Color(0xFF07080D);
 const _doorPanel = Color(0xFF11131F);
@@ -50,7 +53,9 @@ class QrCamera extends StatefulWidget {
   final ValueChanged<String> onCode;
   final bool paused;
   final double frameSize;
-  const QrCamera({super.key, required this.onCode, this.paused = false, this.frameSize = 208});
+  /// Replaces the default "no camera" panel (DoorScreen offers the PIN and the app settings there).
+  final Widget Function(BuildContext context, MobileScannerException error)? errorBuilder;
+  const QrCamera({super.key, required this.onCode, this.paused = false, this.frameSize = 208, this.errorBuilder});
 
   @override
   State<QrCamera> createState() => _QrCameraState();
@@ -74,7 +79,7 @@ class _QrCameraState extends State<QrCamera> {
             final value = capture.barcodes.firstOrNull?.rawValue;
             if (value != null && value.isNotEmpty) widget.onCode(value);
           },
-          errorBuilder: (context, error) => Container(
+          errorBuilder: (context, error) => widget.errorBuilder?.call(context, error) ?? Container(
             color: Colors.black.withValues(alpha: 0.8),
             alignment: Alignment.center,
             padding: const EdgeInsets.all(24),
@@ -124,7 +129,17 @@ class _PulseBoxState extends State<PulseBox> with SingleTickerProviderStateMixin
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+/// Opens this app's page in the system settings, to allow the camera after denying it.
+Future<void> openAppSettings() async {
+  if (Platform.isAndroid) {
+    await const MethodChannel('blownights/system').invokeMethod('openAppSettings');
+  } else {
+    await launchUrl(Uri.parse('app-settings:'));
+  }
+}
+
 /// Port of app/door/page.tsx: tokenised door scanner (no login), camera + NFC + manual PIN.
+/// Without a link it lists the doors saved in the account (web: /door with no params).
 class DoorScreen extends StatefulWidget {
   final String venueId, eventId, token;
   const DoorScreen({super.key, required this.venueId, required this.eventId, required this.token});
@@ -138,7 +153,7 @@ class _DoorScreenState extends State<DoorScreen> {
   bool _authorized = false;
   String _authError = '';
   String _eventTitle = '';
-  bool _cameraStarted = false;
+  int _cameraAttempt = 0;
   bool _scanning = true;
   ({String status, String? name, String message})? _result;
   int _count = 0;
@@ -149,8 +164,10 @@ class _DoorScreenState extends State<DoorScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _verify());
+    if (_hasLink) WidgetsBinding.instance.addPostFrameCallback((_) => _verify());
   }
+
+  bool get _hasLink => widget.token.isNotEmpty && widget.eventId.isNotEmpty;
 
   @override
   void dispose() {
@@ -303,8 +320,41 @@ class _DoorScreenState extends State<DoorScreen> {
     ctrl.dispose();
   }
 
+  Widget _cameraError(BuildContext context, MobileScannerException error) => Container(
+        color: Colors.black.withValues(alpha: 0.85),
+        alignment: Alignment.center,
+        padding: const EdgeInsets.all(24),
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          const Icon(Icons.videocam_off, size: 40, color: Tw.amber400),
+          const SizedBox(height: 12),
+          Text(context.t('door_camera_denied_app', fallback: 'No podemos usar la cámara. Valida con el PIN del pase o permite la cámara en los ajustes de la app.'),
+              textAlign: TextAlign.center, style: tw(13, color: Tw.slate300)),
+          const SizedBox(height: 16),
+          AdminButton(
+            label: context.t('door_manual_pin_btn', fallback: 'Entrada Manual / PIN'),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            onTap: _pinDialog,
+          ),
+          const SizedBox(height: 8),
+          if (error.errorCode == MobileScannerErrorCode.permissionDenied)
+            AdminButton(
+              label: context.t('door_open_settings', fallback: 'Abrir ajustes'),
+              color: Tw.w(0.05),
+              textColor: Tw.slate300,
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+              onTap: () => openAppSettings().catchError((_) {}),
+            ),
+          const SizedBox(height: 4),
+          TextButton(
+            onPressed: () => setState(() => _cameraAttempt++),
+            child: Text(context.t('door_camera_retry', fallback: 'Reintentar cámara'), style: tw(12, weight: bold, color: Tw.fuchsia400)),
+          ),
+        ]),
+      );
+
   @override
   Widget build(BuildContext context) {
+    if (!_hasLink) return const MyDoorsScreen();
     if (_authLoading) return const Scaffold(backgroundColor: _doorBg, body: Center(child: CircularProgressIndicator(strokeWidth: 2, color: Tw.fuchsia500)));
     if (_authError.isNotEmpty || !_authorized) {
       return Scaffold(
@@ -380,18 +430,7 @@ class _DoorScreenState extends State<DoorScreen> {
                         clipBehavior: Clip.antiAlias,
                         decoration: BoxDecoration(color: Tw.black, borderRadius: BorderRadius.circular(16), border: Border.all(color: const Color(0xFF2B2F52))),
                         child: Stack(fit: StackFit.expand, children: [
-                          if (!_cameraStarted)
-                            Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                              const Icon(Icons.qr_code_scanner, size: 48, color: Tw.fuchsia500),
-                              const SizedBox(height: 16),
-                              AdminButton(
-                                label: context.t('door_activate_camera', fallback: 'Activar Cámara'),
-                                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                                onTap: () => setState(() => _cameraStarted = true),
-                              ),
-                            ])
-                          else
-                            QrCamera(paused: !_scanning, onCode: _handleScan),
+                          QrCamera(key: ValueKey(_cameraAttempt), paused: !_scanning, onCode: _handleScan, errorBuilder: _cameraError),
                           if (r != null)
                             Container(
                               color: resultBg,
@@ -423,7 +462,7 @@ class _DoorScreenState extends State<DoorScreen> {
                 ]),
               ),
             ),
-            Text(context.t('door_no_login', fallback: 'Sin login requerido'), style: tw(10, color: Tw.slate600)),
+            SaveDoorBar(eventId: widget.eventId, venueId: widget.venueId, token: widget.token),
           ]),
         ),
       ),

@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import '../models/event.dart';
 import '../models/venue.dart';
 import '../services/nearby.dart';
+import '../models/rrpp_party.dart';
 
 /// Port of useVenues(center, cityId) + the live_sense listener + the home page's upcoming-events query.
 /// Location-first: everything active is loaded once and filtered to the user's zone (see CityProvider.center), so it
@@ -54,7 +55,8 @@ class VenuesProvider extends ChangeNotifier {
 
   void _subscribe() {
     _subs.add(_db.collection('venues').where('isActive', isEqualTo: true).snapshots().listen((snap) {
-      _allVenues = snap.docs.map((d) => Venue.fromDoc(d)).toList();
+      // RRPP parties (models/rrpp_party.dart) are on the radar but aren't venues.
+      _allVenues = snap.docs.where((d) => !isRRPPParty(d.data())).map((d) => Venue.fromDoc(d)).toList();
       loading = false;
       _applyZone();
     }, onError: (_) {
