@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../models/firestore_utils.dart';
+import '../../../services/venue_plans.dart';
 import '../../../theme/app_theme.dart';
 import '../../../widgets/admin_ui.dart';
 import '../../../widgets/common.dart';
@@ -10,8 +11,9 @@ import '../../../widgets/common.dart';
 class _CityRevenue {
   final String city;
   final bool partner;
-  final int value;
-  const _CityRevenue(this.city, this.partner, this.value);
+  final int total; // gross MRR of the city's venues
+  final int value; // the platform's part (all of it without a partner)
+  const _CityRevenue(this.city, this.partner, this.total, this.value);
 }
 
 /// Port of features/super-admin/FinancePanel.tsx + hooks/useFinance.ts
@@ -26,6 +28,7 @@ class _FinancePanelState extends State<FinancePanel> {
   final _db = FirebaseFirestore.instance;
   bool _loading = true;
   int _globalRevenue = 0;
+  int _royalties = 0;
   num _totalExpenses = 0;
   List<_CityRevenue> _breakdown = [];
   List<Map<String, dynamic>> _expenses = [];
@@ -49,22 +52,29 @@ class _FinancePanelState extends State<FinancePanel> {
     setState(() => _loading = true);
     try {
       final cities = await _db.collection('cities').get();
-      final venues = [for (final v in (await _db.collection('venues').get()).docs) v.data()];
+      // MRR: venues with an active paid subscription, at the plans' list prices (services/venue_plans.dart), per city.
+      final mrrByCity = <String, int>{};
+      for (final v in (await _db.collection('venues').get()).docs) {
+        final mrr = venueMrr(v.data());
+        if (mrr > 0) mrrByCity.update((v.data()['cityId'] as String?) ?? '', (x) => x + mrr, ifAbsent: () => mrr);
+      }
       var global = 0;
+      var royalties = 0;
       final breakdown = <_CityRevenue>[];
       for (final c in cities.docs) {
-        var rev = 0;
-        for (final v in venues.where((v) => v['cityId'] == c.id)) {
-          if (v['isActive'] != true) continue;
-          rev += switch (v['subscriptionTier']) {
-            'ticketing' => 100,
-            'promo' => 60,
-            'basico' => 30,
-            _ => 60, // fallback to 60 MRR for LC-1.0 Radar
-          };
-        }
+        final rev = mrrByCity.remove(c.id) ?? 0;
+        // Same condition as territorialSplit: the partner gets its share only with a Stripe account.
+        final withPartner = (c.data()['partner_stripe_account_id'] as String?)?.isNotEmpty == true;
+        final platform = withPartner ? (rev * platformShareWithPartner).round() : rev;
         global += rev;
-        breakdown.add(_CityRevenue((c.data()['name'] as String?) ?? c.id, c.data()['partnerId'] != null, rev));
+        if (withPartner) royalties += platform;
+        breakdown.add(_CityRevenue((c.data()['name'] as String?) ?? c.id, withPartner, rev, platform));
+      }
+      // Paying venues whose cityId has no city doc yet (location-first sign-ups): still revenue, 100% platform.
+      final unassigned = mrrByCity.values.fold(0, (a, b) => a + b);
+      if (unassigned > 0) {
+        global += unassigned;
+        breakdown.add(_CityRevenue('Sin ciudad asignada', false, unassigned, unassigned));
       }
 
       final now = DateTime.now();
@@ -81,6 +91,7 @@ class _FinancePanelState extends State<FinancePanel> {
       if (!mounted) return;
       setState(() {
         _globalRevenue = global;
+        _royalties = royalties;
         _totalExpenses = total;
         _breakdown = breakdown;
         _expenses = list;
@@ -125,14 +136,14 @@ class _FinancePanelState extends State<FinancePanel> {
         );
 
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      kpi('Revenue Global App', Tw.fuchsia400, fmt.format(_globalRevenue), 'MRR Sumado de todas las ciudades',
+      kpi('Revenue Global App', Tw.fuchsia400, fmt.format(_globalRevenue), 'MRR de suscripciones activas de locales, a precio de tarifa (sin pruebas)',
           gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.fuchsia900.withValues(alpha: 0.4), Tw.black]),
           border: Tw.fuchsia500.withValues(alpha: 0.3)),
       const SizedBox(height: 16),
       kpi('Gastos Mensuales (A Escote)', Tw.red400, fmt.format(_totalExpenses), 'Servidores, APIs, Infraestructura',
           bg: Tw.red900.withValues(alpha: 0.1), border: Tw.red500.withValues(alpha: 0.3)),
       const SizedBox(height: 16),
-      kpi('Royalties Red Partners', Tw.green400, fmt.format(_globalRevenue * 0.4), 'Suscripciones (60% retenido)'),
+      kpi('Royalties Red Partners', Tw.green400, fmt.format(_royalties), 'Parte de la plataforma en ciudades con partner (45%; el partner recibe el 55%)'),
       const SizedBox(height: 32),
       AdminCard(
         color: Tw.red900.withValues(alpha: 0.05),
@@ -179,7 +190,7 @@ class _FinancePanelState extends State<FinancePanel> {
   }
 
   Widget _breakdownRow(_CityRevenue item, NumberFormat fmt) {
-    final pct = item.partner ? 40 : 100;
+    final pct = item.partner ? (platformShareWithPartner * 100).round() : 100;
     final color = item.partner ? Tw.green400 : Tw.fuchsia400;
     final bar = item.partner ? Tw.green500 : Tw.fuchsia500;
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -188,7 +199,7 @@ class _FinancePanelState extends State<FinancePanel> {
         const SizedBox(width: 8),
         Flexible(
           child: Text(
-            pct == 100 ? '${fmt.format(item.value)} €' : '${fmt.format(item.value)} € Royalty / ${fmt.format(item.value)} € Bruto',
+            pct == 100 ? '${fmt.format(item.value)} €' : '${fmt.format(item.value)} € Royalty / ${fmt.format(item.total)} € Bruto',
             textAlign: TextAlign.end,
             style: tw(12, weight: bold, color: color).copyWith(fontFamily: 'monospace'),
           ),
