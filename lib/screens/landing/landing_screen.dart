@@ -11,75 +11,63 @@ import '../../theme/app_theme.dart';
 import '../../widgets/common.dart';
 import '../../widgets/language_selector.dart';
 
+// Illustration only (shown as "Ejemplo"), as app/page.tsx: no invented figures, and generic kinds of venue instead of
+// real clubs that aren't on the platform.
 class _LVenue {
   final String name;
-  final String type;
-  final int vibe;
   final double x;
   final double y;
-  const _LVenue(this.name, this.type, this.vibe, this.x, this.y);
+  const _LVenue(this.name, this.x, this.y);
 }
 
 class _LCity {
   final String label;
   final String country;
   final String tag;
-  final int vibeScore;
-  final int activeClubbers;
   final List<_LVenue> venues;
-  const _LCity(this.label, this.country, this.tag, this.vibeScore, this.activeClubbers, this.venues);
+  const _LCity(this.label, this.country, this.tag, this.venues);
 }
 
 const _cities = {
-  'madrid': _LCity('Madrid', 'ES', 'Furia & Afters', 98, 3420, [
-    _LVenue('Fabrik', 'Techno Temple', 99, 28, 35),
-    _LVenue('Kapital', '7 Plants Iconic', 95, 62, 48),
-    _LVenue('Mondo Disko', 'Underground House', 96, 50, 72),
-    _LVenue('Teatro Magno', 'Urban & VIP', 91, 74, 28),
-    _LVenue('Chango Club', 'Tech House', 89, 38, 82),
+  'madrid': _LCity('Madrid', 'ES', 'Furia & Afters', [
+    _LVenue('Techno club', 28, 35),
+    _LVenue('Big room club', 62, 48),
+    _LVenue('House club', 50, 72),
+    _LVenue('Urban & VIP', 74, 28),
+    _LVenue('Tech house', 38, 82),
   ]),
-  'barcelona': _LCity('Barcelona', 'ES', 'Beach & Raves', 96, 2890, [
-    _LVenue('Razzmatazz', 'Multi-room Club', 98, 70, 40),
-    _LVenue('Apolo', 'Nasty Mondays / Live', 94, 35, 65),
-    _LVenue('Opium BCN', 'Beachfront Club', 91, 80, 70),
-    _LVenue('Input Dance', 'High End Techno', 97, 25, 30),
+  'barcelona': _LCity('Barcelona', 'ES', 'Beach & Raves', [
+    _LVenue('Multi-room club', 70, 40),
+    _LVenue('Live music', 35, 65),
+    _LVenue('Beach club', 80, 70),
+    _LVenue('Techno club', 25, 30),
   ]),
-  'london': _LCity('London', 'UK', 'Warehouse & Bass', 95, 4120, [
-    _LVenue('Fabric', 'Legendary Bass', 97, 52, 45),
-    _LVenue('Drumsheds', 'Massive Warehouse', 99, 75, 25),
-    _LVenue('Ministry of Sound', 'House Heritage', 93, 32, 68),
-    _LVenue('Fold', '24h Non-stop Techno', 98, 42, 82),
+  'london': _LCity('London', 'UK', 'Warehouse & Bass', [
+    _LVenue('Bass club', 52, 45),
+    _LVenue('Warehouse', 75, 25),
+    _LVenue('House club', 32, 68),
+    _LVenue('Techno club', 42, 82),
   ]),
-  'lisboa': _LCity('Lisboa', 'PT', 'Rooftops & Techno', 92, 1840, [
-    _LVenue('Lux Frágil', 'Waterfront Iconic', 96, 60, 55),
-    _LVenue('Ministerium', 'Underground', 90, 45, 38),
-    _LVenue('Musicbox', 'Cais do Sodré Live', 92, 30, 70),
+  'lisboa': _LCity('Lisboa', 'PT', 'Rooftops & Techno', [
+    _LVenue('Waterfront club', 60, 55),
+    _LVenue('Underground', 45, 38),
+    _LVenue('Live music', 30, 70),
   ]),
-  'paris': _LCity('Paris', 'FR', 'Electronique & Chic', 93, 2450, [
-    _LVenue('Rex Club', 'Historic Electro', 96, 55, 40),
-    _LVenue('FVTVR', 'Raw Techno Bunker', 97, 35, 60),
-    _LVenue('Nexus Paris', '360° Visual Club', 94, 72, 75),
+  'paris': _LCity('Paris', 'FR', 'Electronique & Chic', [
+    _LVenue('Electro club', 55, 40),
+    _LVenue('Techno bunker', 35, 60),
+    _LVenue('Visual club', 72, 75),
   ]),
-  'berlin': _LCity('Berlin', 'DE', 'Industrial Techno', 99, 3950, [
-    _LVenue('Berghain / Panorama', 'Dark Cathedral', 100, 48, 48),
-    _LVenue('Watergate', 'Spree Riverside House', 92, 68, 35),
-    _LVenue('Tresor', 'Bank Vault Techno', 97, 30, 65),
-    _LVenue('KitKatClub', 'Hedonist Nights', 96, 62, 78),
+  'berlin': _LCity('Berlin', 'DE', 'Industrial Techno', [
+    _LVenue('Techno club', 48, 48),
+    _LVenue('Riverside house', 68, 35),
+    _LVenue('Industrial techno', 30, 65),
+    _LVenue('Late-night club', 62, 78),
   ]),
 };
 
 /// lib/routes.ts CITY_SLUGS order.
 const _citySlugs = ['madrid', 'london', 'barcelona', 'lisboa', 'paris', 'berlin'];
-
-const _ticker = [
-  ('🔥', 'landing_ticker_1'),
-  ('⚡', 'landing_ticker_2'),
-  ('📍', 'landing_ticker_3'),
-  ('🚀', 'landing_ticker_4'),
-  ('🎧', 'landing_ticker_5'),
-  ('🎟️', 'landing_ticker_6'),
-  ('🍸', 'landing_ticker_7'),
-];
 
 String _flag(String country) =>
     const {'ES': '🇪🇸', 'UK': '🇬🇧', 'PT': '🇵🇹', 'FR': '🇫🇷', 'DE': '🇩🇪'}[country] ?? '🌍';
@@ -153,7 +141,6 @@ class _LandingScreenState extends State<LandingScreen> {
               opacity: heroOpacity,
               child: Transform.scale(scale: 1 - 0.05 * progress, child: KeyedSubtree(key: _heroKey, child: _hero(context))),
             ),
-            const _Ticker(),
             _bento(context),
             _citiesShowcase(context),
             _audience(context),
@@ -395,27 +382,10 @@ class _LandingScreenState extends State<LandingScreen> {
               ),
             ]),
           ),
-          const SizedBox(height: 40),
-          Container(
-            padding: const EdgeInsets.only(top: 24),
-            decoration: BoxDecoration(border: Border(top: BorderSide(color: Tw.w(0.08)))),
-            child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Expanded(child: _stat('+120K', Tw.white, context.t('landing_stat_checkins'))),
-              const SizedBox(width: 12),
-              Expanded(child: _stat(context.t('landing_stat_delay_value'), Tw.fuchsia400, context.t('landing_stat_delay'))),
-              const SizedBox(width: 12),
-              Expanded(child: _stat('6', Tw.indigo400, context.t('landing_stat_cities'))),
-            ]),
-          ),
           const SizedBox(height: 48),
           _FadeIn(delay: 200, child: _radarWidget(context)),
         ]),
       );
-
-  Widget _stat(String value, Color color, String label) => Column(children: [
-        Text(value, style: tw(20, weight: black, color: color)),
-        Label(label, size: 9, weight: bold, tracking: 0.05, align: TextAlign.center),
-      ]);
 
   Widget _radarWidget(BuildContext context) {
     final city = _city;
@@ -438,7 +408,7 @@ class _LandingScreenState extends State<LandingScreen> {
           child: Row(children: [
             const _PingDot(),
             const SizedBox(width: 8),
-            Expanded(child: Label(context.t('landing_radar_live'), size: 12, weight: bold, color: const Color(0xFFE2E8F0), tracking: 0.2)),
+            Expanded(child: Label(context.t('landing_radar_demo_title'), size: 12, weight: bold, color: const Color(0xFFE2E8F0), tracking: 0.2)),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
@@ -446,8 +416,7 @@ class _LandingScreenState extends State<LandingScreen> {
                 borderRadius: BorderRadius.circular(99),
                 border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.2)),
               ),
-              child: Text(context.t('landing_radar_vibe', params: {'score': '${city.vibeScore}'}),
-                  style: tw(11, color: Tw.fuchsia400).copyWith(fontFamily: 'monospace')),
+              child: Text(context.t('landing_demo_badge'), style: tw(11, color: Tw.fuchsia400).copyWith(fontFamily: 'monospace')),
             ),
           ]),
         ),
@@ -510,20 +479,8 @@ class _LandingScreenState extends State<LandingScreen> {
             const SizedBox(width: 10),
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Row(children: [
-                  Flexible(child: Text(active.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(12, weight: bold))),
-                  const SizedBox(width: 6),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
-                    decoration: BoxDecoration(
-                      color: Tw.emerald500.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(99),
-                      border: Border.all(color: Tw.emerald500.withValues(alpha: 0.2)),
-                    ),
-                    child: Text('${active.vibe}%', style: tw(9, color: Tw.emerald400)),
-                  ),
-                ]),
-                Text('${active.type} · ${city.label}', maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(11, color: Tw.slate400)),
+                Text(active.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(12, weight: bold)),
+                Text(city.label, maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(11, color: Tw.slate400)),
               ]),
             ),
             const SizedBox(width: 12),
@@ -560,7 +517,7 @@ class _LandingScreenState extends State<LandingScreen> {
         ]),
       );
 
-  Widget _bentoCard({required Color accent, required IconData icon, required String label, required String title, required String desc, required Widget footer}) =>
+  Widget _bentoCard({required Color accent, required IconData icon, required String label, required String title, required String desc, Widget? footer}) =>
       _FadeIn(
         child: Container(
           margin: const EdgeInsets.only(bottom: 24),
@@ -587,8 +544,7 @@ class _LandingScreenState extends State<LandingScreen> {
                 Text(title, style: tw(24, weight: bold, height: 1.2)),
                 const SizedBox(height: 12),
                 Text(desc, style: tw(14, color: Tw.slate400, height: 1.6)),
-                const SizedBox(height: 24),
-                footer,
+                if (footer != null) ...[const SizedBox(height: 24), footer],
               ]),
             ),
           ]),
@@ -606,24 +562,6 @@ class _LandingScreenState extends State<LandingScreen> {
             label: context.t('landing_bento1_label'),
             title: context.t('landing_bento1_title'),
             desc: context.t('landing_bento1_desc'),
-            footer: Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(color: _bg.withValues(alpha: 0.8), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
-              child: Row(children: [
-                const Text('🔥', style: TextStyle(fontSize: 24)),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Text(context.t('landing_bento1_venue'), style: tw(12, weight: bold)),
-                    Text(context.t('landing_bento1_peak'), style: tw(10, color: Tw.emerald400)),
-                  ]),
-                ),
-                Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-                  Text(context.t('landing_bento1_full'), style: tw(14, weight: black, color: Tw.fuchsia400).copyWith(fontFamily: 'monospace')),
-                  Label(context.t('landing_bento1_capacity'), size: 9, weight: FontWeight.w400, color: Tw.slate500, tracking: 0),
-                ]),
-              ]),
-            ),
           ),
           _bentoCard(
             accent: Tw.indigo500,
@@ -726,24 +664,6 @@ class _LandingScreenState extends State<LandingScreen> {
                             Text(city.tag, style: tw(12, color: Tw.slate400)),
                           ]),
                         ),
-                        Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: Tw.emerald500.withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(99),
-                              border: Border.all(color: Tw.emerald500.withValues(alpha: 0.2)),
-                            ),
-                            child: Row(mainAxisSize: MainAxisSize.min, children: [
-                              const _Pulse(child: SizedBox(width: 6, height: 6, child: DecoratedBox(decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.emerald400)))),
-                              const SizedBox(width: 6),
-                              Text('${city.vibeScore}% Vibe', style: tw(11, weight: bold, color: Tw.emerald400)),
-                            ]),
-                          ),
-                          const SizedBox(height: 4),
-                          Text('${_thousands(city.activeClubbers)} ${context.t('landing_cities_active')}',
-                              style: tw(10, color: Tw.slate500).copyWith(fontFamily: 'monospace')),
-                        ]),
                       ]),
                       const SizedBox(height: 32),
                       Container(
@@ -761,7 +681,6 @@ class _LandingScreenState extends State<LandingScreen> {
         ]),
       );
 
-  static String _thousands(int n) => n.toString().replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (_) => ',');
 
   // ─── Clubbers / Clubs ───
   Widget _audience(BuildContext context) => Padding(
@@ -1064,7 +983,7 @@ class _RadarScreenState extends State<_RadarScreen> with TickerProviderStateMixi
       child: ScaleTransition(
         scale: anim,
         child: Stack(clipBehavior: Clip.none, alignment: Alignment.center, children: [
-          if (v.vibe >= 95)
+          if (isActive)
             IgnorePointer(
               child: _Ping(child: Container(width: 32, height: 32, decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.fuchsia500.withValues(alpha: 0.3)))),
             ),
@@ -1082,10 +1001,7 @@ class _RadarScreenState extends State<_RadarScreen> with TickerProviderStateMixi
                   color: isActive ? Tw.fuchsia500 : Tw.indigo600.withValues(alpha: 0.8),
                   boxShadow: isActive ? [BoxShadow(color: Tw.fuchsia500.withValues(alpha: 0.8), blurRadius: 15)] : null,
                 ),
-                child: OverflowBox(
-                  maxWidth: 60,
-                  child: Text('${v.vibe}%', style: tw(10, weight: bold)),
-                ),
+                child: const Icon(Icons.nightlife, size: 12, color: Tw.white),
               ),
             ),
           ),
@@ -1104,7 +1020,6 @@ class _RadarScreenState extends State<_RadarScreen> with TickerProviderStateMixi
                   ),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
                     Text(v.name, softWrap: false, style: tw(11, weight: bold, height: 1.2)),
-                    Text(v.type, softWrap: false, style: tw(9, color: Tw.fuchsia400)),
                   ]),
                 ),
               ),
@@ -1211,70 +1126,4 @@ class _GradientText extends StatelessWidget {
         shaderCallback: (b) => gradient.createShader(Offset.zero & b.size),
         child: Text(text, style: style.copyWith(color: Tw.white)),
       );
-}
-
-/// Infinite marquee (`animate-marquee`, 30s per half-width).
-class _Ticker extends StatefulWidget {
-  const _Ticker();
-
-  @override
-  State<_Ticker> createState() => _TickerState();
-}
-
-class _TickerState extends State<_Ticker> with SingleTickerProviderStateMixin {
-  late final _c = AnimationController(vsync: this, duration: const Duration(seconds: 30))..repeat();
-  final _key = GlobalKey();
-  double _half = 0;
-
-  @override
-  void dispose() {
-    _c.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    Widget row([Key? key]) => Row(key: key, mainAxisSize: MainAxisSize.min, children: [
-          for (final (icon, key) in _ticker)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Row(mainAxisSize: MainAxisSize.min, children: [
-                Text(icon, style: const TextStyle(fontSize: 16)),
-                const SizedBox(width: 10),
-                Text(context.t(key), style: tw(12, weight: medium, color: Tw.slate300)),
-                const SizedBox(width: 16),
-                Text('•', style: tw(12, color: Tw.slate600)),
-              ]),
-            ),
-        ]);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final w = (_key.currentContext?.findRenderObject() as RenderBox?)?.size.width ?? 0;
-      if (w > 0 && w != _half && mounted) setState(() => _half = w);
-    });
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [
-          const Color(0xFF4A044E).withValues(alpha: 0.4),
-          const Color(0xFF1E1B4B).withValues(alpha: 0.4),
-          Tw.slate950.withValues(alpha: 0.6),
-        ]),
-        border: Border.symmetric(horizontal: BorderSide(color: Tw.w(0.08))),
-      ),
-      child: ClipRect(
-        child: SizedBox(
-          height: 22,
-          child: AnimatedBuilder(
-            animation: _c,
-            builder: (_, child) => OverflowBox(
-              alignment: Alignment.centerLeft,
-              maxWidth: double.infinity,
-              child: Transform.translate(offset: Offset(-_half * _c.value, 0), child: child),
-            ),
-            child: Row(mainAxisSize: MainAxisSize.min, children: [row(_key), row()]),
-          ),
-        ),
-      ),
-    );
-  }
 }
