@@ -1,6 +1,7 @@
 {
   "finder": {
     "title": "Amici vicini",
+    "unavailable": "Amici vicini non è ancora disponibile",
     "subtitle": "Trova il tuo gruppo senza campo",
     "how_title": "Come funziona",
     "how_body": "Crea un gruppo per stasera e invita i tuoi amici. Con il radar Bluetooth attivo, i vostri telefoni si rilevano a vicenda anche senza campo e vedi chi hai vicino.",

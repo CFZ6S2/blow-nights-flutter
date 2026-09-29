@@ -1,6 +1,7 @@
 {
   "finder": {
     "title": "Amigos cerca",
+    "unavailable": "Amigos cerca aún no está disponible",
     "subtitle": "Encuentra a tu grupo sin cobertura",
     "how_title": "Cómo funciona",
     "how_body": "Crea un grupo para esta noche e invita a tus amigos. Con el radar Bluetooth activo, vuestros móviles se detectan entre sí aunque no haya cobertura, y ves quién tienes cerca.",

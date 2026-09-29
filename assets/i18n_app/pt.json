@@ -1,6 +1,7 @@
 {
   "finder": {
     "title": "Amigos por perto",
+    "unavailable": "Amigos por perto ainda não está disponível",
     "subtitle": "Encontra o teu grupo sem rede",
     "how_title": "Como funciona",
     "how_body": "Cria um grupo para esta noite e convida os teus amigos. Com o radar Bluetooth ligado, os vossos telemóveis detetam-se mesmo sem rede e vês quem está perto.",

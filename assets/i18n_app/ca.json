@@ -1,6 +1,7 @@
 {
   "finder": {
     "title": "Amics a prop",
+    "unavailable": "Amics a prop encara no està disponible",
     "subtitle": "Troba el teu grup sense cobertura",
     "how_title": "Com funciona",
     "how_body": "Crea un grup per a aquesta nit i convida els teus amics. Amb el radar Bluetooth actiu, els vostres mòbils es detecten entre si encara que no hi hagi cobertura, i veus qui tens a prop.",

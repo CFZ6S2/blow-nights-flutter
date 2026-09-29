@@ -1,6 +1,7 @@
 {
   "finder": {
     "title": "Freunde in der Nähe",
+    "unavailable": "Freunde in der Nähe ist noch nicht verfügbar",
     "subtitle": "Finde deine Gruppe ohne Netz",
     "how_title": "So funktioniert's",
     "how_body": "Erstelle eine Gruppe für heute Nacht und lade deine Freunde ein. Mit aktivem Bluetooth-Radar erkennen sich eure Handys auch ohne Empfang, und du siehst, wer in der Nähe ist.",

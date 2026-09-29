@@ -11,6 +11,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../i18n/i18n.dart';
 import '../../navigation.dart';
 import '../../providers/auth_provider.dart';
+import '../../providers/platform_settings.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/common.dart';
 
@@ -189,7 +190,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       (context.t('profile.my_plans', fallback: 'Mis Chills'), Icons.groups, AppRoute.myPlans, Tw.amber400),
       (context.t('profile.my_tickets', fallback: 'Mis Entradas'), Icons.confirmation_number, AppRoute.tickets, Tw.fuchsia400),
       (context.t('profile.my_chats', fallback: 'Mis Chats'), Icons.chat, AppRoute.chat, Tw.blue400),
-      (context.t('finder.title'), Icons.bluetooth_searching, AppRoute.friendGroups, Tw.cyan400),
+      if (context.watch<PlatformSettings>().flag('moduleFriendFinder'))
+        (context.t('finder.title'), Icons.bluetooth_searching, AppRoute.friendGroups, Tw.cyan400),
       (context.t('profile.edit_profile', fallback: 'Ajustes'), Icons.settings, AppRoute.setupProfile, const Color(0xFFE2E8F0)),
       if (p.role == 'venueOwner' || p.role == 'admin')
         (context.t('profile.venue_panel', fallback: 'Panel de Local'), Icons.storefront, AppRoute.venueAdmin, Tw.fuchsia400),

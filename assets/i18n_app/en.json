@@ -1,6 +1,7 @@
 {
   "finder": {
     "title": "Friends nearby",
+    "unavailable": "Friends nearby isn't available yet",
     "subtitle": "Find your crew with no signal",
     "how_title": "How it works",
     "how_body": "Create a group for tonight and invite your friends. With the Bluetooth radar on, your phones detect each other even without coverage, and you see who's close.",

@@ -67,6 +67,16 @@ const _modules = [
     'Si prefieres arrancar en una ciudad centrada solo en los locales comerciales, puedes apagar Chills temporalmente.',
   ),
   _Module(
+    'moduleFriendFinder',
+    'Amigos cerca (Radar Bluetooth en Festivales)',
+    'comunidad',
+    Icons.bluetooth_searching,
+    'Próxima Fase',
+    'Grupos de amigos que se localizan por Bluetooth sin cobertura y se invitan acercando los móviles (NFC). Solo en la app Android.',
+    'Al activarlo aparece "Amigos cerca" en el perfil de la app. Al apagarlo se oculta y se detiene el radar de quien lo tuviera encendido.',
+    'Mantener apagado hasta que se vendan entradas de festivales.',
+  ),
+  _Module(
     'moduleVenueRegistration',
     'Reclamación y Alta Pública de Locales',
     'red_comercial',

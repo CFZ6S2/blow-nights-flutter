@@ -1,6 +1,7 @@
 {
   "finder": {
     "title": "Prieteni în apropiere",
+    "unavailable": "Prieteni în apropiere nu este încă disponibil",
     "subtitle": "Găsește-ți gașca fără semnal",
     "how_title": "Cum funcționează",
     "how_body": "Creează un grup pentru diseară și invită-ți prietenii. Cu radarul Bluetooth pornit, telefoanele voastre se detectează între ele chiar și fără semnal și vezi cine e aproape.",

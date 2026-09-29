@@ -1,6 +1,7 @@
 {
   "finder": {
     "title": "Amis à proximité",
+    "unavailable": "Amis à proximité n'est pas encore disponible",
     "subtitle": "Retrouve ton groupe sans réseau",
     "how_title": "Comment ça marche",
     "how_body": "Crée un groupe pour ce soir et invite tes amis. Avec le radar Bluetooth activé, vos téléphones se détectent même sans réseau, et tu vois qui est proche.",
