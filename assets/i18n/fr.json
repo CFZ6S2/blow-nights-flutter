@@ -2080,6 +2080,7 @@
   "landing_hero_title_2": "fête en ce moment ?",
   "landing_hero_description": "Arrêtez d'arriver dans des clubs vides ou d'attendre 40 minutes dans des files inutiles. Découvrez quels lieux battent leur plein en temps réel, créez des points de rencontre (Chills) et évitez les inscriptions interminables.",
   "landing_cta_explore": "Explorer {{city}} Maintenant",
+  "landing_cta_explore_near": "Explore ce qu'il y a près de toi",
   "landing_cta_tickets": "Billets coupe-file",
   "landing_stat_checkins": "Check-ins",
   "landing_stat_delay": "Délai",

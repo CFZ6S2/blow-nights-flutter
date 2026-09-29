@@ -2317,6 +2317,7 @@
   "landing_hero_title_2": "לילה עכשיו?",
   "landing_hero_description": "תשכח מלהגיע למקום ריק או לעמוד 40 דקות בתור מיותר. גלה אילו אולמות ודיסקוטקים ב-100% אווירה בזמן אמת, צור נקודות מפגש (צ'ילים) וגש ללא הרשמה מסורבלת.",
   "landing_cta_explore": "חקור את {{city}} עכשיו",
+  "landing_cta_explore_near": "גלו מה יש לידכם",
   "landing_cta_tickets": "כרטיסים ללא תורים",
   "landing_stat_checkins": "צ'ק-אינים",
   "landing_stat_delay": "השהייה",

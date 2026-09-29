@@ -366,7 +366,16 @@ class _LandingScreenState extends State<LandingScreen> {
                   child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     const Icon(Icons.radar, size: 18, color: Tw.white),
                     const SizedBox(width: 8),
-                    Flexible(child: Label(context.t('landing_cta_explore', params: {'city': _city.label}), size: 14, weight: bold, color: Tw.white, tracking: 0.15)),
+                    Flexible(
+                        // Name the city only if the user is really in it; the radar opens on their own zone.
+                        child: Label(
+                            context.watch<CityProvider>().cityId == _slug
+                                ? context.t('landing_cta_explore', params: {'city': _city.label})
+                                : context.t('landing_cta_explore_near'),
+                            size: 14,
+                            weight: bold,
+                            color: Tw.white,
+                            tracking: 0.15)),
                   ]),
                 ),
               ),

@@ -73,15 +73,40 @@ class CityProvider extends ChangeNotifier {
         _resolve();
         return;
       }
-      final pos = await Geolocator.getCurrentPosition(
-        locationSettings: const LocationSettings(timeLimit: Duration(seconds: 8)),
-      );
-      position = (lat: pos.latitude, lng: pos.longitude);
-      positionStatus = PositionStatus.granted;
+      final pos = await _locate();
+      if (pos == null) {
+        positionStatus = PositionStatus.unavailable;
+      } else {
+        position = (lat: pos.latitude, lng: pos.longitude);
+        positionStatus = PositionStatus.granted;
+      }
     } catch (_) {
       positionStatus = PositionStatus.unavailable;
     }
     _resolve();
+  }
+
+  /// A 50 km zone doesn't need GPS precision. On Android, Google's fused provider shows a "Location Accuracy" dialog
+  /// when that setting is off, and declining it fails the request, leaving the user without a zone; so the system
+  /// LocationManager goes first (no dialog), then the fused provider, then the last known position.
+  Future<Position?> _locate() async {
+    const low = LocationAccuracy.low;
+    const limit = Duration(seconds: 8);
+    final android = defaultTargetPlatform == TargetPlatform.android;
+    if (android) {
+      try {
+        return await Geolocator.getCurrentPosition(
+            locationSettings: AndroidSettings(accuracy: low, timeLimit: limit, forceLocationManager: true));
+      } catch (_) {}
+    }
+    try {
+      return await Geolocator.getCurrentPosition(locationSettings: const LocationSettings(accuracy: low, timeLimit: limit));
+    } catch (_) {}
+    try {
+      return await Geolocator.getLastKnownPosition(forceAndroidLocationManager: android);
+    } catch (_) {
+      return null;
+    }
   }
 
   void _resolve() {

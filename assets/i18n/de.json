@@ -1716,6 +1716,7 @@
   "landing_hero_title_2": "Party gerade?",
   "landing_hero_description": "Schluss mit leeren Clubs und 40 Minuten sinnlosem Anstehen. Entdecke in Echtzeit, welche Locations gerade abgehen, erstelle Treffpunkte (Chills) und überspring nervige Registrierungen.",
   "landing_cta_explore": "{{city}} jetzt entdecken",
+  "landing_cta_explore_near": "Entdecke, was in deiner Nähe ist",
   "landing_cta_tickets": "Tickets ohne Anstehen",
   "landing_stat_checkins": "Check-ins",
   "landing_stat_delay": "Verzögerung",

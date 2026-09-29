@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
 import '../../i18n/i18n.dart';
@@ -40,7 +39,8 @@ class _VenuesScreenState extends State<VenuesScreen> {
   String _category = 'all';
   bool _openNow = false;
   final _search = TextEditingController();
-  ({double lat, double lng})? _userLocation;
+  // The GPS fix CityProvider already asked for (one request for the whole app, see CityProvider._locate).
+  ({double lat, double lng})? get _userLocation => context.read<CityProvider>().position;
   bool _autoCheckoutDone = false;
   final List<StreamSubscription> _subs = [];
   String? _uid;
@@ -49,17 +49,6 @@ class _VenuesScreenState extends State<VenuesScreen> {
   void initState() {
     super.initState();
     _search.addListener(() => setState(() {}));
-    _locate();
-  }
-
-  Future<void> _locate() async {
-    try {
-      final perm = await Geolocator.checkPermission();
-      if (perm == LocationPermission.denied || perm == LocationPermission.deniedForever) return;
-      final pos = await Geolocator.getLastKnownPosition() ??
-          await Geolocator.getCurrentPosition(locationSettings: const LocationSettings(timeLimit: Duration(seconds: 5)));
-      if (mounted) setState(() => _userLocation = (lat: pos.latitude, lng: pos.longitude));
-    } catch (_) {}
   }
 
   @override

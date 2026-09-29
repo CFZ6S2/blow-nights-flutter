@@ -1639,6 +1639,7 @@
   "landing_hero_title_2": "festa ara mateix?",
   "landing_hero_description": "Deixa d'arribar a clubs buits o esperar 40 minuts en cues inútils. Descobreix quins locals estan al màxim en temps real, crea punts de trobada (Chills) i oblida't dels registres eterns.",
   "landing_cta_explore": "Explora {{city}} Ara",
+  "landing_cta_explore_near": "Explora el que tens a prop",
   "landing_cta_tickets": "Entrades sense Cua",
   "landing_stat_checkins": "Check-ins",
   "landing_stat_delay": "Retard",

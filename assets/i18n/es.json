@@ -2322,6 +2322,7 @@
   "landing_hero_title_2": "noche ahora?",
   "landing_hero_description": "Olvídate de llegar a un local vacío o hacer 40 minutos de cola innecesaria. Descubre qué salas y discotecas están al 100% de ambiente en tiempo real, crea puntos de encuentro (Chills) y accede sin registros engorrosos.",
   "landing_cta_explore": "Explorar {{city}} Ahora",
+  "landing_cta_explore_near": "Explora lo que hay cerca",
   "landing_cta_tickets": "Tickets Sin Colas",
   "landing_stat_checkins": "Check-ins",
   "landing_stat_delay": "Retardo",

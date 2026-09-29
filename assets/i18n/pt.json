@@ -1788,6 +1788,7 @@
   "landing_hero_title_2": "festa agora?",
   "landing_hero_description": "Para de chegar a clubs vazios ou esperar 40 minutos em filas inúteis. Descobre que locais estão no auge em tempo real, cria pontos de encontro (Chills) e salta registos chatos.",
   "landing_cta_explore": "Explorar {{city}} Agora",
+  "landing_cta_explore_near": "Explore o que há perto de você",
   "landing_cta_tickets": "Bilhetes sem Fila",
   "landing_stat_checkins": "Check-ins",
   "landing_stat_delay": "Atraso",

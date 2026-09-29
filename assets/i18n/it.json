@@ -1683,6 +1683,7 @@
   "landing_hero_title_2": "festa adesso?",
   "landing_hero_description": "Smetti di arrivare in club vuoti o aspettare 40 minuti in code inutili. Scopri quali locali sono al massimo in tempo reale, crea punti di ritrovo (Chills) e salta le registrazioni noiose.",
   "landing_cta_explore": "Esplora {{city}} Ora",
+  "landing_cta_explore_near": "Scopri cosa c'è vicino a te",
   "landing_cta_tickets": "Biglietti salta-coda",
   "landing_stat_checkins": "Check-in",
   "landing_stat_delay": "Ritardo",

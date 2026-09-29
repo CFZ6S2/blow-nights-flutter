@@ -1683,6 +1683,7 @@
   "landing_hero_title_2": "الحفلة الآن؟",
   "landing_hero_description": "توقّف عن الذهاب إلى نوادٍ فارغة أو الانتظار 40 دقيقة في طوابير لا فائدة منها. اكتشف أي الأماكن في ذروتها الآن، وأنشئ نقاط لقاء (Chills) وتخطَّ عمليات التسجيل المملة.",
   "landing_cta_explore": "استكشف {{city}} الآن",
+  "landing_cta_explore_near": "استكشف ما هو قريب منك",
   "landing_cta_tickets": "تذاكر بدون طابور",
   "landing_stat_checkins": "تسجيلات حضور",
   "landing_stat_delay": "تأخير",

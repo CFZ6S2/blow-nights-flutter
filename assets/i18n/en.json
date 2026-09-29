@@ -2321,6 +2321,7 @@
   "landing_hero_title_2": "party right now?",
   "landing_hero_description": "Stop arriving at empty clubs or waiting 40 minutes in pointless queues. Discover which venues are peaking in real time, create meetup points (Chills) and skip tedious sign-ups.",
   "landing_cta_explore": "Explore {{city}} Now",
+  "landing_cta_explore_near": "Explore what's near you",
   "landing_cta_tickets": "Skip-the-Line Tickets",
   "landing_stat_checkins": "Check-ins",
   "landing_stat_delay": "Delay",
