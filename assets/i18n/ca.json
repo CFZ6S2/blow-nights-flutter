@@ -111,7 +111,7 @@
     "gps_step_2": "Selecciona \"Restablir permís\" o activa \"Ubicació\".",
     "gps_step_3": "Refresca la pàgina i prem de nou a \"FER-ME VISIBLE\".",
     "cruising_mode_active_desc": "Actiu: els teus check-ins són sempre anònims (+1), la teva ubicació es difumina a 150m i la teva foto no apareix als llistats de locals.",
-    "share_text": "Uneix-te a Blow Nights! El teu circuit nocturn LGTBIQ+ en viu. 🏳️‍🌈🚀",
+    "share_text": "Uneix-te a Blow Nights! El teu circuit nocturn en viu. 🌙🚀",
     "share_copied": "Enllaç copiat al porta-retalls! Envia'l als teus amics.",
     "share_prompt": "Copia aquest enllaç per convidar els teus amics:",
     "verify_prompt": "Puja una foto teva (selfie) per verificar la teva identitat. Aquesta foto només serà vista pels administradors.",
@@ -209,7 +209,7 @@
     "nav_venues": "Locals",
     "nav_rrpp": "RRPP",
     "live_city": "En viu a la teva ciutat",
-    "hero_desc_1": "El teu circuit nocturn LGTBIQ+ en viu.",
+    "hero_desc_1": "Descobreix qui surt aquesta nit.",
     "hero_desc_2": "Locals, entrades, check-in i plans reals a la teva ciutat.",
     "enter_free": "Entrar gratis",
     "how_it_works": "Com funciona",
@@ -249,7 +249,7 @@
     "vtype_cruising": "Cruising Bars",
     "vtype_outdoor": "Zones Exteriors",
     "b2b_tag": "Per a locals",
-    "b2b_title": "Tens un local LGTBIQ+?",
+    "b2b_title": "El SaaS de l'oci nocturn",
     "b2b_desc": "Blow Nights et dona un panell de gestió complet: ven entrades, llança promos flash geolocalitzades, valida QR a porta i controla l'afluència en temps real.",
     "b2b_panel": "Panell de local",
     "b2b_qr": "Escàner QR",
@@ -310,7 +310,7 @@
     "request_territory": "Sol·licitar Territori",
     "opportunity_city_managers": "Oportunitat per a City Managers",
     "operating_system": "Sistema Operatiu",
-    "lgtbiq_nightlife": "de l'Oci Nocturn LGTBIQ+",
+    "nightlife_suffix": "de l'Oci Nocturn",
     "contact_team": "Contactar amb l'Equip",
     "view_business_model": "Veure el Model de Negoci",
     "immediate_opportunities": "Oportunitats Immediates",
@@ -1218,7 +1218,7 @@
   },
   "partners": {
     "meta_title": "Blow Nights - Oportunitat de Negoci City Manager",
-    "meta_description": "Converteix-te en l'amo del teu territori amb el Sistema Operatiu de l'Oci Nocturn LGTBIQ+."
+    "meta_description": "Converteix-te en l'amo del teu territori amb el Sistema Operatiu de l'Oci Nocturn."
   },
   "pwa": {
     "install_title": "Instal·lar Blow Nights",
@@ -1858,7 +1858,7 @@
     "buy_ticket": "Comprar entrada"
   },
   "venue_tickets": {
-    "fallback_desc": "The most powerful official LGBTQ+ nightlife circuit in the city.",
+    "fallback_desc": "El circuit oficial de nit més potent de la ciutat.",
     "tier_early": "Early Bird Ticket",
     "tier_early_desc": "Early access + 1 drink before 01:00",
     "tier_general": "General Admission + 1 Drink",

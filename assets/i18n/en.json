@@ -69,7 +69,7 @@
     "gps_step_2": "Select \"Reset permission\" or turn on \"Location\".",
     "gps_step_3": "Refresh the page and tap \"GO VISIBLE\" again.",
     "cruising_mode_active_desc": "Active: your check-ins are always anonymous (+1), your location is blurred to 150m and your photo does not appear in venue lists.",
-    "share_text": "Join Blow Nights! Your live LGBTQ+ nightlife circuit. 🏳️‍🌈🚀",
+    "share_text": "Join Blow Nights! Your live nightlife circuit. 🌙🚀",
     "share_copied": "Link copied to clipboard! Send it to your friends.",
     "share_prompt": "Copy this link to invite your friends:",
     "verify_prompt": "Upload a selfie to verify your identity. This photo will only be seen by admins.",
@@ -238,7 +238,7 @@
     "what_is": "What is Blow Nights?",
     "not_dating": "It's not a dating app.",
     "is_circuit": "It's your nightlife circuit.",
-    "about_desc": "The digital ecosystem for LGBTQ+ nightlife. Live map, QR tickets, anonymous check-in and social radar — all in one app.",
+    "about_desc": "The digital ecosystem for nightlife, for everyone. Live map, QR tickets, anonymous check-in and social radar — all in one app.",
     "feat1_title": "Live venues",
     "feat1_desc": "Interactive map with real-time capacity and activity for each venue.",
     "feat2_title": "QR Tickets",
@@ -310,7 +310,7 @@
     "request_territory": "Request Territory",
     "opportunity_city_managers": "Opportunity for City Managers",
     "operating_system": "Operating System",
-    "lgtbiq_nightlife": "of LGBTQ+ Nightlife",
+    "nightlife_suffix": "of Nightlife",
     "contact_team": "Contact Team",
     "view_business_model": "View Business Model",
     "immediate_opportunities": "Immediate Opportunities",
@@ -1299,7 +1299,7 @@
   },
   "partners": {
     "meta_title": "Blow Nights - City Manager Business Opportunity",
-    "meta_description": "Become the owner of your territory with the LGBTQ+ Nightlife Operating System."
+    "meta_description": "Become the owner of your territory with the Nightlife Operating System."
   },
   "pwa": {
     "install_title": "Install Blow Nights",
@@ -1361,7 +1361,7 @@
   "city.buy_tickets_desc": "Public catalog of available tickets",
   "city.no_register": "No sign-up",
   "venue_tickets": {
-    "fallback_desc": "The most powerful official LGBTQ+ nightlife circuit in the city.",
+    "fallback_desc": "The most powerful official nightlife circuit in the city.",
     "tier_early": "Early Bird Ticket",
     "tier_early_desc": "Early access + 1 drink before 01:00",
     "tier_general": "General Admission + 1 Drink",

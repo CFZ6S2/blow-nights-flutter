@@ -96,7 +96,7 @@
     "gps_step_2": "Selecciona \"Restablecer permiso\" o activa \"Ubicación\".",
     "gps_step_3": "Refresca la página y pulsa de nuevo en \"VOLVERME VISIBLE\".",
     "cruising_mode_active_desc": "Activo: tus check-ins son siempre anónimos (+1), tu ubicación se difumina a 150m y tu foto no aparece en listados de locales.",
-    "share_text": "¡Únete a Blow Nights! Tu circuito nocturno LGTBIQ+ en vivo. 🏳️‍🌈🚀",
+    "share_text": "¡Únete a Blow Nights! Tu circuito nocturno en vivo. 🌙🚀",
     "share_copied": "¡Enlace copiado al portapapeles! Envíalo a tus amigos.",
     "share_prompt": "Copia este enlace para invitar a tus amigos:",
     "verify_prompt": "Sube una foto tuya (selfie) para verificar tu identidad. Esta foto solo será vista por los administradores.",
@@ -265,7 +265,7 @@
     "what_is": "¿Qué es Blow Nights?",
     "not_dating": "No es una app de citas.",
     "is_circuit": "Es tu circuito nocturno.",
-    "about_desc": "El ecosistema digital del ocio nocturno LGTBIQ+. Mapa en vivo, entradas QR, check-in anónimo y radar social — todo en una sola app.",
+    "about_desc": "El ecosistema digital del ocio nocturno, para todo el mundo. Mapa en vivo, entradas QR, check-in anónimo y radar social — todo en una sola app.",
     "feat1_title": "Locales en vivo",
     "feat1_desc": "Mapa interactivo con aforo en tiempo real y actividad de cada local.",
     "feat2_title": "Entradas QR",
@@ -337,7 +337,7 @@
     "request_territory": "Solicitar Territorio",
     "opportunity_city_managers": "Oportunidad para City Managers",
     "operating_system": "Sistema Operativo",
-    "lgtbiq_nightlife": "del Ocio Nocturno LGTBIQ+",
+    "nightlife_suffix": "del Ocio Nocturno",
     "contact_team": "Contactar al Equipo",
     "view_business_model": "Ver el Modelo de Negocio",
     "immediate_opportunities": "Oportunidades Inmediatas",
@@ -1322,7 +1322,7 @@
   },
   "partners": {
     "meta_title": "Blow Nights - Oportunidad de Negocio City Manager",
-    "meta_description": "Conviértete en el dueño de tu territorio con el Sistema Operativo del Ocio Nocturno LGTBIQ+."
+    "meta_description": "Conviértete en el dueño de tu territorio con el Sistema Operativo del Ocio Nocturno."
   },
   "entradas": {
     "back_home": "Inicio",
@@ -1357,7 +1357,7 @@
   "city.buy_tickets_desc": "Catálogo público de entradas disponibles",
   "city.no_register": "Sin registro",
   "venue_tickets": {
-    "fallback_desc": "El circuito oficial de noche LGTBIQ+ más potente de la ciudad.",
+    "fallback_desc": "El circuito oficial de noche más potente de la ciudad.",
     "tier_early": "Entrada Early Bird",
     "tier_early_desc": "Acceso anticipado + 1 Consumición previa a la 01:00h",
     "tier_general": "Entrada General + 1 Copa",

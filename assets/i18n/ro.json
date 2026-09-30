@@ -96,7 +96,7 @@
     "gps_step_2": "Selectează \"Resetează permisiunea\" sau activează \"Locație\".",
     "gps_step_3": "Reîncarcă pagina și apasă din nou pe \"DEVINO VIZIBIL\".",
     "cruising_mode_active_desc": "Activ: check-in-urile tale sunt mereu anonime (+1), locația ta este estompată la 150m și fotografia ta nu apare în listele localurilor.",
-    "share_text": "Alătură-te Blow Nights! Circuitul tău nocturn LGTBIQ+ în direct. 🏳️‍🌈🚀",
+    "share_text": "Alătură-te Blow Nights! Circuitul tău nocturn în direct. 🌙🚀",
     "share_copied": "Link copiat în clipboard! Trimite-l prietenilor tăi.",
     "share_prompt": "Copiază acest link pentru a-ți invita prietenii:",
     "verify_prompt": "Încarcă o fotografie cu tine (selfie) pentru a-ți verifica identitatea. Această fotografie va fi văzută doar de administratori.",
@@ -265,7 +265,7 @@
     "what_is": "Ce este Blow Nights?",
     "not_dating": "Nu este o aplicație de întâlniri.",
     "is_circuit": "Este circuitul tău nocturn.",
-    "about_desc": "Ecosistemul digital al divertismentului nocturn LGTBIQ+. Hartă în direct, bilete QR, check-in anonim și radar social — totul într-o singură aplicație.",
+    "about_desc": "Ecosistemul digital al divertismentului nocturn, pentru toată lumea. Hartă în direct, bilete QR, check-in anonim și radar social — totul într-o singură aplicație.",
     "feat1_title": "Localuri în direct",
     "feat1_desc": "Hartă interactivă cu capacitate în timp real și activitatea fiecărui local.",
     "feat2_title": "Bilete QR",
@@ -337,7 +337,7 @@
     "request_territory": "Solicită Teritoriu",
     "opportunity_city_managers": "Oportunitate pentru City Manageri",
     "operating_system": "Sistem Operațional",
-    "lgtbiq_nightlife": "al Divertismentului Nocturn LGTBIQ+",
+    "nightlife_suffix": "al Divertismentului Nocturn",
     "contact_team": "Contactează Echipa",
     "view_business_model": "Vezi Modelul de Afaceri",
     "immediate_opportunities": "Oportunități Imediate",
@@ -1322,7 +1322,7 @@
   },
   "partners": {
     "meta_title": "Blow Nights - Oportunitate de Afaceri City Manager",
-    "meta_description": "Devino proprietarul teritoriului tău cu Sistemul Operațional al Divertismentului Nocturn LGTBIQ+."
+    "meta_description": "Devino proprietarul teritoriului tău cu Sistemul Operațional al Divertismentului Nocturn."
   },
   "entradas": {
     "back_home": "Acasă",
@@ -1357,7 +1357,7 @@
   "city.buy_tickets_desc": "Catalog public de bilete disponibile",
   "city.no_register": "Fără înregistrare",
   "venue_tickets": {
-    "fallback_desc": "Cel mai puternic circuit oficial nocturn LGTBIQ+ din oraș.",
+    "fallback_desc": "Cel mai puternic circuit nocturn oficial din oraș.",
     "tier_early": "Bilet Early Bird",
     "tier_early_desc": "Acces anticipat + 1 Consumație înainte de 01:00h",
     "tier_general": "Bilet General + 1 Băutură",

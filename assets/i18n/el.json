@@ -114,7 +114,7 @@
     "gps_step_2": "Selecciona \"Restablecer permiso\" o activa \"Ubicación\".",
     "gps_step_3": "Refresca la página y pulsa de nuevo en \"VOLVERME VISIBLE\".",
     "cruising_mode_active_desc": "Activo: tus check-ins son siempre anónimos (+1), tu ubicación se difumina a 150m y tu foto no aparece en listados de locales.",
-    "share_text": "¡Únete a Blow Nights! Tu circuito nocturno LGTBIQ+ en vivo. 🏳️‍🌈🚀",
+    "share_text": "Γίνε μέλος του Blow Nights! Η νυχτερινή σου διαδρομή ζωντανά. 🌙🚀",
     "share_copied": "¡Enlace copiado al portapapeles! Envíalo a tus amigos.",
     "share_prompt": "Copia este enlace para invitar a tus amigos:",
     "verify_prompt": "Sube una foto tuya (selfie) para verificar tu identidad. Esta foto solo será vista por los administradores.",
@@ -212,7 +212,7 @@
     "nav_venues": "Χώροι",
     "nav_rrpp": "RRPP",
     "live_city": "Ζωντανά στην πόλη σου",
-    "hero_desc_1": "Το LGTBIQ+ νυχτερινό σου κύκλωμα ζωντανά.",
+    "hero_desc_1": "Δες ποιος βγαίνει απόψε.",
     "hero_desc_2": "Χώροι, εισιτήρια, check-in και πραγματικά πλάνα στην πόλη σου.",
     "enter_free": "Δωρεάν είσοδος",
     "how_it_works": "Πώς λειτουργεί",
@@ -252,7 +252,7 @@
     "vtype_cruising": "Cruising Μπαρ",
     "vtype_outdoor": "Εξωτερικοί Χώροι",
     "b2b_tag": "Για χώρους",
-    "b2b_title": "Έχεις LGTBIQ+ χώρο;",
+    "b2b_title": "Το SaaS της νυχτερινής ζωής",
     "b2b_desc": "Το Blow Nights σου προσφέρει έναν πλήρη πίνακα διαχείρισης: πούλησε εισιτήρια, τρέξε flash promos βάσει τοποθεσίας, επικύρωσε QR στην είσοδο και έλεγξε την προσέλευση σε πραγματικό χρόνο.",
     "b2b_panel": "Πίνακας χώρου",
     "b2b_qr": "QR Σαρωτής",
@@ -313,7 +313,7 @@
     "request_territory": "Αίτημα Περιοχής",
     "opportunity_city_managers": "Ευκαιρία για City Managers",
     "operating_system": "Λειτουργικό Σύστημα",
-    "lgtbiq_nightlife": "της LGTBIQ+ Νυχτερινής Ζωής",
+    "nightlife_suffix": "της Νυχτερινής Ζωής",
     "contact_team": "Επικοινωνία με την Ομάδα",
     "view_business_model": "Δείτε το Επιχειρηματικό Μοντέλο",
     "immediate_opportunities": "Άμεσες Ευκαιρίες",
@@ -1221,7 +1221,7 @@
   },
   "partners": {
     "meta_title": "Blow Nights - Oportunidad de Negocio City Manager",
-    "meta_description": "Conviértete en el dueño de tu territorio con el Sistema Operativo del Ocio Nocturno LGTBIQ+."
+    "meta_description": "Γίνε ο ιδιοκτήτης της περιοχής σου με το Λειτουργικό Σύστημα της Νυχτερινής Ζωής."
   },
   "pwa": {
     "install_title": "Εγκατάσταση Blow Nights",
@@ -1353,7 +1353,7 @@
     "no_reviews": "Δεν υπάρχουν ακόμη απόψεις. Γίνε ο πρώτος!"
   },
   "venue_tickets": {
-    "fallback_desc": "Το πιο ισχυρό επίσημο νυχτερινό σιρκουί LGTBIQ+ στην πόλη.",
+    "fallback_desc": "Το πιο δυνατό επίσημο νυχτερινό κύκλωμα της πόλης.",
     "tier_early": "Εισιτήριο Early Bird",
     "tier_early_desc": "Πρόωρη πρόσβαση + 1 προηγούμενη κατανάλωση στη 01:00 π.μ.",
     "tier_general": "Γενική Είσοδος + 1 Ποτό",

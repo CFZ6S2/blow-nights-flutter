@@ -105,7 +105,7 @@
     "gps_step_2": "Wähle \"Berechtigung zurücksetzen\" oder aktiviere \"Standort\".",
     "gps_step_3": "Aktualisiere die Seite und tippe erneut auf \"SICHTBAR WERDEN\".",
     "cruising_mode_active_desc": "Aktiv: Deine Check-ins sind immer anonym (+1), dein Standort ist auf 150m unscharf und dein Foto erscheint nicht in den Listen der Lokale.",
-    "share_text": "Tritt Blow Nights bei! Deine LGBTQ+ Nachtleben Szene live. 🏳️‍🌈🚀",
+    "share_text": "Tritt Blow Nights bei! Dein Nachtleben live. 🌙🚀",
     "share_copied": "Link in die Zwischenablage kopiert! Sende ihn an deine Freunde.",
     "share_prompt": "Kopiere diesen Link, um deine Freunde einzuladen:",
     "verify_prompt": "Lade ein Foto von dir (Selfie) hoch, um deine Identität zu überprüfen. Dieses Foto wird nur von Administratoren gesehen.",
@@ -245,7 +245,7 @@
     "nav_venues": "Locations",
     "nav_rrpp": "PR",
     "live_city": "Live in deiner Stadt",
-    "hero_desc_1": "Dein LGBTQ+ Nachtleben live.",
+    "hero_desc_1": "Finde heraus, wer heute Nacht ausgeht.",
     "hero_desc_2": "Locations, Tickets, Check-in und echte Pläne in deiner Stadt.",
     "enter_free": "Kostenlos eintreten",
     "how_it_works": "Wie es funktioniert",
@@ -285,7 +285,7 @@
     "vtype_cruising": "Cruising Bars",
     "vtype_outdoor": "Outdoor-Bereiche",
     "b2b_tag": "Für Locations",
-    "b2b_title": "Hast du eine LGBTQ+ Location?",
+    "b2b_title": "Das SaaS fürs Nachtleben",
     "b2b_desc": "Blow Nights bietet dir ein komplettes Management-Panel: Verkaufe Tickets, starte standortbezogene Flash-Promos, validiere QRs an der Tür und kontrolliere den Besucheransturm in Echtzeit.",
     "b2b_panel": "Location-Panel",
     "b2b_qr": "QR-Scanner",
@@ -346,7 +346,7 @@
     "request_territory": "Gebiet anfordern",
     "opportunity_city_managers": "Gelegenheit für City Manager",
     "operating_system": "Betriebssystem",
-    "lgtbiq_nightlife": "des LGBTQ+ Nachtlebens",
+    "nightlife_suffix": "des Nachtlebens",
     "contact_team": "Team kontaktieren",
     "view_business_model": "Geschäftsmodell ansehen",
     "immediate_opportunities": "Sofortige Gelegenheiten",
@@ -1210,7 +1210,7 @@
   },
   "partners": {
     "meta_title": "Blow Nights - Geschäftsmöglichkeit City Manager",
-    "meta_description": "Werde mit dem Betriebssystem des LGBTQ+-Nachtlebens zum Meister deines Gebiets."
+    "meta_description": "Werde mit dem Betriebssystem des Nachtlebens zum Meister deines Gebiets."
   },
   "premium.monthly": "Mensual",
   "premium.yearly": "Anual",
@@ -1386,7 +1386,7 @@
     "no_reviews": "Es gibt noch keine Meinungen. Seien Sie der Erste!"
   },
   "venue_tickets": {
-    "fallback_desc": "Die leistungsstärkste offizielle LGTBIQ+-Nachtstrecke der Stadt.",
+    "fallback_desc": "Die stärkste offizielle Nachtleben-Szene der Stadt.",
     "tier_early": "Frühbucherticket",
     "tier_early_desc": "Früher Zugang + 1 vorheriger Konsum um 01:00 Uhr.",
     "tier_general": "Allgemeiner Eintritt + 1 Getränk",

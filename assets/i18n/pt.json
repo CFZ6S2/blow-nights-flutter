@@ -114,7 +114,7 @@
     "gps_step_2": "Selecione \"Redefinir permissão\" ou ative \"Localização\".",
     "gps_step_3": "Atualize a página e toque de novo em \"FICAR VISÍVEL\".",
     "cruising_mode_active_desc": "Ativo: os seus check-ins são sempre anônimos (+1), a sua localização é desfocada em 150m e a sua foto não aparece em listas de locais.",
-    "share_text": "Junte-se à Blow Nights! O seu circuito noturno LGTBIQ+ ao vivo. 🏳️‍🌈🚀",
+    "share_text": "Junte-se à Blow Nights! O seu circuito noturno ao vivo. 🌙🚀",
     "share_copied": "Link copiado para a área de transferência! Envie aos seus amigos.",
     "share_prompt": "Copie este link para convidar seus amigos:",
     "verify_prompt": "Envie uma foto sua (selfie) para verificar sua identidade. Esta foto só será vista pelos administradores.",
@@ -212,7 +212,7 @@
     "nav_venues": "Locais",
     "nav_rrpp": "RRPP",
     "live_city": "Ao vivo na sua cidade",
-    "hero_desc_1": "O seu circuito noturno LGTBIQ+ ao vivo.",
+    "hero_desc_1": "Descubra quem sai esta noite.",
     "hero_desc_2": "Locais, ingressos, check-in e planos reais na sua cidade.",
     "enter_free": "Entrar grátis",
     "how_it_works": "Como funciona",
@@ -252,7 +252,7 @@
     "vtype_cruising": "Cruising Bars",
     "vtype_outdoor": "Áreas Externas",
     "b2b_tag": "Para locais",
-    "b2b_title": "Você tem um local LGTBIQ+?",
+    "b2b_title": "O SaaS da vida noturna",
     "b2b_desc": "Blow Nights oferece um painel de gestão completo: venda ingressos, lance promos flash geolocalizadas, valide QR na porta e controle o fluxo em tempo real.",
     "b2b_panel": "Painel do local",
     "b2b_qr": "Scanner QR",
@@ -313,7 +313,7 @@
     "request_territory": "Solicitar Território",
     "opportunity_city_managers": "Oportunidade para City Managers",
     "operating_system": "Sistema Operacional",
-    "lgtbiq_nightlife": "da Vida Noturna LGTBIQ+",
+    "nightlife_suffix": "da Vida Noturna",
     "contact_team": "Contatar a Equipe",
     "view_business_model": "Ver o Modelo de Negócios",
     "immediate_opportunities": "Oportunidades Imediatas",
@@ -1221,7 +1221,7 @@
   },
   "partners": {
     "meta_title": "Blow Nights - Oportunidade de Negócios City Manager",
-    "meta_description": "Torne-se o dono do seu território com o Sistema Operacional do Lazer Noturno LGTBIQ+."
+    "meta_description": "Torne-se o dono do seu território com o Sistema Operacional do Lazer Noturno."
   },
   "pwa": {
     "install_title": "Instalar Blow Nights",
@@ -1358,7 +1358,7 @@
     "no_reviews": "Ainda não há opiniões. Seja o primeiro!"
   },
   "venue_tickets": {
-    "fallback_desc": "O circuito noturno LGTBIQ+ oficial mais poderoso da cidade.",
+    "fallback_desc": "O circuito noturno oficial mais poderoso da cidade.",
     "tier_early": "Ingresso antecipado",
     "tier_early_desc": "Acesso antecipado + 1 consumo prévio à 01h00.",
     "tier_general": "Entrada Geral + 1 Bebida",

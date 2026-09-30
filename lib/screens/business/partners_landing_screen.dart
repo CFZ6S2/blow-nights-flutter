@@ -124,7 +124,7 @@ class _PartnersLandingScreenState extends State<PartnersLandingScreen> {
                 baseline: TextBaseline.alphabetic,
                 child: GradientText(context.t('operating_system'), style: tw(44, weight: FontWeight.w800, height: 1.1), colors: const [Tw.purple400, Tw.pink500]),
               ),
-              TextSpan(text: '\n${context.t('lgtbiq_nightlife')}'),
+              TextSpan(text: '\n${context.t('nightlife_suffix')}'),
             ]),
             textAlign: TextAlign.center,
           ),
