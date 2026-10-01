@@ -103,8 +103,8 @@ class _CitiesPanelState extends State<CitiesPanel> {
         'partner_email': manager != null ? manager['email'] : _partnerEmail.text,
         'partnerId': manager?['id'],
         'partner_stripe_account_id': _stripeId.text,
-        // The web also writes `territory: {type: 'Polygon', coordinates: [closed]}` here, but Firestore rejects nested
-        // arrays so city creation with a polygon fails there. The territory goes only through updateCityTerritory.
+        // Same shape as the web: Firestore rejects nested arrays, so the ring is stored as {lng, lat} maps.
+        if (closed != null) 'territory': {'type': 'Polygon', 'points': [for (final p in closed) {'lng': p[0], 'lat': p[1]}]},
         'license': {
           'annual_fee': int.tryParse(_annualFee.text) ?? 0,
           'status': 'active',
@@ -296,8 +296,8 @@ class _CitiesPanelState extends State<CitiesPanel> {
     final license = c['license'] is Map ? Map<String, dynamic>.from(c['license'] as Map) : null;
     final isActive = license?['status'] == 'active';
     final territory = c['territory'] is Map ? c['territory'] as Map : null;
-    final coords = territory?['coordinates'];
-    final vertexCount = coords is List && coords.isNotEmpty ? (coords.first is List ? (coords.first as List).length - 1 : coords.length - 1) : 0;
+    final points = territory?['points'];
+    final vertexCount = points is List && points.isNotEmpty ? points.length - 1 : 0;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),

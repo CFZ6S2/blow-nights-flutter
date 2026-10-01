@@ -1,6 +1,7 @@
 {
   "finder": {
     "title": "Friends nearby",
+    "unavailable": "Friends nearby isn't available yet",
     "subtitle": "Find your crew with no signal",
     "how_title": "How it works",
     "how_body": "Create a group for tonight and invite your friends. With the Bluetooth radar on, your phones detect each other even without coverage, and you see who's close.",
@@ -26,6 +27,10 @@
     "invite_title": "Invite friends",
     "invite_body": "They can scan this QR, enter the code or tap their phone against yours (NFC) from “Join a group”.",
     "nfc_ready": "NFC ready: tap another phone",
+    "nfc_no_invite": "Detected, but there's no invite. If it's your friend's phone, they need the group open on screen, with the screen on and unlocked.",
+    "nfc_lost": "The NFC connection dropped. Keep the phones together for a couple of seconds.",
+    "nfc_not_invite": "This is not a group invite.",
+    "nfc_sent": "Invite sent over NFC",
     "share": "Share",
     "share_text": "Join my group “{{name}}” on Blow Nights (Friends nearby) with the code {{code}}",
     "copied": "Code copied",
@@ -70,5 +75,7 @@
     "delete_confirm": "Delete the group for everyone?",
     "not_found": "This group no longer exists or has expired",
     "error": "Something went wrong. Please try again."
-  }
+  },
+  "door_camera_denied_app": "We can't use the camera. Validate with the pass PIN or allow the camera in the app settings.",
+  "door_open_settings": "Open settings"
 }

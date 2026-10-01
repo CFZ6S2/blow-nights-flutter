@@ -5,12 +5,20 @@ import 'package:flutter/foundation.dart';
 
 import '../models/event.dart';
 import '../models/venue.dart';
+import '../services/nearby.dart';
+import '../models/rrpp_party.dart';
 
-/// Port of useVenues(cityId) + the live_sense listener + the home page's upcoming-events query.
+/// Port of useVenues(center, cityId) + the live_sense listener + the home page's upcoming-events query.
+/// Location-first: everything active is loaded once and filtered to the user's zone (see CityProvider.center), so it
+/// works anywhere, not only in a city.
 class VenuesProvider extends ChangeNotifier {
   final _db = FirebaseFirestore.instance;
 
+  GeoPos? _center;
   String? _cityId;
+  List<Venue> _allVenues = [];
+  List<Venue> _allEventVenues = [];
+  List<Event> _allEvents = [];
   List<Venue> venues = [];
   List<Venue> eventVenues = [];
   List<Event> upcomingEvents = [];
@@ -33,57 +41,48 @@ class VenuesProvider extends ChangeNotifier {
     }, onError: (_) {});
   }
 
-  /// All venues + independent events, like `useVenues().venues` on the web.
+  /// All venues + independent events in the zone, like `useVenues().venues` on the web.
   List<Venue> get all => [...venues, ...eventVenues];
 
-  void setCity(String? cityId) {
-    if (cityId == _cityId && _subs.isNotEmpty) return;
+  /// The user's zone changed (first GPS fix, another city picked). Subscribes on the first call.
+  void setZone(GeoPos? center, String? cityId) {
+    if (_subs.isNotEmpty && center == _center && cityId == _cityId) return;
+    _center = center;
     _cityId = cityId;
-    for (final s in _subs) {
-      s.cancel();
-    }
-    _subs.clear();
-    loading = true;
-    eventsLoading = true;
+    if (_subs.isEmpty) _subscribe();
+    _applyZone();
+  }
 
-    Query<Map<String, dynamic>> q = _db.collection('venues').where('isActive', isEqualTo: true);
-    Query<Map<String, dynamic>> eq = _db.collection('events').where('isActive', isEqualTo: true);
-    if (cityId != null) {
-      q = q.where('cityId', isEqualTo: cityId);
-      eq = eq.where('cityId', isEqualTo: cityId);
-    }
-
-    _subs.add(q.snapshots().listen((snap) {
-      venues = snap.docs.map((d) => Venue.fromDoc(d)).toList();
+  void _subscribe() {
+    _subs.add(_db.collection('venues').where('isActive', isEqualTo: true).snapshots().listen((snap) {
+      // RRPP parties (models/rrpp_party.dart) are on the radar but aren't venues.
+      _allVenues = snap.docs.where((d) => !isRRPPParty(d.data())).map((d) => Venue.fromDoc(d)).toList();
       loading = false;
-      notifyListeners();
+      _applyZone();
     }, onError: (_) {
       loading = false;
       notifyListeners();
     }));
 
-    _subs.add(eq.snapshots().listen((snap) {
-      eventVenues = snap.docs.map((d) => Venue.fromDoc(d, forceType: 'event')).toList();
+    _subs.add(_db.collection('events').where('isActive', isEqualTo: true).limit(200).snapshots().listen((snap) {
+      _allEventVenues = snap.docs.map((d) => Venue.fromDoc(d, forceType: 'event')).toList();
+      _allEvents = snap.docs.map(Event.fromDoc).where((e) => e.isVisible).toList();
+      eventsLoading = false;
+      _applyZone();
+    }, onError: (_) {
+      eventsLoading = false;
       notifyListeners();
-    }, onError: (_) {}));
+    }));
+  }
 
-    if (cityId != null) {
-      _subs.add(_db
-          .collection('events')
-          .where('cityId', isEqualTo: cityId)
-          .where('isActive', isEqualTo: true)
-          .orderBy('start_date')
-          .limit(15)
-          .snapshots()
-          .listen((snap) {
-        upcomingEvents = snap.docs.map(Event.fromDoc).where((e) => e.isVisible).toList();
-        eventsLoading = false;
-        notifyListeners();
-      }, onError: (_) {
-        eventsLoading = false;
-        notifyListeners();
-      }));
-    }
+  void _applyZone() {
+    venues = inZone(_allVenues, _center, _cityId, (v) => v.data);
+    eventVenues = inZone(_allEventVenues, _center, _cityId, (v) => v.data);
+    // Sorted here instead of orderBy(start_date): no composite index needed without the city filter.
+    upcomingEvents = inZone(_allEvents, _center, _cityId, (e) => e.data)
+      ..sort((a, b) => (a.start ?? DateTime(9999)).compareTo(b.start ?? DateTime(9999)));
+    if (upcomingEvents.length > 15) upcomingEvents = upcomingEvents.sublist(0, 15);
+    notifyListeners();
   }
 
   int liveCountFor(Venue v) {

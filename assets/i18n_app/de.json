@@ -1,6 +1,7 @@
 {
   "finder": {
     "title": "Freunde in der Nähe",
+    "unavailable": "Freunde in der Nähe ist noch nicht verfügbar",
     "subtitle": "Finde deine Gruppe ohne Netz",
     "how_title": "So funktioniert's",
     "how_body": "Erstelle eine Gruppe für heute Nacht und lade deine Freunde ein. Mit aktivem Bluetooth-Radar erkennen sich eure Handys auch ohne Empfang, und du siehst, wer in der Nähe ist.",
@@ -26,6 +27,10 @@
     "invite_title": "Freunde einladen",
     "invite_body": "Sie können diesen QR scannen, den Code eingeben oder ihr Handy an deins halten (NFC) – über „Gruppe beitreten“.",
     "nfc_ready": "NFC bereit: anderes Handy dranhalten",
+    "nfc_no_invite": "Erkannt, aber keine Einladung. Wenn es das Handy deines Freundes ist, muss bei ihm die Gruppe offen sein – Display an und entsperrt.",
+    "nfc_lost": "Die NFC-Verbindung ist abgebrochen. Halte die Handys ein paar Sekunden aneinander.",
+    "nfc_not_invite": "Das ist keine Gruppeneinladung.",
+    "nfc_sent": "Einladung per NFC gesendet",
     "share": "Teilen",
     "share_text": "Tritt meiner Gruppe „{{name}}“ in Blow Nights (Freunde in der Nähe) mit dem Code {{code}} bei",
     "copied": "Code kopiert",
@@ -70,5 +75,7 @@
     "delete_confirm": "Gruppe für alle löschen?",
     "not_found": "Diese Gruppe existiert nicht mehr oder ist abgelaufen",
     "error": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
-  }
+  },
+  "door_camera_denied_app": "We can't use the camera. Validate with the pass PIN or allow the camera in the app settings.",
+  "door_open_settings": "Open settings"
 }

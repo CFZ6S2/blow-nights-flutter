@@ -10,8 +10,9 @@ import '../../theme/app_theme.dart';
 import '../../widgets/address_autocomplete.dart';
 import '../../widgets/admin_ui.dart';
 import '../../widgets/common.dart';
+import 'rrpp_screens.dart';
 
-const _businessRoles = ['venue', 'venueOwner', 'cityAdmin', 'admin', 'superadmin', 'masterPartner', 'door'];
+const _businessRoles = ['venue', 'venueOwner', 'cityAdmin', 'admin', 'superadmin', 'masterPartner', 'door', 'rrpp'];
 
 AppRoute roleRoute(String? role) => switch (role) {
       'superadmin' => AppRoute.superAdmin,
@@ -19,13 +20,16 @@ AppRoute roleRoute(String? role) => switch (role) {
       'masterPartner' => AppRoute.masterPartner,
       'cityAdmin' => AppRoute.cityManager,
       'door' => AppRoute.scanner,
+      'rrpp' => AppRoute.pr,
       _ => AppRoute.venueAdmin,
     };
 
 /// Port of app/business/login/page.tsx (B2B access: venue self-registration, City Manager application, login).
 class BusinessLoginScreen extends StatefulWidget {
   final String? refCode;
-  const BusinessLoginScreen({super.key, this.refCode});
+  /// 'rrpp' | 'venue' | 'cm' opens that sign-up directly (/business/login?type=…).
+  final String? initialType;
+  const BusinessLoginScreen({super.key, this.refCode, this.initialType});
 
   /// sessionStorage 'bn_venue_ref' equivalent (kept for the app session).
   static String? storedRef;
@@ -35,7 +39,12 @@ class BusinessLoginScreen extends StatefulWidget {
 }
 
 class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
-  String _mode = 'landing';
+  late String _mode = switch (widget.initialType) {
+    'rrpp' => 'apply_rrpp',
+    'venue' => 'apply_venue',
+    'cm' => 'apply_cm',
+    _ => 'landing',
+  };
   late String _ref;
   final _email = TextEditingController();
   final _password = TextEditingController();
@@ -45,7 +54,8 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
   final _venueName = TextEditingController();
   final _venueAddress = TextEditingController();
   final _venueTypeOther = TextEditingController();
-  String _cityId = 'madrid';
+  // '' = work the city out from the venue's address (selfRegisterVenue); never Madrid by default.
+  String _cityId = '';
   String _venueType = 'club';
   List<Map<String, dynamic>> _cities = [];
   bool _loading = false;
@@ -58,6 +68,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
   void initState() {
     super.initState();
     if (widget.refCode?.isNotEmpty == true) BusinessLoginScreen.storedRef = widget.refCode;
+    if (_mode == 'apply_cm' || _mode == 'apply_venue') WidgetsBinding.instance.addPostFrameCallback((_) => _loadCities());
     _ref = widget.refCode?.isNotEmpty == true ? widget.refCode! : (BusinessLoginScreen.storedRef ?? '');
   }
 
@@ -217,7 +228,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
           'venueName': _venueName.text,
           'venueAddress': _venueAddress.text,
           'venueType': _venueType == 'other' ? _venueTypeOther.text : _venueType,
-          'cityId': _cityId.isEmpty ? 'madrid' : _cityId,
+          if (_cityId.isNotEmpty) 'cityId': _cityId,
           if (_ref.isNotEmpty) 'referralCode': _ref,
         });
         BusinessLoginScreen.storedRef = null;
@@ -228,7 +239,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
         'name': _name.text,
         'email': _email.text,
         'phone': _phone.text,
-        'cityId': _cityId.isEmpty ? 'madrid' : _cityId,
+        if (_cityId.isNotEmpty) 'cityId': _cityId,
         'type': 'city_manager',
         if (_ref.isNotEmpty) 'referralCode': _ref,
       });
@@ -272,6 +283,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
       'login' => context.t('business_login_subtitle_login', fallback: 'Accede a tu panel de gestión'),
       'apply_venue' => context.t('business_login_subtitle_venue', fallback: 'Registra tu local y accede al instante'),
       'apply_cm' => context.t('business_login_subtitle_cm', fallback: 'Gestiona Blow Nights en tu ciudad'),
+      'apply_rrpp' => context.t('business_login_subtitle_rrpp', fallback: 'Pases QR para tus eventos, sin local fijo'),
       'success' => context.t('business_login_subtitle_success', fallback: 'Solicitud enviada correctamente'),
       _ => context.t('business_login_subtitle_landing', fallback: 'La plataforma de ocio nocturno que conecta locales con su público'),
     };
@@ -330,6 +342,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
             switch (_mode) {
               'login' => _login(context),
               'apply_venue' || 'apply_cm' => _applyForm(context),
+              'apply_rrpp' => RRPPSignupForm(onBack: () => _setMode('landing')),
               'success' => _success(context),
               _ => _landing(context),
             },
@@ -376,6 +389,9 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
             context.t('business_login_register_venue_desc', fallback: 'Discoteca, bar, pub o sala de eventos. Gestión de eventos, ticketing y accesos.'), () => _setMode('apply_venue')),
         _choice(Icons.language, const [Tw.emerald600, Color(0xFF065F46)], context.t('business_login_become_cm', fallback: 'Ser City Manager'),
             context.t('business_login_become_cm_desc', fallback: 'Opera Blow Nights en tu ciudad. Captación de locales, gestión territorial y revenue share.'), () => _setMode('apply_cm')),
+        _choice(Icons.confirmation_number, const [Tw.teal500, Color(0xFF115E59)], context.t('business_login_become_rrpp', fallback: 'Soy RRPP independiente'),
+            context.t('business_login_become_rrpp_desc', fallback: 'Sin local fijo o con uno que no está en la app. Pases QR a 0,50 € para tus eventos; cobras tú por fuera.'),
+            () => _setMode('apply_rrpp')),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
           child: Row(children: [
@@ -624,13 +640,13 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
               child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                 Padding(padding: const EdgeInsets.only(left: 4, bottom: 4), child: Label(context.t('business_login_city', fallback: 'Ciudad'), color: Tw.slate500, tracking: 0.2)),
                 AdminSelect<String>(
-                  value: _cityId.isEmpty ? 'madrid' : _cityId,
+                  value: _cityId,
                   items: [
-                    ('madrid', 'Madrid'),
-                    for (final c in _cities.where((c) => c['id'] != 'madrid')) (c['id'] as String, (c['name'] ?? c['id']) as String),
+                    ('', context.t('business_login_city_auto')),
+                    for (final c in _cities) (c['id'] as String, (c['name'] ?? c['id']) as String),
                     ('other', context.t('business_login_other_city', fallback: 'Otra ciudad / Aún no listada')),
                   ],
-                  onChanged: (v) => setState(() => _cityId = v ?? 'madrid'),
+                  onChanged: (v) => setState(() => _cityId = v ?? ''),
                 ),
               ]),
             ),

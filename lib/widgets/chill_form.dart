@@ -79,8 +79,6 @@ class _ChillFormState extends State<ChillForm> {
       err = widget.page
           ? i18n.t('create_plan.err_no_gps', fallback: 'Necesitamos tu ubicacion para crear el plan')
           : i18n.t('chill_modal.err_no_location');
-    } else if (citySlug == null) {
-      err = i18n.t('chill_modal.err_no_city', fallback: 'Selecciona una ciudad');
     }
     if (err != null) {
       setState(() => _error = err!);
@@ -98,7 +96,7 @@ class _ChillFormState extends State<ChillForm> {
         approxLat: coords!.lat,
         approxLng: coords.lng,
         maxCapacity: int.tryParse(_capacity) ?? 10,
-        citySlug: citySlug!,
+        citySlug: citySlug,
         tags: _tags,
       );
       widget.onCreated(id);

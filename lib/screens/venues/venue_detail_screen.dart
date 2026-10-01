@@ -252,7 +252,7 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                 ],
                 Expanded(
                   child: _actionBtn(Icons.share, context.t('venueDetail.share', fallback: 'Compartir'), () {
-                    final slug = context.read<CityProvider>().citySlug ?? 'madrid';
+                    final slug = context.read<CityProvider>().citySlug ?? nearbySlug;
                     SharePlus.instance.share(ShareParams(
                       title: title,
                       uri: Uri.parse('$webBase/$slug/venues/detail?id=${widget.venueId}${widget.type != null ? '&type=${widget.type}' : ''}'),

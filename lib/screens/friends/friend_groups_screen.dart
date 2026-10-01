@@ -288,6 +288,7 @@ class _JoinSheetState extends State<_JoinSheet> {
   var _mode = _JoinMode.code;
   bool _nfcOk = true;
   bool _done = false;
+  NfcInviteMiss? _miss;
 
   @override
   void dispose() {
@@ -308,7 +309,11 @@ class _JoinSheetState extends State<_JoinSheet> {
     setState(() => _mode = m);
     if (m == _JoinMode.nfc) {
       final ok = await FinderNative.readInvites((p) {
-        if (mounted) _finish(p);
+        if (!mounted) return;
+        if (parseInviteCode(p) == null) return setState(() => _miss = NfcInviteMiss.notInvite);
+        _finish(p);
+      }, onMiss: (m) {
+        if (mounted) setState(() => _miss = m);
       });
       if (mounted) setState(() => _nfcOk = ok);
     }
@@ -367,6 +372,18 @@ class _JoinSheetState extends State<_JoinSheet> {
             const SizedBox(height: 16),
             Text(_nfcOk ? context.t('finder.nfc_waiting') : context.t('finder.nfc_unavailable'),
                 textAlign: TextAlign.center, style: tw(14, color: Tw.slate300, height: 1.5)),
+            if (_nfcOk && _miss != null) ...[
+              const SizedBox(height: 12),
+              Text(
+                switch (_miss!) {
+                  NfcInviteMiss.noInvite => context.t('finder.nfc_no_invite'),
+                  NfcInviteMiss.lost => context.t('finder.nfc_lost'),
+                  NfcInviteMiss.notInvite => context.t('finder.nfc_not_invite'),
+                },
+                textAlign: TextAlign.center,
+                style: tw(13, weight: bold, color: Tw.amber400, height: 1.4),
+              ),
+            ],
             if (_nfcOk) ...[
               const SizedBox(height: 16),
               const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2, color: Tw.cyan400)),

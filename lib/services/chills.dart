@@ -10,7 +10,8 @@ Future<String> createChill({
   required double approxLat,
   required double approxLng,
   required int maxCapacity,
-  required String citySlug,
+  // null outside any city: plans are found by their coordinates.
+  String? citySlug,
   List<String> tags = const [],
 }) async {
   final res = await _fn.httpsCallable('createChill').call<Map<String, dynamic>>({
@@ -20,7 +21,7 @@ Future<String> createChill({
     'approx_lat': approxLat,
     'approx_lng': approxLng,
     'max_capacity': maxCapacity,
-    'city_slug': citySlug,
+    'city_slug': ?citySlug,
     'tags': tags,
   });
   return res.data['chillId'] as String;

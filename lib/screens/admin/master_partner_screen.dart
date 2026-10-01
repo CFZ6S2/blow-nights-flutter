@@ -12,7 +12,6 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../i18n/i18n.dart';
-import '../../models/firestore_utils.dart';
 import '../../navigation.dart';
 import '../../providers/auth_provider.dart';
 import '../../theme/app_theme.dart';
@@ -22,19 +21,50 @@ import '../../widgets/common.dart';
 String centsToEur(num cents, [String locale = 'es']) =>
     NumberFormat.decimalPatternDigits(locale: locale, decimalDigits: 2).format(cents / 100);
 
+// Shown for the split of a month that hasn't been closed yet: it depends on that month's costs.
+const _pending = '—';
+
+/// A closed month's settlement for one city (functions/modules/settlements.js): the partner gets 50% of the net.
+class _CitySettlement {
+  final int stripeFeesCents, ownExpensesCents, generalExpensesCents, previousLossCents, netCents, partnerCents, carryForwardLossCents;
+  final String? transferStatus;
+  _CitySettlement(Map<String, dynamic> s)
+      : stripeFeesCents = _cents(s['stripeFeesCents']),
+        ownExpensesCents = _cents(s['ownExpensesCents']),
+        generalExpensesCents = _cents(s['generalExpensesCents']),
+        previousLossCents = _cents(s['previousLossCents']),
+        netCents = _cents(s['netCents']),
+        partnerCents = _cents(s['partnerCents']),
+        carryForwardLossCents = _cents(s['carryForwardLossCents']),
+        transferStatus = (s['transfer'] as Map?)?['status'] as String?;
+  static int _cents(Object? v) => (v as num?)?.toInt() ?? 0;
+  int get costsCents => stripeFeesCents + ownExpensesCents + generalExpensesCents + previousLossCents;
+  int get centralCents => (netCents > 0 ? netCents : 0) - partnerCents;
+}
+
 class _CityRevenue {
   final String cityId, cityName;
-  int totalCents = 0, partnerCents = 0, centralCents = 0, splitCount = 0;
+  int totalCents = 0, splitCount = 0;
   final Map<String, int> sources = {};
+  _CitySettlement? settlement;
   _CityRevenue(this.cityId, this.cityName);
 }
 
 class _MpData {
-  final int totalRevenueCents, partnerBlockCents, centralBlockCents, mpMarginCents, agentFundCents, splitCount;
+  final int totalRevenueCents, splitCount;
+  // Filled once the month is closed; until then only the billing is known.
+  final bool settled;
   final List<_CityRevenue> cities;
   final String periodLabel;
-  const _MpData(this.totalRevenueCents, this.partnerBlockCents, this.centralBlockCents, this.mpMarginCents, this.agentFundCents,
-      this.cities, this.periodLabel, this.splitCount);
+  const _MpData(this.totalRevenueCents, this.settled, this.cities, this.periodLabel, this.splitCount);
+
+  int _sum(int Function(_CitySettlement s) f) => cities.fold(0, (a, c) => a + (c.settlement == null ? 0 : f(c.settlement!)));
+  int get costsCents => _sum((s) => s.costsCents);
+  int get netCents => _sum((s) => s.netCents);
+  int get partnerBlockCents => _sum((s) => s.partnerCents);
+  int get centralBlockCents => _sum((s) => s.centralCents);
+  int get carryForwardLossCents => _sum((s) => s.carryForwardLossCents);
+  int shown(_CityRevenue c) => settled ? c.settlement?.partnerCents ?? 0 : c.totalCents;
 }
 
 const _months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
@@ -95,8 +125,6 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
     try {
       final parts = _month.split('-').map(int.parse).toList();
       final (year, month) = (parts[0], parts[1]);
-      final start = DateTime(year, month);
-      final end = DateTime(year, month + 1, 0, 23, 59, 59);
       final period = '${_months[month - 1]} $year';
 
       final cities = await _db.collection('cities').get();
@@ -105,41 +133,35 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
           if (d.data()['masterPartnerId'] == _uid || d.data()['partnerId'] == _uid) _CityRevenue(d.id, (d.data()['name'] as String?) ?? d.id),
       ];
       if (mine.isEmpty) {
-        setState(() => _data = _MpData(0, 0, 0, 0, 0, const [], period, 0));
+        setState(() => _data = _MpData(0, false, const [], period, 0));
         return;
       }
       final byId = {for (final c in mine) c.cityId: c};
-      final splits = await _db
-          .collection('territorial_splits')
-          .where('masterPartnerId', isEqualTo: _uid)
-          .where('status', isEqualTo: 'completed')
-          .orderBy('timestamp', descending: true)
-          .get();
-      var total = 0, partner = 0, central = 0, count = 0;
-      for (final doc in splits.docs) {
+      final results = await Future.wait([
+        _db.collection('territorial_splits').where('masterPartnerId', isEqualTo: _uid).where('period', isEqualTo: _month).get(),
+        _db.collection('partner_settlements').where('masterPartnerId', isEqualTo: _uid).where('period', isEqualTo: _month).get(),
+      ]);
+      for (final doc in results[0].docs) {
         final d = doc.data();
-        final city = byId[d['cityId']];
+        // Venues the platform manages itself aren't shared with the partner.
+        final city = d['partnerShare'] == true ? byId[d['cityId']] : null;
         if (city == null) continue;
-        final ts = parseDate(d['timestamp']);
-        if (ts != null && (ts.isBefore(start) || ts.isAfter(end))) continue;
         final amount = (d['amountCents'] as num?)?.toInt() ?? 0;
-        final payouts = (d['payouts'] as List?)?.whereType<Map>() ?? const <Map>[];
-        final cm = (payouts.where((p) => p['role'] == 'city_manager').firstOrNull?['amountCents'] as num?)?.toInt() ?? 0;
-        final ce = (payouts.where((p) => p['role'] == 'central').firstOrNull?['amountCents'] as num?)?.toInt() ?? 0;
         city.totalCents += amount;
-        city.partnerCents += cm;
-        city.centralCents += ce;
         city.splitCount++;
         final source = (d['sourceType'] as String?) ?? 'other';
         city.sources[source] = (city.sources[source] ?? 0) + amount;
-        total += amount;
-        partner += cm;
-        central += ce;
-        count++;
       }
-      final margin = (partner * (15 / 55)).round();
-      mine.sort((a, b) => b.partnerCents - a.partnerCents);
-      setState(() => _data = _MpData(total, partner, central, margin, partner - margin, mine, period, count));
+      for (final doc in results[1].docs) {
+        final city = byId[doc.data()['cityId']];
+        if (city == null) continue;
+        city.totalCents = (doc.data()['revenueCents'] as num?)?.toInt() ?? 0;
+        city.settlement = _CitySettlement(doc.data());
+      }
+      final data = _MpData(mine.fold(0, (a, c) => a + c.totalCents), results[1].docs.isNotEmpty, mine, period,
+          mine.fold(0, (a, c) => a + c.splitCount));
+      mine.sort((a, b) => data.shown(b) - data.shown(a));
+      setState(() => _data = data);
     } catch (e) {
       debugPrint('Error fetching MP data: $e');
     } finally {
@@ -323,7 +345,7 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
           const SizedBox(height: 8),
           Text.rich(TextSpan(children: [
             TextSpan(text: '$value ', style: tw(28, weight: black).copyWith(fontFamily: 'monospace')),
-            TextSpan(text: '€', style: tw(18, color: color)),
+            if (value != _pending) TextSpan(text: '€', style: tw(18, color: color)),
           ])),
           const SizedBox(height: 8),
           Text(subtitle, style: tw(10, color: Tw.slate400)),
@@ -331,17 +353,36 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
       );
 
   Widget _overviewTab(BuildContext context, _MpData d, String locale) {
-    final maxCents = d.cities.fold<int>(1, (m, c) => c.partnerCents > m ? c.partnerCents : m);
+    final maxCents = d.cities.fold<int>(1, (m, c) => d.shown(c) > m ? d.shown(c) : m);
+    final pendingNote = context.t('master_partner.pending_short');
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       _statCard(context.t('master_partner.total_revenue'), centsToEur(d.totalRevenueCents, locale),
           context.t('master_partner.operations_count', count: d.splitCount), Tw.fuchsia400),
       const SizedBox(height: 16),
-      _statCard(context.t('master_partner.partner_block'), centsToEur(d.partnerBlockCents, locale),
-          context.t('master_partner.partner_block_subtitle'), Tw.green400),
+      _statCard(context.t('master_partner.costs'), d.settled ? centsToEur(d.costsCents, locale) : _pending,
+          d.settled ? context.t('master_partner.costs_subtitle') : pendingNote, Tw.amber400),
       const SizedBox(height: 16),
-      _statCard(context.t('master_partner.mp_margin'), centsToEur(d.mpMarginCents, locale), context.t('master_partner.mp_margin_subtitle'), Tw.blue400),
+      _statCard(context.t('master_partner.net_profit'), d.settled ? centsToEur(d.netCents, locale) : _pending,
+          d.settled ? context.t('master_partner.net_profit_subtitle') : pendingNote, Tw.blue400),
       const SizedBox(height: 16),
-      _statCard(context.t('master_partner.agent_fund'), centsToEur(d.agentFundCents, locale), context.t('master_partner.agent_fund_subtitle'), Tw.amber400),
+      _statCard(context.t('master_partner.partner_block'), d.settled ? centsToEur(d.partnerBlockCents, locale) : _pending,
+          d.settled ? context.t('master_partner.partner_block_subtitle') : pendingNote, Tw.green400),
+      if (!d.settled) ...[
+        const SizedBox(height: 16),
+        AdminCard(
+          color: Tw.amber500.withValues(alpha: 0.05),
+          borderColor: Tw.amber500.withValues(alpha: 0.2),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Label(context.t('master_partner.pending_title'), size: 12, weight: bold, color: Tw.amber500),
+            const SizedBox(height: 8),
+            Text(context.t('master_partner.pending_desc'), style: tw(14, color: Tw.slate300)),
+          ]),
+        ),
+      ] else if (d.carryForwardLossCents > 0) ...[
+        const SizedBox(height: 16),
+        Text(context.t('master_partner.carry_forward_note', params: {'amount': centsToEur(d.carryForwardLossCents, locale)}),
+            style: tw(14, color: Tw.amber400)),
+      ],
       if (d.cities.isNotEmpty) ...[
         const SizedBox(height: 32),
         AdminCard(
@@ -362,7 +403,7 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
                         color: Colors.black.withValues(alpha: 0.3),
                         alignment: Alignment.centerLeft,
                         child: FractionallySizedBox(
-                          widthFactor: c.partnerCents / maxCents,
+                          widthFactor: d.shown(c) / maxCents,
                           child: Container(
                             decoration: BoxDecoration(
                               gradient: const LinearGradient(colors: [Tw.fuchsia600, Tw.fuchsia400]),
@@ -374,7 +415,7 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
                     ),
                   ),
                   const SizedBox(width: 12),
-                  Text('${centsToEur(c.partnerCents, locale)} €', style: tw(13, color: Tw.green400).copyWith(fontFamily: 'monospace')),
+                  Text('${centsToEur(d.shown(c), locale)} €', style: tw(13, color: Tw.green400).copyWith(fontFamily: 'monospace')),
                 ]),
               ),
           ]),
@@ -413,8 +454,18 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
             ]),
             const SizedBox(height: 16),
             figure(context.t('master_partner.total_income'), centsToEur(c.totalCents, locale), Tw.slate500, Tw.white),
-            figure(context.t('master_partner.your_block_55'), centsToEur(c.partnerCents, locale), Tw.green500, Tw.green400),
-            figure(context.t('master_partner.central_45'), centsToEur(c.centralCents, locale), Tw.slate500, Tw.slate400),
+            figure(context.t('master_partner.your_block'), c.settlement == null ? _pending : centsToEur(c.settlement!.partnerCents, locale), Tw.green500, Tw.green400),
+            figure(context.t('master_partner.central_block'), c.settlement == null ? _pending : centsToEur(c.settlement!.centralCents, locale), Tw.slate500, Tw.slate400),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Text(
+                c.settlement == null
+                    ? context.t('master_partner.pending_short')
+                    : context.t('master_partner.city_settled_line',
+                        params: {'costs': centsToEur(c.settlement!.costsCents, locale), 'net': centsToEur(c.settlement!.netCents, locale)}),
+                style: tw(12, color: Tw.slate500),
+              ),
+            ),
             if (c.sources.isNotEmpty) ...[
               Divider(height: 1, color: Tw.w(0.05)),
               const SizedBox(height: 12),
@@ -528,7 +579,7 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
               value: (pct / 100).clamp(0, 1),
               minHeight: 24,
               backgroundColor: Colors.black.withValues(alpha: 0.3),
-              valueColor: AlwaysStoppedAnimation(color == Tw.fuchsia400 ? Tw.fuchsia500 : color == Tw.blue400 ? Tw.blue500 : Tw.amber500),
+              valueColor: AlwaysStoppedAnimation(color == Tw.fuchsia400 ? Tw.fuchsia500 : color == Tw.green400 ? Tw.green500 : Tw.amber500),
             ),
           ),
         ]),
@@ -561,9 +612,40 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
           Text(context.t('master_partner.revenue_breakdown_desc', params: {'amount': centsToEur(d.totalRevenueCents, locale)}),
               style: tw(12, color: Tw.slate500)),
           const SizedBox(height: 32),
-          block(context.t('master_partner.central_label'), d.centralBlockCents, Tw.fuchsia400),
-          block(context.t('master_partner.your_margin_label'), d.mpMarginCents, Tw.blue400),
-          block(context.t('master_partner.agent_fund_label'), d.agentFundCents, Tw.amber400),
+          if (!d.settled)
+            Text(context.t('master_partner.pending_desc'), style: tw(14, color: Tw.slate300))
+          else ...[
+            block(context.t('master_partner.line_costs'), d.costsCents, Tw.amber400),
+            block(context.t('master_partner.line_partner'), d.partnerBlockCents, Tw.green400),
+            block(context.t('master_partner.line_central'), d.centralBlockCents, Tw.fuchsia400),
+            Divider(height: 1, color: Tw.w(0.05)),
+            for (final c in d.cities.where((c) => c.settlement != null)) ...[
+              const SizedBox(height: 16),
+              Text(c.cityName, style: tw(12, weight: bold)),
+              const SizedBox(height: 4),
+              for (final (key, cents) in [
+                ('line_revenue', c.totalCents),
+                ('line_fees', -c.settlement!.stripeFeesCents),
+                ('line_own_costs', -c.settlement!.ownExpensesCents),
+                ('line_general_costs', -c.settlement!.generalExpensesCents),
+                ('line_previous_loss', -c.settlement!.previousLossCents),
+                ('line_net', c.settlement!.netCents),
+                ('line_partner', c.settlement!.partnerCents),
+                ('line_central', c.settlement!.centralCents),
+                if (c.settlement!.carryForwardLossCents > 0) ('line_carry', c.settlement!.carryForwardLossCents),
+              ])
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 2),
+                  child: Row(children: [
+                    Expanded(child: Text(context.t('master_partner.$key'), style: tw(12, color: key == 'line_carry' ? Tw.amber400 : Tw.slate500))),
+                    Text('${centsToEur(cents, locale)} €', style: tw(12, color: Tw.slate300).copyWith(fontFamily: 'monospace')),
+                  ]),
+                ),
+              const SizedBox(height: 4),
+              Text(context.t('master_partner.transfer_${c.settlement!.transferStatus ?? 'pending'}').toUpperCase(),
+                  style: tw(10, color: Tw.slate500, tracking: 0.1)),
+            ],
+          ],
         ]),
       ),
       const SizedBox(height: 32),
@@ -574,7 +656,7 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
           const SizedBox(height: 24),
           explainer(context.t('master_partner.central_pct'), context.t('master_partner.central_title'), context.t('master_partner.central_desc'), Tw.fuchsia400),
           explainer(context.t('master_partner.mp_pct'), context.t('master_partner.mp_title'), context.t('master_partner.mp_desc'), Tw.blue400),
-          explainer(context.t('master_partner.agent_pct'), context.t('master_partner.agent_title'), context.t('master_partner.agent_desc'), Tw.amber400),
+          explainer(context.t('master_partner.costs_badge'), context.t('master_partner.costs_title'), context.t('master_partner.costs_desc'), Tw.amber400),
         ]),
       ),
       const SizedBox(height: 32),
@@ -604,7 +686,7 @@ class _AddSubAgentFormState extends State<_AddSubAgentForm> {
   final _name = TextEditingController();
   final _phone = TextEditingController();
   final _suffix = TextEditingController();
-  late String _city = widget.cities.firstOrNull?.cityId ?? 'madrid';
+  late String _city = widget.cities.firstOrNull?.cityId ?? '';
   bool _saving = false;
   String? _error;
 
@@ -694,7 +776,9 @@ class _AddSubAgentFormState extends State<_AddSubAgentForm> {
           _label(context.t('master_partner.label_city', fallback: 'Ciudad Asignada')),
           AdminSelect<String>(
             value: _city,
-            items: widget.cities.isEmpty ? const [('madrid', 'Madrid')] : [for (final c in widget.cities) (c.cityId, c.cityName)],
+            items: widget.cities.isEmpty
+                ? [('', context.t('master_partner.no_cities'))]
+                : [for (final c in widget.cities) (c.cityId, c.cityName)],
             onChanged: (v) => setState(() => _city = v ?? _city),
           ),
           _label(context.t('master_partner.label_code_suffix', fallback: 'Sufijo del Código (Opcional)')),

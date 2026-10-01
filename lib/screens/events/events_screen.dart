@@ -11,6 +11,7 @@ import '../../models/firestore_utils.dart';
 import '../../navigation.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/city_provider.dart';
+import '../../services/nearby.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/common.dart';
 import '../venues/venues_screen.dart' show formatPrice;
@@ -62,29 +63,30 @@ class _EventsScreenState extends State<EventsScreen> {
     final auth = context.watch<AuthProvider>();
     final city = context.watch<CityProvider>();
     if (auth.loading) return;
-    final key = '${city.cityId}|${city.citySlug}|${auth.user?.uid}';
+    final key = '${city.cityId}|${city.center}|${auth.user?.uid}';
     if (key == _key) return;
     _key = key;
-    _load(city.cityId, city.citySlug, auth.user != null);
+    _load(city.center, city.cityId, city.citySlug, auth.user != null);
   }
 
-  void _load(String? cityId, String? citySlug, bool loggedIn) {
+  // Everything in the user's zone (by distance to [center]), not only one city's. No orderBy: the list is sorted by
+  // date in build(), and it avoids extra composite indexes.
+  void _load(GeoPos? center, String? cityId, String? citySlug, bool loggedIn) {
     for (final s in _subs) {
       s.cancel();
     }
     _subs.clear();
     setState(() => _loading = true);
 
-    if (cityId != null) {
+    {
       _subs.add(_db
           .collection('events')
-          .where('cityId', isEqualTo: cityId)
           .where('isActive', isEqualTo: true)
-          .orderBy('created_at', descending: true)
-          .limit(50)
+          .limit(200)
           .snapshots()
           .listen((snap) {
-        setState(() => _independent = snap.docs.map((d) {
+        final docs = inZone(snap.docs, center, cityId, (d) => d.data()).take(50);
+        setState(() => _independent = docs.map((d) {
               final data = d.data();
               final tiers = data['ticket_tiers'];
               return _PublicEvent(d.id, 'independent', data,
@@ -93,16 +95,15 @@ class _EventsScreenState extends State<EventsScreen> {
             }).toList());
       }, onError: (_) {}));
 
-      if (loggedIn && citySlug != null) {
+      if (loggedIn) {
         _subs.add(_db
             .collection('chills')
-            .where('city_slug', isEqualTo: citySlug)
             .where('status', isEqualTo: 'active')
-            .orderBy('created_at', descending: true)
-            .limit(30)
+            .limit(200)
             .snapshots()
             .listen((snap) {
-          setState(() => _chills = snap.docs.map((d) {
+          final docs = inZone(snap.docs, center, citySlug, (d) => d.data()).take(30);
+          setState(() => _chills = docs.map((d) {
                 final data = {...d.data()};
                 data['start_date'] = data['starts_at'] ?? data['created_at'];
                 final cents = asDouble(data['priceCents']);
@@ -111,16 +112,15 @@ class _EventsScreenState extends State<EventsScreen> {
         }, onError: (_) {}));
       }
     }
-    _fetchVenueEvents(cityId);
+    _fetchVenueEvents(center, cityId);
   }
 
-  Future<void> _fetchVenueEvents(String? cityId) async {
+  Future<void> _fetchVenueEvents(GeoPos? center, String? cityId) async {
     try {
-      Query<Map<String, dynamic>> vq = _db.collection('venues');
-      if (cityId != null) vq = vq.where('cityId', isEqualTo: cityId);
-      final venues = await vq.where('isActive', isEqualTo: true).get();
+      final venues = await _db.collection('venues').where('isActive', isEqualTo: true).get();
       final all = <_PublicEvent>[];
-      for (final v in venues.docs) {
+      // Only the venues in the zone: fewer event reads than one query per venue everywhere.
+      for (final v in inZone(venues.docs, center, cityId, (d) => d.data())) {
         final evs = await v.reference.collection('events').orderBy('start_date', descending: true).limit(10).get();
         for (final e in evs.docs) {
           final data = e.data();

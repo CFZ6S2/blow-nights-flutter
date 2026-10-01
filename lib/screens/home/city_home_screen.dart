@@ -66,7 +66,7 @@ class CityHomeScreen extends StatelessWidget {
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Label(greeting, size: 12, weight: bold, color: Tw.fuchsia400),
                     const SizedBox(height: 4),
-                    Text(city.currentCity?.name ?? 'Tu ciudad', style: tw(24, weight: black)),
+                    Text(city.currentCity?.name ?? context.t('city.near_you'), style: tw(24, weight: black)),
                   ]),
                 ),
                 const Padding(padding: EdgeInsets.only(top: 4), child: LanguageSelector()),

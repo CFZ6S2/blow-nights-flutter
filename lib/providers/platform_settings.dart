@@ -4,6 +4,8 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
+import '../services/proximity.dart';
+
 /// Port of hooks/usePlatformSettings.ts (`settings/platform` feature flags).
 class PlatformSettings extends ChangeNotifier {
   static const defaults = <String, Object?>{
@@ -12,6 +14,8 @@ class PlatformSettings extends ChangeNotifier {
     'moduleRrppLibres': true,
     'moduleChills': true,
     'moduleVenueRegistration': true,
+    // "Amigos cerca" (BLE friend finder). Off until festival tickets are sold; super-admin turns it on.
+    'moduleFriendFinder': false,
     'moduleRrppCommissions': true,
     'maintenanceMode': false,
   };
@@ -23,6 +27,7 @@ class PlatformSettings extends ChangeNotifier {
     _sub = FirebaseFirestore.instance.collection('settings').doc('platform').snapshots().listen((s) {
       flags = {...defaults, ...?s.data()};
       notifyListeners();
+      if (!flag('moduleFriendFinder')) _stopFinder();
     }, onError: (_) {
       flags = {...defaults};
       notifyListeners();
@@ -30,6 +35,17 @@ class PlatformSettings extends ChangeNotifier {
   }
 
   bool flag(String key) => flags[key] == true;
+
+  /// Switched off from super-admin: a radar left running (it survives the app being closed) stops too, and with it
+  /// the background key renewal.
+  Future<void> _stopFinder() async {
+    try {
+      final state = await Proximity.instance.refresh();
+      if (state.running) await Proximity.instance.stop();
+    } catch (_) {
+      // No finder on this platform (iOS, tests).
+    }
+  }
 
   @override
   void dispose() {

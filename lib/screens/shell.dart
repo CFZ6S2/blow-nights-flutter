@@ -10,6 +10,7 @@ import '../navigation.dart';
 import '../providers/auth_provider.dart';
 import '../providers/city_provider.dart';
 import '../providers/venues_provider.dart';
+import '../services/nearby.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
 import 'events/events_screen.dart';
@@ -92,8 +93,9 @@ class _MainShellState extends State<MainShell> {
     final auth = context.watch<AuthProvider>();
     final shell = context.watch<ShellController>();
     final cityId = context.select<CityProvider, String?>((c) => c.cityId);
+    final center = context.select<CityProvider, GeoPos?>((c) => c.center);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) context.read<VenuesProvider>().setCity(cityId);
+      if (mounted) context.read<VenuesProvider>().setZone(center, cityId);
     });
 
     final showNav = auth.user != null && auth.role != 'venueOwner';

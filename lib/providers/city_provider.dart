@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math' as math;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
@@ -7,111 +6,150 @@ import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/city.dart';
+import '../services/nearby.dart';
 
-const cityStorageKey = 'blownights_city';
+export '../services/nearby.dart' show haversineKm;
 
-/// Port of frontend/src/context/CityContext.tsx
+/// Only explicit choices are stored (a city slug, or [nearbySlug]); a city found by GPS is not, since next time the
+/// user may be somewhere else. The old key 'blownights_city' also held the Madrid fallback, so it's no longer read.
+const cityStorageKey = 'blownights_city_choice';
+
+/// "Cerca de ti": follow the GPS, as /cerca on the web.
+const nearbySlug = 'cerca';
+
+enum PositionStatus { pending, granted, denied, unavailable }
+
+/// Port of frontend/src/context/CityContext.tsx. [currentCity] is the city picked, or the one the user is in (GPS);
+/// null means "Cerca de ti": no city nearby, everything is shown by distance around [center]. Never a fallback city.
 class CityProvider extends ChangeNotifier {
   List<City> cities = [];
-  City? currentCity;
-  bool loading = true;
-  bool detectedByGPS = false;
+  bool _citiesLoaded = false;
+  String? _choice;
+  GeoPos? position;
+  PositionStatus positionStatus = PositionStatus.pending;
   StreamSubscription? _sub;
-  bool _resolved = false;
 
+  City? currentCity;
+  bool detectedByGPS = false;
+
+  /// Where "near" is measured from: the picked city's centre, else the user's position, else null.
+  GeoPos? center;
+
+  bool get loading => !_citiesLoaded || (positionStatus == PositionStatus.pending && currentCity == null);
   String? get cityId => currentCity?.id;
   String? get citySlug => currentCity?.slug;
   String get currency => currentCity?.currency ?? 'eur';
 
   CityProvider() {
+    _loadChoice();
     _sub = FirebaseFirestore.instance
         .collection('cities')
         .where('isActive', isEqualTo: true)
         .snapshots()
-        .listen((snap) async {
+        .listen((snap) {
       cities = snap.docs.map(City.fromDoc).toList();
-      if (_resolved) {
-        final id = currentCity?.id;
-        currentCity = cities.where((c) => c.id == id).firstOrNull ?? currentCity;
-        notifyListeners();
-        return;
-      }
-      _resolved = true;
-      await _resolveInitial();
+      _citiesLoaded = true;
+      _resolve();
     }, onError: (_) {
-      loading = false;
-      notifyListeners();
+      _citiesLoaded = true;
+      _resolve();
     });
+    refreshPosition();
   }
 
-  Future<void> _resolveInitial() async {
-    String? saved;
+  Future<void> _loadChoice() async {
     try {
-      saved = (await SharedPreferences.getInstance()).getString(cityStorageKey);
+      _choice = (await SharedPreferences.getInstance()).getString(cityStorageKey);
     } catch (_) {}
-    final savedCity = cities.where((c) => c.slug == saved).firstOrNull;
-    if (savedCity != null) {
-      currentCity = savedCity;
-      loading = false;
-      notifyListeners();
-      return;
-    }
-    await _detectByGPS();
+    _resolve();
   }
 
-  Future<void> _detectByGPS() async {
+  Future<void> refreshPosition() async {
     try {
       var perm = await Geolocator.checkPermission();
       if (perm == LocationPermission.denied) perm = await Geolocator.requestPermission();
       if (perm == LocationPermission.denied || perm == LocationPermission.deniedForever) {
-        return _fallbackToFirst();
+        positionStatus = PositionStatus.denied;
+        _resolve();
+        return;
       }
-      final pos = await Geolocator.getCurrentPosition(
-        locationSettings: const LocationSettings(timeLimit: Duration(seconds: 5)),
-      );
-      City? nearest;
-      var minDist = double.infinity;
-      for (final c in cities) {
-        if (c.lat == null || c.lng == null) continue;
-        final d = haversineKm(pos.latitude, pos.longitude, c.lat!, c.lng!);
-        if (d < minDist) {
-          minDist = d;
-          nearest = c;
-        }
-      }
-      if (nearest != null && minDist < 100) {
-        currentCity = nearest;
-        detectedByGPS = true;
-        _persist(nearest.slug);
-        loading = false;
-        notifyListeners();
+      final pos = await _locate();
+      if (pos == null) {
+        positionStatus = PositionStatus.unavailable;
       } else {
-        _fallbackToFirst();
+        position = (lat: pos.latitude, lng: pos.longitude);
+        positionStatus = PositionStatus.granted;
       }
     } catch (_) {
-      _fallbackToFirst();
+      positionStatus = PositionStatus.unavailable;
     }
+    _resolve();
   }
 
-  void _fallbackToFirst() {
-    if (cities.isNotEmpty) {
-      currentCity = cities.first;
-      _persist(cities.first.slug);
+  /// A 50 km zone doesn't need GPS precision. On Android, Google's fused provider shows a "Location Accuracy" dialog
+  /// when that setting is off, and declining it fails the request, leaving the user without a zone; so the system
+  /// LocationManager goes first (no dialog), then the fused provider, then the last known position.
+  Future<Position?> _locate() async {
+    const low = LocationAccuracy.low;
+    const limit = Duration(seconds: 8);
+    final android = defaultTargetPlatform == TargetPlatform.android;
+    if (android) {
+      try {
+        return await Geolocator.getCurrentPosition(
+            locationSettings: AndroidSettings(accuracy: low, timeLimit: limit, forceLocationManager: true));
+      } catch (_) {}
     }
-    loading = false;
-    notifyListeners();
-  }
-
-  void setCurrentCity(City? city) {
-    currentCity = city;
-    detectedByGPS = false;
-    if (city != null) _persist(city.slug);
-    notifyListeners();
-  }
-
-  Future<void> _persist(String slug) async {
     try {
-      (await SharedPreferences.getInstance()).setString(cityStorageKey, slug);
+      return await Geolocator.getCurrentPosition(locationSettings: const LocationSettings(accuracy: low, timeLimit: limit));
+    } catch (_) {}
+    try {
+      return await Geolocator.getLastKnownPosition(forceAndroidLocationManager: android);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  void _resolve() {
+    City? picked;
+    if (_choice != null && _choice != nearbySlug) {
+      picked = cities.where((c) => c.slug == _choice || c.id == _choice).firstOrNull;
+    }
+    final here = picked == null ? _nearest() : null;
+    currentCity = picked ?? here;
+    detectedByGPS = here != null;
+    final c = currentCity;
+    final cityCenter = c != null && c.lat != null && c.lng != null ? (lat: c.lat!, lng: c.lng!) : null;
+    center = picked != null ? (cityCenter ?? position) : (position ?? cityCenter);
+    notifyListeners();
+  }
+
+  City? _nearest() {
+    final pos = position;
+    if (pos == null) return null;
+    City? best;
+    var bestKm = double.infinity;
+    for (final c in cities) {
+      if (c.lat == null || c.lng == null) continue;
+      final d = haversineKm(pos.lat, pos.lng, c.lat!, c.lng!);
+      if (d < bestKm) {
+        bestKm = d;
+        best = c;
+      }
+    }
+    return bestKm < cityMatchKm ? best : null;
+  }
+
+  /// Pick a city, or null for "Cerca de ti". Remembered on this device.
+  void setCurrentCity(City? city) {
+    final choice = city?.slug ?? nearbySlug;
+    _choice = choice;
+    _persist(choice);
+    _resolve();
+  }
+
+  Future<void> _persist(String value) async {
+    try {
+      (await SharedPreferences.getInstance()).setString(cityStorageKey, value);
     } catch (_) {}
   }
 
@@ -120,14 +158,4 @@ class CityProvider extends ChangeNotifier {
     _sub?.cancel();
     super.dispose();
   }
-}
-
-double haversineKm(double lat1, double lon1, double lat2, double lon2) {
-  const r = 6371.0;
-  double rad(double d) => d * math.pi / 180;
-  final dLat = rad(lat2 - lat1);
-  final dLon = rad(lon2 - lon1);
-  final a = math.pow(math.sin(dLat / 2), 2) +
-      math.cos(rad(lat1)) * math.cos(rad(lat2)) * math.pow(math.sin(dLon / 2), 2);
-  return r * 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
 }

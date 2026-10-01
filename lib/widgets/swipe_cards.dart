@@ -46,7 +46,8 @@ class _SwipeCardsState extends State<SwipeCards> {
       final res = await FirebaseFunctions.instance.httpsCallable('createPingCheckoutSession').call<Map<String, dynamic>>({
         'type': type,
         'origin': webBase,
-        'citySlug': auth.profile?.cityId ?? 'madrid',
+        // Attribution goes to the user's own city; without one, to nobody (never Madrid by default).
+        if (auth.profile?.cityId != null) 'citySlug': auth.profile!.cityId,
       });
       final url = res.data['url'] as String?;
       if (url != null) await openInApp(url);

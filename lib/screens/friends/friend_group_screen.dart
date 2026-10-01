@@ -37,6 +37,7 @@ class _FriendGroupScreenState extends State<FriendGroupScreen> with WidgetsBindi
   bool _synced = false;
   bool _busy = false;
   StreamSubscription? _sub;
+  StreamSubscription? _nfcSub;
   final _prox = Proximity.instance;
 
   String get _uid => context.read<AuthProvider>().user?.uid ?? '';
@@ -51,6 +52,11 @@ class _FriendGroupScreenState extends State<FriendGroupScreen> with WidgetsBindi
           _group = null;
           _loading = false;
         }));
+    // A phone tapped against this one just read the invite over NFC.
+    _nfcSub = FinderNative.events.where((e) => e['type'] == 'invite_sent').listen((_) {
+      HapticFeedback.heavyImpact();
+      if (mounted) showToast(context, context.read<I18n>().t('finder.nfc_sent'));
+    });
   }
 
   @override
@@ -58,6 +64,7 @@ class _FriendGroupScreenState extends State<FriendGroupScreen> with WidgetsBindi
     WidgetsBinding.instance.removeObserver(this);
     _prox.removeListener(_onProximity);
     _sub?.cancel();
+    _nfcSub?.cancel();
     FinderNative.setInvite(null);
     super.dispose();
   }

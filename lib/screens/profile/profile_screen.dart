@@ -11,6 +11,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../i18n/i18n.dart';
 import '../../navigation.dart';
 import '../../providers/auth_provider.dart';
+import '../../providers/platform_settings.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/common.dart';
 
@@ -28,6 +29,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final List<StreamSubscription> _subs = [];
   String? _uid;
   bool _deleting = false;
+  bool _hasDoors = false;
   bool _showCreds = false;
   final _credUser = TextEditingController();
   final _credPass = TextEditingController();
@@ -57,6 +59,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (uid == null) return;
     _subs.add(_db.collection('chills').where('host_uid', isEqualTo: uid).snapshots().listen((s) => setState(() => _plans = s.size), onError: (_) {}));
     _subs.add(_db.collection('tickets').where('userId', isEqualTo: uid).snapshots().listen((s) => setState(() => _tickets = s.size), onError: (_) {}));
+    // Door links saved with saveDoorAccess: "Mis puertas" only shows up once there is one.
+    _subs.add(_db.collection('users').doc(uid).collection('doors').limit(1).snapshots().listen((s) => setState(() => _hasDoors = s.size > 0), onError: (_) {}));
     _subs.add(_db.collection('checkins').where('userId', isEqualTo: uid).snapshots().listen((s) => setState(() => _checkins = s.size), onError: (_) {}));
   }
 
@@ -189,12 +193,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
       (context.t('profile.my_plans', fallback: 'Mis Chills'), Icons.groups, AppRoute.myPlans, Tw.amber400),
       (context.t('profile.my_tickets', fallback: 'Mis Entradas'), Icons.confirmation_number, AppRoute.tickets, Tw.fuchsia400),
       (context.t('profile.my_chats', fallback: 'Mis Chats'), Icons.chat, AppRoute.chat, Tw.blue400),
-      (context.t('finder.title'), Icons.bluetooth_searching, AppRoute.friendGroups, Tw.cyan400),
+      if (context.watch<PlatformSettings>().flag('moduleFriendFinder'))
+        (context.t('finder.title'), Icons.bluetooth_searching, AppRoute.friendGroups, Tw.cyan400),
       (context.t('profile.edit_profile', fallback: 'Ajustes'), Icons.settings, AppRoute.setupProfile, const Color(0xFFE2E8F0)),
       if (p.role == 'venueOwner' || p.role == 'admin')
         (context.t('profile.venue_panel', fallback: 'Panel de Local'), Icons.storefront, AppRoute.venueAdmin, Tw.fuchsia400),
       if (p.role == 'door' || p.role == 'admin')
         (context.t('profile.scan_tickets', fallback: 'Escanear Entradas'), Icons.qr_code_scanner, AppRoute.scanner, Tw.fuchsia400),
+      if (p.role == 'rrpp') (context.t('rrpp_panel_title', fallback: 'RRPP independiente'), Icons.confirmation_number, AppRoute.pr, Tw.emerald400),
+      if (_hasDoors) (context.t('door_my_doors', fallback: 'Mis puertas'), Icons.qr_code_scanner, AppRoute.door, Tw.teal400),
     ];
 
     return Scaffold(

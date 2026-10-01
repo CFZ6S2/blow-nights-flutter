@@ -11,10 +11,12 @@ import 'package:provider/provider.dart';
 
 import '../i18n/i18n.dart';
 import '../models/firestore_utils.dart';
+import '../models/rrpp_party.dart';
 import '../models/user_model.dart';
 import '../navigation.dart';
 import '../providers/auth_provider.dart';
 import '../providers/city_provider.dart';
+import '../services/nearby.dart';
 import '../services/social.dart';
 import '../services/venue_hours.dart';
 import '../theme/app_theme.dart';
@@ -52,11 +54,15 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
   Set<String> _passed = {};
   Set<String> _liked = {};
   List<Map<String, dynamic>> _venues = [];
+  // RRPP parties are stored inactive (functions createRRPPParty), so they come from their own query.
+  List<Map<String, dynamic>> _parties = [];
   Map<String, int> _checkins = {};
   List<Map<String, dynamic>> _chills = [];
   bool _loading = true;
   LatLng? _userLocation;
-  LatLng _center = const LatLng(40.485, -3.36);
+  // Wherever the user's zone is (see didChangeDependencies); a wide view until the GPS or a picked city gives one.
+  LatLng _center = const LatLng(46, 2);
+  String? _zoneKey;
   bool? _optimisticAvailable;
 
   bool _openNow = false;
@@ -82,14 +88,28 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
     super.didChangeDependencies();
     final uid = context.watch<AuthProvider>().user?.uid;
     final city = context.watch<CityProvider>();
-    final key = '$uid|${city.citySlug}|${city.cityId}';
+    final key = '$uid';
     if (key != _subsKey) {
       _subsKey = key;
-      _subscribe(uid, city.cityId, city.citySlug);
+      _subscribe(uid);
+    }
+    // Re-centre when the zone itself changes (first GPS fix, another city picked), not on every position update.
+    final zone = city.center;
+    final zoneKey = zone == null ? null : city.cityId ?? 'gps';
+    if (zone != null && zoneKey != _zoneKey) {
+      final first = _zoneKey == null;
+      _zoneKey = zoneKey;
+      _center = LatLng(zone.lat, zone.lng);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        try {
+          first ? _map.move(_center, 14) : _flyTo(_center, 14);
+        } catch (_) {}
+      });
     }
   }
 
-  void _subscribe(String? uid, String? cityId, String? citySlug) {
+  void _subscribe(String? uid) {
     for (final s in _subs) {
       s.cancel();
     }
@@ -122,9 +142,8 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
       setState(() => _liked = snap.docs.map((d) => d.data()['toId']).whereType<String>().toSet());
     }, onError: (_) {}));
 
-    Query<Map<String, dynamic>> vq = _db.collection('venues');
-    if (cityId != null) vq = vq.where('cityId', isEqualTo: cityId);
-    vq = vq.where('isActive', isEqualTo: true).where('type', whereNotIn: _cruisingTypes.toList());
+    // Every active venue and chill; the zone filter happens in _visibleVenues / _visibleChills.
+    final vq = _db.collection('venues').where('isActive', isEqualTo: true).where('type', whereNotIn: _cruisingTypes.toList());
     _subs.add(vq.snapshots().listen((snap) {
       final now = DateTime.now();
       final list = <Map<String, dynamic>>[];
@@ -132,11 +151,23 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
         final data = d.data();
         final exp = parseDate(data['expiresAt']);
         if (data['type'] == 'chill' && exp != null && exp.isBefore(now)) continue;
+        if (!rrppPartyVisible(data, now)) continue;
         final loc = data['location'];
         final hasLoc = loc is GeoPoint || (loc is Map && loc['latitude'] != null && loc['longitude'] != null);
         if (hasLoc) list.add({'id': d.id, ...data});
       }
       setState(() => _venues = list);
+    }, onError: (_) {}));
+
+    final pq = _db.collection('venues').where('rrppParty', isEqualTo: true).where('visibleUntil', isGreaterThan: Timestamp.now());
+    _subs.add(pq.snapshots().listen((snap) {
+      final list = <Map<String, dynamic>>[];
+      for (final d in snap.docs) {
+        final loc = d.data()['location'];
+        final hasLoc = loc is GeoPoint || (loc is Map && loc['latitude'] != null && loc['longitude'] != null);
+        if (hasLoc) list.add({'id': d.id, ...d.data()});
+      }
+      setState(() => _parties = list);
     }, onError: (_) {}));
 
     _subs.add(_db.collection('live_sense').snapshots().listen((snap) {
@@ -148,15 +179,12 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
       setState(() => _checkins = counts);
     }, onError: (_) {}));
 
-    if (citySlug != null) {
-      _subs.add(_db
-          .collection('chills')
-          .where('city_slug', isEqualTo: citySlug)
-          .where('status', whereIn: ['active', 'full'])
-          .snapshots()
-          .listen((snap) => setState(() => _chills = snap.docs.map((d) => {'id': d.id, ...d.data()}).toList()),
-              onError: (_) {}));
-    }
+    _subs.add(_db
+        .collection('chills')
+        .where('status', whereIn: ['active', 'full'])
+        .snapshots()
+        .listen((snap) => setState(() => _chills = snap.docs.map((d) => {'id': d.id, ...d.data()}).toList()),
+            onError: (_) {}));
   }
 
   @override
@@ -169,13 +197,18 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  bool get _isAvailable => _optimisticAvailable ?? (context.read<AuthProvider>().profile?.online ?? false);
+  // radarVisible is the user's choice; online also needs the app open (AuthProvider presence).
+  bool get _isAvailable {
+    final p = context.read<AuthProvider>().profile;
+    return _optimisticAvailable ?? (p == null ? false : (p.data['radarVisible'] as bool?) ?? p.online);
+  }
   bool get _isVipUser => ['plus', 'black'].contains(context.read<AuthProvider>().profile?.membershipTier);
 
   List<UserProfile> get _usersNearby => _rawUsers.where((u) => !_passed.contains(u.id) && !_liked.contains(u.id)).toList();
 
   List<UserProfile> get _filteredUsers {
-    final me = context.read<AuthProvider>().profile;
+    final pos = context.read<CityProvider>().position;
+    final me = _userLocation ?? (pos == null ? null : LatLng(pos.lat, pos.lng));
     return _usersNearby.where((u) {
       if (u.lat == null || u.lng == null) return false;
       final e = u.edad;
@@ -184,8 +217,8 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
       if (_intentFilter != null && u.intencion != _intentFilter) return false;
       if (_onlyPremium && !['plus', 'black'].contains(u.membershipTier)) return false;
       if (_onlyPhoto && u.fotoUrl.isEmpty) return false;
-      if (me?.lat != null && _userLocation != null) {
-        final d = calculateDistance(_userLocation!.latitude, _userLocation!.longitude, u.lat!, u.lng!);
+      if (me != null) {
+        final d = calculateDistance(me.latitude, me.longitude, u.lat!, u.lng!);
         if (d > _distance) return false;
       }
       if (_query.isNotEmpty && !u.nick.toLowerCase().contains(_query.toLowerCase().trim())) return false;
@@ -195,9 +228,11 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
 
   List<Map<String, dynamic>> get _visibleVenues {
     if (_mode != RadarMode.places) return const [];
-    return _venues.where((v) {
+    final city = context.read<CityProvider>();
+    return inZone([..._venues, ..._parties], city.center, city.cityId, (v) => v).where((v) {
       final type = v['type'] as String?;
       if (type == null || type.isEmpty) return false;
+      if (!rrppPartyVisible(v)) return false; // archived, or past visibleUntil since it was loaded
       if (_type != 'all') {
         if (_type == 'sauna' && type != 'sauna') return false;
         if (_type == 'club' && type != 'club' && type != 'nightlife') return false;
@@ -223,7 +258,8 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
   List<Map<String, dynamic>> get _visibleChills {
     if (_mode != RadarMode.places) return const [];
     if (_type != 'all' && _type != 'chill') return const [];
-    return _chills.where((c) => _query.isEmpty || safeStr(c['title']).toLowerCase().contains(_query.toLowerCase().trim())).toList();
+    final city = context.read<CityProvider>();
+    return inZone(_chills, city.center, city.citySlug, (c) => c).where((c) => _query.isEmpty || safeStr(c['title']).toLowerCase().contains(_query.toLowerCase().trim())).toList();
   }
 
   static Map<String, Hours> _hours(Map<String, dynamic> v) {
@@ -245,6 +281,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
       final pos = await Geolocator.getCurrentPosition();
       final target = LatLng(pos.latitude, pos.longitude);
       setState(() => _userLocation = target);
+      if (mounted) context.read<CityProvider>().refreshPosition();
       _flyTo(target, 15);
     } catch (_) {}
   }
@@ -270,9 +307,9 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
       if (next) {
         final pos = await Geolocator.getCurrentPosition();
         await _db.collection('locations').doc(uid).set({'lat': pos.latitude, 'lng': pos.longitude, 'updatedAt': DateTime.now()});
-        await _db.collection('users').doc(uid).set({'online': true, 'lat': pos.latitude, 'lng': pos.longitude}, SetOptions(merge: true));
+        await _db.collection('users').doc(uid).set({'online': true, 'radarVisible': true, 'lat': pos.latitude, 'lng': pos.longitude}, SetOptions(merge: true));
       } else {
-        await _db.collection('users').doc(uid).set({'online': false}, SetOptions(merge: true));
+        await _db.collection('users').doc(uid).set({'online': false, 'radarVisible': false}, SetOptions(merge: true));
       }
       Future.delayed(const Duration(seconds: 1), () {
         if (mounted) setState(() => _optimisticAvailable = null);
@@ -292,7 +329,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
       await _db.collection('chills').doc().set({
         'title': _pinName.text.trim(),
         'type': 'chill',
-        'city_slug': context.read<CityProvider>().citySlug ?? 'madrid',
+        'city_slug': context.read<CityProvider>().citySlug,
         'approx_lat': _center.latitude,
         'approx_lng': _center.longitude,
         'max_capacity': 50,
@@ -351,6 +388,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
             Positioned.fill(child: IgnorePointer(child: Container(color: Tw.slate900))),
           if (_addingPin) _pinOverlay(context),
           if (!_addingPin && _mode != RadarMode.swipe) _bottomControls(),
+          if (_mode != RadarMode.swipe) _locationNeeded(context),
         ]),
       ),
       const SizedBox(height: 16),
@@ -364,6 +402,40 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
     ]);
   }
 
+  /// No GPS and no city picked: there's no zone to show yet.
+  Widget _locationNeeded(BuildContext context) {
+    final city = context.watch<CityProvider>();
+    if (city.center != null || city.positionStatus == PositionStatus.pending) return const SizedBox.shrink();
+    return Positioned(
+      top: 90,
+      left: 24,
+      right: 24,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Tw.slate900.withValues(alpha: 0.95),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Tw.w(0.1)),
+        ),
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          Text(context.t('city.location_needed'), textAlign: TextAlign.center, style: tw(12, weight: bold, color: Tw.slate300)),
+          const SizedBox(height: 12),
+          Pressable(
+            onTap: () {
+              HapticFeedback.selectionClick();
+              city.refreshPosition();
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(color: Tw.fuchsia600, borderRadius: BorderRadius.circular(12)),
+              child: Label(context.t('city.enable_location'), size: 11, weight: black, color: Tw.white),
+            ),
+          ),
+        ]),
+      ),
+    );
+  }
+
   Widget _mapWidget() {
     final venues = _visibleVenues;
     final chills = _visibleChills;
@@ -372,7 +444,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
       mapController: _map,
       options: MapOptions(
         initialCenter: _center,
-        initialZoom: 14,
+        initialZoom: _zoneKey == null ? 3.5 : 14,
         backgroundColor: Basemap.background,
         onPositionChanged: (cam, _) => _center = cam.center,
       ),
@@ -532,14 +604,18 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
     final hasSchedule = days.isNotEmpty && hours.isNotEmpty;
     final isOpen = hasSchedule ? isVenueOpenNow(days, hours).isOpen : true;
     final count = isOpen ? asInt(v['currentCount']) : 0;
-    final unclaimed = v['isClaimed'] == false;
+    final party = isRRPPParty(v);
+    final unclaimed = v['isClaimed'] == false && !party;
     final cruising = _cruisingTypes.contains(type);
     final isBar = {'bar', 'chiringuito', 'cruising_bar'}.contains(type);
     final isClub = type == 'club' || type == 'nightlife';
 
     Color color = Tw.indigo500;
     IconData icon = Icons.place;
-    if (unclaimed) {
+    if (party) {
+      color = Tw.teal400;
+      icon = Icons.celebration;
+    } else if (unclaimed) {
       color = isPaying ? const Color(0xFFEAB308) : Tw.amber400;
       icon = Icons.storefront;
     } else if (cruising) {
@@ -561,7 +637,12 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
     final tooltip = _venueTooltip(v, isOpen, count, unclaimed, days, hours);
     void open() {
       HapticFeedback.selectionClick();
-      openRoute(context, AppRoute.venueDetail, args: {'venueId': v['id'] as String});
+      // An RRPP party isn't a venue: only its details, never a ticket purchase.
+      if (party) {
+        _showPartyCard(v);
+      } else {
+        openRoute(context, AppRoute.venueDetail, args: {'venueId': v['id'] as String});
+      }
     }
 
     if (!isPaying) {
@@ -661,6 +742,38 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
     );
   }
 
+  void _showPartyCard(Map<String, dynamic> v) => showModalBottomSheet<void>(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (ctx) => SafeArea(
+          child: Container(
+            margin: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Tw.slate900.withValues(alpha: 0.95),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Tw.teal500.withValues(alpha: 0.3)),
+            ),
+            child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Label(ctx.t('map_rrpp_party', fallback: 'Fiesta RRPP · entrada con el RRPP'), size: 10, weight: black, color: const Color(0xFF5EEAD4)),
+              const SizedBox(height: 4),
+              Text(safeStr(v['eventTitle']).isNotEmpty ? safeStr(v['eventTitle']) : safeStr(v['name']), style: tw(18, weight: black)),
+              const SizedBox(height: 4),
+              Text([v['eventDate'], v['eventTime']].where((x) => x != null && '$x'.isNotEmpty).join(' · '), style: tw(12, color: Tw.slate300)),
+              Text([safeStr(v['name']), safeStr(v['address'])].where((x) => x.isNotEmpty).join(' · '), style: tw(12, color: Tw.slate400)),
+              if (safeStr(v['rrppName']).isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Text(ctx.t('map_rrpp_party_by', params: {'name': safeStr(v['rrppName'])}, fallback: 'Organiza: ${safeStr(v['rrppName'])}'),
+                      style: tw(12, color: Tw.slate300)),
+                ),
+              const SizedBox(height: 12),
+              Text(ctx.t('map_rrpp_party_ticket', fallback: 'Pide tu entrada al RRPP; esta fiesta no vende entradas en la app.'), style: tw(11, color: Tw.slate500)),
+            ]),
+          ),
+        ),
+      );
+
   Widget _countBadge(int count, double size) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
         decoration: BoxDecoration(
@@ -707,7 +820,9 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
             child: Text('$count ${count == 1 ? 'persona ahora' : 'personas ahora'}', style: tw(10, weight: black, color: Tw.fuchsia400)),
           ),
         const SizedBox(height: 2),
-        unclaimed
+        isRRPPParty(v)
+            ? Label(i18n.t('map_rrpp_party', fallback: 'Fiesta RRPP · entrada con el RRPP'), size: 9, weight: bold, color: const Color(0xFF5EEAD4))
+            : unclaimed
             ? Label(i18n.t('map_pending_verification', fallback: '🟡 Pendiente Verificación'), size: 9, weight: bold, color: Tw.amber400)
             : Label(safeStr(v['type']).isEmpty ? 'Local' : safeStr(v['type']), size: 9, weight: bold),
         if (days.isNotEmpty) Label(scheduleText(), size: 8, weight: bold, color: isOpen ? Tw.green400 : Tw.slate500),

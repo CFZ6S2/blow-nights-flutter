@@ -54,13 +54,8 @@ class _PremiumScreenState extends State<PremiumScreen> {
   }
 
   Future<void> _callCheckout(String fn, Map<String, dynamic> data) async {
-    final auth = context.read<AuthProvider>();
+    // No city needed: the membership callables accept a user without one (no City Manager attribution then).
     final i18n = context.read<I18n>();
-    if ((auth.profile?.cityId ?? '').isEmpty && fn != 'createStripePortalSession') {
-      showToast(context, i18n.t('premium.alert_city'));
-      openRoute(context, AppRoute.setupProfile);
-      return;
-    }
     setState(() {
       _submitting = true;
       _error = '';

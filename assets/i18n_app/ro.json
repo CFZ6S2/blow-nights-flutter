@@ -1,6 +1,7 @@
 {
   "finder": {
     "title": "Prieteni în apropiere",
+    "unavailable": "Prieteni în apropiere nu este încă disponibil",
     "subtitle": "Găsește-ți gașca fără semnal",
     "how_title": "Cum funcționează",
     "how_body": "Creează un grup pentru diseară și invită-ți prietenii. Cu radarul Bluetooth pornit, telefoanele voastre se detectează între ele chiar și fără semnal și vezi cine e aproape.",
@@ -26,6 +27,10 @@
     "invite_title": "Invită prieteni",
     "invite_body": "Pot scana acest QR, introduce codul sau apropia telefonul de al tău (NFC) din „Intră într-un grup”.",
     "nfc_ready": "NFC pregătit: apropie alt telefon",
+    "nfc_no_invite": "Detectat, dar fără invitație. Dacă e telefonul prietenului tău, trebuie să aibă grupul deschis, cu ecranul aprins și deblocat.",
+    "nfc_lost": "Conexiunea NFC s-a întrerupt. Ține telefoanele lipite câteva secunde.",
+    "nfc_not_invite": "Aceasta nu este o invitație de grup.",
+    "nfc_sent": "Invitație trimisă prin NFC",
     "share": "Distribuie",
     "share_text": "Intră în grupul meu „{{name}}” pe Blow Nights (Prieteni în apropiere) cu codul {{code}}",
     "copied": "Cod copiat",
@@ -70,5 +75,7 @@
     "delete_confirm": "Ștergi grupul pentru toată lumea?",
     "not_found": "Acest grup nu mai există sau a expirat",
     "error": "Ceva n-a mers. Încearcă din nou."
-  }
+  },
+  "door_camera_denied_app": "We can't use the camera. Validate with the pass PIN or allow the camera in the app settings.",
+  "door_open_settings": "Open settings"
 }

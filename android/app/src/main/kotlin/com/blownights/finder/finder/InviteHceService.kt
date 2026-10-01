@@ -2,6 +2,7 @@ package com.blownights.finder.finder
 
 import android.nfc.cardemulation.HostApduService
 import android.os.Bundle
+import android.util.Log
 
 /**
  * Phone-to-phone NFC invite. While the inviter's group screen is showing its invite, this phone answers like an
@@ -11,12 +12,23 @@ import android.os.Bundle
 class InviteHceService : HostApduService() {
 
     override fun processCommandApdu(commandApdu: ByteArray, extras: Bundle?): ByteArray {
-        val armed = payload ?: return SW_NOT_FOUND
-        if (!isSelectOurAid(commandApdu)) return SW_NOT_FOUND
+        if (!isSelectOurAid(commandApdu)) {
+            Log.d(TAG, "APDU ignored: ${commandApdu.joinToString("") { "%02x".format(it) }}")
+            return SW_NOT_FOUND
+        }
+        val armed = payload ?: run {
+            Log.d(TAG, "SELECT received but no invite on screen")
+            return SW_NOT_FOUND
+        }
+        Log.d(TAG, "invite handed over")
+        // The group screen vibrates and says so (lib/screens/friends/friend_group_screen.dart).
+        FinderBle.publish(mapOf("type" to "invite_sent"))
         return armed.toByteArray(Charsets.UTF_8) + SW_OK
     }
 
-    override fun onDeactivated(reason: Int) {}
+    override fun onDeactivated(reason: Int) {
+        Log.d(TAG, "deactivated ($reason)")
+    }
 
     private fun isSelectOurAid(apdu: ByteArray): Boolean {
         // CLA INS P1 P2 Lc AID...
@@ -27,6 +39,7 @@ class InviteHceService : HostApduService() {
     }
 
     companion object {
+        private const val TAG = "BNInviteHce"
         /** Proprietary AID: F0 + "BNFRIND". Must match res/xml/finder_invite_aid.xml and lib/services/finder_native.dart. */
         val AID = byteArrayOf(0xF0.toByte(), 0x42, 0x4E, 0x46, 0x52, 0x49, 0x4E, 0x44)
         private val SW_OK = byteArrayOf(0x90.toByte(), 0x00)

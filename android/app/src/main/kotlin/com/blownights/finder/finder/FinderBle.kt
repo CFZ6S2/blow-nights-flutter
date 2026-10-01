@@ -65,6 +65,9 @@ object FinderBle {
 
     private fun emit(event: Map<String, Any?>) = main.post { listener?.onEvent(event) }
 
+    /** Events from outside the BLE radar on the same channel (InviteHceService: invite_sent). */
+    fun publish(event: Map<String, Any?>) = emit(event)
+
     /** [keys]: (fromMs, key) schedule; the id on air is derived from the key in force for each period. */
     @Synchronized
     fun start(context: Context, keys: List<Pair<Long, String>>): Boolean {

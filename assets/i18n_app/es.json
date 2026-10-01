@@ -1,6 +1,7 @@
 {
   "finder": {
     "title": "Amigos cerca",
+    "unavailable": "Amigos cerca aún no está disponible",
     "subtitle": "Encuentra a tu grupo sin cobertura",
     "how_title": "Cómo funciona",
     "how_body": "Crea un grupo para esta noche e invita a tus amigos. Con el radar Bluetooth activo, vuestros móviles se detectan entre sí aunque no haya cobertura, y ves quién tienes cerca.",
@@ -26,6 +27,10 @@
     "invite_title": "Invitar amigos",
     "invite_body": "Que escaneen este QR, metan el código o acerquen su móvil al tuyo (NFC) desde «Unirme a un grupo».",
     "nfc_ready": "NFC listo: acerca otro móvil",
+    "nfc_no_invite": "Detectado, pero no hay invitación. Si es el móvil de tu amigo, debe tener el grupo abierto en pantalla, encendida y desbloqueada.",
+    "nfc_lost": "Se ha perdido la conexión NFC. Mantén los móviles juntos un par de segundos.",
+    "nfc_not_invite": "Esto no es una invitación de grupo.",
+    "nfc_sent": "Invitación enviada por NFC",
     "share": "Compartir",
     "share_text": "Únete a mi grupo «{{name}}» en Blow Nights (Amigos cerca) con el código {{code}}",
     "copied": "Código copiado",
@@ -70,5 +75,7 @@
     "delete_confirm": "¿Borrar el grupo para todos?",
     "not_found": "Este grupo ya no existe o ha caducado",
     "error": "Algo ha fallado. Inténtalo de nuevo."
-  }
+  },
+  "door_camera_denied_app": "No podemos usar la cámara. Valida con el PIN del pase o permite la cámara en los ajustes de la app.",
+  "door_open_settings": "Abrir ajustes"
 }

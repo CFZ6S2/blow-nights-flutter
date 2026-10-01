@@ -52,6 +52,8 @@ import 'screens/venues/venue_detail_screen.dart';
 import 'screens/visits/visits_screen.dart';
 import 'screens/venues/venues_screen.dart';
 import 'theme/app_theme.dart';
+import 'i18n/i18n.dart';
+import 'providers/platform_settings.dart';
 import 'widgets/common.dart';
 
 const webBase = 'https://blownights.com';
@@ -153,7 +155,7 @@ final Map<AppRoute, Widget Function(Map<String, String> args)> screenRegistry = 
   AppRoute.masterPartner: (_) => const MasterPartnerScreen(),
   AppRoute.venueAdmin: (_) => const VenueAdminScreen(),
   AppRoute.scanner: (a) => ScannerScreen(mode: a['mode'], deviceId: a['device']),
-  AppRoute.business: (a) => BusinessLoginScreen(refCode: a['ref']),
+  AppRoute.business: (a) => BusinessLoginScreen(refCode: a['ref'], initialType: a['type']),
   AppRoute.businessClaim: (a) => ClaimVenueScreen(venue: a['venue']),
   AppRoute.businessStripe: (a) => BusinessStripeScreen(refresh: a['refresh'] != null, returned: a['return'] != null),
   AppRoute.setupStripe: (_) => const SetupStripeScreen(),
@@ -195,6 +197,12 @@ class ShellController extends ChangeNotifier {
 
 /// [replace] swaps the current screen, like router.push after finishing a flow (create plan → manage, buy → pass).
 Future<void> openRoute(BuildContext context, AppRoute route, {Map<String, String> args = const {}, bool replace = false}) async {
+  // "Amigos cerca" stays closed until super-admin turns moduleFriendFinder on.
+  if ((route == AppRoute.friendGroups || route == AppRoute.friendGroup) &&
+      !context.read<PlatformSettings>().flag('moduleFriendFinder')) {
+    showToast(context, context.read<I18n>().t('finder.unavailable'));
+    return;
+  }
   final shell = context.read<ShellController>();
   final tab = tabRoutes.indexOf(route);
   if (tab >= 0 && shell.navVisible && args.isEmpty) {
