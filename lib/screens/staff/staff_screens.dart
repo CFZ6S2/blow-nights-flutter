@@ -143,7 +143,13 @@ class _StaffJoinScreenState extends State<StaffJoinScreen> {
                   Text(context.t('staff_app.scan_or_tap', fallback: 'Escanea el QR del local o acerca tu móvil al del encargado (NFC).'),
                       textAlign: TextAlign.center, style: tw(13, color: Tw.slate400)),
                   const SizedBox(height: 16),
-                  Center(child: QrCamera(paused: _checking, onCode: _found)),
+                  // QrCamera fills its box (StackFit.expand): it needs a bounded one inside the scroll view.
+                  Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(24),
+                      child: SizedBox(width: 280, height: 280, child: QrCamera(paused: _checking, onCode: _found, frameSize: 200)),
+                    ),
+                  ),
                   if (_checking) ...[
                     const SizedBox(height: 12),
                     Text(context.t('staff_join.loading', fallback: 'Comprobando la invitación…'), textAlign: TextAlign.center, style: tw(12, color: Tw.slate400)),
