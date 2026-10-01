@@ -197,10 +197,10 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  // radarVisible is the user's choice; online also needs the app open (AuthProvider presence).
+  // Visible unless turned off (radarVisible false); online also needs the app open (AuthProvider presence).
   bool get _isAvailable {
     final p = context.read<AuthProvider>().profile;
-    return _optimisticAvailable ?? (p == null ? false : (p.data['radarVisible'] as bool?) ?? p.online);
+    return _optimisticAvailable ?? (p?.radarVisible ?? false);
   }
   bool get _isVipUser => ['plus', 'black'].contains(context.read<AuthProvider>().profile?.membershipTier);
 
