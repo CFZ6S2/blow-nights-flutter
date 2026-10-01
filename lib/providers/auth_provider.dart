@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../models/user_model.dart';
 
-/// Port of frontend/src/context/AuthContext.tsx
-class AuthProvider extends ChangeNotifier {
+/// Port of frontend/src/context/AuthContext.tsx (with hooks/usePresence.ts: presence follows the app lifecycle).
+class AuthProvider extends ChangeNotifier with WidgetsBindingObserver {
   final _auth = FirebaseAuth.instance;
   final _db = FirebaseFirestore.instance;
   final _functions = FirebaseFunctions.instance;
@@ -22,8 +22,11 @@ class AuthProvider extends ChangeNotifier {
   StreamSubscription? _authSub;
   StreamSubscription? _profileSub;
   bool _googleReady = false;
+  bool _foreground = true;
+  bool? _onlineWritten;
 
   AuthProvider() {
+    WidgetsBinding.instance.addObserver(this);
     final failsafe = Timer(const Duration(seconds: 5), () {
       if (loading) {
         loading = false;
@@ -44,10 +47,12 @@ class AuthProvider extends ChangeNotifier {
       }
       user = u;
       _loadClaims(u);
+      _onlineWritten = null;
       _profileSub = _db.collection('users').doc(u.uid).snapshots().listen((doc) {
         profile = doc.exists ? UserProfile.fromDoc(doc) : null;
         loading = false;
         notifyListeners();
+        _syncPresence();
       }, onError: (_) {
         loading = false;
         notifyListeners();
@@ -147,8 +152,31 @@ class AuthProvider extends ChangeNotifier {
     if (u != null) await _loadClaims(u);
   }
 
+  // `online` (what the radar and the swipe list) = app in the foreground AND radarVisible (the user's choice).
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    final foreground = state == AppLifecycleState.resumed;
+    if (state == AppLifecycleState.inactive || foreground == _foreground) return;
+    _foreground = foreground;
+    _syncPresence();
+  }
+
+  Future<void> _syncPresence() async {
+    final u = user, p = profile;
+    if (u == null || p == null) return;
+    final online = _foreground && p.radarVisible;
+    if (online == _onlineWritten && online == p.online) return;
+    _onlineWritten = online;
+    try {
+      await _db.collection('users').doc(u.uid).set({'online': online, 'lastSeen': FieldValue.serverTimestamp()}, SetOptions(merge: true));
+    } catch (_) {
+      _onlineWritten = null;
+    }
+  }
+
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _authSub?.cancel();
     _profileSub?.cancel();
     super.dispose();

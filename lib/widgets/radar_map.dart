@@ -197,7 +197,11 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  bool get _isAvailable => _optimisticAvailable ?? (context.read<AuthProvider>().profile?.online ?? false);
+  // radarVisible is the user's choice; online also needs the app open (AuthProvider presence).
+  bool get _isAvailable {
+    final p = context.read<AuthProvider>().profile;
+    return _optimisticAvailable ?? (p == null ? false : (p.data['radarVisible'] as bool?) ?? p.online);
+  }
   bool get _isVipUser => ['plus', 'black'].contains(context.read<AuthProvider>().profile?.membershipTier);
 
   List<UserProfile> get _usersNearby => _rawUsers.where((u) => !_passed.contains(u.id) && !_liked.contains(u.id)).toList();
@@ -303,9 +307,9 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
       if (next) {
         final pos = await Geolocator.getCurrentPosition();
         await _db.collection('locations').doc(uid).set({'lat': pos.latitude, 'lng': pos.longitude, 'updatedAt': DateTime.now()});
-        await _db.collection('users').doc(uid).set({'online': true, 'lat': pos.latitude, 'lng': pos.longitude}, SetOptions(merge: true));
+        await _db.collection('users').doc(uid).set({'online': true, 'radarVisible': true, 'lat': pos.latitude, 'lng': pos.longitude}, SetOptions(merge: true));
       } else {
-        await _db.collection('users').doc(uid).set({'online': false}, SetOptions(merge: true));
+        await _db.collection('users').doc(uid).set({'online': false, 'radarVisible': false}, SetOptions(merge: true));
       }
       Future.delayed(const Duration(seconds: 1), () {
         if (mounted) setState(() => _optimisticAvailable = null);
