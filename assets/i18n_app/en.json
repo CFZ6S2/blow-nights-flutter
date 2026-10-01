@@ -77,5 +77,10 @@
     "error": "Something went wrong. Please try again."
   },
   "door_camera_denied_app": "We can't use the camera. Validate with the pass PIN or allow the camera in the app settings.",
-  "door_open_settings": "Open settings"
+  "door_open_settings": "Open settings",
+  "nfc_pass": {
+    "hint": "You can also tap your phone on the staff's phone (NFC).",
+    "empty_ticket": "That phone isn't showing a ticket. Ask them to open it and tap again.",
+    "empty_drink": "That phone isn't showing a drink. Ask them to open it and tap again."
+  }
 }

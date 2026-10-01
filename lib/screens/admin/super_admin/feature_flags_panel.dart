@@ -35,7 +35,7 @@ const _modules = [
     'monetizacion',
     Icons.account_balance_wallet,
     'Próxima Fase',
-    'Sistema de recarga de saldo digital o pulseras QR para consumir copas y botellas dentro de los locales adheridos.',
+    'Compra de consumiciones desde el móvil y canje en barra con QR o NFC, sin pulseras ni saldo.',
     'Al activarlo, se muestra la cartera cashless en el perfil y las taquillas de consumiciones.',
     'Mantener apagado hasta que los locales de la ciudad tengan formados a sus camareros con el datáfono/escáner.',
   ),

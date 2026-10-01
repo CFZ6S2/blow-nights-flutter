@@ -77,5 +77,10 @@
     "error": "Что-то пошло не так. Попробуй ещё раз."
   },
   "door_camera_denied_app": "We can't use the camera. Validate with the pass PIN or allow the camera in the app settings.",
-  "door_open_settings": "Open settings"
+  "door_open_settings": "Open settings",
+  "nfc_pass": {
+    "hint": "Можно также поднести телефон к телефону персонала (NFC).",
+    "empty_ticket": "На этом телефоне не открыт билет. Попросите открыть его и поднести снова.",
+    "empty_drink": "На этом телефоне не открыт напиток. Попросите открыть его и поднести снова."
+  }
 }

@@ -77,5 +77,10 @@
     "error": "حدث خطأ ما. حاول مرة أخرى."
   },
   "door_camera_denied_app": "We can't use the camera. Validate with the pass PIN or allow the camera in the app settings.",
-  "door_open_settings": "Open settings"
+  "door_open_settings": "Open settings",
+  "nfc_pass": {
+    "hint": "يمكنك أيضًا تقريب هاتفك من هاتف الموظفين (NFC).",
+    "empty_ticket": "هذا الهاتف لا يعرض أي تذكرة. اطلب فتحها وتقريب الهاتف مرة أخرى.",
+    "empty_drink": "هذا الهاتف لا يعرض أي مشروب. اطلب فتحه وتقريب الهاتف مرة أخرى."
+  }
 }

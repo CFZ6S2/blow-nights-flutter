@@ -77,5 +77,10 @@
     "error": "Qualcosa è andato storto. Riprova."
   },
   "door_camera_denied_app": "We can't use the camera. Validate with the pass PIN or allow the camera in the app settings.",
-  "door_open_settings": "Open settings"
+  "door_open_settings": "Open settings",
+  "nfc_pass": {
+    "hint": "Puoi anche avvicinare il tuo telefono a quello dello staff (NFC).",
+    "empty_ticket": "Quel telefono non mostra nessun biglietto. Chiedi di aprirlo e riavvicinare il telefono.",
+    "empty_drink": "Quel telefono non mostra nessuna consumazione. Chiedi di aprirla e riavvicinare il telefono."
+  }
 }

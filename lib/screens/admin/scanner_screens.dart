@@ -10,6 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../i18n/i18n.dart';
 import '../../navigation.dart';
 import '../../providers/auth_provider.dart';
+import '../../services/nfc_pass.dart';
 import '../../services/nfc_reader.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/admin_ui.dart';
@@ -37,7 +38,19 @@ Future<void> scanFeedback(bool valid) async {
 
 String normalizeScan(String raw) => raw.trim().replaceAll(RegExp(r'[\r\n]+'), '').replaceFirst(RegExp(r'^BN:', caseSensitive: false), '');
 
-/// Serial-number NFC tags are resolved to a QR token first (resolveNFCTag), like the web.
+/// Serial-number NFC tags are resolved to a QR token first (resolveNFCTag), like the web. A phone tapped on the scanner
+/// (services/nfc_pass.dart) hands over the QR's own code, which needs nothing.
+/// A phone tapped on the scanner that isn't showing a ticket (or a drink, at the bar).
+void nfcPassEmpty(BuildContext context, {bool drink = false}) {
+  if (!context.mounted) return;
+  unawaited(scanFeedback(false));
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    content: Text(drink
+        ? context.t('nfc_pass.empty_drink', fallback: 'Ese móvil no está mostrando ninguna consumición. Que la abra y vuelva a acercarlo.')
+        : context.t('nfc_pass.empty_ticket', fallback: 'Ese móvil no está mostrando ninguna entrada. Que la abra y vuelva a acercarlo.')),
+  ));
+}
+
 Future<String> resolveNfcToken(String token, String type) async {
   if (type == 'serial') {
     try {
@@ -171,7 +184,7 @@ class _DoorScreenState extends State<DoorScreen> {
 
   @override
   void dispose() {
-    NfcReader.stop();
+    NfcPass.stop();
     super.dispose();
   }
 
@@ -190,7 +203,7 @@ class _DoorScreenState extends State<DoorScreen> {
           _authorized = true;
           _eventTitle = (res['title'] as String?) ?? _i18n.t('door_event', fallback: 'Evento');
         });
-        _nfcSupported = await NfcReader.start((token, type) async => _handleScan(await resolveNfcToken(token, type)));
+        _nfcSupported = await NfcPass.read((token, type) async => _handleScan(await resolveNfcToken(token, type)), onEmpty: () => nfcPassEmpty(context));
         if (mounted) setState(() {});
       } else {
         setState(() => _authError = _i18n.t('door_token_expired', fallback: 'Token de puerta inválido o expirado.'));
@@ -404,11 +417,11 @@ class _DoorScreenState extends State<DoorScreen> {
                     margin: const EdgeInsets.only(right: 8),
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                     decoration: BoxDecoration(
-                      color: NfcReader.active ? Tw.emerald500.withValues(alpha: 0.1) : Tw.w(0.05),
+                      color: NfcPass.reading ? Tw.emerald500.withValues(alpha: 0.1) : Tw.w(0.05),
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: NfcReader.active ? Tw.emerald500.withValues(alpha: 0.3) : Tw.w(0.1)),
+                      border: Border.all(color: NfcPass.reading ? Tw.emerald500.withValues(alpha: 0.3) : Tw.w(0.1)),
                     ),
-                    child: Icon(Icons.nfc, size: 16, color: NfcReader.active ? Tw.emerald400 : Tw.slate600),
+                    child: Icon(Icons.nfc, size: 16, color: NfcPass.reading ? Tw.emerald400 : Tw.slate600),
                   ),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -514,7 +527,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
   @override
   void dispose() {
     _reset?.cancel();
-    NfcReader.stop();
+    NfcPass.stop();
     _manual.dispose();
     _hw.dispose();
     _hwFocus.dispose();
@@ -560,14 +573,14 @@ class _ScannerScreenState extends State<ScannerScreen> {
   }
 
   Future<void> _setMode(String m) async {
-    if (m != 'nfc') await NfcReader.stop();
+    if (m != 'nfc') await NfcPass.stop();
     setState(() {
       if (m != 'camera') _cameraOn = false;
       _mode = m;
       _result = null;
     });
     if (m == 'nfc') {
-      await NfcReader.start((token, type) async => _validate(await resolveNfcToken(token, type), 'nfc'));
+      await NfcPass.read((token, type) async => _validate(await resolveNfcToken(token, type), 'nfc'), onEmpty: () => nfcPassEmpty(context));
       if (mounted) setState(() {});
     }
     if (m == 'hardware') _hwFocus.requestFocus();
@@ -705,7 +718,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
           child: Column(children: [
             Stack(clipBehavior: Clip.none, children: [
               Icon(Icons.nfc, size: 72, color: Tw.fuchsia500.withValues(alpha: 0.6)),
-              if (NfcReader.active)
+              if (NfcPass.reading)
                 Positioned(
                   top: -2,
                   right: -2,
@@ -720,7 +733,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
             Text(_validating ? context.t('scanner_validating', fallback: 'Validando...') : context.t('scanner_nfc_prompt', fallback: 'Acerca el tag NFC al dispositivo'),
                 textAlign: TextAlign.center, style: tw(16, weight: bold, color: Tw.slate400)),
             const SizedBox(height: 8),
-            Text(NfcReader.active ? context.t('scanner_nfc_listening', fallback: 'Escuchando NFC...') : context.t('scanner_nfc_starting', fallback: 'Iniciando lector NFC...'),
+            Text(NfcPass.reading ? context.t('scanner_nfc_listening', fallback: 'Escuchando NFC...') : context.t('scanner_nfc_starting', fallback: 'Iniciando lector NFC...'),
                 style: tw(10, color: Tw.slate600)),
           ]),
         ),

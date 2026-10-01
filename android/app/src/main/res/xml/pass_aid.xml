@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- AID F0 + "BNPASS": must match pass/PassHceService.AID and lib/services/nfc_pass.dart.
+     Unlock required: an entry ticket or a drink is only handed over from an unlocked phone. -->
+<host-apdu-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:description="@string/pass_hce_description"
+    android:requireDeviceUnlock="true">
+    <aid-group
+        android:category="other"
+        android:description="@string/pass_hce_description">
+        <aid-filter android:name="F0424E50415353" />
+    </aid-group>
+</host-apdu-service>

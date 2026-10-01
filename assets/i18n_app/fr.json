@@ -77,5 +77,10 @@
     "error": "Une erreur s'est produite. Réessaie."
   },
   "door_camera_denied_app": "We can't use the camera. Validate with the pass PIN or allow the camera in the app settings.",
-  "door_open_settings": "Open settings"
+  "door_open_settings": "Open settings",
+  "nfc_pass": {
+    "hint": "Vous pouvez aussi approcher votre téléphone de celui du personnel (NFC).",
+    "empty_ticket": "Ce téléphone n'affiche aucun billet. Demandez de l'ouvrir et de rapprocher le téléphone.",
+    "empty_drink": "Ce téléphone n'affiche aucune consommation. Demandez de l'ouvrir et de rapprocher le téléphone."
+  }
 }

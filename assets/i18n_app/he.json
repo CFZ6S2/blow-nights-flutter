@@ -77,5 +77,10 @@
     "error": "משהו השתבש. נסו שוב."
   },
   "door_camera_denied_app": "We can't use the camera. Validate with the pass PIN or allow the camera in the app settings.",
-  "door_open_settings": "Open settings"
+  "door_open_settings": "Open settings",
+  "nfc_pass": {
+    "hint": "אפשר גם לקרב את הטלפון שלך לטלפון של הצוות (NFC).",
+    "empty_ticket": "הטלפון הזה לא מציג כרטיס. בקשו לפתוח אותו ולקרב שוב.",
+    "empty_drink": "הטלפון הזה לא מציג משקה. בקשו לפתוח אותו ולקרב שוב."
+  }
 }

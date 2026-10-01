@@ -10,8 +10,10 @@ import '../../i18n/i18n.dart';
 import '../../models/firestore_utils.dart';
 import '../../navigation.dart';
 import '../../providers/auth_provider.dart';
+import '../../services/nfc_pass.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/common.dart';
+import '../../widgets/dynamic_qr.dart' show NfcPassHint;
 
 /// Listens to `checkins/{uid}`; shared by Mis Copas and the bar order page.
 Stream<Map<String, dynamic>?> checkinStream(String uid) =>
@@ -480,7 +482,8 @@ Widget _pill(String text, Color fg, Color base, {double radius = 99}) => Contain
       child: Text(text, style: tw(9, weight: bold, color: fg)),
     );
 
-/// The dynamic QR sheet: token signed by getConsumptionEntitlementQr, rotated every 60s.
+/// The dynamic QR sheet: token signed by getConsumptionEntitlementQr, rotated every 60s. On Android the same token is
+/// also handed over by NFC while the sheet is open (services/nfc_pass.dart).
 class _ConsumptionQrSheet extends StatefulWidget {
   final Map<String, dynamic> ticket;
   const _ConsumptionQrSheet({required this.ticket});
@@ -517,6 +520,7 @@ class _ConsumptionQrSheetState extends State<_ConsumptionQrSheet> {
 
   @override
   void dispose() {
+    NfcPass.hide(this);
     _timer?.cancel();
     super.dispose();
   }
@@ -548,7 +552,10 @@ class _ConsumptionQrSheetState extends State<_ConsumptionQrSheet> {
       _qr = 'dyn:$_id:${DateTime.now().millisecondsSinceEpoch}';
       _countdown = 60;
     } finally {
-      if (mounted) setState(() => _qrLoading = false);
+      if (mounted) {
+        setState(() => _qrLoading = false);
+        if (!_used) NfcPass.show(this, _qr);
+      }
     }
   }
 
@@ -619,6 +626,7 @@ class _ConsumptionQrSheetState extends State<_ConsumptionQrSheet> {
                         Text(_pin!, style: tw(16, weight: black, color: Tw.amber400, tracking: 0.1).copyWith(fontFamily: 'monospace')),
                       ]),
                     ),
+                  if (!_used && NfcPass.available) const NfcPassHint(),
                   if (!_used)
                     Padding(
                       padding: const EdgeInsets.only(top: 12),
