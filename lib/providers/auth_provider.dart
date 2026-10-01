@@ -152,7 +152,7 @@ class AuthProvider extends ChangeNotifier with WidgetsBindingObserver {
     if (u != null) await _loadClaims(u);
   }
 
-  // `online` (what the radar and the swipe list) = app in the foreground AND radarVisible (the user's choice).
+  // `online` (what the radar and the swipe list) = app in the foreground AND visible (radarVisible not false).
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     final foreground = state == AppLifecycleState.resumed;

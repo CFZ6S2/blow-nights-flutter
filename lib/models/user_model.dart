@@ -22,8 +22,8 @@ class UserProfile {
   String? get cityId => data['cityId'] as String?;
   String? get role => data['role'] as String?;
   bool get online => data['online'] == true;
-  /// The radar visibility toggle: the user chose to be seen. `online` also needs the app open (AuthProvider).
-  bool get radarVisible => data['radarVisible'] == true;
+  /// The radar visibility toggle; visible unless turned off. `online` also needs the app open (AuthProvider).
+  bool get radarVisible => data['radarVisible'] != false;
   bool get verified => data['verified'] == true;
   String? get verificationStatus => data['verificationStatus'] as String?;
   bool get ghostMode => data['ghostMode'] == true;
