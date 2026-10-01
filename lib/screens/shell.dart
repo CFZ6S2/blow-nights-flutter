@@ -11,6 +11,7 @@ import '../providers/auth_provider.dart';
 import '../providers/city_provider.dart';
 import '../providers/venues_provider.dart';
 import '../services/nearby.dart';
+import '../services/push_sync.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
 import 'events/events_screen.dart';
@@ -97,8 +98,18 @@ class _MainShellState extends State<MainShell> {
     final shell = context.watch<ShellController>();
     final cityId = context.select<CityProvider, String?>((c) => c.cityId);
     final center = context.select<CityProvider, GeoPos?>((c) => c.center);
+    final profile = auth.profile;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) context.read<VenuesProvider>().setZone(center, cityId);
+      // Push token and approximate position for venue promos (services/push_sync.dart), once the profile is known.
+      if (auth.user == null || profile != null) {
+        PushSync.start(
+          auth.user?.uid,
+          notificationsOff: profile?.data['notificationsEnabled'] == false,
+          savedToken: profile?.data['fcmToken'] as String?,
+          staff: auth.role == 'door',
+        );
+      }
     });
 
     final showNav = auth.user != null && auth.role != 'venueOwner';

@@ -46,7 +46,10 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
   final _promo = TextEditingController();
   int _promoRadius = 5;
   bool _sendingPromo = false;
-  bool _promoSent = false;
+  /// What sendPromoNotification wrote back on the promo ({status, delivered}); {'status': 'pending'} until then.
+  Map<String, dynamic>? _promoResult;
+  StreamSubscription? _promoWatch;
+  Timer? _promoGiveUp;
   String _tab = 'overview';
   bool _checkingOut = false;
   bool _updatingTier = false;
@@ -80,6 +83,7 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
     _venuesSub?.cancel();
     _checkinsSub?.cancel();
     _ticketsSub?.cancel();
+    _stopPromoWatch();
     _promo.dispose();
     super.dispose();
   }
@@ -167,12 +171,32 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
     }
   }
 
+  void _stopPromoWatch() {
+    _promoWatch?.cancel();
+    _promoWatch = null;
+    _promoGiveUp?.cancel();
+    _promoGiveUp = null;
+  }
+
+  String _promoResultText(BuildContext context, Map<String, dynamic> r) {
+    final delivered = asInt(r['delivered']);
+    return switch (r['status']) {
+      'pending' => context.t('venue_admin_promo_sending'),
+      'no_location' => context.t('venue_admin_promo_no_location',
+          fallback: 'El local no tiene ubicación en el mapa, así que no se puede saber quién está cerca.'),
+      _ when delivered > 0 =>
+        context.t('venue_admin_promo_reached', fallback: 'Enviada a {{count}} personas cerca', count: delivered),
+      _ => context.t('venue_admin_promo_nobody',
+          fallback: 'Ahora mismo no hay nadie cerca con las notificaciones activadas: no ha llegado a nadie.'),
+    };
+  }
+
   Future<void> _sendPromotion() async {
     final v = _venue;
     if (v == null || _promo.text.trim().isEmpty || _sendingPromo) return;
     setState(() => _sendingPromo = true);
     try {
-      await _db.collection('promotions').add({
+      final ref = await _db.collection('promotions').add({
         'venueId': v['id'],
         'venueOwnerId': context.read<AuthProvider>().user!.uid,
         'cityId': v['cityId'] ?? '',
@@ -182,9 +206,21 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
         'createdAt': FieldValue.serverTimestamp(),
       });
       _promo.clear();
-      setState(() => _promoSent = true);
-      Future.delayed(const Duration(seconds: 3), () {
-        if (mounted) setState(() => _promoSent = false);
+      _stopPromoWatch();
+      setState(() => _promoResult = {'status': 'pending'});
+      // The server answers in seconds; past 30 s the panel stops waiting.
+      _promoGiveUp = Timer(const Duration(seconds: 30), () {
+        _stopPromoWatch();
+        if (mounted) setState(() => _promoResult = null);
+      });
+      _promoWatch = ref.snapshots().listen((snap) {
+        final data = snap.data();
+        if (data?['status'] == null) return;
+        _stopPromoWatch();
+        if (mounted) setState(() => _promoResult = {'status': data!['status'], 'delivered': asInt(data['delivered'])});
+      }, onError: (_) {
+        _stopPromoWatch();
+        if (mounted) setState(() => _promoResult = null);
       });
     } catch (e) {
       debugPrint('Error sending promotion: $e');
@@ -823,11 +859,19 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
             onTap: _promo.text.trim().isEmpty || _sendingPromo ? null : _sendPromotion,
           ),
           AnimatedOpacity(
-            opacity: _promoSent ? 1 : 0,
+            opacity: _promoResult != null ? 1 : 0,
             duration: const Duration(milliseconds: 300),
             child: Padding(
               padding: const EdgeInsets.only(top: 12),
-              child: Text(context.t('venue_admin_promo_sent'), textAlign: TextAlign.center, style: tw(12, weight: bold, color: Tw.green400)),
+              child: _promoResult == null
+                  ? const SizedBox.shrink()
+                  : Text(
+                      _promoResultText(context, _promoResult!),
+                      textAlign: TextAlign.center,
+                      style: tw(12,
+                          weight: bold,
+                          color: _promoResult!['status'] == 'sent' && asInt(_promoResult!['delivered']) > 0 ? Tw.green400 : Tw.amber400),
+                    ),
             ),
           ),
         ]),
