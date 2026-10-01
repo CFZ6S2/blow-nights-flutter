@@ -82,5 +82,10 @@
     "hint": "You can also tap your phone on the staff's phone (NFC).",
     "empty_ticket": "That phone isn't showing a ticket. Ask them to open it and tap again.",
     "empty_drink": "That phone isn't showing a drink. Ask them to open it and tap again."
+  },
+  "staff_app": {
+    "entry": "I work at a venue",
+    "scan_or_tap": "Scan the venue's QR or tap your phone on the manager's phone (NFC).",
+    "not_invite": "That's not a staff invite."
   }
 }

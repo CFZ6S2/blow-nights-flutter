@@ -198,7 +198,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       (context.t('profile.edit_profile', fallback: 'Ajustes'), Icons.settings, AppRoute.setupProfile, const Color(0xFFE2E8F0)),
       if (p.role == 'venueOwner' || p.role == 'admin')
         (context.t('profile.venue_panel', fallback: 'Panel de Local'), Icons.storefront, AppRoute.venueAdmin, Tw.fuchsia400),
-      if (p.role == 'door' || p.role == 'admin')
+      if (p.role == 'door')
+        (context.t('profile.staff_scanners', fallback: 'Escáneres del local'), Icons.qr_code_scanner, AppRoute.staffHome, Tw.fuchsia400),
+      if (p.role == 'admin')
         (context.t('profile.scan_tickets', fallback: 'Escanear Entradas'), Icons.qr_code_scanner, AppRoute.scanner, Tw.fuchsia400),
       if (p.role == 'rrpp') (context.t('rrpp_panel_title', fallback: 'RRPP independiente'), Icons.confirmation_number, AppRoute.pr, Tw.emerald400),
       if (_hasDoors) (context.t('door_my_doors', fallback: 'Mis puertas'), Icons.qr_code_scanner, AppRoute.door, Tw.teal400),

@@ -82,5 +82,10 @@
     "hint": "També pots apropar el teu mòbil al del personal (NFC).",
     "empty_ticket": "Aquest mòbil no mostra cap entrada. Que l'obri i el torni a apropar.",
     "empty_drink": "Aquest mòbil no mostra cap consumició. Que l'obri i el torni a apropar."
+  },
+  "staff_app": {
+    "entry": "Soc personal d'un local",
+    "scan_or_tap": "Escaneja el QR del local o apropa el teu mòbil al de l'encarregat (NFC).",
+    "not_invite": "Això no és una invitació de personal."
   }
 }

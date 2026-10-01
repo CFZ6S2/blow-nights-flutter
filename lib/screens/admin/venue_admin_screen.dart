@@ -8,6 +8,7 @@ import '../../i18n/i18n.dart';
 import '../../models/firestore_utils.dart';
 import '../../navigation.dart';
 import '../../providers/auth_provider.dart';
+import '../../providers/platform_settings.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/admin_ui.dart';
 import '../../widgets/common.dart';
@@ -378,6 +379,9 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
                 item(context.t('venue_admin_manage_plan'), Icons.settings, false, _checkingOut ? () {} : _manageSubscription),
               if (v?['subscriptionTier'] == 'ticketing' || canBypass)
                 item(context.t('venue_admin_scan'), Icons.qr_code_scanner, false, () => openRoute(context, AppRoute.scanner), color: Tw.fuchsia400),
+              if (v?['id'] is String && context.watch<PlatformSettings>().flag('moduleCashless'))
+                item(context.t('venue_admin_scan_drinks', fallback: 'Escanear consumiciones'), Icons.local_bar, false,
+                    () => openRoute(context, AppRoute.barScanner, args: {'venue': v!['id'] as String}), color: Tw.emerald400),
               const SizedBox(height: 8),
               const AdminTopBar(),
               const SizedBox(height: 8),

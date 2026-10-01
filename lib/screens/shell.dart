@@ -18,6 +18,7 @@ import 'home/city_home_screen.dart';
 import 'landing/landing_screen.dart';
 import 'profile/profile_screen.dart';
 import 'setup/setup_profile_screen.dart';
+import 'staff/staff_screens.dart';
 import 'venues/venues_screen.dart';
 
 /// Root: splash while auth resolves, then the tabbed shell.
@@ -31,6 +32,8 @@ class RootGate extends StatelessWidget {
     if (auth.loading) return const SplashScreen();
     if (auth.user == null && !shell.landingDismissed) return LandingScreen(onEnter: shell.dismissLanding);
     if (needsProfileSetup(auth)) return const SetupProfileScreen();
+    // Venue staff (invite or door account) open the app straight into their scanners.
+    if (auth.role == 'door' && auth.claims?['venueId'] is String) return const StaffHomeScreen();
     return const MainShell();
   }
 }

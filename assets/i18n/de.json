@@ -162,7 +162,8 @@
     "city_permanent": "Deine Stadt ist dauerhaft",
     "my_plans": "Meine Schüttelfrost",
     "my_tickets": "Meine Einträge",
-    "my_chats": "Meine Chats"
+    "my_chats": "Meine Chats",
+    "staff_scanners": "Scanner des Lokals"
   },
   "chat": {
     "title": "Deine Chats",
@@ -3200,5 +3201,47 @@
   "business_login_become_rrpp": "Ich bin unabhängiger Promoter",
   "business_login_become_rrpp_desc": "Ohne feste Location oder mit einer, die nicht in der App ist. QR-Pässe für 0,50 € für deine Events; kassieren tust du außerhalb der App.",
   "landing_clubs_cta_rrpp": "Ich bin Promoter",
-  "map_rrpp_party": "Promoter-Party · Eintritt über den Promoter"
+  "map_rrpp_party": "Promoter-Party · Eintritt über den Promoter",
+  "staff_invite": {
+    "title": "Personal hinzufügen",
+    "desc": "Erstelle einen QR-Code, mit dem dein Team nur mit seinem Namen reinkommt, ohne E-Mail oder Passwort. 24 Stunden gültig, für mehrere Personen.",
+    "scope_door": "Tür (Tickets)",
+    "scope_bar": "Bar (Getränke)",
+    "pick_scope": "Wähle Tür, Bar oder beides.",
+    "create": "QR erstellen",
+    "scan_hint": "Mit der Handykamera scannen oder in der App unter „Ich arbeite in einem Lokal“.",
+    "nfc_hint": "In der Android-App kannst du dein Handy auch an das des Mitarbeiters halten (NFC).",
+    "copy": "Link kopieren",
+    "copied": "Link kopiert",
+    "whatsapp": "Per WhatsApp senden",
+    "whatsapp_text": "Komm ins Team von {{venue}} auf Blow Nights:",
+    "expires": "Läuft ab: {{time}}",
+    "uses": "Beigetreten: {{count}}",
+    "revoke": "Deaktivieren",
+    "revoked": "Einladung deaktiviert",
+    "live_title": "Aktive Einladungen",
+    "error": "Die Einladung konnte nicht erstellt werden.",
+    "joined_by_invite": "Per Einladung beigetreten"
+  },
+  "staff_join": {
+    "title": "Tritt dem Team bei",
+    "subtitle": "Personal von {{venue}}",
+    "scopes": "Du kannst scannen:",
+    "name_label": "Dein Name",
+    "name_placeholder": "z. B. Laura",
+    "cta": "Los geht's",
+    "session_note": "Ist auf diesem Gerät jemand angemeldet, wird er abgemeldet.",
+    "invalid": "Diese Einladung ist ungültig oder abgelaufen. Bitte das Lokal um eine neue.",
+    "loading": "Einladung wird geprüft…"
+  },
+  "staff_home": {
+    "title": "Personal von {{venue}}",
+    "door": "Tür",
+    "door_desc": "Tickets prüfen",
+    "bar": "Bar",
+    "bar_desc": "Getränke einlösen",
+    "logout": "Abmelden",
+    "not_staff": "Dieser Bildschirm ist für das Personal eines Lokals. Bitte das Lokal um einen Zugangs-QR."
+  },
+  "venue_admin_scan_drinks": "Getränke scannen"
 }

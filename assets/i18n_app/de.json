@@ -82,5 +82,10 @@
     "hint": "Du kannst dein Handy auch an das Handy des Personals halten (NFC).",
     "empty_ticket": "Dieses Handy zeigt kein Ticket. Bitte öffnen lassen und erneut daranhalten.",
     "empty_drink": "Dieses Handy zeigt kein Getränk. Bitte öffnen lassen und erneut daranhalten."
+  },
+  "staff_app": {
+    "entry": "Ich arbeite in einem Lokal",
+    "scan_or_tap": "Scanne den QR-Code des Lokals oder halte dein Handy an das des Chefs (NFC).",
+    "not_invite": "Das ist keine Personaleinladung."
   }
 }

@@ -82,5 +82,10 @@
     "hint": "Também podes aproximar o teu telemóvel ao do pessoal (NFC).",
     "empty_ticket": "Esse telemóvel não está a mostrar nenhum bilhete. Pede para o abrir e voltar a aproximar.",
     "empty_drink": "Esse telemóvel não está a mostrar nenhuma bebida. Pede para a abrir e voltar a aproximar."
+  },
+  "staff_app": {
+    "entry": "Trabalho num espaço",
+    "scan_or_tap": "Digitaliza o QR do espaço ou aproxima o teu telemóvel ao do responsável (NFC).",
+    "not_invite": "Isso não é um convite de equipa."
   }
 }

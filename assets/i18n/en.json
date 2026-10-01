@@ -126,7 +126,8 @@
     "city_permanent": "Your city is permanent",
     "my_plans": "My Chills",
     "my_tickets": "My Entries",
-    "my_chats": "My Chats"
+    "my_chats": "My Chats",
+    "staff_scanners": "Venue scanners"
   },
   "chat": {
     "title": "Your Chats",
@@ -2634,7 +2635,6 @@
     "city_label_short": "City:",
     "owner_label": "Owner:",
     "assign_btn": "Assign",
-    "delete_btn": "Delete",
     "search_nick_email": "Search by nickname or email...",
     "choose_btn": "Choose",
     "metrics_loading": "Loading metrics...",
@@ -3163,5 +3163,47 @@
   "business_login_become_rrpp": "I'm an independent promoter",
   "business_login_become_rrpp_desc": "No fixed venue, or one that isn't in the app. QR passes at €0.50 for your events; you charge outside the app.",
   "landing_clubs_cta_rrpp": "I'm a promoter",
-  "map_rrpp_party": "Promoter party · entry through the promoter"
+  "map_rrpp_party": "Promoter party · entry through the promoter",
+  "staff_invite": {
+    "title": "Add staff",
+    "desc": "Create a QR so your team gets in with just their name, no email or password. Valid for 24 hours and for several people.",
+    "scope_door": "Door (tickets)",
+    "scope_bar": "Bar (drinks)",
+    "pick_scope": "Pick door, bar or both.",
+    "create": "Create QR",
+    "scan_hint": "They scan it with the phone camera or in the app, under \"I work at a venue\".",
+    "nfc_hint": "From the Android app you can also tap your phone on the employee's phone (NFC).",
+    "copy": "Copy link",
+    "copied": "Link copied",
+    "whatsapp": "Send by WhatsApp",
+    "whatsapp_text": "Join the {{venue}} team on Blow Nights:",
+    "expires": "Expires: {{time}}",
+    "uses": "Joined: {{count}}",
+    "revoke": "Switch off",
+    "revoked": "Invite switched off",
+    "live_title": "Live invites",
+    "error": "The invite couldn't be created.",
+    "joined_by_invite": "Joined by invite"
+  },
+  "staff_join": {
+    "title": "Join the team",
+    "subtitle": "{{venue}} staff",
+    "scopes": "You'll be able to scan:",
+    "name_label": "Your name",
+    "name_placeholder": "e.g. Laura",
+    "cta": "Get in",
+    "session_note": "If someone is signed in on this device, they'll be signed out.",
+    "invalid": "This invite isn't valid or has expired. Ask the venue for a new one.",
+    "loading": "Checking the invite…"
+  },
+  "staff_home": {
+    "title": "{{venue}} staff",
+    "door": "Door",
+    "door_desc": "Validate tickets",
+    "bar": "Bar",
+    "bar_desc": "Redeem drinks",
+    "logout": "Sign out",
+    "not_staff": "This screen is for a venue's staff. Ask the venue for an access QR."
+  },
+  "venue_admin_scan_drinks": "Scan drinks"
 }

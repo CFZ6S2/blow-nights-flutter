@@ -129,7 +129,8 @@
     "city_permanent": "Sua cidade é permanente",
     "my_plans": "Meus arrepios",
     "my_tickets": "Minhas entradas",
-    "my_chats": "Meus bate-papos"
+    "my_chats": "Meus bate-papos",
+    "staff_scanners": "Leitores do espaço"
   },
   "chat": {
     "title": "Seus Chats",
@@ -3167,5 +3168,47 @@
   "business_login_become_rrpp": "Sou promotor independente",
   "business_login_become_rrpp_desc": "Sem espaço fixo ou com um que não está na app. Passes QR a 0,50 € para os teus eventos; cobras tu por fora.",
   "landing_clubs_cta_rrpp": "Sou promotor",
-  "map_rrpp_party": "Festa de promotor · entrada com o promotor"
+  "map_rrpp_party": "Festa de promotor · entrada com o promotor",
+  "staff_invite": {
+    "title": "Adicionar equipa",
+    "desc": "Gera um QR para a tua equipa entrar só com o nome, sem email nem palavra-passe. Válido 24 horas e para várias pessoas.",
+    "scope_door": "Porta (bilhetes)",
+    "scope_bar": "Bar (bebidas)",
+    "pick_scope": "Escolhe porta, bar ou ambos.",
+    "create": "Gerar QR",
+    "scan_hint": "Digitalizam-no com a câmara do telemóvel ou na app, em «Trabalho num espaço».",
+    "nfc_hint": "Na app Android também podes aproximar o teu telemóvel ao do funcionário (NFC).",
+    "copy": "Copiar link",
+    "copied": "Link copiado",
+    "whatsapp": "Enviar por WhatsApp",
+    "whatsapp_text": "Junta-te à equipa de {{venue}} na Blow Nights:",
+    "expires": "Expira: {{time}}",
+    "uses": "Entraram: {{count}}",
+    "revoke": "Desativar",
+    "revoked": "Convite desativado",
+    "live_title": "Convites ativos",
+    "error": "Não foi possível gerar o convite.",
+    "joined_by_invite": "Entrada por convite"
+  },
+  "staff_join": {
+    "title": "Junta-te à equipa",
+    "subtitle": "Equipa de {{venue}}",
+    "scopes": "Vais poder digitalizar:",
+    "name_label": "O teu nome",
+    "name_placeholder": "Ex. Laura",
+    "cta": "Entrar",
+    "session_note": "Se houver uma sessão aberta neste dispositivo, será terminada.",
+    "invalid": "Este convite não é válido ou expirou. Pede outro ao espaço.",
+    "loading": "A verificar o convite…"
+  },
+  "staff_home": {
+    "title": "Equipa de {{venue}}",
+    "door": "Porta",
+    "door_desc": "Validar bilhetes",
+    "bar": "Bar",
+    "bar_desc": "Trocar bebidas",
+    "logout": "Terminar sessão",
+    "not_staff": "Este ecrã é para a equipa de um espaço. Pede ao espaço um QR de acesso."
+  },
+  "venue_admin_scan_drinks": "Digitalizar bebidas"
 }

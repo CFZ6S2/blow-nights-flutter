@@ -129,7 +129,8 @@
     "city_permanent": "La tua città è permanente",
     "my_plans": "I miei brividi",
     "my_tickets": "Le mie voci",
-    "my_chats": "Le mie chat"
+    "my_chats": "Le mie chat",
+    "staff_scanners": "Scanner del locale"
   },
   "chat": {
     "title": "Le Tue Chat",
@@ -3167,5 +3168,47 @@
   "business_login_become_rrpp": "Sono un PR indipendente",
   "business_login_become_rrpp_desc": "Senza locale fisso o con uno che non è nell'app. Pass QR a 0,50 € per i tuoi eventi; incassi tu fuori dall'app.",
   "landing_clubs_cta_rrpp": "Sono un PR",
-  "map_rrpp_party": "Festa PR · ingresso tramite il PR"
+  "map_rrpp_party": "Festa PR · ingresso tramite il PR",
+  "staff_invite": {
+    "title": "Aggiungi personale",
+    "desc": "Genera un QR perché il tuo team entri solo con il nome, senza email né password. Vale 24 ore e per più persone.",
+    "scope_door": "Ingresso (biglietti)",
+    "scope_bar": "Bar (consumazioni)",
+    "pick_scope": "Scegli ingresso, bar o entrambi.",
+    "create": "Genera QR",
+    "scan_hint": "Lo scansionano con la fotocamera del telefono o nell'app, in «Lavoro in un locale».",
+    "nfc_hint": "Dall'app Android puoi anche avvicinare il tuo telefono a quello del dipendente (NFC).",
+    "copy": "Copia link",
+    "copied": "Link copiato",
+    "whatsapp": "Invia su WhatsApp",
+    "whatsapp_text": "Unisciti allo staff di {{venue}} su Blow Nights:",
+    "expires": "Scade: {{time}}",
+    "uses": "Iscritti: {{count}}",
+    "revoke": "Disattiva",
+    "revoked": "Invito disattivato",
+    "live_title": "Inviti attivi",
+    "error": "Impossibile creare l'invito.",
+    "joined_by_invite": "Iscritto con invito"
+  },
+  "staff_join": {
+    "title": "Unisciti allo staff",
+    "subtitle": "Staff di {{venue}}",
+    "scopes": "Potrai scansionare:",
+    "name_label": "Il tuo nome",
+    "name_placeholder": "Es. Laura",
+    "cta": "Entra",
+    "session_note": "Se su questo dispositivo c'è una sessione aperta, verrà chiusa.",
+    "invalid": "Questo invito non è valido o è scaduto. Chiedine un altro al locale.",
+    "loading": "Verifica dell'invito…"
+  },
+  "staff_home": {
+    "title": "Staff di {{venue}}",
+    "door": "Ingresso",
+    "door_desc": "Convalida biglietti",
+    "bar": "Bar",
+    "bar_desc": "Riscatta consumazioni",
+    "logout": "Esci",
+    "not_staff": "Questa schermata è per lo staff di un locale. Chiedi al locale un QR di accesso."
+  },
+  "venue_admin_scan_drinks": "Scansiona consumazioni"
 }

@@ -82,5 +82,10 @@
     "hint": "Poți și să apropii telefonul de cel al personalului (NFC).",
     "empty_ticket": "Telefonul acela nu afișează niciun bilet. Roagă să fie deschis și apropiat din nou.",
     "empty_drink": "Telefonul acela nu afișează nicio consumație. Roagă să fie deschisă și apropie telefonul din nou."
+  },
+  "staff_app": {
+    "entry": "Lucrez într-un local",
+    "scan_or_tap": "Scanează QR-ul localului sau apropie telefonul de cel al responsabilului (NFC).",
+    "not_invite": "Asta nu este o invitație pentru personal."
   }
 }

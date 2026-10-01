@@ -9,6 +9,7 @@ import '../../../navigation.dart';
 import '../../../theme/app_theme.dart';
 import '../../../widgets/admin_ui.dart';
 import '../../../widgets/common.dart';
+import 'staff_invite_panel.dart';
 
 const _panel = Color(0xFF11131F);
 const _panelBorder = Color(0xFF23273F);
@@ -28,7 +29,7 @@ InputDecoration _fieldDeco(String hint) => InputDecoration(
       focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.fuchsia500)),
     );
 
-/// Port of components/venue-admin/DoorTab.tsx: per-event scanner magic links + named door accounts.
+/// Port of components/venue-admin/DoorTab.tsx: quick staff invites, per-event scanner magic links + named door accounts.
 class DoorTab extends StatefulWidget {
   final String venueId;
   const DoorTab({super.key, required this.venueId});
@@ -158,6 +159,8 @@ class _DoorTabState extends State<DoorTab> {
 
   @override
   Widget build(BuildContext context) => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        StaffInvitePanel(venueId: widget.venueId, onChanged: _fetchEmployees),
+        const SizedBox(height: 24),
         AdminCard(
           radius: 16,
           color: _panel,
@@ -246,8 +249,20 @@ class _DoorTabState extends State<DoorTab> {
                       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                         Text.rich(TextSpan(children: [
                           TextSpan(text: '${emp['name'] ?? ''} ', style: tw(14, weight: bold)),
-                          TextSpan(text: '(${emp['email'] ?? ''})', style: tw(12, color: Tw.slate400)),
+                          TextSpan(
+                              text: '(${emp['email'] ?? context.t('staff_invite.joined_by_invite', fallback: 'Alta por invitación')})',
+                              style: tw(12, color: Tw.slate400)),
                         ])),
+                        if (emp['scopes'] is List)
+                          Text(
+                            [
+                              for (final sc in emp['scopes'] as List)
+                                sc == 'door'
+                                    ? context.t('staff_invite.scope_door', fallback: 'Puerta (entradas)')
+                                    : context.t('staff_invite.scope_bar', fallback: 'Barra (consumiciones)'),
+                            ].join(' · '),
+                            style: tw(10, color: Tw.slate400),
+                          ),
                         const SizedBox(height: 2),
                         Label(emp['active'] == true ? context.t('door_tab.active_status') : context.t('door_tab.revoked_status'),
                             color: emp['active'] == true ? Tw.emerald400 : Tw.red400, tracking: 0),

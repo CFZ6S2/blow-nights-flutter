@@ -82,5 +82,10 @@
     "hint": "Puoi anche avvicinare il tuo telefono a quello dello staff (NFC).",
     "empty_ticket": "Quel telefono non mostra nessun biglietto. Chiedi di aprirlo e riavvicinare il telefono.",
     "empty_drink": "Quel telefono non mostra nessuna consumazione. Chiedi di aprirla e riavvicinare il telefono."
+  },
+  "staff_app": {
+    "entry": "Lavoro in un locale",
+    "scan_or_tap": "Scansiona il QR del locale o avvicina il telefono a quello del responsabile (NFC).",
+    "not_invite": "Questo non è un invito dello staff."
   }
 }

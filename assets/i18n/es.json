@@ -153,7 +153,8 @@
     "city_permanent": "Tu ciudad es permanente",
     "my_plans": "Mis Chills",
     "my_tickets": "Mis Entradas",
-    "my_chats": "Mis Chats"
+    "my_chats": "Mis Chats",
+    "staff_scanners": "Escáneres del local"
   },
   "chat": {
     "title": "Tus Chats",
@@ -2618,7 +2619,7 @@
     "assign_cm_btn": "Asignar CityAdmin",
     "assign_partner_hint": "Para asignar/cambiar Partner, hazlo desde la pestaña Partners",
     "delete_city_btn": "Eliminar ciudad",
-    "delete_btn": "Eliminar",
+    "delete_btn": "Borrar",
     "cannot_delete_parent": "No se puede eliminar la ciudad matriz",
     "city_deleted": "Ciudad eliminada correctamente",
     "city_created_success": "Ciudad franquiciada creada con éxito.",
@@ -2643,7 +2644,6 @@
     "city_label_short": "Ciudad:",
     "owner_label": "Owner:",
     "assign_btn": "Asignar",
-    "delete_btn": "Borrar",
     "search_nick_email": "Buscar por nickname o email...",
     "choose_btn": "Elegir",
     "metrics_loading": "Cargando métricas...",
@@ -3163,5 +3163,47 @@
   "business_login_become_rrpp": "Soy RRPP independiente",
   "business_login_become_rrpp_desc": "Sin local fijo o con uno que no está en la app. Pases QR a 0,50 € para tus eventos; cobras tú por fuera.",
   "landing_clubs_cta_rrpp": "Soy RRPP",
-  "map_rrpp_party": "Fiesta RRPP · entrada con el RRPP"
+  "map_rrpp_party": "Fiesta RRPP · entrada con el RRPP",
+  "staff_invite": {
+    "title": "Añadir personal",
+    "desc": "Genera un QR para que tu equipo entre solo con su nombre, sin email ni contraseña. Vale 24 horas y para varias personas.",
+    "scope_door": "Puerta (entradas)",
+    "scope_bar": "Barra (consumiciones)",
+    "pick_scope": "Elige puerta, barra o las dos.",
+    "create": "Generar QR",
+    "scan_hint": "Que lo escaneen con la cámara del móvil o desde la app, en «Soy personal de un local».",
+    "nfc_hint": "Desde la app de Android también puedes acercar tu móvil al del empleado (NFC).",
+    "copy": "Copiar enlace",
+    "copied": "Enlace copiado",
+    "whatsapp": "Enviar por WhatsApp",
+    "whatsapp_text": "Únete al equipo de {{venue}} en Blow Nights:",
+    "expires": "Caduca: {{time}}",
+    "uses": "Se han unido: {{count}}",
+    "revoke": "Desactivar",
+    "revoked": "Invitación desactivada",
+    "live_title": "Invitaciones activas",
+    "error": "No se pudo generar la invitación.",
+    "joined_by_invite": "Alta por invitación"
+  },
+  "staff_join": {
+    "title": "Únete al equipo",
+    "subtitle": "Personal de {{venue}}",
+    "scopes": "Podrás escanear:",
+    "name_label": "Tu nombre",
+    "name_placeholder": "Ej. Laura",
+    "cta": "Entrar",
+    "session_note": "Si hay una sesión abierta en este dispositivo, se cerrará.",
+    "invalid": "Esta invitación no es válida o ha caducado. Pide otra al local.",
+    "loading": "Comprobando la invitación…"
+  },
+  "staff_home": {
+    "title": "Personal de {{venue}}",
+    "door": "Puerta",
+    "door_desc": "Validar entradas",
+    "bar": "Barra",
+    "bar_desc": "Canjear consumiciones",
+    "logout": "Cerrar sesión",
+    "not_staff": "Esta pantalla es para el personal de un local. Pide al local un QR de acceso."
+  },
+  "venue_admin_scan_drinks": "Escanear consumiciones"
 }

@@ -23,6 +23,7 @@ import 'screens/business/partner_apply_screen.dart';
 import 'screens/business/partners_landing_screen.dart';
 import 'screens/business/promoter_screens.dart';
 import 'screens/business/public_pages.dart';
+import 'screens/staff/staff_screens.dart';
 import 'screens/bar/bar_order_screen.dart';
 import 'screens/bar/event_bar_screen.dart';
 import 'screens/chat/chat_detail_screen.dart';
@@ -97,6 +98,8 @@ enum AppRoute {
   scanner,
   door,
   barScanner,
+  staffJoin,
+  staffHome,
   kiosk,
   partnersApply,
   investors,
@@ -171,6 +174,8 @@ final Map<AppRoute, Widget Function(Map<String, String> args)> screenRegistry = 
   AppRoute.localEntradas: (a) => LocalEntradasScreen(slug: a['slug'] ?? '', giftUserId: a['gift'], refCode: a['ref'] ?? ''),
   AppRoute.venueMenu: (a) => VenueMenuScreen(venueId: a['venueId'] ?? 'default'),
   AppRoute.barScanner: (a) => BarScannerScreen(venueId: a['venue'] ?? ''),
+  AppRoute.staffJoin: (a) => StaffJoinScreen(invite: a['i'] ?? ''),
+  AppRoute.staffHome: (_) => const StaffHomeScreen(),
   AppRoute.door: (a) => DoorScreen(venueId: a['venue'] ?? '', eventId: a['event'] ?? '', token: a['token'] ?? ''),
   // App-only (no web page): BLE friend finder.
   AppRoute.friendGroups: (a) => FriendGroupsScreen(joinCode: a['join']),

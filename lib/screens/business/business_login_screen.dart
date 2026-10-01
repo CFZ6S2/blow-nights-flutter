@@ -19,7 +19,7 @@ AppRoute roleRoute(String? role) => switch (role) {
       'admin' => AppRoute.admin,
       'masterPartner' => AppRoute.masterPartner,
       'cityAdmin' => AppRoute.cityManager,
-      'door' => AppRoute.scanner,
+      'door' => AppRoute.staffHome,
       'rrpp' => AppRoute.pr,
       _ => AppRoute.venueAdmin,
     };

@@ -153,7 +153,8 @@
     "city_permanent": "Orașul tău este permanent",
     "my_plans": "Frisoanele mele",
     "my_tickets": "Intrările mele",
-    "my_chats": "Chaturile mele"
+    "my_chats": "Chaturile mele",
+    "staff_scanners": "Scanerele localului"
   },
   "chat": {
     "title": "Chat-urile Tale",
@@ -3164,5 +3165,47 @@
   "business_login_become_rrpp": "Sunt promotor independent",
   "business_login_become_rrpp_desc": "Fără local fix sau cu unul care nu e în aplicație. Pase QR la 0,50 € pentru evenimentele tale; încasezi tu în afara aplicației.",
   "landing_clubs_cta_rrpp": "Sunt promotor",
-  "map_rrpp_party": "Petrecere promotor · intrare prin promotor"
+  "map_rrpp_party": "Petrecere promotor · intrare prin promotor",
+  "staff_invite": {
+    "title": "Adaugă personal",
+    "desc": "Generează un QR ca echipa ta să intre doar cu numele, fără email sau parolă. Valabil 24 de ore, pentru mai multe persoane.",
+    "scope_door": "Intrare (bilete)",
+    "scope_bar": "Bar (consumații)",
+    "pick_scope": "Alege intrare, bar sau ambele.",
+    "create": "Generează QR",
+    "scan_hint": "Îl scanează cu camera telefonului sau din aplicație, la „Lucrez într-un local”.",
+    "nfc_hint": "Din aplicația Android poți și să apropii telefonul de cel al angajatului (NFC).",
+    "copy": "Copiază linkul",
+    "copied": "Link copiat",
+    "whatsapp": "Trimite pe WhatsApp",
+    "whatsapp_text": "Alătură-te echipei {{venue}} pe Blow Nights:",
+    "expires": "Expiră: {{time}}",
+    "uses": "S-au alăturat: {{count}}",
+    "revoke": "Dezactivează",
+    "revoked": "Invitație dezactivată",
+    "live_title": "Invitații active",
+    "error": "Invitația nu a putut fi creată.",
+    "joined_by_invite": "Alăturat prin invitație"
+  },
+  "staff_join": {
+    "title": "Alătură-te echipei",
+    "subtitle": "Personalul {{venue}}",
+    "scopes": "Vei putea scana:",
+    "name_label": "Numele tău",
+    "name_placeholder": "Ex. Laura",
+    "cta": "Intră",
+    "session_note": "Dacă pe acest dispozitiv este o sesiune deschisă, se va închide.",
+    "invalid": "Invitația nu este validă sau a expirat. Cere alta de la local.",
+    "loading": "Se verifică invitația…"
+  },
+  "staff_home": {
+    "title": "Personalul {{venue}}",
+    "door": "Intrare",
+    "door_desc": "Validează bilete",
+    "bar": "Bar",
+    "bar_desc": "Servește consumații",
+    "logout": "Deconectare",
+    "not_staff": "Acest ecran este pentru personalul unui local. Cere localului un QR de acces."
+  },
+  "venue_admin_scan_drinks": "Scanează consumații"
 }
