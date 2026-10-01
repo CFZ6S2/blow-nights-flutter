@@ -11,7 +11,6 @@ import '../../i18n/i18n.dart';
 import '../../navigation.dart';
 import '../../providers/auth_provider.dart';
 import '../../services/nfc_pass.dart';
-import '../../services/nfc_reader.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/admin_ui.dart';
 import '../../widgets/common.dart';
@@ -38,8 +37,6 @@ Future<void> scanFeedback(bool valid) async {
 
 String normalizeScan(String raw) => raw.trim().replaceAll(RegExp(r'[\r\n]+'), '').replaceFirst(RegExp(r'^BN:', caseSensitive: false), '');
 
-/// Serial-number NFC tags are resolved to a QR token first (resolveNFCTag), like the web. A phone tapped on the scanner
-/// (services/nfc_pass.dart) hands over the QR's own code, which needs nothing.
 /// A phone tapped on the scanner that isn't showing a ticket (or a drink, at the bar).
 void nfcPassEmpty(BuildContext context, {bool drink = false}) {
   if (!context.mounted) return;
@@ -49,16 +46,6 @@ void nfcPassEmpty(BuildContext context, {bool drink = false}) {
         ? context.t('nfc_pass.empty_drink', fallback: 'Ese móvil no está mostrando ninguna consumición. Que la abra y vuelva a acercarlo.')
         : context.t('nfc_pass.empty_ticket', fallback: 'Ese móvil no está mostrando ninguna entrada. Que la abra y vuelva a acercarlo.')),
   ));
-}
-
-Future<String> resolveNfcToken(String token, String type) async {
-  if (type == 'serial') {
-    try {
-      final res = await callFn('resolveNFCTag', {'tagId': token});
-      if (res['success'] == true && res['qrToken'] is String) return res['qrToken'] as String;
-    } catch (_) {}
-  }
-  return token;
 }
 
 /// Camera QR reader (jsQR loop equivalent). [onCode] fires once per detection while [paused] is false.
@@ -203,7 +190,7 @@ class _DoorScreenState extends State<DoorScreen> {
           _authorized = true;
           _eventTitle = (res['title'] as String?) ?? _i18n.t('door_event', fallback: 'Evento');
         });
-        _nfcSupported = await NfcPass.read((token, type) async => _handleScan(await resolveNfcToken(token, type)), onEmpty: () => nfcPassEmpty(context));
+        _nfcSupported = await NfcPass.read(_handleScan, onEmpty: () => nfcPassEmpty(context));
         if (mounted) setState(() {});
       } else {
         setState(() => _authError = _i18n.t('door_token_expired', fallback: 'Token de puerta inválido o expirado.'));
@@ -512,7 +499,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
   @override
   void initState() {
     super.initState();
-    NfcReader.supported().then((s) {
+    NfcPass.supported().then((s) {
       if (mounted) setState(() => _nfcSupported = s);
     });
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -580,7 +567,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
       _result = null;
     });
     if (m == 'nfc') {
-      await NfcPass.read((token, type) async => _validate(await resolveNfcToken(token, type), 'nfc'), onEmpty: () => nfcPassEmpty(context));
+      await NfcPass.read((code) => _validate(code, 'nfc'), onEmpty: () => nfcPassEmpty(context));
       if (mounted) setState(() {});
     }
     if (m == 'hardware') _hwFocus.requestFocus();
@@ -730,10 +717,10 @@ class _ScannerScreenState extends State<ScannerScreen> {
                 ),
             ]),
             const SizedBox(height: 24),
-            Text(_validating ? context.t('scanner_validating', fallback: 'Validando...') : context.t('scanner_nfc_prompt', fallback: 'Acerca el tag NFC al dispositivo'),
+            Text(_validating ? context.t('scanner_validating', fallback: 'Validando...') : context.t('nfc_pass.scanner_prompt', fallback: 'Acerca el móvil del cliente'),
                 textAlign: TextAlign.center, style: tw(16, weight: bold, color: Tw.slate400)),
             const SizedBox(height: 8),
-            Text(NfcPass.reading ? context.t('scanner_nfc_listening', fallback: 'Escuchando NFC...') : context.t('scanner_nfc_starting', fallback: 'Iniciando lector NFC...'),
+            Text(NfcPass.reading ? context.t('nfc_pass.listening', fallback: 'Escuchando NFC...') : context.t('nfc_pass.starting', fallback: 'Iniciando lector NFC...'),
                 style: tw(10, color: Tw.slate600)),
           ]),
         ),

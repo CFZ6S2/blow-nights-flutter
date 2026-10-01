@@ -52,7 +52,7 @@ class _StaffJoinScreenState extends State<StaffJoinScreen> {
     if (given != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _check(given));
     } else if (NfcPass.available) {
-      NfcPass.read((code, _) => _found(code)).then((_) {
+      NfcPass.read(_found).then((_) {
         if (mounted) setState(() {});
       });
     }

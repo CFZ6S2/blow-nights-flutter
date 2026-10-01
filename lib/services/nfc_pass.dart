@@ -8,8 +8,6 @@ import 'package:flutter/widgets.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:nfc_manager/nfc_manager_android.dart';
 
-import 'nfc_reader.dart';
-
 /// Phone-to-phone NFC for entry tickets and drinks (Android only; android/.../pass/PassHceService.kt).
 ///
 /// Customer side: while a ticket or drink QR is on screen, [show] hands its code to the phone's card emulation, so
@@ -18,7 +16,7 @@ import 'nfc_reader.dart';
 ///
 /// Scanner side: [read] runs reader mode like the group invite reader (finder_native.dart), skipping the platform NDEF
 /// check, without which a phone emulating a card is often dropped before the app gets it. A phone answers the SELECT
-/// of [aid] with its code; any other tag is reported by its serial number, which the door and bar resolve server side.
+/// of [aid] with its code; anything else (a phone showing nothing, any other card) runs onEmpty.
 class NfcPass {
   static const _channel = MethodChannel('blownights/nfc_pass');
 
@@ -78,34 +76,38 @@ class NfcPass {
     unawaited(_channel.invokeMethod<void>('setPayload', {'payload': armedCode}).catchError((Object _) {}));
   }
 
-  /// Scanner side. [onCode] gets a phone's code (type 'phone') or a tag's serial number (type 'serial'); [onEmpty]
-  /// runs for a phone that isn't showing a ticket or drink. Off Android it is the NDEF reader (nfc_reader.dart).
-  static Future<bool> read(NfcTokenHandler onCode, {VoidCallback? onEmpty}) async {
-    if (!available) return NfcReader.start(onCode);
+  /// Whether this phone can read another one: Android with NFC switched on.
+  static Future<bool> supported() async {
+    if (!available) return false;
+    try {
+      return await NfcManager.instance.checkAvailability() == NfcAvailability.enabled;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  /// Scanner side. [onCode] gets the code of a phone showing a ticket, a drink or a staff invite; [onEmpty] runs for
+  /// anything else tapped on it.
+  static Future<bool> read(ValueChanged<String> onCode, {VoidCallback? onEmpty}) async {
+    if (!available) return false;
     try {
       if (await NfcManager.instance.checkAvailability() != NfcAvailability.enabled) return false;
       await NfcManagerAndroid.instance.enableReaderMode(
         flags: {NfcReaderFlagAndroid.nfcA, NfcReaderFlagAndroid.nfcB, NfcReaderFlagAndroid.skipNdefCheck},
         onTagDiscovered: (tag) async {
-          final id = NfcTagAndroid.from(tag)?.id ?? Uint8List(0);
           final iso = IsoDepAndroid.from(tag);
           if (iso != null) {
             try {
               final code = codeFromSelectResponse(await iso.transceive(selectApdu));
               if (code != null) {
-                onCode(code, 'phone');
+                onCode(code);
                 return;
               }
             } catch (e) {
               debugPrint('nfc pass: IsoDep failed: $e');
             }
-            // A phone showing nothing answers "not found"; phones present a random UID (first byte 0x08).
-            if (isRandomUid(id)) {
-              onEmpty?.call();
-              return;
-            }
           }
-          if (id.isNotEmpty) onCode(serialHex(id), 'serial');
+          onEmpty?.call();
         },
       );
       _reading = true;
@@ -116,10 +118,10 @@ class NfcPass {
     }
   }
 
-  static bool get reading => available ? _reading : NfcReader.active;
+  static bool get reading => _reading;
 
   static Future<void> stop() async {
-    if (!available) return NfcReader.stop();
+    if (!available) return;
     _reading = false;
     try {
       await NfcManagerAndroid.instance.disableReaderMode();
@@ -136,9 +138,4 @@ class NfcPass {
     final code = utf8.decode(res.sublist(0, n - 2), allowMalformed: true).trim();
     return code.isEmpty ? null : code;
   }
-
-  /// ISO 14443-3: a 4-byte UID starting with 0x08 is random, what phones emulating a card present.
-  static bool isRandomUid(List<int> id) => id.length == 4 && id[0] == 0x08;
-
-  static String serialHex(List<int> id) => id.map((b) => b.toRadixString(16).padLeft(2, '0')).join();
 }

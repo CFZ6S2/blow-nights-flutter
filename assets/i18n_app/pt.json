@@ -81,7 +81,10 @@
   "nfc_pass": {
     "hint": "Também podes aproximar o teu telemóvel ao do pessoal (NFC).",
     "empty_ticket": "Esse telemóvel não está a mostrar nenhum bilhete. Pede para o abrir e voltar a aproximar.",
-    "empty_drink": "Esse telemóvel não está a mostrar nenhuma bebida. Pede para a abrir e voltar a aproximar."
+    "empty_drink": "Esse telemóvel não está a mostrar nenhuma bebida. Pede para a abrir e voltar a aproximar.",
+    "scanner_prompt": "Aproxime o telemóvel do cliente",
+    "listening": "À escuta de NFC...",
+    "starting": "A iniciar o leitor NFC..."
   },
   "staff_app": {
     "entry": "Trabalho num espaço",

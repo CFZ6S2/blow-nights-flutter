@@ -52,12 +52,6 @@ void main() {
       expect(NfcPass.codeFromSelectResponse(Uint8List.fromList([0x41, 0x6A, 0x82])), isNull);
       expect(NfcPass.codeFromSelectResponse(Uint8List(0)), isNull);
     });
-
-    test('phones present a random 4-byte UID; tags keep their serial', () {
-      expect(NfcPass.isRandomUid([0x08, 0x1a, 0x2b, 0x3c]), isTrue);
-      expect(NfcPass.isRandomUid([0x04, 0xa1, 0xb2, 0xc3, 0xd4, 0xe5, 0xf6]), isFalse);
-      expect(NfcPass.serialHex([0x04, 0xa1, 0x0b]), '04a10b');
-    });
   });
 
   group('customer side', () {

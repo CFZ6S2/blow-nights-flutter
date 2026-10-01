@@ -81,7 +81,10 @@
   "nfc_pass": {
     "hint": "Puoi anche avvicinare il tuo telefono a quello dello staff (NFC).",
     "empty_ticket": "Quel telefono non mostra nessun biglietto. Chiedi di aprirlo e riavvicinare il telefono.",
-    "empty_drink": "Quel telefono non mostra nessuna consumazione. Chiedi di aprirla e riavvicinare il telefono."
+    "empty_drink": "Quel telefono non mostra nessuna consumazione. Chiedi di aprirla e riavvicinare il telefono.",
+    "scanner_prompt": "Avvicina il telefono del cliente",
+    "listening": "In ascolto NFC...",
+    "starting": "Avvio lettore NFC..."
   },
   "staff_app": {
     "entry": "Lavoro in un locale",

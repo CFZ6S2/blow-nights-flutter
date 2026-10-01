@@ -81,7 +81,10 @@
   "nfc_pass": {
     "hint": "También puedes acercar tu móvil al del personal (NFC).",
     "empty_ticket": "Ese móvil no está mostrando ninguna entrada. Que la abra y vuelva a acercarlo.",
-    "empty_drink": "Ese móvil no está mostrando ninguna consumición. Que la abra y vuelva a acercarlo."
+    "empty_drink": "Ese móvil no está mostrando ninguna consumición. Que la abra y vuelva a acercarlo.",
+    "scanner_prompt": "Acerca el móvil del cliente",
+    "listening": "Escuchando NFC...",
+    "starting": "Iniciando lector NFC..."
   },
   "staff_app": {
     "entry": "Soy personal de un local",

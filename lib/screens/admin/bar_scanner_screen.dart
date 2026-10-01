@@ -45,7 +45,7 @@ class _BarScannerScreenState extends State<BarScannerScreen> {
     HardwareKeyboard.instance.addHandler(_onKey);
     if (NfcPass.available) {
       NfcPass.read(
-        (code, type) => _scan(type == 'serial' ? 'nfc:$code' : code, method: 'nfc'),
+        (code) => _scan(code, method: 'nfc'),
         onEmpty: () => nfcPassEmpty(context, drink: true),
       ).then((_) {
         if (mounted) setState(() {});
@@ -85,18 +85,16 @@ class _BarScannerScreenState extends State<BarScannerScreen> {
     _last = clean;
     setState(() => _scanning = true);
     final isPin = RegExp(r'^\d{4,8}$').hasMatch(clean);
-    final isNfc = clean.startsWith('nfc:');
     try {
       Map<String, dynamic> data;
       try {
         data = await callFn('redeemConsumptionEntitlement', {
           'token': clean,
           'pinCode': isPin ? clean : null,
-          'tagUid': isNfc ? clean.replaceFirst('nfc:', '') : null,
           'venueId': widget.venueId,
           'terminalId': 'scanner_web_${context.read<AuthProvider>().user?.uid ?? 'anon'}',
           'redemptionPoint': _point,
-          'scanMethod': method ?? (isNfc ? 'nfc' : isPin ? 'pin' : 'qr'),
+          'scanMethod': method ?? (isPin ? 'pin' : 'qr'),
         }).timeout(const Duration(seconds: 4), onTimeout: () => throw Exception('Red inestable: Tiempo de espera agotado. Verifica la conexión y reintenta.'));
       } on FirebaseFunctionsException catch (e) {
         if (e.code == 'not-found' || (e.message ?? '').contains('NOT_FOUND')) {

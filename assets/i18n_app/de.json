@@ -81,7 +81,10 @@
   "nfc_pass": {
     "hint": "Du kannst dein Handy auch an das Handy des Personals halten (NFC).",
     "empty_ticket": "Dieses Handy zeigt kein Ticket. Bitte öffnen lassen und erneut daranhalten.",
-    "empty_drink": "Dieses Handy zeigt kein Getränk. Bitte öffnen lassen und erneut daranhalten."
+    "empty_drink": "Dieses Handy zeigt kein Getränk. Bitte öffnen lassen und erneut daranhalten.",
+    "scanner_prompt": "Halte das Handy des Gastes an dieses",
+    "listening": "Warte auf NFC...",
+    "starting": "NFC-Leser wird gestartet..."
   },
   "staff_app": {
     "entry": "Ich arbeite in einem Lokal",
