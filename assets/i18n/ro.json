@@ -969,7 +969,11 @@
     "share": "Distribuie",
     "linkCopied": "Link copiat",
     "schedule": "Program",
-    "events": "Evenimente și petreceri viitoare"
+    "events": "Evenimente și petreceri viitoare",
+    "drinks_title": "Băuturi",
+    "drinks_desc": "Comandă-le de pe telefon când ești în local și ridică-le de la bar cu codul tău QR.",
+    "drinks_more": "Și încă {{count}} în meniu",
+    "buy_drinks": "Cumpără băuturi"
   },
   "visits": {
     "title": "VIZITE",
@@ -3193,6 +3197,7 @@
     "cta": "Intră",
     "session_note": "Dacă pe acest dispozitiv este o sesiune deschisă, se va închide.",
     "invalid": "Invitația nu este validă sau a expirat. Cere alta de la local.",
+    "failed": "Nu s-a putut finaliza. Încearcă din nou peste câteva momente.",
     "loading": "Se verifică invitația…"
   },
   "staff_home": {

@@ -946,7 +946,11 @@
     "share": "Share",
     "linkCopied": "Link copied",
     "schedule": "Schedule",
-    "events": "Upcoming Events & Parties"
+    "events": "Upcoming Events & Parties",
+    "drinks_title": "Drinks",
+    "drinks_desc": "Order them on your phone once you're at the venue and pick them up at the bar with your QR.",
+    "drinks_more": "And {{count}} more on the menu",
+    "buy_drinks": "Buy drinks"
   },
   "visits": {
     "title": "VISITS",
@@ -3191,6 +3195,7 @@
     "cta": "Get in",
     "session_note": "If someone is signed in on this device, they'll be signed out.",
     "invalid": "This invite isn't valid or has expired. Ask the venue for a new one.",
+    "failed": "Couldn't complete that. Try again in a moment.",
     "loading": "Checking the invite…"
   },
   "staff_home": {

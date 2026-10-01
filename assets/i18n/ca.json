@@ -865,7 +865,11 @@
     "share": "Compartir",
     "linkCopied": "Enllaç copiat",
     "schedule": "Horari",
-    "events": "Propers Esdeveniments & Festes"
+    "events": "Propers Esdeveniments & Festes",
+    "drinks_title": "Copes",
+    "drinks_desc": "Demana-les des del mòbil quan siguis al local i bescanvia-les a la barra amb el teu QR.",
+    "drinks_more": "I {{count}} més a la carta",
+    "buy_drinks": "Comprar copes"
   },
   "visits": {
     "title": "VISITES",
@@ -3193,6 +3197,7 @@
     "cta": "Entrar",
     "session_note": "Si hi ha una sessió oberta en aquest dispositiu, es tancarà.",
     "invalid": "Aquesta invitació no és vàlida o ha caducat. Demana'n una altra al local.",
+    "failed": "No s'ha pogut completar. Torna-ho a provar d'aquí a un moment.",
     "loading": "Comprovant la invitació…"
   },
   "staff_home": {

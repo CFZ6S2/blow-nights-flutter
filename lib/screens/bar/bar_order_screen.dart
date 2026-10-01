@@ -129,10 +129,14 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
         .collection('products')
         .where('venueId', isEqualTo: id)
         .where('active', isEqualTo: true)
-        .orderBy('category')
-        .orderBy('name')
         .snapshots()
-        .listen((snap) => setState(() => _products = snap.docs.map((d) => <String, dynamic>{'id': d.id, ...d.data()}).toList()),
+        // Sorted here: venueId + active + orderBy(category, name) needs a composite index production never had, so the
+        // query failed and every bar showed "no products".
+        .listen((snap) => setState(() => _products = snap.docs.map((d) => <String, dynamic>{'id': d.id, ...d.data()}).toList()
+              ..sort((a, b) {
+                final byCategory = safeStr(a['category']).compareTo(safeStr(b['category']));
+                return byCategory != 0 ? byCategory : safeStr(a['name']).compareTo(safeStr(b['name']));
+              })),
             onError: (_) {});
   }
 

@@ -868,7 +868,11 @@
     "share": "Compartilhar",
     "linkCopied": "Link copiado",
     "schedule": "Horário",
-    "events": "Próximos eventos e festas"
+    "events": "Próximos eventos e festas",
+    "drinks_title": "Bebidas",
+    "drinks_desc": "Pede-as no telemóvel quando estiveres no espaço e levanta-as no bar com o teu QR.",
+    "drinks_more": "E mais {{count}} na carta",
+    "buy_drinks": "Comprar bebidas"
   },
   "visits": {
     "title": "VISITAS",
@@ -3196,6 +3200,7 @@
     "cta": "Entrar",
     "session_note": "Se houver uma sessão aberta neste dispositivo, será terminada.",
     "invalid": "Este convite não é válido ou expirou. Pede outro ao espaço.",
+    "failed": "Não foi possível concluir. Tenta de novo daqui a pouco.",
     "loading": "A verificar o convite…"
   },
   "staff_home": {

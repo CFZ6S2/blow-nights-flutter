@@ -38,6 +38,8 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
   final _db = FirebaseFirestore.instance;
   Venue? _venue;
   List<Map<String, dynamic>> _events = [];
+  // The venue's active drinks (Cashless), cheapest first: bought at /bar/order, redeemed at the bar by QR.
+  List<({String id, String name, double price})> _drinks = [];
   int _checkins = 0;
   String? _purchasing;
   bool _claiming = false;
@@ -65,6 +67,19 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
           .limit(10)
           .snapshots()
           .listen((s) => setState(() => _events = s.docs.map((d) => {'id': d.id, ...d.data()}).toList()), onError: (_) {}));
+      _subs.add(_db
+          .collection('products')
+          .where('venueId', isEqualTo: widget.venueId)
+          .where('active', isEqualTo: true)
+          .snapshots()
+          .listen((s) {
+        final drinks = s.docs
+            .map((d) => (id: d.id, name: safeStr(d.data()['name']), price: asDouble(d.data()['price']) ?? 0))
+            .where((d) => d.name.isNotEmpty && d.price > 0)
+            .toList()
+          ..sort((a, b) => a.price.compareTo(b.price));
+        setState(() => _drinks = drinks);
+      }, onError: (_) {}));
     }
   }
 
@@ -117,6 +132,44 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
     if (mounted) setState(() => _claiming = false);
   }
 
+  static bool _barTakesOrders(Map<String, dynamic> d) {
+    final cashless = d['cashless'] is Map ? d['cashless'] as Map : const {};
+    return d['isActive'] != false && cashless['enabled'] != false && cashless['kioskOpen'] != false;
+  }
+
+  /// Port of the web venue page's "Copas" section.
+  Widget _drinksSection(BuildContext context, String currency) => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        Label(context.t('venueDetail.drinks_title', fallback: 'Copas'), size: 14, color: Tw.slate500, tracking: 0.2),
+        const SizedBox(height: 16),
+        GlassCard(
+          padding: const EdgeInsets.all(24),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            for (final drink in _drinks.take(4))
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Row(children: [
+                  Expanded(child: Text(drink.name, overflow: TextOverflow.ellipsis, style: tw(14, weight: bold))),
+                  const SizedBox(width: 12),
+                  Text(formatPrice(drink.price, currency), style: tw(14, weight: black, color: Tw.fuchsia400)),
+                ]),
+              ),
+            if (_drinks.length > 4)
+              Text(context.t('venueDetail.drinks_more', fallback: 'Y {{count}} más en la carta', params: {'count': _drinks.length - 4}),
+                  style: tw(10, color: Tw.slate500)),
+            const SizedBox(height: 8),
+            Text(context.t('venueDetail.drinks_desc', fallback: 'Pídelas desde el móvil cuando estés en el local y canjéalas en la barra con tu QR.'),
+                style: tw(12, color: Tw.slate400)),
+            const SizedBox(height: 16),
+            GradientButton(
+              label: context.t('venueDetail.buy_drinks', fallback: 'Comprar copas'),
+              icon: Icons.local_bar,
+              expand: true,
+              onTap: () => openRoute(context, AppRoute.barOrder, args: {'venueId': widget.venueId}),
+            ),
+          ]),
+        ),
+      ]);
+
   String _nextOpeningLabel(BuildContext context, Venue v) {
     final next = getNextOpening(v.openingDays, v.openingHours);
     if (next?.isToday == true) return context.t('venuesPage.opens_today_at', params: {'time': next!.open}, fallback: 'Abre a las ${next.open}');
@@ -134,6 +187,7 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
     if (auth.loading || (auth.user != null && auth.profile == null) || v == null) return const _DetailSkeleton();
     final currency = context.watch<CityProvider>().currency;
     final ticketingOn = context.watch<PlatformSettings>().flags['moduleTicketing'] != false;
+    final cashlessOn = context.watch<PlatformSettings>().flags['moduleCashless'] == true;
     final d = v.data;
     final title = safeStr(d['title'] ?? d['name']);
     final pricing = d['ticketPricing'] is Map ? Map<String, dynamic>.from(d['ticketPricing']) : <String, dynamic>{};
@@ -336,6 +390,11 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                   Text(context.t('venueDetail.checkInFromVenues'), textAlign: TextAlign.center, style: tw(10, color: Tw.slate600)),
                 ]),
               ),
+            // Copas: the bar must be taking orders (same checks as the bar order screen) and have something on the menu.
+            if (!community && cashlessOn && _drinks.isNotEmpty && _barTakesOrders(d)) ...[
+              const SizedBox(height: 24),
+              _drinksSection(context, currency),
+            ],
             const SizedBox(height: 24),
             VenueReviews(venueId: widget.venueId, venueName: title),
           ]),

@@ -969,7 +969,11 @@
     "share": "Compartir",
     "linkCopied": "Enlace copiado",
     "schedule": "Horario",
-    "events": "Próximos Eventos & Fiestas"
+    "events": "Próximos Eventos & Fiestas",
+    "drinks_title": "Copas",
+    "drinks_desc": "Pídelas desde el móvil cuando estés en el local y canjéalas en la barra con tu QR.",
+    "drinks_more": "Y {{count}} más en la carta",
+    "buy_drinks": "Comprar copas"
   },
   "visits": {
     "title": "VISITAS",
@@ -3191,6 +3195,7 @@
     "cta": "Entrar",
     "session_note": "Si hay una sesión abierta en este dispositivo, se cerrará.",
     "invalid": "Esta invitación no es válida o ha caducado. Pide otra al local.",
+    "failed": "No se ha podido completar. Inténtalo de nuevo en un momento.",
     "loading": "Comprobando la invitación…"
   },
   "staff_home": {

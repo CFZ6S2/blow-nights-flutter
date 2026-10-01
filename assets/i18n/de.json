@@ -857,7 +857,11 @@
     "share": "Teilen",
     "linkCopied": "Link kopiert",
     "schedule": "Öffnungszeiten",
-    "events": "Kommende Veranstaltungen und Partys"
+    "events": "Kommende Veranstaltungen und Partys",
+    "drinks_title": "Drinks",
+    "drinks_desc": "Bestell sie im Lokal mit dem Handy und hol sie mit deinem QR an der Bar ab.",
+    "drinks_more": "Und {{count}} weitere auf der Karte",
+    "buy_drinks": "Drinks kaufen"
   },
   "visits": {
     "title": "BESUCHE",
@@ -3229,6 +3233,7 @@
     "cta": "Los geht's",
     "session_note": "Ist auf diesem Gerät jemand angemeldet, wird er abgemeldet.",
     "invalid": "Diese Einladung ist ungültig oder abgelaufen. Bitte das Lokal um eine neue.",
+    "failed": "Das hat nicht geklappt. Versuche es gleich noch einmal.",
     "loading": "Einladung wird geprüft…"
   },
   "staff_home": {

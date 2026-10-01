@@ -868,7 +868,11 @@
     "share": "Condividi",
     "linkCopied": "Link copiato",
     "schedule": "Orari",
-    "events": "Prossimi eventi e feste"
+    "events": "Prossimi eventi e feste",
+    "drinks_title": "Drink",
+    "drinks_desc": "Ordinali dal telefono quando sei nel locale e ritirali al bar con il tuo QR.",
+    "drinks_more": "E altri {{count}} nel menù",
+    "buy_drinks": "Compra drink"
   },
   "visits": {
     "title": "VISITE",
@@ -3196,6 +3200,7 @@
     "cta": "Entra",
     "session_note": "Se su questo dispositivo c'è una sessione aperta, verrà chiusa.",
     "invalid": "Questo invito non è valido o è scaduto. Chiedine un altro al locale.",
+    "failed": "Non è stato possibile completare. Riprova tra un momento.",
     "loading": "Verifica dell'invito…"
   },
   "staff_home": {
