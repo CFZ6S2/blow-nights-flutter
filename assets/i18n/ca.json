@@ -1636,6 +1636,7 @@
     "status_rising": "Pujant",
     "status_active": "Activitat registrada avui",
     "status_event": "Esdeveniment aquesta nit",
+    "status_no_hours": "Horari no disponible",
     "checkins": "check-ins reals",
     "no_queue": "Sense cua"
   },

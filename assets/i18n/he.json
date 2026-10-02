@@ -1684,6 +1684,7 @@
     "status_rising": "עולה",
     "status_active": "פעילות נרשמה היום",
     "status_event": "אירוע הלילה",
+    "status_no_hours": "שעות הפתיחה אינן זמינות",
     "checkins": "צ'ק-אינים אמיתיים",
     "no_queue": "ללא תור"
   },

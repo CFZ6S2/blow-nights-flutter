@@ -1680,6 +1680,7 @@
     "status_rising": "الصعود",
     "status_active": "النشاط المسجل اليوم",
     "status_event": "الحدث الليلة",
+    "status_no_hours": "مواعيد العمل غير متوفرة",
     "checkins": "تسجيلات الوصول الحقيقية",
     "no_queue": "لا طابور"
   },

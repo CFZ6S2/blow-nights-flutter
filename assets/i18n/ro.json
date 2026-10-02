@@ -1684,6 +1684,7 @@
     "status_rising": "În creștere",
     "status_active": "Activitate înregistrată azi",
     "status_event": "Eveniment în seara asta",
+    "status_no_hours": "Program indisponibil",
     "checkins": "check-in-uri reale",
     "no_queue": "Fără coadă"
   },

@@ -1688,6 +1688,7 @@
     "status_rising": "Getting busy",
     "status_active": "Activity registered today",
     "status_event": "Event tonight",
+    "status_no_hours": "Opening hours not available",
     "checkins": "live check-ins",
     "no_queue": "No queue reported"
   },
