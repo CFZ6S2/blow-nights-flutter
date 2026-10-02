@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../build_info.dart';
 import '../../i18n/i18n.dart';
 import '../../navigation.dart';
 import '../../providers/auth_provider.dart';
@@ -451,6 +452,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ]),
               ),
             ),
+            // Which build this is (version, commit, build time): to match a report on an APK to its exact commit.
+            const SizedBox(height: 24),
+            Center(child: SelectableText(BuildInfo.label, style: tw(10, color: Tw.slate600))),
           ]),
         ),
       ]),
