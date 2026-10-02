@@ -6,4 +6,4 @@ are not versioned; a file is the release if its SHA-256 matches its manifest her
 
 | APK | Commit | SHA-256 | Signing | Field test |
 |---|---|---|---|---|
-| blow-nights-1.0.1+2-3b74b7a.apk | 3b74b7a | d9fccc8e…ea439 | debug keys | pending (NFC between two Android phones) |
+| blow-nights-1.0.1+2-3b74b7a.apk | 3b74b7a | d9fccc8e…ea439 | debug keys | deferred until ticketing launches (NFC is only used by the staff scanners) |
