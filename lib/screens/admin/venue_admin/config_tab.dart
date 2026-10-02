@@ -28,6 +28,8 @@ class _VenueConfigTabState extends State<VenueConfigTab> {
   late final _externalUrl = TextEditingController(text: (widget.venue['externalTicketUrl'] as String?) ?? '');
   late String _type = (widget.venue['type'] as String?) ?? 'bar';
   late bool _isActive = widget.venue['isActive'] != false;
+  // Entries validated at the door: the bar then serves only guests whose entry was validated there (backend verifyDoorEntry).
+  late bool _doorControl = widget.venue['doorControl'] == true;
   late ({double latitude, double longitude})? _location = () {
     final loc = parseLocation(widget.venue);
     return loc == null ? null : (latitude: loc.lat, longitude: loc.lng);
@@ -96,6 +98,7 @@ class _VenueConfigTabState extends State<VenueConfigTab> {
           'type': _type,
           'externalTicketUrl': _externalUrl.text,
           'isActive': _isActive,
+          'doorControl': _doorControl,
           'openingDays': _openingDays,
           'openingHours': {for (final e in _hours.entries) e.key: {'open': e.value.open, 'close': e.value.close}},
           if (_location != null) 'location': {'latitude': _location!.latitude, 'longitude': _location!.longitude},
@@ -230,6 +233,22 @@ class _VenueConfigTabState extends State<VenueConfigTab> {
               const SizedBox(width: 8),
               Text(_isActive ? context.t('venue_config.active_on_map') : context.t('venue_config.hidden'),
                   style: tw(14, weight: bold, color: _isActive ? Tw.fuchsia400 : Tw.slate500)),
+            ]),
+          ]),
+        ),
+        const SizedBox(height: 12),
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.05))),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            _label(context.t('venue_config.door_control_label')),
+            Row(children: [
+              Switch(value: _doorControl, activeThumbColor: Tw.white, activeTrackColor: Tw.fuchsia600, onChanged: (v) => setState(() => _doorControl = v)),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(_doorControl ? context.t('venue_config.door_control_on') : context.t('venue_config.door_control_off'),
+                    style: tw(14, weight: bold, color: _doorControl ? Tw.fuchsia400 : Tw.slate500)),
+              ),
             ]),
           ]),
         ),

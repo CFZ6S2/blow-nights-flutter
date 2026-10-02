@@ -33,7 +33,7 @@ const _categoryLabel = {
   'wine': 'Vino',
 };
 
-enum _State { initializing, noVenue, venueNotFound, closed, presenceRequired, presenceExpired, catalogUnavailable, open }
+enum _State { initializing, noVenue, venueNotFound, closed, catalogUnavailable, open }
 
 /// Port of app/bar/order/page.tsx (Barra Digital)
 class BarOrderScreen extends StatefulWidget {
@@ -50,18 +50,14 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
   bool _subscribed = false;
   late String _venueId = widget.venueId ?? '';
   Map<String, dynamic>? _venue;
-  Map<String, dynamic>? _checkin;
-  bool _hasDoorTicket = false;
   List<Map<String, dynamic>> _products = [];
   bool _loading = true;
   String _category = 'all';
   final Map<String, String> _mixers = {};
   String? _buyingId;
-  bool _checkingIn = false;
   String? _error;
 
   StreamSubscription? _checkinSub;
-  StreamSubscription? _ticketsSub;
   StreamSubscription? _venueSub;
   StreamSubscription? _productsSub;
 
@@ -73,10 +69,9 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
     _subscribed = true;
     _uid = uid;
     _checkinSub?.cancel();
-    _checkin = null;
     if (uid != null) {
+      // Only to open the bar of the venue you're checked in at: buying needs no presence (decided 2026-10-02).
       _checkinSub = checkinStream(uid).listen((c) {
-        setState(() => _checkin = c);
         final hasParam = widget.venueId != null && widget.venueId!.isNotEmpty;
         final vid = safeStr(c?['venueId']);
         if (!hasParam && c != null && vid.isNotEmpty && !checkinExpired(c) && vid != _venueId) _selectVenue(vid);
@@ -87,10 +82,8 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
 
   void _selectVenue(String id) {
     _venueId = id;
-    _ticketsSub?.cancel();
     _venueSub?.cancel();
     _productsSub?.cancel();
-    _hasDoorTicket = false;
     _products = [];
     if (id.isEmpty) {
       _venue = null;
@@ -98,27 +91,6 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
       return;
     }
     _loading = true;
-    final uid = _uid;
-    if (uid != null) {
-      _ticketsSub = _db
-          .collection('tickets')
-          .where('userId', isEqualTo: uid)
-          .where('venueId', isEqualTo: id)
-          .snapshots()
-          .listen((snap) {
-        final now = DateTime.now().millisecondsSinceEpoch;
-        const maxWindow = 14 * 60 * 60 * 1000;
-        var valid = false;
-        for (final d in snap.docs) {
-          final t = d.data();
-          if (t['status'] == 'used' || t['status'] == 'checked_in') {
-            final ms = (parseDate(t['validatedAt']) ?? parseDate(t['usedAt']))?.millisecondsSinceEpoch ?? 0;
-            if (ms > 0 && now - ms < maxWindow) valid = true;
-          }
-        }
-        setState(() => _hasDoorTicket = valid);
-      }, onError: (_) {});
-    }
     _venueSub = _db.collection('venues').doc(id).snapshots().listen((s) {
       setState(() {
         _venue = s.exists ? {'id': s.id, ...?s.data()} : null;
@@ -130,12 +102,12 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
         .where('venueId', isEqualTo: id)
         .where('active', isEqualTo: true)
         .snapshots()
-        // Sorted here: venueId + active + orderBy(category, name) needs a composite index production never had, so the
-        // query failed and every bar showed "no products".
+        // Sorted here, not in the query: venueId + active + orderBy(category, name) needs a composite index production
+        // doesn't have, so the query failed and the bar showed no products (as on the web).
         .listen((snap) => setState(() => _products = snap.docs.map((d) => <String, dynamic>{'id': d.id, ...d.data()}).toList()
               ..sort((a, b) {
-                final byCategory = safeStr(a['category']).compareTo(safeStr(b['category']));
-                return byCategory != 0 ? byCategory : safeStr(a['name']).compareTo(safeStr(b['name']));
+                final c = safeStr(a['category']).compareTo(safeStr(b['category']));
+                return c != 0 ? c : safeStr(a['name']).compareTo(safeStr(b['name']));
               })),
             onError: (_) {});
   }
@@ -143,7 +115,6 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
   @override
   void dispose() {
     _checkinSub?.cancel();
-    _ticketsSub?.cancel();
     _venueSub?.cancel();
     _productsSub?.cancel();
     super.dispose();
@@ -156,29 +127,8 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
     if (v == null) return _State.venueNotFound;
     final cashless = v['cashless'] is Map ? v['cashless'] as Map : const {};
     if (v['isActive'] == false || cashless['enabled'] == false || cashless['kioskOpen'] == false) return _State.closed;
-    final c = _checkin;
-    final here = c != null && c['venueId'] == _venueId;
-    if (!((here && !checkinExpired(c)) || _hasDoorTicket)) {
-      return here && checkinExpired(c) ? _State.presenceExpired : _State.presenceRequired;
-    }
     if (_products.isEmpty) return _State.catalogUnavailable;
     return _State.open;
-  }
-
-  Future<void> _checkInNow() async {
-    if (_uid == null || _venueId.isEmpty) return;
-    setState(() {
-      _checkingIn = true;
-      _error = null;
-    });
-    try {
-      await FirebaseFunctions.instance.httpsCallable('checkInUser').call({'venueId': _venueId});
-    } on FirebaseFunctionsException catch (e) {
-      _error = e.message ?? 'No se pudo registrar tu presencia en el local.';
-    } catch (_) {
-      _error = 'No se pudo registrar tu presencia en el local.';
-    }
-    if (mounted) setState(() => _checkingIn = false);
   }
 
   Future<void> _buy(Map<String, dynamic> product) async {
@@ -210,10 +160,6 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
       final code = e.code;
       if (msg.contains('CASHLESS_CLOSED')) {
         _error = 'La barra digital está temporalmente cerrada en este local.';
-      } else if (msg.contains('PRESENCE_REQUIRED')) {
-        _error = 'Debes hacer check-in en el local para pedir consumiciones.';
-      } else if (msg.contains('PRESENCE_EXPIRED')) {
-        _error = 'Tu sesión en el local ha caducado. Vuelve a hacer check-in.';
       } else if (code == 'resource-exhausted' || msg.contains('Stock')) {
         _error = 'No queda stock disponible de este producto.';
       } else {
@@ -267,14 +213,13 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
 
     final venueName = safeStr(_venue?['name']).isNotEmpty ? safeStr(_venue!['name']) : 'Local';
     final closed = state == _State.closed;
-    final noPresence = state == _State.presenceRequired || state == _State.presenceExpired;
     final categories = ['all', ...{for (final p in _products) safeStr(p['category'])}];
     final filtered = _category == 'all' ? _products : _products.where((p) => p['category'] == _category).toList();
 
     return Scaffold(
       backgroundColor: Tw.black,
       body: Column(children: [
-        _header(context, venueName, closed, noPresence),
+        _header(context, venueName, closed),
         Expanded(
           child: ListView(padding: EdgeInsets.only(bottom: 32 + MediaQuery.of(context).padding.bottom), children: [
             if (closed)
@@ -284,31 +229,6 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
                 icon: Icons.lock_clock,
                 title: 'Barra Digital Cerrada',
                 desc: 'El servicio cashless no está recibiendo pedidos en este momento en $venueName.',
-              ),
-            if (noPresence && !closed)
-              _alert(
-                color: Tw.amber400,
-                bg: const Color(0xFF451A03),
-                icon: Icons.place,
-                title: 'Presencia no confirmada',
-                desc:
-                    'Para pedir en la barra debes estar en el local. Registra tu check-in o valida tu entrada en la puerta para activar los pedidos.',
-                action: Pressable(
-                  onTap: _checkingIn ? () {} : _checkInNow,
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    decoration: BoxDecoration(color: Tw.amber400, borderRadius: BorderRadius.circular(12)),
-                    child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      Icon(_checkingIn ? Icons.sync : Icons.how_to_reg, size: 14, color: Tw.black),
-                      const SizedBox(width: 6),
-                      Flexible(
-                        child: Text(_checkingIn ? 'Verificando presencia...' : 'Hacer Check-in en $venueName',
-                            style: tw(12, weight: black, color: Tw.black)),
-                      ),
-                    ]),
-                  ),
-                ),
               ),
             if (_error != null)
               Container(
@@ -363,14 +283,14 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
                 ]),
               )
             else
-              for (final p in filtered) _productCard(p, closed, noPresence),
+              for (final p in filtered) _productCard(p, closed),
           ]),
         ),
       ]),
     );
   }
 
-  Widget _header(BuildContext context, String venueName, bool closed, bool noPresence) => Container(
+  Widget _header(BuildContext context, String venueName, bool closed) => Container(
         padding: EdgeInsets.fromLTRB(16, MediaQuery.of(context).padding.top + 14, 16, 14),
         decoration: BoxDecoration(
           color: Tw.slate950.withValues(alpha: 0.9),
@@ -397,8 +317,6 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
                 const SizedBox(width: 8),
                 if (closed)
                   _badge('CERRADA', const Color(0xFFFB7185), const Color(0xFFF43F5E))
-                else if (noPresence)
-                  _badge('SIN CHECK-IN', Tw.amber400, Tw.amber500)
                 else
                   _badge('ABIERTA', Tw.emerald400, Tw.emerald500, dot: true),
               ]),
@@ -460,7 +378,7 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
         ]),
       );
 
-  Widget _productCard(Map<String, dynamic> p, bool closed, bool noPresence) {
+  Widget _productCard(Map<String, dynamic> p, bool closed) {
     final id = p['id'] as String;
     final buying = _buyingId == id;
     final stock = p['stock'];
@@ -468,7 +386,7 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
     final mixers = asStringList(p['mixerOptions']);
     final selected = _mixers[id] ?? (mixers.isNotEmpty ? mixers.first : '');
     final price = asDouble(p['price']) ?? 0;
-    final disabled = buying || closed || noPresence;
+    final disabled = buying || closed;
     return Container(
       margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
       padding: const EdgeInsets.all(16),
@@ -529,8 +447,7 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
-                      color: noPresence ? Tw.slate800 : null,
-                      gradient: noPresence ? null : const LinearGradient(colors: [Tw.fuchsia600, Color(0xFFDB2777)]),
+                      gradient: const LinearGradient(colors: [Tw.fuchsia600, Color(0xFFDB2777)]),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(mainAxisSize: MainAxisSize.min, children: [
@@ -540,10 +457,8 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
                             ? 'Procesando...'
                             : closed
                                 ? 'Cerrado'
-                                : noPresence
-                                    ? 'Requiere Check-in'
-                                    : 'Pedir',
-                        style: tw(12, weight: black, color: noPresence ? Tw.slate400 : Tw.white),
+                                : 'Pedir',
+                        style: tw(12, weight: black, color: Tw.white),
                       ),
                     ]),
                   ),
