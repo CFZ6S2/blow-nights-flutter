@@ -68,10 +68,19 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
   Future<void> _loadStats() async {
     final db = FirebaseFirestore.instance;
     try {
+      // Venues of the network: active ones minus reference venues not claimed yet, which are real places seeded for
+      // the map, not venues on Blow Nights (web docs/REFERENCE_VENUES.md).
       final v = await db.collection('venues').where('isActive', isEqualTo: true).count().get();
+      final refs = await db
+          .collection('venues')
+          .where('isActive', isEqualTo: true)
+          .where('source', isEqualTo: 'reference')
+          .where('isClaimed', isEqualTo: false)
+          .count()
+          .get();
       final u = await db.collection('users').count().get();
       final c = await db.collection('chills').where('city_slug', isEqualTo: _slug).count().get();
-      if (mounted) setState(() => _stats = (users: u.count ?? 0, venues: v.count ?? 0, chills: c.count ?? 0));
+      if (mounted) setState(() => _stats = (users: u.count ?? 0, venues: (v.count ?? 0) - (refs.count ?? 0), chills: c.count ?? 0));
     } catch (e) {
       debugPrint('Stats fetch error: $e');
     }

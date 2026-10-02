@@ -46,6 +46,11 @@ class Venue {
   int? get capacity => data['capacity'] is num ? (data['capacity'] as num).toInt() : null;
   bool get isVerified => data['isVerified'] == true;
   bool get isClaimed => data['isClaimed'] == true;
+  bool get isUnclaimedReference => isUnclaimedReferenceData(data);
+
+  /// A reference venue: a real place seeded for map density, not a partner of Blow Nights until its owner claims it
+  /// (web docs/REFERENCE_VENUES.md). Same rule as the backend (functions/modules/venue_claims.js) and the web.
+  static bool isUnclaimedReferenceData(Map<dynamic, dynamic>? d) => d != null && d['source'] == 'reference' && d['isClaimed'] != true;
   bool get hasTicketing => data['hasTicketing'] == true;
   String? get externalTicketUrl => data['externalTicketUrl'] as String?;
   bool get isEvent => type == 'event';

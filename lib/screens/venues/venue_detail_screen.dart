@@ -21,7 +21,9 @@ import '../../services/venue_hours.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/common.dart';
 import '../../widgets/basemap.dart';
+import '../../widgets/reference_venue.dart';
 import '../../widgets/venue_reviews.dart';
+import 'claim_venue_sheet.dart';
 import 'venues_screen.dart' show formatPrice;
 
 /// Port of app/[city]/venues/detail/page.tsx
@@ -42,7 +44,6 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
   List<({String id, String name, double price})> _drinks = [];
   int _checkins = 0;
   String? _purchasing;
-  bool _claiming = false;
   int _gallery = 0;
   final _pager = PageController();
   final List<StreamSubscription> _subs = [];
@@ -114,22 +115,11 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
     if (mounted) setState(() => _purchasing = null);
   }
 
-  Future<void> _claim() async {
-    final i18n = context.read<I18n>();
-    if (context.read<AuthProvider>().user == null) {
-      showToast(context, i18n.t('venueDetail.loginToClaim'));
-      openRoute(context, AppRoute.login);
-      return;
-    }
-    setState(() => _claiming = true);
-    try {
-      await FirebaseFunctions.instance.httpsCallable('claimCommunityVenue').call({'venueId': widget.venueId});
-      if (!mounted) return;
-      openRoute(context, AppRoute.venueAdmin);
-    } on FirebaseFunctionsException catch (e) {
-      if (mounted) showToast(context, e.message ?? i18n.t('venueDetail.errorClaiming'), error: true);
-    }
-    if (mounted) setState(() => _claiming = false);
+  // A reference venue goes to review (submitVenueClaim); the claimant follows it in "Mis reclamaciones".
+  Future<void> _claimReference(String title) async {
+    final res = await showClaimVenueSheet(context, venueId: widget.venueId, venueName: title);
+    if (!mounted || res == null) return;
+    openRoute(context, res == ClaimSheetResult.sent ? AppRoute.venueClaims : AppRoute.login);
   }
 
   static bool _barTakesOrders(Map<String, dynamic> d) {
@@ -193,6 +183,7 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
     final pricing = d['ticketPricing'] is Map ? Map<String, dynamic>.from(d['ticketPricing']) : <String, dynamic>{};
     final tiers = d['ticket_tiers'] is List ? (d['ticket_tiers'] as List).whereType<Map>().toList() : <Map>[];
     final community = d['ownerId'] == 'community';
+    final reference = v.isUnclaimedReference;
     final isOpen = v.hasSchedule ? isVenueOpenNow(v.openingDays, v.openingHours).isOpen : true;
     final sched = formatScheduleToday(v.openingDays, v.openingHours);
     final photos = [if (v.bannerUrl != null && v.bannerUrl!.isNotEmpty) v.bannerUrl!, ...asStringList(d['photoUrls'])];
@@ -232,6 +223,7 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
               const SizedBox(width: 16),
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  if (reference) ...[const ReferenceBadge(), const SizedBox(height: 4)],
                   Text(title, style: tw(24, weight: black, tracking: -0.025)),
                   if (v.address.isNotEmpty) Text(v.address, style: tw(12, color: Tw.slate500)),
                   if (v.openingDays.isNotEmpty) ...[
@@ -340,7 +332,9 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
               ],
             ],
             const SizedBox(height: 24),
-            if (community)
+            if (reference)
+              ReferenceVenueNotice(onClaim: () => _claimReference(title))
+            else if (community)
               _communitySection(context, v)
             else if (v.externalTicketUrl != null && v.externalTicketUrl!.isNotEmpty)
               Column(children: [
@@ -391,7 +385,7 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                 ]),
               ),
             // Copas: the bar must be taking orders (same checks as the bar order screen) and have something on the menu.
-            if (!community && cashlessOn && _drinks.isNotEmpty && _barTakesOrders(d)) ...[
+            if (!community && !reference && cashlessOn && _drinks.isNotEmpty && _barTakesOrders(d)) ...[
               const SizedBox(height: 24),
               _drinksSection(context, currency),
             ],
@@ -534,59 +528,6 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
         Text(context.t('venueDetail.communitySpot'), textAlign: TextAlign.center, style: tw(14, color: Tw.slate400)),
         const SizedBox(height: 8),
         Text(context.t('venueDetail.joinChat'), textAlign: TextAlign.center, style: tw(10, color: Tw.slate500)),
-        if (['club', 'bar', 'sauna', 'chiringuito'].contains(v.type) && auth.user != null) ...[
-          const SizedBox(height: 32),
-          Divider(color: Tw.w(0.1)),
-          const SizedBox(height: 24),
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [Color(0x993B0764), Tw.slate900, Color(0x991E1B4B)],
-              ),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Tw.purple500.withValues(alpha: 0.4)),
-            ),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-              Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Tw.purple600.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Tw.purple500.withValues(alpha: 0.3)),
-                  ),
-                  child: const Icon(Icons.storefront, size: 20, color: Tw.purple400),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Text(context.t('venueDetail.areYouOwner'), style: tw(14, weight: bold)),
-                    Text(context.t('venueDetail.claimDescription'), style: tw(12, color: Tw.slate300, height: 1.5)),
-                  ]),
-                ),
-              ]),
-              const SizedBox(height: 12),
-              Pressable(
-                onTap: () => _showClaimModal(context, v),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(colors: [Tw.purple600, Tw.indigo600]),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    const Icon(Icons.auto_awesome, size: 16, color: Tw.white),
-                    const SizedBox(width: 8),
-                    Label(context.t('venueDetail.claimButton'), size: 12, color: Tw.white, weight: FontWeight.w800, tracking: 0.05),
-                  ]),
-                ),
-              ),
-            ]),
-          ),
-        ],
         if (v.data['createdBy'] == auth.user?.uid && auth.user != null) ...[
           const SizedBox(height: 24),
           Pressable(
@@ -617,92 +558,6 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
       ]),
     );
   }
-
-  void _showClaimModal(BuildContext context, Venue v) => showDialog(
-        context: context,
-        barrierColor: Colors.black.withValues(alpha: 0.8),
-        builder: (ctx) => StatefulBuilder(
-          builder: (ctx, setLocal) => Dialog(
-            backgroundColor: Tw.slate900,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: Tw.purple500.withValues(alpha: 0.4))),
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                Center(
-                  child: Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Tw.purple600.withValues(alpha: 0.2),
-                      border: Border.all(color: Tw.purple500.withValues(alpha: 0.3)),
-                    ),
-                    child: const Icon(Icons.verified_user, color: Tw.purple400),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text('${ctx.t('venueDetail.takeControl')} ${v.name}', textAlign: TextAlign.center, style: tw(16, weight: bold)),
-                const SizedBox(height: 4),
-                Text(ctx.t('venueDetail.adminAccessInfo'), textAlign: TextAlign.center, style: tw(12, color: Tw.slate400)),
-                const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Tw.slate950.withValues(alpha: 0.6),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Tw.slate800),
-                  ),
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    for (final k in ['venueDetail.scanner', 'venueDetail.rrppPanel', 'venueDetail.promotions'])
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4),
-                        child: Row(children: [
-                          Text('✓', style: tw(12, color: Tw.emerald400)),
-                          const SizedBox(width: 8),
-                          Expanded(child: Text(ctx.t(k), style: tw(12, color: Tw.slate300))),
-                        ]),
-                      ),
-                  ]),
-                ),
-                const SizedBox(height: 16),
-                Row(children: [
-                  Expanded(
-                    child: Pressable(
-                      onTap: _claiming ? () {} : () => Navigator.of(ctx).pop(),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        decoration: BoxDecoration(color: Tw.slate800, borderRadius: BorderRadius.circular(12)),
-                        child: Text(ctx.t('venueDetail.cancel'), textAlign: TextAlign.center, style: tw(12, weight: semibold, color: Tw.slate300)),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Opacity(
-                      opacity: _claiming ? 0.5 : 1,
-                      child: Pressable(
-                        onTap: _claiming
-                            ? () {}
-                            : () async {
-                                setLocal(() {});
-                                Navigator.of(ctx).pop();
-                                await _claim();
-                              },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          decoration: BoxDecoration(color: Tw.purple600, borderRadius: BorderRadius.circular(12)),
-                          child: Text(_claiming ? ctx.t('venueDetail.assigning') : ctx.t('venueDetail.confirmAndEnter'),
-                              textAlign: TextAlign.center, style: tw(12, weight: bold)),
-                        ),
-                      ),
-                    ),
-                  ),
-                ]),
-              ]),
-            ),
-          ),
-        ),
-      );
 
   Widget _ticketsSection(BuildContext context, Map<String, dynamic> pricing, List<Map> tiers, String currency) {
     Widget buyButton(String id, {String? label, VoidCallback? onTap}) => Opacity(

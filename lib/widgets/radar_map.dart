@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import '../i18n/i18n.dart';
 import '../models/firestore_utils.dart';
 import '../models/rrpp_party.dart';
+import '../models/venue.dart';
 import '../models/user_model.dart';
 import '../navigation.dart';
 import '../providers/auth_provider.dart';
@@ -605,7 +606,9 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
     final isOpen = hasSchedule ? isVenueOpenNow(days, hours).isOpen : true;
     final count = isOpen ? asInt(v['currentCount']) : 0;
     final party = isRRPPParty(v);
-    final unclaimed = v['isClaimed'] == false && !party;
+    // A reference point: a real place, not a partner (web docs/REFERENCE_VENUES.md); quieter than the network's venues.
+    final reference = !party && Venue.isUnclaimedReferenceData(v);
+    final unclaimed = v['isClaimed'] == false && !party && !reference;
     final cruising = _cruisingTypes.contains(type);
     final isBar = {'bar', 'chiringuito', 'cruising_bar'}.contains(type);
     final isClub = type == 'club' || type == 'nightlife';
@@ -615,6 +618,8 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
     if (party) {
       color = Tw.teal400;
       icon = Icons.celebration;
+    } else if (reference) {
+      color = Tw.slate300;
     } else if (unclaimed) {
       color = isPaying ? const Color(0xFFEAB308) : Tw.amber400;
       icon = Icons.storefront;
@@ -634,7 +639,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
       color = Tw.indigo400;
     }
 
-    final tooltip = _venueTooltip(v, isOpen, count, unclaimed, days, hours);
+    final tooltip = _venueTooltip(v, isOpen, count, unclaimed, reference, days, hours);
     void open() {
       HapticFeedback.selectionClick();
       // An RRPP party isn't a venue: only its details, never a ticket purchase.
@@ -787,7 +792,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
         ]),
       );
 
-  Widget _venueTooltip(Map<String, dynamic> v, bool isOpen, int count, bool unclaimed, List<String> days, Map<String, Hours> hours) {
+  Widget _venueTooltip(Map<String, dynamic> v, bool isOpen, int count, bool unclaimed, bool reference, List<String> days, Map<String, Hours> hours) {
     final i18n = context.read<I18n>();
     String scheduleText() {
       if (isOpen) return i18n.t('map_open', fallback: 'Abierto');
@@ -822,6 +827,8 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
         const SizedBox(height: 2),
         isRRPPParty(v)
             ? Label(i18n.t('map_rrpp_party', fallback: 'Fiesta RRPP · entrada con el RRPP'), size: 9, weight: bold, color: const Color(0xFF5EEAD4))
+            : reference
+            ? Label(i18n.t('reference_venue.badge'), size: 9, weight: bold, color: Tw.slate300)
             : unclaimed
             ? Label(i18n.t('map_pending_verification', fallback: '🟡 Pendiente Verificación'), size: 9, weight: bold, color: Tw.amber400)
             : Label(safeStr(v['type']).isEmpty ? 'Local' : safeStr(v['type']), size: 9, weight: bold),
