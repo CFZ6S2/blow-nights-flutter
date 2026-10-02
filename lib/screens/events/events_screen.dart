@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../../i18n/i18n.dart';
 import '../../models/event.dart';
 import '../../models/firestore_utils.dart';
+import '../../models/venue.dart';
 import '../../navigation.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/city_provider.dart';
@@ -120,7 +121,9 @@ class _EventsScreenState extends State<EventsScreen> {
       final venues = await _db.collection('venues').where('isActive', isEqualTo: true).get();
       final all = <_PublicEvent>[];
       // Only the venues in the zone: fewer event reads than one query per venue everywhere.
-      for (final v in inZone(venues.docs, center, cityId, (d) => d.data())) {
+      // Reference venues are places, not organisers: they have no events (web docs/REFERENCE_VENUES.md).
+      final organisers = venues.docs.where((d) => !Venue.isUnclaimedReferenceData(d.data())).toList();
+      for (final v in inZone(organisers, center, cityId, (d) => d.data())) {
         final evs = await v.reference.collection('events').orderBy('start_date', descending: true).limit(10).get();
         for (final e in evs.docs) {
           final data = e.data();

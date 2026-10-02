@@ -49,6 +49,7 @@ import 'screens/setup/setup_profile_screen.dart';
 import 'screens/tickets/chill_ticket_screen.dart';
 import 'screens/tickets/consumption_screen.dart';
 import 'screens/tickets/wallet_screen.dart';
+import 'screens/venues/venue_claims_screen.dart';
 import 'screens/venues/venue_detail_screen.dart';
 import 'screens/visits/visits_screen.dart';
 import 'screens/venues/venues_screen.dart';
@@ -85,6 +86,7 @@ enum AppRoute {
   tickets,
   eventDetail,
   venueDetail,
+  venueClaims,
   setupProfile,
   premium,
   terms,
@@ -131,6 +133,7 @@ final Map<AppRoute, Widget Function(Map<String, String> args)> screenRegistry = 
   AppRoute.setupProfile: (_) => const SetupProfileScreen(editing: true),
   AppRoute.tickets: (a) => WalletScreen(claimTicketId: a['claimTicketId']),
   AppRoute.venueDetail: (a) => VenueDetailScreen(venueId: a['venueId'] ?? '', type: a['type']),
+  AppRoute.venueClaims: (_) => const VenueClaimsScreen(),
   AppRoute.chat: (_) => const ChatListScreen(),
   AppRoute.chatDetail: (a) => ChatDetailScreen(chatId: a['id'] ?? ''),
   AppRoute.visits: (_) => const VisitsScreen(),

@@ -518,9 +518,12 @@ class _VenueCard extends StatelessWidget {
                         Wrap(spacing: 8, runSpacing: 4, crossAxisAlignment: WrapCrossAlignment.center, children: [
                           Text(v.name, style: tw(14, weight: black)),
                           if (_cruising.contains(v.type)) _tag('18+', Tw.red500.withValues(alpha: 0.2), Tw.red400),
-                          v.data['ownerId'] == 'community'
-                              ? _tag(context.t('venuesPage.addedByCommunity'), Tw.slate700.withValues(alpha: 0.5), Tw.slate300)
-                              : _tag(context.t('venuesPage.verifiedVenue'), Tw.green500.withValues(alpha: 0.2), Tw.green400),
+                          if (v.isUnclaimedReference)
+                            _tag(context.t('reference_venue.badge'), Tw.slate700.withValues(alpha: 0.6), Tw.slate300)
+                          else if (v.data['ownerId'] == 'community')
+                            _tag(context.t('venuesPage.addedByCommunity'), Tw.slate700.withValues(alpha: 0.5), Tw.slate300)
+                          else
+                            _tag(context.t('venuesPage.verifiedVenue'), Tw.green500.withValues(alpha: 0.2), Tw.green400),
                           if (isOpen && live > 0)
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
