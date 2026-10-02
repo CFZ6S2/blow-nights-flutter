@@ -126,7 +126,8 @@
     "city_permanent": "La teva ciutat és permanent",
     "my_plans": "Els meus Chills",
     "my_tickets": "Les meves entrades",
-    "my_chats": "Els meus xats"
+    "my_chats": "Els meus xats",
+    "staff_scanners": "Escàners del local"
   },
   "chat": {
     "title": "Els Teus Xats",
@@ -864,7 +865,11 @@
     "share": "Compartir",
     "linkCopied": "Enllaç copiat",
     "schedule": "Horari",
-    "events": "Propers Esdeveniments & Festes"
+    "events": "Propers Esdeveniments & Festes",
+    "drinks_title": "Copes",
+    "drinks_desc": "Demana-les des del mòbil quan siguis al local i bescanvia-les a la barra amb el teu QR.",
+    "drinks_more": "I {{count}} més a la carta",
+    "buy_drinks": "Comprar copes"
   },
   "visits": {
     "title": "VISITES",
@@ -1368,7 +1373,10 @@
   "venue_admin_promo_radius": "Radi:",
   "venue_admin_promo_sending": "Enviant...",
   "venue_admin_promo_send": "Enviar Push a Usuaris Propers",
-  "venue_admin_promo_sent": "Promoció enviada correctament",
+  "venue_admin_promo_reached_one": "Enviada a {{count}} persona a prop",
+  "venue_admin_promo_reached_other": "Enviada a {{count}} persones a prop",
+  "venue_admin_promo_nobody": "Ara mateix no hi ha ningú a prop amb les notificacions activades: no ha arribat a ningú.",
+  "venue_admin_promo_no_location": "El local no té ubicació al mapa, així que no es pot saber qui és a prop.",
   "venue_admin_error_checkout": "Error iniciant checkout",
   "venue_admin_error_stripe": "Error obrint el portal de Stripe",
   "tab_venue_events": "Esdeveniments",
@@ -2322,9 +2330,6 @@
   "scanner_access_denied": "ACCESS DENIED",
   "scanner_scan_another": "Scan another ticket",
   "scanner_error_validating": "Error validating",
-  "scanner_nfc_prompt": "Apropa el tag NFC al dispositiu",
-  "scanner_nfc_listening": "Escoltant NFC...",
-  "scanner_nfc_starting": "Iniciant lector NFC...",
   "pr_module_paused": "Module paused",
   "pr_module_paused_desc": "The RRPP and ticket generation system is not available at this time. Contact the administrator.",
   "pr_invalid_link": "Invalid link",
@@ -3167,5 +3172,48 @@
   "business_login_become_rrpp": "Sóc RRPP independent",
   "business_login_become_rrpp_desc": "Sense local fix o amb un que no és a l'app. Passis QR a 0,50 € per als teus esdeveniments; cobres tu per fora.",
   "landing_clubs_cta_rrpp": "Sóc RRPP",
-  "map_rrpp_party": "Festa RRPP · entrada amb el RRPP"
+  "map_rrpp_party": "Festa RRPP · entrada amb el RRPP",
+  "staff_invite": {
+    "title": "Afegir personal",
+    "desc": "Genera un QR perquè el teu equip entri només amb el seu nom, sense correu ni contrasenya. Val 24 hores i per a diverses persones.",
+    "scope_door": "Porta (entrades)",
+    "scope_bar": "Barra (consumicions)",
+    "pick_scope": "Tria porta, barra o totes dues.",
+    "create": "Generar QR",
+    "scan_hint": "Que l'escanegin amb la càmera del mòbil o des de l'app, a «Soc personal d'un local».",
+    "nfc_hint": "Des de l'app d'Android també pots apropar el teu mòbil al de l'empleat (NFC).",
+    "copy": "Copiar enllaç",
+    "copied": "Enllaç copiat",
+    "whatsapp": "Enviar per WhatsApp",
+    "whatsapp_text": "Uneix-te a l'equip de {{venue}} a Blow Nights:",
+    "expires": "Caduca: {{time}}",
+    "uses": "S'hi han unit: {{count}}",
+    "revoke": "Desactivar",
+    "revoked": "Invitació desactivada",
+    "live_title": "Invitacions actives",
+    "error": "No s'ha pogut generar la invitació.",
+    "joined_by_invite": "Alta per invitació"
+  },
+  "staff_join": {
+    "title": "Uneix-te a l'equip",
+    "subtitle": "Personal de {{venue}}",
+    "scopes": "Podràs escanejar:",
+    "name_label": "El teu nom",
+    "name_placeholder": "Ex. Laura",
+    "cta": "Entrar",
+    "session_note": "Si hi ha una sessió oberta en aquest dispositiu, es tancarà.",
+    "invalid": "Aquesta invitació no és vàlida o ha caducat. Demana'n una altra al local.",
+    "failed": "No s'ha pogut completar. Torna-ho a provar d'aquí a un moment.",
+    "loading": "Comprovant la invitació…"
+  },
+  "staff_home": {
+    "title": "Personal de {{venue}}",
+    "door": "Porta",
+    "door_desc": "Validar entrades",
+    "bar": "Barra",
+    "bar_desc": "Bescanviar consumicions",
+    "logout": "Tancar sessió",
+    "not_staff": "Aquesta pantalla és per al personal d'un local. Demana al local un QR d'accés."
+  },
+  "venue_admin_scan_drinks": "Escanejar consumicions"
 }

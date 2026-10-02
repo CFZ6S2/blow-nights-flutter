@@ -129,7 +129,8 @@
     "city_permanent": "Η πόλη σας είναι μόνιμη",
     "my_plans": "Τα ρίγη μου",
     "my_tickets": "Οι καταχωρήσεις μου",
-    "my_chats": "Οι συνομιλίες μου"
+    "my_chats": "Οι συνομιλίες μου",
+    "staff_scanners": "Σαρωτές του μαγαζιού"
   },
   "chat": {
     "title": "Οι Συνομιλίες Σου",
@@ -867,7 +868,11 @@
     "share": "Κοινοποίηση",
     "linkCopied": "Ο σύνδεσμος αντιγράφηκε",
     "schedule": "Ωράριο",
-    "events": "Προσεχείς εκδηλώσεις και πάρτι"
+    "events": "Προσεχείς εκδηλώσεις και πάρτι",
+    "drinks_title": "Ποτά",
+    "drinks_desc": "Παράγγειλέ τα από το κινητό όταν είσαι στο μαγαζί και παράλαβέ τα στο μπαρ με το QR σου.",
+    "drinks_more": "Και {{count}} ακόμη στον κατάλογο",
+    "buy_drinks": "Αγορά ποτών"
   },
   "visits": {
     "title": "VISITAS",
@@ -1319,7 +1324,10 @@
   "venue_admin_promo_radius": "Ραδιόφωνο:",
   "venue_admin_promo_sending": "Αποστολή...",
   "venue_admin_promo_send": "Αποστολή Push σε κοντινούς χρήστες",
-  "venue_admin_promo_sent": "Η προσφορά στάλθηκε με επιτυχία",
+  "venue_admin_promo_reached_one": "Στάλθηκε σε {{count}} άτομο κοντά",
+  "venue_admin_promo_reached_other": "Στάλθηκε σε {{count}} άτομα κοντά",
+  "venue_admin_promo_nobody": "Αυτή τη στιγμή κανείς κοντά δεν έχει ενεργές ειδοποιήσεις: δεν έφτασε σε κανέναν.",
+  "venue_admin_promo_no_location": "Το μαγαζί δεν έχει τοποθεσία στον χάρτη, οπότε δεν μπορεί να ξέρει ποιος είναι κοντά.",
   "venue_admin_error_checkout": "Σφάλμα κατά την έναρξη της ολοκλήρωσης αγοράς",
   "venue_admin_error_stripe": "Σφάλμα κατά το άνοιγμα της πύλης Stripe",
   "tab_venue_events": "Εκδηλώσεις",
@@ -2325,9 +2333,6 @@
   "scanner_access_denied": "ACCESS DENIED",
   "scanner_scan_another": "Scan another ticket",
   "scanner_error_validating": "Error validating",
-  "scanner_nfc_prompt": "Πλησιάστε το NFC tag στη συσκευή",
-  "scanner_nfc_listening": "Αναμονή NFC...",
-  "scanner_nfc_starting": "Εκκίνηση αναγνώστη NFC...",
   "pr_module_paused": "Module paused",
   "pr_module_paused_desc": "The RRPP and ticket generation system is not available at this time. Contact the administrator.",
   "pr_invalid_link": "Invalid link",
@@ -3170,5 +3175,48 @@
   "business_login_become_rrpp": "Είμαι ανεξάρτητος promoter",
   "business_login_become_rrpp_desc": "Χωρίς σταθερό μαγαζί ή με ένα που δεν είναι στην εφαρμογή. Πάσα QR με 0,50 € για τα event σου· εισπράττεις εσύ εκτός εφαρμογής.",
   "landing_clubs_cta_rrpp": "Είμαι promoter",
-  "map_rrpp_party": "Πάρτι promoter · είσοδος μέσω του promoter"
+  "map_rrpp_party": "Πάρτι promoter · είσοδος μέσω του promoter",
+  "staff_invite": {
+    "title": "Προσθήκη προσωπικού",
+    "desc": "Δημιούργησε ένα QR ώστε η ομάδα σου να μπαίνει μόνο με το όνομά της, χωρίς email ή κωδικό. Ισχύει 24 ώρες, για πολλά άτομα.",
+    "scope_door": "Είσοδος (εισιτήρια)",
+    "scope_bar": "Μπαρ (ποτά)",
+    "pick_scope": "Διάλεξε είσοδο, μπαρ ή και τα δύο.",
+    "create": "Δημιουργία QR",
+    "scan_hint": "Το σκανάρουν με την κάμερα του κινητού ή στην εφαρμογή, στο «Δουλεύω σε μαγαζί».",
+    "nfc_hint": "Από την εφαρμογή Android μπορείς επίσης να πλησιάσεις το κινητό σου σε αυτό του υπαλλήλου (NFC).",
+    "copy": "Αντιγραφή συνδέσμου",
+    "copied": "Ο σύνδεσμος αντιγράφηκε",
+    "whatsapp": "Αποστολή με WhatsApp",
+    "whatsapp_text": "Γίνε μέλος της ομάδας του {{venue}} στο Blow Nights:",
+    "expires": "Λήγει: {{time}}",
+    "uses": "Μπήκαν: {{count}}",
+    "revoke": "Απενεργοποίηση",
+    "revoked": "Η πρόσκληση απενεργοποιήθηκε",
+    "live_title": "Ενεργές προσκλήσεις",
+    "error": "Δεν ήταν δυνατή η δημιουργία της πρόσκλησης.",
+    "joined_by_invite": "Μπήκε με πρόσκληση"
+  },
+  "staff_join": {
+    "title": "Γίνε μέλος της ομάδας",
+    "subtitle": "Προσωπικό του {{venue}}",
+    "scopes": "Θα μπορείς να σκανάρεις:",
+    "name_label": "Το όνομά σου",
+    "name_placeholder": "Π.χ. Λάουρα",
+    "cta": "Είσοδος",
+    "session_note": "Αν υπάρχει ανοιχτή σύνδεση σε αυτή τη συσκευή, θα κλείσει.",
+    "invalid": "Αυτή η πρόσκληση δεν ισχύει ή έληξε. Ζήτα καινούρια από το μαγαζί.",
+    "failed": "Δεν ήταν δυνατή η ολοκλήρωση. Δοκιμάστε ξανά σε λίγο.",
+    "loading": "Έλεγχος πρόσκλησης…"
+  },
+  "staff_home": {
+    "title": "Προσωπικό του {{venue}}",
+    "door": "Είσοδος",
+    "door_desc": "Έλεγχος εισιτηρίων",
+    "bar": "Μπαρ",
+    "bar_desc": "Εξαργύρωση ποτών",
+    "logout": "Αποσύνδεση",
+    "not_staff": "Αυτή η οθόνη είναι για το προσωπικό ενός μαγαζιού. Ζήτα από το μαγαζί ένα QR πρόσβασης."
+  },
+  "venue_admin_scan_drinks": "Σάρωση ποτών"
 }

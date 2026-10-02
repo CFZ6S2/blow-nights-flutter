@@ -153,7 +153,8 @@
     "city_permanent": "העיר שלך היא קבועה",
     "my_plans": "הצמרמורות שלי",
     "my_tickets": "הערכים שלי",
-    "my_chats": "הצ'אטים שלי"
+    "my_chats": "הצ'אטים שלי",
+    "staff_scanners": "הסורקים של המקום"
   },
   "chat": {
     "title": "הצ'אטים שלך",
@@ -768,7 +769,10 @@
   "venue_admin_promo_radius": "רדיוס:",
   "venue_admin_promo_sending": "...שולח",
   "venue_admin_promo_send": "שלח פוש למשתמשים קרובים",
-  "venue_admin_promo_sent": "המבצע נשלח בהצלחה",
+  "venue_admin_promo_reached_one": "נשלח לאדם {{count}} בקרבת מקום",
+  "venue_admin_promo_reached_other": "נשלח ל-{{count}} אנשים בקרבת מקום",
+  "venue_admin_promo_nobody": "כרגע אין אף אחד בקרבת מקום עם התראות פעילות: זה לא הגיע לאף אחד.",
+  "venue_admin_promo_no_location": "למקום אין מיקום במפה, ולכן אי אפשר לדעת מי נמצא בקרבת מקום.",
   "venue_admin_error_checkout": "שגיאה בהתחלת תשלום",
   "venue_admin_error_stripe": "שגיאה בפתיחת פורטל Stripe",
   "tab_overview": "סקירה",
@@ -968,7 +972,11 @@
     "share": "שיתוף",
     "linkCopied": "הקישור הועתק",
     "schedule": "שעות פתיחה",
-    "events": "אירועים ומסיבות בקרוב"
+    "events": "אירועים ומסיבות בקרוב",
+    "drinks_title": "משקאות",
+    "drinks_desc": "הזמינו מהנייד כשאתם במקום ואספו בבר עם ה-QR שלכם.",
+    "drinks_more": "ועוד {{count}} בתפריט",
+    "buy_drinks": "קניית משקאות"
   },
   "visits": {
     "title": "ביקורים",
@@ -2117,9 +2125,6 @@
   "scanner_access_denied": "גישה נדחתה",
   "scanner_scan_another": "סרוק כרטיס נוסף",
   "scanner_error_validating": "שגיאה באימות",
-  "scanner_nfc_prompt": "קרב את תג ה-NFC למכשיר",
-  "scanner_nfc_listening": "...מאזין ל-NFC",
-  "scanner_nfc_starting": "...מפעיל קורא NFC",
   "pr_module_paused": "מודול מושהה",
   "pr_module_paused_desc": "מערכת ה-RRPP והנפקת הכרטיסים אינה זמינה כרגע. פנה למנהל.",
   "pr_invalid_link": "קישור לא תקף",
@@ -3167,5 +3172,48 @@
   "business_login_become_rrpp": "יחצ״ן עצמאי",
   "business_login_become_rrpp_desc": "בלי מקום קבוע או עם מקום שאינו באפליקציה. כרטיסי QR ב-0,50 € לאירועים שלך; הגבייה נעשית מחוץ לאפליקציה.",
   "landing_clubs_cta_rrpp": "אני יחצ״ן",
-  "map_rrpp_party": "מסיבת יחצ״ן · כניסה דרך היחצ״ן"
+  "map_rrpp_party": "מסיבת יחצ״ן · כניסה דרך היחצ״ן",
+  "staff_invite": {
+    "title": "הוספת צוות",
+    "desc": "צרו QR כדי שהצוות ייכנס רק עם השם, בלי אימייל או סיסמה. תקף 24 שעות ולכמה אנשים.",
+    "scope_door": "כניסה (כרטיסים)",
+    "scope_bar": "בר (משקאות)",
+    "pick_scope": "בחרו כניסה, בר או את שניהם.",
+    "create": "יצירת QR",
+    "scan_hint": "סורקים אותו עם מצלמת הטלפון או באפליקציה, ב„אני עובד/ת במקום”.",
+    "nfc_hint": "באפליקציית אנדרואיד אפשר גם לקרב את הטלפון שלכם לטלפון של העובד/ת (NFC).",
+    "copy": "העתקת קישור",
+    "copied": "הקישור הועתק",
+    "whatsapp": "שליחה בוואטסאפ",
+    "whatsapp_text": "הצטרפו לצוות של {{venue}} ב-Blow Nights:",
+    "expires": "פג תוקף: {{time}}",
+    "uses": "הצטרפו: {{count}}",
+    "revoke": "ביטול",
+    "revoked": "ההזמנה בוטלה",
+    "live_title": "הזמנות פעילות",
+    "error": "לא ניתן היה ליצור את ההזמנה.",
+    "joined_by_invite": "הצטרף/ה בהזמנה"
+  },
+  "staff_join": {
+    "title": "הצטרפות לצוות",
+    "subtitle": "הצוות של {{venue}}",
+    "scopes": "תוכלו לסרוק:",
+    "name_label": "השם שלך",
+    "name_placeholder": "לדוגמה: לאורה",
+    "cta": "כניסה",
+    "session_note": "אם יש חיבור פתוח במכשיר הזה, הוא ייסגר.",
+    "invalid": "ההזמנה לא תקפה או שפג תוקפה. בקשו הזמנה חדשה מהמקום.",
+    "failed": "לא ניתן היה להשלים. נסו שוב בעוד רגע.",
+    "loading": "בודקים את ההזמנה…"
+  },
+  "staff_home": {
+    "title": "הצוות של {{venue}}",
+    "door": "כניסה",
+    "door_desc": "אימות כרטיסים",
+    "bar": "בר",
+    "bar_desc": "מימוש משקאות",
+    "logout": "התנתקות",
+    "not_staff": "המסך הזה מיועד לצוות של מקום. בקשו מהמקום QR גישה."
+  },
+  "venue_admin_scan_drinks": "סריקת משקאות"
 }

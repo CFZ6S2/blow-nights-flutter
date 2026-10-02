@@ -129,7 +129,8 @@
     "city_permanent": "مدينتك دائمة",
     "my_plans": "قشعريرة بلدي",
     "my_tickets": "إدخالاتي",
-    "my_chats": "دردشاتي"
+    "my_chats": "دردشاتي",
+    "staff_scanners": "ماسحات المكان"
   },
   "chat": {
     "title": "دردشاتك",
@@ -867,7 +868,11 @@
     "share": "مشاركة",
     "linkCopied": "تم نسخ الرابط",
     "schedule": "المواعيد",
-    "events": "الأحداث والحفلات القادمة"
+    "events": "الأحداث والحفلات القادمة",
+    "drinks_title": "المشروبات",
+    "drinks_desc": "اطلبها من هاتفك عندما تكون في المكان واستلمها من البار برمز QR الخاص بك.",
+    "drinks_more": "و{{count}} أخرى في القائمة",
+    "buy_drinks": "شراء مشروبات"
   },
   "visits": {
     "title": "الزيارات",
@@ -1319,7 +1324,10 @@
   "venue_admin_promo_radius": "راديو:",
   "venue_admin_promo_sending": "إرسال...",
   "venue_admin_promo_send": "إرسال الدفع إلى المستخدمين القريبين",
-  "venue_admin_promo_sent": "تم إرسال الترويج بنجاح",
+  "venue_admin_promo_reached_one": "أُرسلت إلى {{count}} شخص قريب",
+  "venue_admin_promo_reached_other": "أُرسلت إلى {{count}} أشخاص قريبين",
+  "venue_admin_promo_nobody": "لا يوجد الآن أحد قريب فعّل الإشعارات: لم تصل إلى أحد.",
+  "venue_admin_promo_no_location": "ليس للمكان موقع على الخريطة، لذا لا يمكن معرفة من هو قريب.",
   "venue_admin_error_checkout": "خطأ في بدء الخروج",
   "venue_admin_error_stripe": "حدث خطأ أثناء فتح بوابة Stripe",
   "tab_venue_events": "الأحداث",
@@ -2325,9 +2333,6 @@
   "scanner_access_denied": "ACCESS DENIED",
   "scanner_scan_another": "Scan another ticket",
   "scanner_error_validating": "Error validating",
-  "scanner_nfc_prompt": "قرّب بطاقة NFC من الجهاز",
-  "scanner_nfc_listening": "...جارٍ الاستماع لـ NFC",
-  "scanner_nfc_starting": "...جارٍ تشغيل قارئ NFC",
   "pr_module_paused": "Module paused",
   "pr_module_paused_desc": "The RRPP and ticket generation system is not available at this time. Contact the administrator.",
   "pr_invalid_link": "Invalid link",
@@ -3170,5 +3175,48 @@
   "business_login_become_rrpp": "أنا مروّج مستقل",
   "business_login_become_rrpp_desc": "بلا مكان ثابت أو بمكان غير موجود في التطبيق. تذاكر QR بسعر 0,50 € لفعالياتك؛ وتحصّل المال بنفسك خارج التطبيق.",
   "landing_clubs_cta_rrpp": "أنا مروّج",
-  "map_rrpp_party": "حفلة مروّج · الدخول عبر المروّج"
+  "map_rrpp_party": "حفلة مروّج · الدخول عبر المروّج",
+  "staff_invite": {
+    "title": "إضافة موظفين",
+    "desc": "أنشئ رمز QR ليدخل فريقك بالاسم فقط، دون بريد إلكتروني أو كلمة مرور. صالح لمدة 24 ساعة ولعدة أشخاص.",
+    "scope_door": "الباب (التذاكر)",
+    "scope_bar": "البار (المشروبات)",
+    "pick_scope": "اختر الباب أو البار أو كليهما.",
+    "create": "إنشاء رمز QR",
+    "scan_hint": "يمسحونه بكاميرا الهاتف أو من التطبيق، في «أعمل في مكان».",
+    "nfc_hint": "من تطبيق أندرويد يمكنك أيضًا تقريب هاتفك من هاتف الموظف (NFC).",
+    "copy": "نسخ الرابط",
+    "copied": "تم نسخ الرابط",
+    "whatsapp": "إرسال عبر واتساب",
+    "whatsapp_text": "انضم إلى فريق {{venue}} على Blow Nights:",
+    "expires": "ينتهي: {{time}}",
+    "uses": "انضموا: {{count}}",
+    "revoke": "إيقاف",
+    "revoked": "تم إيقاف الدعوة",
+    "live_title": "الدعوات النشطة",
+    "error": "تعذر إنشاء الدعوة.",
+    "joined_by_invite": "انضم بدعوة"
+  },
+  "staff_join": {
+    "title": "انضم إلى الفريق",
+    "subtitle": "فريق {{venue}}",
+    "scopes": "ستتمكن من مسح:",
+    "name_label": "اسمك",
+    "name_placeholder": "مثال: لاورا",
+    "cta": "دخول",
+    "session_note": "إذا كانت هناك جلسة مفتوحة على هذا الجهاز، فسيتم إغلاقها.",
+    "invalid": "هذه الدعوة غير صالحة أو انتهت صلاحيتها. اطلب دعوة جديدة من المكان.",
+    "failed": "تعذّر الإكمال. حاول مرة أخرى بعد قليل.",
+    "loading": "جارٍ التحقق من الدعوة…"
+  },
+  "staff_home": {
+    "title": "فريق {{venue}}",
+    "door": "الباب",
+    "door_desc": "التحقق من التذاكر",
+    "bar": "البار",
+    "bar_desc": "صرف المشروبات",
+    "logout": "تسجيل الخروج",
+    "not_staff": "هذه الشاشة مخصصة لموظفي المكان. اطلب من المكان رمز QR للدخول."
+  },
+  "venue_admin_scan_drinks": "مسح المشروبات"
 }

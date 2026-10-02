@@ -11,6 +11,7 @@ import '../providers/auth_provider.dart';
 import '../providers/city_provider.dart';
 import '../providers/venues_provider.dart';
 import '../services/nearby.dart';
+import '../services/push_sync.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
 import 'events/events_screen.dart';
@@ -18,6 +19,7 @@ import 'home/city_home_screen.dart';
 import 'landing/landing_screen.dart';
 import 'profile/profile_screen.dart';
 import 'setup/setup_profile_screen.dart';
+import 'staff/staff_screens.dart';
 import 'venues/venues_screen.dart';
 
 /// Root: splash while auth resolves, then the tabbed shell.
@@ -31,6 +33,8 @@ class RootGate extends StatelessWidget {
     if (auth.loading) return const SplashScreen();
     if (auth.user == null && !shell.landingDismissed) return LandingScreen(onEnter: shell.dismissLanding);
     if (needsProfileSetup(auth)) return const SetupProfileScreen();
+    // Venue staff (invite or door account) open the app straight into their scanners.
+    if (auth.role == 'door' && auth.claims?['venueId'] is String) return const StaffHomeScreen();
     return const MainShell();
   }
 }
@@ -94,8 +98,18 @@ class _MainShellState extends State<MainShell> {
     final shell = context.watch<ShellController>();
     final cityId = context.select<CityProvider, String?>((c) => c.cityId);
     final center = context.select<CityProvider, GeoPos?>((c) => c.center);
+    final profile = auth.profile;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) context.read<VenuesProvider>().setZone(center, cityId);
+      // Push token and approximate position for venue promos (services/push_sync.dart), once the profile is known.
+      if (auth.user == null || profile != null) {
+        PushSync.start(
+          auth.user?.uid,
+          notificationsOff: profile?.data['notificationsEnabled'] == false,
+          savedToken: profile?.data['fcmToken'] as String?,
+          staff: auth.role == 'door',
+        );
+      }
     });
 
     final showNav = auth.user != null && auth.role != 'venueOwner';

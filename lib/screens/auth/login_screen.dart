@@ -213,6 +213,17 @@ class _LoginScreenState extends State<LoginScreen> {
             Text(context.t('login.pro_venues'), style: tw(12, weight: bold, color: Tw.indigo400)),
           ]),
         ),
+        const SizedBox(height: 12),
+        GlassCard(
+          onTap: () => openRoute(context, AppRoute.staffJoin),
+          radius: 16,
+          padding: const EdgeInsets.all(12),
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            const Icon(Icons.badge, size: 16, color: Tw.fuchsia400),
+            const SizedBox(height: 4),
+            Text(context.t('staff_app.entry', fallback: 'Soy personal de un local'), style: tw(12, weight: bold, color: Tw.fuchsia400)),
+          ]),
+        ),
         const SizedBox(height: 28),
         Opacity(
           opacity: 0.4,

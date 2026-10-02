@@ -77,5 +77,18 @@
     "error": "Ceva n-a mers. Încearcă din nou."
   },
   "door_camera_denied_app": "We can't use the camera. Validate with the pass PIN or allow the camera in the app settings.",
-  "door_open_settings": "Open settings"
+  "door_open_settings": "Open settings",
+  "nfc_pass": {
+    "hint": "Poți și să apropii telefonul de cel al personalului (NFC).",
+    "empty_ticket": "Telefonul acela nu afișează niciun bilet. Roagă să fie deschis și apropiat din nou.",
+    "empty_drink": "Telefonul acela nu afișează nicio consumație. Roagă să fie deschisă și apropie telefonul din nou.",
+    "scanner_prompt": "Apropiați telefonul clientului",
+    "listening": "Se ascultă NFC...",
+    "starting": "Se pornește cititorul NFC..."
+  },
+  "staff_app": {
+    "entry": "Lucrez într-un local",
+    "scan_or_tap": "Scanează QR-ul localului sau apropie telefonul de cel al responsabilului (NFC).",
+    "not_invite": "Asta nu este o invitație pentru personal."
+  }
 }

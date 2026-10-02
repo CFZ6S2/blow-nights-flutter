@@ -2,8 +2,11 @@ package com.blownights.finder
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import com.blownights.finder.finder.FinderChannels
+import com.blownights.finder.pass.PassHceService
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -23,12 +26,27 @@ class MainActivity : FlutterActivity() {
                 result.notImplemented()
             }
         }
+        // Ticket or drink handed to a scanner by NFC (pass/PassHceService.kt, lib/services/nfc_pass.dart).
+        val pass = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "blownights/nfc_pass")
+        pass.setMethodCallHandler { call, result ->
+            if (call.method == "setPayload") {
+                PassHceService.payload = call.argument<String>("payload")
+                result.success(null)
+            } else {
+                result.notImplemented()
+            }
+        }
+        val main = Handler(Looper.getMainLooper())
+        PassHceService.onHandedOver = { main.post { pass.invokeMethod("handedOver", null) } }
     }
 
     override fun cleanUpFlutterEngine(flutterEngine: FlutterEngine) {
         // The radar service may keep running; it must stop asking this engine to renew keys.
         finder?.detach()
         finder = null
+        // No screen is left to show a ticket or drink: stop answering scanners.
+        PassHceService.onHandedOver = null
+        PassHceService.payload = null
         super.cleanUpFlutterEngine(flutterEngine)
     }
 

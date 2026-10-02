@@ -14,6 +14,7 @@ import 'screens/shell.dart';
 import 'services/finder_background.dart';
 import 'services/finder_native.dart';
 import 'services/firebase_init.dart';
+import 'services/push_sync.dart';
 import 'theme/app_theme.dart';
 
 Future<void> main() async {
@@ -52,6 +53,7 @@ class BlowNightsApp extends StatelessWidget {
         builder: (context, i18n, _) => MaterialApp(
           title: 'Blow Nights',
           debugShowCheckedModeBanner: false,
+          scaffoldMessengerKey: rootMessengerKey,
           theme: AppTheme.darkTheme,
           locale: i18n.locale,
           supportedLocales: [for (final l in appLanguages) Locale(l.code)],

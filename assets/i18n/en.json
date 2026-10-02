@@ -126,7 +126,8 @@
     "city_permanent": "Your city is permanent",
     "my_plans": "My Chills",
     "my_tickets": "My Entries",
-    "my_chats": "My Chats"
+    "my_chats": "My Chats",
+    "staff_scanners": "Venue scanners"
   },
   "chat": {
     "title": "Your Chats",
@@ -745,7 +746,10 @@
   "venue_admin_promo_radius": "Radius:",
   "venue_admin_promo_sending": "Sending...",
   "venue_admin_promo_send": "Send Push to Nearby Users",
-  "venue_admin_promo_sent": "Promotion sent successfully",
+  "venue_admin_promo_reached_one": "Sent to {{count}} person nearby",
+  "venue_admin_promo_reached_other": "Sent to {{count}} people nearby",
+  "venue_admin_promo_nobody": "Nobody nearby has notifications on right now: it reached no one.",
+  "venue_admin_promo_no_location": "The venue has no location on the map, so there's no way to know who is nearby.",
   "venue_admin_error_checkout": "Error starting checkout",
   "venue_admin_error_stripe": "Error opening Stripe portal",
   "tab_overview": "Overview",
@@ -945,7 +949,11 @@
     "share": "Share",
     "linkCopied": "Link copied",
     "schedule": "Schedule",
-    "events": "Upcoming Events & Parties"
+    "events": "Upcoming Events & Parties",
+    "drinks_title": "Drinks",
+    "drinks_desc": "Order them on your phone once you're at the venue and pick them up at the bar with your QR.",
+    "drinks_more": "And {{count}} more on the menu",
+    "buy_drinks": "Buy drinks"
   },
   "visits": {
     "title": "VISITS",
@@ -2121,9 +2129,6 @@
   "scanner_access_denied": "ACCESS DENIED",
   "scanner_scan_another": "Scan another ticket",
   "scanner_error_validating": "Error validating",
-  "scanner_nfc_prompt": "Hold the NFC tag near the device",
-  "scanner_nfc_listening": "Listening for NFC...",
-  "scanner_nfc_starting": "Starting NFC reader...",
   "pr_module_paused": "Module paused",
   "pr_module_paused_desc": "The RRPP and ticket generation system is not available at this time. Contact the administrator.",
   "pr_invalid_link": "Invalid link",
@@ -2637,7 +2642,6 @@
     "city_label_short": "City:",
     "owner_label": "Owner:",
     "assign_btn": "Assign",
-    "delete_btn": "Delete",
     "search_nick_email": "Search by nickname or email...",
     "choose_btn": "Choose",
     "metrics_loading": "Loading metrics...",
@@ -3166,5 +3170,48 @@
   "business_login_become_rrpp": "I'm an independent promoter",
   "business_login_become_rrpp_desc": "No fixed venue, or one that isn't in the app. QR passes at €0.50 for your events; you charge outside the app.",
   "landing_clubs_cta_rrpp": "I'm a promoter",
-  "map_rrpp_party": "Promoter party · entry through the promoter"
+  "map_rrpp_party": "Promoter party · entry through the promoter",
+  "staff_invite": {
+    "title": "Add staff",
+    "desc": "Create a QR so your team gets in with just their name, no email or password. Valid for 24 hours and for several people.",
+    "scope_door": "Door (tickets)",
+    "scope_bar": "Bar (drinks)",
+    "pick_scope": "Pick door, bar or both.",
+    "create": "Create QR",
+    "scan_hint": "They scan it with the phone camera or in the app, under \"I work at a venue\".",
+    "nfc_hint": "From the Android app you can also tap your phone on the employee's phone (NFC).",
+    "copy": "Copy link",
+    "copied": "Link copied",
+    "whatsapp": "Send by WhatsApp",
+    "whatsapp_text": "Join the {{venue}} team on Blow Nights:",
+    "expires": "Expires: {{time}}",
+    "uses": "Joined: {{count}}",
+    "revoke": "Switch off",
+    "revoked": "Invite switched off",
+    "live_title": "Live invites",
+    "error": "The invite couldn't be created.",
+    "joined_by_invite": "Joined by invite"
+  },
+  "staff_join": {
+    "title": "Join the team",
+    "subtitle": "{{venue}} staff",
+    "scopes": "You'll be able to scan:",
+    "name_label": "Your name",
+    "name_placeholder": "e.g. Laura",
+    "cta": "Get in",
+    "session_note": "If someone is signed in on this device, they'll be signed out.",
+    "invalid": "This invite isn't valid or has expired. Ask the venue for a new one.",
+    "failed": "Couldn't complete that. Try again in a moment.",
+    "loading": "Checking the invite…"
+  },
+  "staff_home": {
+    "title": "{{venue}} staff",
+    "door": "Door",
+    "door_desc": "Validate tickets",
+    "bar": "Bar",
+    "bar_desc": "Redeem drinks",
+    "logout": "Sign out",
+    "not_staff": "This screen is for a venue's staff. Ask the venue for an access QR."
+  },
+  "venue_admin_scan_drinks": "Scan drinks"
 }

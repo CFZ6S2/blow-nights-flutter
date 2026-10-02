@@ -77,5 +77,18 @@
     "error": "Algo ha fallado. Inténtalo de nuevo."
   },
   "door_camera_denied_app": "No podemos usar la cámara. Valida con el PIN del pase o permite la cámara en los ajustes de la app.",
-  "door_open_settings": "Abrir ajustes"
+  "door_open_settings": "Abrir ajustes",
+  "nfc_pass": {
+    "hint": "También puedes acercar tu móvil al del personal (NFC).",
+    "empty_ticket": "Ese móvil no está mostrando ninguna entrada. Que la abra y vuelva a acercarlo.",
+    "empty_drink": "Ese móvil no está mostrando ninguna consumición. Que la abra y vuelva a acercarlo.",
+    "scanner_prompt": "Acerca el móvil del cliente",
+    "listening": "Escuchando NFC...",
+    "starting": "Iniciando lector NFC..."
+  },
+  "staff_app": {
+    "entry": "Soy personal de un local",
+    "scan_or_tap": "Escanea el QR del local o acerca tu móvil al del encargado (NFC).",
+    "not_invite": "Eso no es una invitación de personal."
+  }
 }

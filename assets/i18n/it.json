@@ -129,7 +129,8 @@
     "city_permanent": "La tua città è permanente",
     "my_plans": "I miei brividi",
     "my_tickets": "Le mie voci",
-    "my_chats": "Le mie chat"
+    "my_chats": "Le mie chat",
+    "staff_scanners": "Scanner del locale"
   },
   "chat": {
     "title": "Le Tue Chat",
@@ -867,7 +868,11 @@
     "share": "Condividi",
     "linkCopied": "Link copiato",
     "schedule": "Orari",
-    "events": "Prossimi eventi e feste"
+    "events": "Prossimi eventi e feste",
+    "drinks_title": "Drink",
+    "drinks_desc": "Ordinali dal telefono quando sei nel locale e ritirali al bar con il tuo QR.",
+    "drinks_more": "E altri {{count}} nel menù",
+    "buy_drinks": "Compra drink"
   },
   "visits": {
     "title": "VISITE",
@@ -1319,7 +1324,10 @@
   "venue_admin_promo_radius": "Radio:",
   "venue_admin_promo_sending": "Invio...",
   "venue_admin_promo_send": "Invia push agli utenti nelle vicinanze",
-  "venue_admin_promo_sent": "Promozione inviata con successo",
+  "venue_admin_promo_reached_one": "Inviata a {{count}} persona vicina",
+  "venue_admin_promo_reached_other": "Inviata a {{count}} persone vicine",
+  "venue_admin_promo_nobody": "In questo momento nessuno nelle vicinanze ha le notifiche attive: non ha raggiunto nessuno.",
+  "venue_admin_promo_no_location": "Il locale non ha una posizione sulla mappa, quindi non si può sapere chi è vicino.",
   "venue_admin_error_checkout": "Errore durante l'avvio del pagamento",
   "venue_admin_error_stripe": "Errore durante l'apertura del portale Stripe",
   "tab_venue_events": "Eventi",
@@ -2326,9 +2334,6 @@
   "scanner_access_denied": "ACCESS DENIED",
   "scanner_scan_another": "Scan another ticket",
   "scanner_error_validating": "Error validating",
-  "scanner_nfc_prompt": "Avvicina il tag NFC al dispositivo",
-  "scanner_nfc_listening": "In ascolto NFC...",
-  "scanner_nfc_starting": "Avvio lettore NFC...",
   "pr_module_paused": "Module paused",
   "pr_module_paused_desc": "The RRPP and ticket generation system is not available at this time. Contact the administrator.",
   "pr_invalid_link": "Invalid link",
@@ -3170,5 +3175,48 @@
   "business_login_become_rrpp": "Sono un PR indipendente",
   "business_login_become_rrpp_desc": "Senza locale fisso o con uno che non è nell'app. Pass QR a 0,50 € per i tuoi eventi; incassi tu fuori dall'app.",
   "landing_clubs_cta_rrpp": "Sono un PR",
-  "map_rrpp_party": "Festa PR · ingresso tramite il PR"
+  "map_rrpp_party": "Festa PR · ingresso tramite il PR",
+  "staff_invite": {
+    "title": "Aggiungi personale",
+    "desc": "Genera un QR perché il tuo team entri solo con il nome, senza email né password. Vale 24 ore e per più persone.",
+    "scope_door": "Ingresso (biglietti)",
+    "scope_bar": "Bar (consumazioni)",
+    "pick_scope": "Scegli ingresso, bar o entrambi.",
+    "create": "Genera QR",
+    "scan_hint": "Lo scansionano con la fotocamera del telefono o nell'app, in «Lavoro in un locale».",
+    "nfc_hint": "Dall'app Android puoi anche avvicinare il tuo telefono a quello del dipendente (NFC).",
+    "copy": "Copia link",
+    "copied": "Link copiato",
+    "whatsapp": "Invia su WhatsApp",
+    "whatsapp_text": "Unisciti allo staff di {{venue}} su Blow Nights:",
+    "expires": "Scade: {{time}}",
+    "uses": "Iscritti: {{count}}",
+    "revoke": "Disattiva",
+    "revoked": "Invito disattivato",
+    "live_title": "Inviti attivi",
+    "error": "Impossibile creare l'invito.",
+    "joined_by_invite": "Iscritto con invito"
+  },
+  "staff_join": {
+    "title": "Unisciti allo staff",
+    "subtitle": "Staff di {{venue}}",
+    "scopes": "Potrai scansionare:",
+    "name_label": "Il tuo nome",
+    "name_placeholder": "Es. Laura",
+    "cta": "Entra",
+    "session_note": "Se su questo dispositivo c'è una sessione aperta, verrà chiusa.",
+    "invalid": "Questo invito non è valido o è scaduto. Chiedine un altro al locale.",
+    "failed": "Non è stato possibile completare. Riprova tra un momento.",
+    "loading": "Verifica dell'invito…"
+  },
+  "staff_home": {
+    "title": "Staff di {{venue}}",
+    "door": "Ingresso",
+    "door_desc": "Convalida biglietti",
+    "bar": "Bar",
+    "bar_desc": "Riscatta consumazioni",
+    "logout": "Esci",
+    "not_staff": "Questa schermata è per lo staff di un locale. Chiedi al locale un QR di accesso."
+  },
+  "venue_admin_scan_drinks": "Scansiona consumazioni"
 }

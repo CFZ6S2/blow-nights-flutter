@@ -77,5 +77,18 @@
     "error": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
   },
   "door_camera_denied_app": "We can't use the camera. Validate with the pass PIN or allow the camera in the app settings.",
-  "door_open_settings": "Open settings"
+  "door_open_settings": "Open settings",
+  "nfc_pass": {
+    "hint": "Du kannst dein Handy auch an das Handy des Personals halten (NFC).",
+    "empty_ticket": "Dieses Handy zeigt kein Ticket. Bitte öffnen lassen und erneut daranhalten.",
+    "empty_drink": "Dieses Handy zeigt kein Getränk. Bitte öffnen lassen und erneut daranhalten.",
+    "scanner_prompt": "Halte das Handy des Gastes an dieses",
+    "listening": "Warte auf NFC...",
+    "starting": "NFC-Leser wird gestartet..."
+  },
+  "staff_app": {
+    "entry": "Ich arbeite in einem Lokal",
+    "scan_or_tap": "Scanne den QR-Code des Lokals oder halte dein Handy an das des Chefs (NFC).",
+    "not_invite": "Das ist keine Personaleinladung."
+  }
 }

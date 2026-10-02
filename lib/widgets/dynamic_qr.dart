@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../i18n/i18n.dart';
+import '../services/nfc_pass.dart';
 import '../theme/app_theme.dart';
 import 'common.dart';
 
 /// Port of components/DynamicQR.tsx — `dyn:{ticketId}:{ts}:{hmacSha256Hex}` rotating every 15s.
+/// On Android the same code is also handed over by NFC while it's on screen (services/nfc_pass.dart).
 String dynamicQrValue(String ticketId, String secretKey, [DateTime? now]) {
   final ts = (now ?? DateTime.now()).millisecondsSinceEpoch;
   final payload = '$ticketId:$ts';
@@ -28,7 +30,7 @@ class DynamicQR extends StatefulWidget {
   State<DynamicQR> createState() => _DynamicQRState();
 }
 
-class _DynamicQRState extends State<DynamicQR> with SingleTickerProviderStateMixin {
+class _DynamicQRState extends State<DynamicQR> with TickerProviderStateMixin {
   static const _period = Duration(seconds: 15);
   String _value = '';
   Timer? _timer;
@@ -46,10 +48,12 @@ class _DynamicQRState extends State<DynamicQR> with SingleTickerProviderStateMix
     final key = widget.secretKey;
     setState(() => _value = key == null ? (widget.fallbackToken ?? '') : dynamicQrValue(widget.ticketId, key));
     if (key != null) _progress.forward(from: 0);
+    NfcPass.show(this, _value);
   }
 
   @override
   void dispose() {
+    NfcPass.hide(this);
     _timer?.cancel();
     _progress.dispose();
     _scan.dispose();
@@ -131,6 +135,25 @@ class _DynamicQRState extends State<DynamicQR> with SingleTickerProviderStateMix
           ),
         ),
       ],
+      if (NfcPass.available) const NfcPassHint(),
     ]);
   }
+}
+
+/// "You can also tap your phone on the staff's phone (NFC)", under a ticket or drink QR on Android.
+class NfcPassHint extends StatelessWidget {
+  const NfcPassHint({super.key});
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(top: 12),
+        child: Row(mainAxisSize: MainAxisSize.min, children: [
+          const Icon(Icons.nfc, size: 14, color: Tw.slate400),
+          const SizedBox(width: 6),
+          Flexible(
+            child: Text(context.t('nfc_pass.hint', fallback: 'También puedes acercar tu móvil al del personal (NFC).'),
+                textAlign: TextAlign.center, style: tw(11, color: Tw.slate400)),
+          ),
+        ]),
+      );
 }

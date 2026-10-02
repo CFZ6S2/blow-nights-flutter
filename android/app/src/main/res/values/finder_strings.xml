@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="finder_hce_description">Blow Nights group invite</string>
+    <string name="pass_hce_description">Blow Nights ticket or drink</string>
 </resources>

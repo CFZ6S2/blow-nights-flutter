@@ -6,10 +6,11 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/auth_provider.dart';
+import '../../services/nfc_pass.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/admin_ui.dart';
 import '../../widgets/common.dart';
-import 'scanner_screens.dart' show QrCamera, scanFeedback;
+import 'scanner_screens.dart' show QrCamera, nfcPassEmpty, scanFeedback;
 
 String _now() {
   final d = DateTime.now();
@@ -18,6 +19,7 @@ String _now() {
 }
 
 /// Port of app/bar/scanner/page.tsx ("SCAN & POUR": redeem drink entitlements by QR, PIN, NFC or keyboard-wedge gun).
+/// On Android it also reads the customer's phone by NFC (services/nfc_pass.dart): the drink's own QR code.
 class BarScannerScreen extends StatefulWidget {
   final String venueId;
   const BarScannerScreen({super.key, required this.venueId});
@@ -41,10 +43,19 @@ class _BarScannerScreenState extends State<BarScannerScreen> {
   void initState() {
     super.initState();
     HardwareKeyboard.instance.addHandler(_onKey);
+    if (NfcPass.available) {
+      NfcPass.read(
+        (code) => _scan(code, method: 'nfc'),
+        onEmpty: () => nfcPassEmpty(context, drink: true),
+      ).then((_) {
+        if (mounted) setState(() {});
+      });
+    }
   }
 
   @override
   void dispose() {
+    if (NfcPass.available) NfcPass.stop();
     HardwareKeyboard.instance.removeHandler(_onKey);
     _manual.dispose();
     super.dispose();
@@ -67,24 +78,23 @@ class _BarScannerScreenState extends State<BarScannerScreen> {
     return false;
   }
 
-  Future<void> _scan(String payload) async {
+  /// [method] says how the code arrived when the code itself doesn't ('nfc' for a phone tapped on this one).
+  Future<void> _scan(String payload, {String? method}) async {
     final clean = payload.trim();
     if (clean.isEmpty || _scanning || clean == _last) return;
     _last = clean;
     setState(() => _scanning = true);
     final isPin = RegExp(r'^\d{4,8}$').hasMatch(clean);
-    final isNfc = clean.startsWith('nfc:');
     try {
       Map<String, dynamic> data;
       try {
         data = await callFn('redeemConsumptionEntitlement', {
           'token': clean,
           'pinCode': isPin ? clean : null,
-          'tagUid': isNfc ? clean.replaceFirst('nfc:', '') : null,
           'venueId': widget.venueId,
           'terminalId': 'scanner_web_${context.read<AuthProvider>().user?.uid ?? 'anon'}',
           'redemptionPoint': _point,
-          'scanMethod': isNfc ? 'nfc' : isPin ? 'pin' : 'qr',
+          'scanMethod': method ?? (isPin ? 'pin' : 'qr'),
         }).timeout(const Duration(seconds: 4), onTimeout: () => throw Exception('Red inestable: Tiempo de espera agotado. Verifica la conexión y reintenta.'));
       } on FirebaseFunctionsException catch (e) {
         if (e.code == 'not-found' || (e.message ?? '').contains('NOT_FOUND')) {
@@ -258,7 +268,12 @@ class _BarScannerScreenState extends State<BarScannerScreen> {
                   const SizedBox(height: 16),
                   Text('LISTO PARA ESCANEAR', style: tw(18, weight: black)),
                   const SizedBox(height: 4),
-                  Text('Acerca la pistola al móvil del cliente o introduce el PIN abajo', textAlign: TextAlign.center, style: tw(12, color: Tw.slate500)),
+                  Text(
+                      NfcPass.reading
+                          ? 'Acerca el móvil del cliente a este (NFC), usa la pistola o introduce el PIN abajo'
+                          : 'Acerca la pistola al móvil del cliente o introduce el PIN abajo',
+                      textAlign: TextAlign.center,
+                      style: tw(12, color: Tw.slate500)),
                 ]),
               ),
             const SizedBox(height: 24),

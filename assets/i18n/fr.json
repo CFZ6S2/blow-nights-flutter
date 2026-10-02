@@ -129,7 +129,8 @@
     "city_permanent": "Votre ville est permanente",
     "my_plans": "Mes frissons",
     "my_tickets": "Mes entrées",
-    "my_chats": "Mes discussions"
+    "my_chats": "Mes discussions",
+    "staff_scanners": "Scanners du lieu"
   },
   "chat": {
     "title": "Vos Discussions",
@@ -867,7 +868,11 @@
     "share": "Partager",
     "linkCopied": "Lien copié",
     "schedule": "Horaires",
-    "events": "Événements et fêtes à venir"
+    "events": "Événements et fêtes à venir",
+    "drinks_title": "Boissons",
+    "drinks_desc": "Commande-les sur ton téléphone une fois sur place et récupère-les au bar avec ton QR.",
+    "drinks_more": "Et {{count}} de plus à la carte",
+    "buy_drinks": "Acheter des boissons"
   },
   "visits": {
     "title": "VISITES",
@@ -1318,7 +1323,10 @@
   "venue_admin_promo_radius": "Radio:",
   "venue_admin_promo_sending": "Envoi...",
   "venue_admin_promo_send": "Envoyer un push aux utilisateurs à proximité",
-  "venue_admin_promo_sent": "Promotion envoyée avec succès",
+  "venue_admin_promo_reached_one": "Envoyée à {{count}} personne à proximité",
+  "venue_admin_promo_reached_other": "Envoyée à {{count}} personnes à proximité",
+  "venue_admin_promo_nobody": "Personne à proximité n'a les notifications activées pour l'instant : elle n'a atteint personne.",
+  "venue_admin_promo_no_location": "L'établissement n'a pas d'emplacement sur la carte, impossible de savoir qui est à proximité.",
   "venue_admin_error_checkout": "Erreur lors du lancement du paiement",
   "venue_admin_error_stripe": "Erreur lors de l'ouverture du portail Stripe",
   "tab_venue_events": "Événements",
@@ -2326,9 +2334,6 @@
   "scanner_access_denied": "ACCESS DENIED",
   "scanner_scan_another": "Scan another ticket",
   "scanner_error_validating": "Error validating",
-  "scanner_nfc_prompt": "Approchez le tag NFC de l'appareil",
-  "scanner_nfc_listening": "Écoute NFC...",
-  "scanner_nfc_starting": "Démarrage du lecteur NFC...",
   "pr_module_paused": "Module paused",
   "pr_module_paused_desc": "The RRPP and ticket generation system is not available at this time. Contact the administrator.",
   "pr_invalid_link": "Invalid link",
@@ -3170,5 +3175,48 @@
   "business_login_become_rrpp": "Je suis promoteur indépendant",
   "business_login_become_rrpp_desc": "Sans lieu fixe ou avec un lieu absent de l'app. Pass QR à 0,50 € pour vos événements ; vous encaissez en dehors de l'app.",
   "landing_clubs_cta_rrpp": "Je suis promoteur",
-  "map_rrpp_party": "Soirée promoteur · entrée via le promoteur"
+  "map_rrpp_party": "Soirée promoteur · entrée via le promoteur",
+  "staff_invite": {
+    "title": "Ajouter du personnel",
+    "desc": "Générez un QR pour que votre équipe entre avec son seul prénom, sans e-mail ni mot de passe. Valable 24 heures et pour plusieurs personnes.",
+    "scope_door": "Porte (billets)",
+    "scope_bar": "Bar (consommations)",
+    "pick_scope": "Choisissez porte, bar ou les deux.",
+    "create": "Générer le QR",
+    "scan_hint": "À scanner avec l'appareil photo du téléphone ou dans l'app, sous « Je travaille dans un lieu ».",
+    "nfc_hint": "Depuis l'app Android, vous pouvez aussi approcher votre téléphone de celui de l'employé (NFC).",
+    "copy": "Copier le lien",
+    "copied": "Lien copié",
+    "whatsapp": "Envoyer par WhatsApp",
+    "whatsapp_text": "Rejoignez l'équipe de {{venue}} sur Blow Nights :",
+    "expires": "Expire : {{time}}",
+    "uses": "Inscrits : {{count}}",
+    "revoke": "Désactiver",
+    "revoked": "Invitation désactivée",
+    "live_title": "Invitations actives",
+    "error": "Impossible de créer l'invitation.",
+    "joined_by_invite": "Inscrit par invitation"
+  },
+  "staff_join": {
+    "title": "Rejoindre l'équipe",
+    "subtitle": "Personnel de {{venue}}",
+    "scopes": "Vous pourrez scanner :",
+    "name_label": "Votre prénom",
+    "name_placeholder": "Ex. Laura",
+    "cta": "Entrer",
+    "session_note": "Si une session est ouverte sur cet appareil, elle sera fermée.",
+    "invalid": "Cette invitation n'est pas valide ou a expiré. Demandez-en une autre au lieu.",
+    "failed": "Impossible de terminer. Réessayez dans un instant.",
+    "loading": "Vérification de l'invitation…"
+  },
+  "staff_home": {
+    "title": "Personnel de {{venue}}",
+    "door": "Porte",
+    "door_desc": "Valider les billets",
+    "bar": "Bar",
+    "bar_desc": "Servir les consommations",
+    "logout": "Se déconnecter",
+    "not_staff": "Cet écran est réservé au personnel d'un lieu. Demandez au lieu un QR d'accès."
+  },
+  "venue_admin_scan_drinks": "Scanner les consommations"
 }

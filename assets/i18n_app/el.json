@@ -77,5 +77,18 @@
     "error": "Κάτι πήγε στραβά. Δοκίμασε ξανά."
   },
   "door_camera_denied_app": "We can't use the camera. Validate with the pass PIN or allow the camera in the app settings.",
-  "door_open_settings": "Open settings"
+  "door_open_settings": "Open settings",
+  "nfc_pass": {
+    "hint": "Μπορείς επίσης να πλησιάσεις το κινητό σου σε αυτό του προσωπικού (NFC).",
+    "empty_ticket": "Αυτό το κινητό δεν δείχνει κανένα εισιτήριο. Ζήτα να το ανοίξει και να το πλησιάσει ξανά.",
+    "empty_drink": "Αυτό το κινητό δεν δείχνει κανένα ποτό. Ζήτα να το ανοίξει και να το πλησιάσει ξανά.",
+    "scanner_prompt": "Πλησιάστε το κινητό του πελάτη",
+    "listening": "Αναμονή NFC...",
+    "starting": "Εκκίνηση αναγνώστη NFC..."
+  },
+  "staff_app": {
+    "entry": "Δουλεύω σε μαγαζί",
+    "scan_or_tap": "Σκάναρε το QR του μαγαζιού ή πλησίασε το κινητό σου σε αυτό του υπευθύνου (NFC).",
+    "not_invite": "Αυτό δεν είναι πρόσκληση προσωπικού."
+  }
 }

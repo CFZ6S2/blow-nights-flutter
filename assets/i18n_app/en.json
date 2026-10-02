@@ -77,5 +77,18 @@
     "error": "Something went wrong. Please try again."
   },
   "door_camera_denied_app": "We can't use the camera. Validate with the pass PIN or allow the camera in the app settings.",
-  "door_open_settings": "Open settings"
+  "door_open_settings": "Open settings",
+  "nfc_pass": {
+    "hint": "You can also tap your phone on the staff's phone (NFC).",
+    "empty_ticket": "That phone isn't showing a ticket. Ask them to open it and tap again.",
+    "empty_drink": "That phone isn't showing a drink. Ask them to open it and tap again.",
+    "scanner_prompt": "Tap the customer's phone",
+    "listening": "Listening for NFC...",
+    "starting": "Starting NFC reader..."
+  },
+  "staff_app": {
+    "entry": "I work at a venue",
+    "scan_or_tap": "Scan the venue's QR or tap your phone on the manager's phone (NFC).",
+    "not_invite": "That's not a staff invite."
+  }
 }

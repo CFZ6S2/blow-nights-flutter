@@ -129,7 +129,8 @@
     "city_permanent": "Sua cidade é permanente",
     "my_plans": "Meus arrepios",
     "my_tickets": "Minhas entradas",
-    "my_chats": "Meus bate-papos"
+    "my_chats": "Meus bate-papos",
+    "staff_scanners": "Leitores do espaço"
   },
   "chat": {
     "title": "Seus Chats",
@@ -867,7 +868,11 @@
     "share": "Compartilhar",
     "linkCopied": "Link copiado",
     "schedule": "Horário",
-    "events": "Próximos eventos e festas"
+    "events": "Próximos eventos e festas",
+    "drinks_title": "Bebidas",
+    "drinks_desc": "Pede-as no telemóvel quando estiveres no espaço e levanta-as no bar com o teu QR.",
+    "drinks_more": "E mais {{count}} na carta",
+    "buy_drinks": "Comprar bebidas"
   },
   "visits": {
     "title": "VISITAS",
@@ -1319,7 +1324,10 @@
   "venue_admin_promo_radius": "Rádio:",
   "venue_admin_promo_sending": "Enviando...",
   "venue_admin_promo_send": "Enviar push para usuários próximos",
-  "venue_admin_promo_sent": "Promoção enviada com sucesso",
+  "venue_admin_promo_reached_one": "Enviada a {{count}} pessoa por perto",
+  "venue_admin_promo_reached_other": "Enviada a {{count}} pessoas por perto",
+  "venue_admin_promo_nobody": "Neste momento ninguém por perto tem as notificações ativas: não chegou a ninguém.",
+  "venue_admin_promo_no_location": "O espaço não tem localização no mapa, por isso não é possível saber quem está por perto.",
   "venue_admin_error_checkout": "Erro ao iniciar a finalização da compra",
   "venue_admin_error_stripe": "Erro ao abrir o portal Stripe",
   "venue_admin_stat_revenue": "Receita",
@@ -2326,9 +2334,6 @@
   "scanner_access_denied": "ACCESS DENIED",
   "scanner_scan_another": "Scan another ticket",
   "scanner_error_validating": "Error validating",
-  "scanner_nfc_prompt": "Aproxime o tag NFC do dispositivo",
-  "scanner_nfc_listening": "Escutando NFC...",
-  "scanner_nfc_starting": "Iniciando leitor NFC...",
   "pr_module_paused": "Module paused",
   "pr_module_paused_desc": "The RRPP and ticket generation system is not available at this time. Contact the administrator.",
   "pr_invalid_link": "Invalid link",
@@ -3170,5 +3175,48 @@
   "business_login_become_rrpp": "Sou promotor independente",
   "business_login_become_rrpp_desc": "Sem espaço fixo ou com um que não está na app. Passes QR a 0,50 € para os teus eventos; cobras tu por fora.",
   "landing_clubs_cta_rrpp": "Sou promotor",
-  "map_rrpp_party": "Festa de promotor · entrada com o promotor"
+  "map_rrpp_party": "Festa de promotor · entrada com o promotor",
+  "staff_invite": {
+    "title": "Adicionar equipa",
+    "desc": "Gera um QR para a tua equipa entrar só com o nome, sem email nem palavra-passe. Válido 24 horas e para várias pessoas.",
+    "scope_door": "Porta (bilhetes)",
+    "scope_bar": "Bar (bebidas)",
+    "pick_scope": "Escolhe porta, bar ou ambos.",
+    "create": "Gerar QR",
+    "scan_hint": "Digitalizam-no com a câmara do telemóvel ou na app, em «Trabalho num espaço».",
+    "nfc_hint": "Na app Android também podes aproximar o teu telemóvel ao do funcionário (NFC).",
+    "copy": "Copiar link",
+    "copied": "Link copiado",
+    "whatsapp": "Enviar por WhatsApp",
+    "whatsapp_text": "Junta-te à equipa de {{venue}} na Blow Nights:",
+    "expires": "Expira: {{time}}",
+    "uses": "Entraram: {{count}}",
+    "revoke": "Desativar",
+    "revoked": "Convite desativado",
+    "live_title": "Convites ativos",
+    "error": "Não foi possível gerar o convite.",
+    "joined_by_invite": "Entrada por convite"
+  },
+  "staff_join": {
+    "title": "Junta-te à equipa",
+    "subtitle": "Equipa de {{venue}}",
+    "scopes": "Vais poder digitalizar:",
+    "name_label": "O teu nome",
+    "name_placeholder": "Ex. Laura",
+    "cta": "Entrar",
+    "session_note": "Se houver uma sessão aberta neste dispositivo, será terminada.",
+    "invalid": "Este convite não é válido ou expirou. Pede outro ao espaço.",
+    "failed": "Não foi possível concluir. Tenta de novo daqui a pouco.",
+    "loading": "A verificar o convite…"
+  },
+  "staff_home": {
+    "title": "Equipa de {{venue}}",
+    "door": "Porta",
+    "door_desc": "Validar bilhetes",
+    "bar": "Bar",
+    "bar_desc": "Trocar bebidas",
+    "logout": "Terminar sessão",
+    "not_staff": "Este ecrã é para a equipa de um espaço. Pede ao espaço um QR de acesso."
+  },
+  "venue_admin_scan_drinks": "Digitalizar bebidas"
 }
