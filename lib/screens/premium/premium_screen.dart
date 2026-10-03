@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../i18n/i18n.dart';
 import '../../navigation.dart';
 import '../../providers/auth_provider.dart';
+import '../../providers/platform_settings.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/common.dart';
 
@@ -83,6 +84,28 @@ class _PremiumScreenState extends State<PremiumScreen> {
     final auth = context.watch<AuthProvider>();
     final p = auth.profile;
     if (auth.loading || auth.user == null) return const Scaffold(body: Center(child: CircularProgressIndicator(strokeWidth: 2)));
+    // Not sold in the app until super-admin turns moduleAppPremium on (openRoute doesn't open this screen meanwhile).
+    if (!context.watch<PlatformSettings>().flag('moduleAppPremium')) {
+      return Scaffold(
+        body: SafeArea(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(32),
+              child: Column(mainAxisSize: MainAxisSize.min, children: [
+                const Text('⭐', style: TextStyle(fontSize: 40)),
+                const SizedBox(height: 16),
+                Text(context.t('premium.unavailable_app'), textAlign: TextAlign.center, style: tw(14, color: Tw.slate300)),
+                const SizedBox(height: 24),
+                GestureDetector(
+                  onTap: () => Navigator.of(context).maybePop(),
+                  child: Text(context.t('venueDetail.back'), style: tw(12, weight: bold, color: Tw.slate500)),
+                ),
+              ]),
+            ),
+          ),
+        ),
+      );
+    }
     final tier = p?.membershipTier ?? 'free';
     final isPlus = auth.isPlus, isBlack = auth.isBlack, promo = auth.isPromoLifetime;
     final cur = p?.cityId == 'albuquerque' ? r'$' : '€';

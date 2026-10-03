@@ -188,6 +188,7 @@
   },
   "premium": {
     "title": "Treci la Premium",
+    "unavailable_app": "Premium nu este disponibil în aplicație deocamdată.",
     "subtitle": "Deblochează funcții exclusive",
     "features": {
       "unlimitedLikes": "Like-uri Nelimitate",

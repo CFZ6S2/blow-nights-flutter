@@ -164,6 +164,7 @@
   },
   "premium": {
     "title": "احصل على Premium",
+    "unavailable_app": "Premium غير متاح في التطبيق حاليًا.",
     "subtitle": "فتح الميزات الحصرية",
     "features": {
       "unlimitedLikes": "إعجابات غير محدودة",

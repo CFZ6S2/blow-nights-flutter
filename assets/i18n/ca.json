@@ -161,6 +161,7 @@
   },
   "premium": {
     "title": "Fes-te Premium",
+    "unavailable_app": "Premium no està disponible a l'app de moment.",
     "subtitle": "Desbloqueja característiques exclusives",
     "features": {
       "unlimitedLikes": "Likes Il·limitats",

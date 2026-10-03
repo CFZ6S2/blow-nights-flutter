@@ -67,6 +67,16 @@ const _modules = [
     'Si prefieres arrancar en una ciudad centrada solo en los locales comerciales, puedes apagar Chills temporalmente.',
   ),
   _Module(
+    'moduleAppPremium',
+    'Premium en la app Android',
+    'monetizacion',
+    Icons.workspace_premium,
+    'Bloqueado por Play',
+    'Venta de Premium dentro de la app. Apagado: la app no abre la pantalla de Premium ni muestra la tarjeta de suscripción; quien ya es Premium conserva sus ventajas. La web no cambia.',
+    'Al activarlo la app vuelve a vender Premium con el cobro que tenga configurado.',
+    'Activar solo cuando el cobro en la app sea Google Play Billing o la facturación alternativa del EEE: con Stripe directo Google Play rechaza la app.',
+  ),
+  _Module(
     'moduleFriendFinder',
     'Amigos cerca (Radar Bluetooth en Festivales)',
     'comunidad',
