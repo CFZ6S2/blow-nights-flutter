@@ -37,14 +37,15 @@ class CityHomeScreen extends StatelessWidget {
 
     final events = data.upcomingEvents;
     final commercial = data.all.where((v) => v.meta == null || v.meta!.group == 'commercial').toList();
-    int checks(Venue v) => v.isOpenOrUnscheduled ? data.liveCountFor(v) : 0;
+    // Check-ins are real even without opening hours: people there say more than a schedule.
+    int checks(Venue v) => v.openStatus != VenueOpenStatus.closed ? data.liveCountFor(v) : 0;
     bool hasEvent(Venue v) => events.any((e) => e.venueId == v.id);
-    // Stable sort, same priority as the web: open > hottest > has event tonight.
+    // Stable sort, same priority as the web: open > no schedule > closed, then hottest, then has event tonight.
     final indexed = commercial.asMap().entries.toList()
       ..sort((a, b) {
         final av = a.value, bv = b.value;
-        final ao = av.isOpenOrUnscheduled, bo = bv.isOpenOrUnscheduled;
-        if (ao != bo) return ao ? -1 : 1;
+        final ao = av.openStatus, bo = bv.openStatus;
+        if (ao != bo) return ao.index - bo.index;
         final ac = checks(av), bc = checks(bv);
         if (ac != bc) return bc - ac;
         final ae = hasEvent(av), be = hasEvent(bv);
@@ -236,11 +237,11 @@ class _VenueStatusCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isOpen = venue.isOpenOrUnscheduled;
+    final status = venue.openStatus;
     var icon = '🟢';
     var label = context.t('radar.status_quiet', fallback: 'Abierto • Ambiente tranquilo');
     var color = Tw.emerald400;
-    if (!isOpen) {
+    if (status == VenueOpenStatus.closed) {
       icon = '🌙';
       label = context.t('venuesPage.closed_now', fallback: 'Cerrado');
       color = Tw.slate500;
@@ -259,6 +260,10 @@ class _VenueStatusCard extends StatelessWidget {
       icon = '📅';
       label = context.t('radar.status_event', fallback: 'Evento esta noche');
       color = Tw.blue400;
+    } else if (status == VenueOpenStatus.unknown) {
+      icon = '🕓';
+      label = context.t('radar.status_no_hours', fallback: 'Horario no disponible');
+      color = Tw.slate400;
     }
 
     return GlassCard(
@@ -276,7 +281,7 @@ class _VenueStatusCard extends StatelessWidget {
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Wrap(crossAxisAlignment: WrapCrossAlignment.center, spacing: 8, children: [
                 Text(venue.name, style: tw(16, weight: bold)),
-                if (isOpen && checks > 0)
+                if (checks > 0)
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     decoration: BoxDecoration(
@@ -291,13 +296,15 @@ class _VenueStatusCard extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text('📍 ${venue.address}', style: tw(12, color: Tw.slate500)),
               ],
-              const SizedBox(height: 2),
-              Text(
-                checks > 0
-                    ? '$checks ${checks == 1 ? 'persona ahora' : 'personas ahora'}'
-                    : context.t('radar.no_queue', fallback: 'Sin cola'),
-                style: tw(12, color: Tw.slate500),
-              ),
+              if (checks > 0 || status == VenueOpenStatus.open) ...[
+                const SizedBox(height: 2),
+                Text(
+                  checks > 0
+                      ? '$checks ${checks == 1 ? 'persona ahora' : 'personas ahora'}'
+                      : context.t('radar.no_queue', fallback: 'Sin cola'),
+                  style: tw(12, color: Tw.slate500),
+                ),
+              ],
             ]),
           ),
           if (loggedIn) const Icon(Icons.chevron_right, color: Tw.slate600),

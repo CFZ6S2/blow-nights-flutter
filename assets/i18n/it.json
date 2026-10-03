@@ -1680,6 +1680,7 @@
     "status_rising": "Salendo",
     "status_active": "Attività registrata oggi",
     "status_event": "evento stasera",
+    "status_no_hours": "Orari non disponibili",
     "checkins": "veri e propri check-in",
     "no_queue": "Nessuna coda"
   },

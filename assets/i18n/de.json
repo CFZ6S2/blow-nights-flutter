@@ -1713,6 +1713,7 @@
     "status_rising": "Aufwärts gehen",
     "status_active": "Heute aufgezeichnete Aktivität",
     "status_event": "Veranstaltung heute Abend",
+    "status_no_hours": "Öffnungszeiten nicht verfügbar",
     "checkins": "echte Check-ins",
     "no_queue": "Keine Warteschlange"
   },

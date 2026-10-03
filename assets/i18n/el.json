@@ -1680,6 +1680,7 @@
     "status_rising": "Ανεβαίνοντας",
     "status_active": "Η δραστηριότητα καταγράφηκε σήμερα",
     "status_event": "εκδήλωση απόψε",
+    "status_no_hours": "Ωράριο μη διαθέσιμο",
     "checkins": "πραγματικά check-in",
     "no_queue": "Χωρίς ουρά"
   },

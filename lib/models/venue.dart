@@ -78,6 +78,13 @@ class Venue {
 
   bool get hasSchedule => openingDays.isNotEmpty && openingHours.isNotEmpty;
 
-  /// City-home semantics: a venue without a schedule counts as open.
-  bool get isOpenOrUnscheduled => hasSchedule ? isVenueOpenNow(openingDays, openingHours).isOpen : true;
+  /// Open or closed by its schedule; unknown without one (most reference venues), never shown as open.
+  VenueOpenStatus get openStatus => !hasSchedule
+      ? VenueOpenStatus.unknown
+      : isVenueOpenNow(openingDays, openingHours).isOpen
+          ? VenueOpenStatus.open
+          : VenueOpenStatus.closed;
 }
+
+/// In the order the city home lists them: open first, then without a schedule, closed last.
+enum VenueOpenStatus { open, unknown, closed }

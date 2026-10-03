@@ -1685,6 +1685,7 @@
     "status_rising": "Subindo",
     "status_active": "Atividade registrada hoje",
     "status_event": "evento hoje à noite",
+    "status_no_hours": "Horário não disponível",
     "checkins": "check-ins reais",
     "no_queue": "Sem fila"
   },

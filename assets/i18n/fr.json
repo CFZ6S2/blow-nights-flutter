@@ -1679,6 +1679,7 @@
     "status_rising": "Monter",
     "status_active": "Activité enregistrée aujourd'hui",
     "status_event": "événement ce soir",
+    "status_no_hours": "Horaires non disponibles",
     "checkins": "de vrais enregistrements",
     "no_queue": "Pas de file d'attente"
   },
