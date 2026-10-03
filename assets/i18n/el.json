@@ -164,6 +164,7 @@
   },
   "premium": {
     "title": "Γίνε Premium",
+    "unavailable_app": "Το Premium δεν είναι διαθέσιμο στην εφαρμογή προς το παρόν.",
     "subtitle": "Ξεκλειδώστε αποκλειστικές λειτουργίες",
     "features": {
       "unlimitedLikes": "Απεριόριστα Likes",

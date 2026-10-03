@@ -164,6 +164,7 @@
   },
   "premium": {
     "title": "Seja Premium",
+    "unavailable_app": "O Premium não está disponível na app por agora.",
     "subtitle": "Desbloqueie recursos exclusivos",
     "features": {
       "unlimitedLikes": "Curtidas ilimitadas",

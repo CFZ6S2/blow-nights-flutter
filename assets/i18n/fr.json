@@ -164,6 +164,7 @@
   },
   "premium": {
     "title": "Devenez Premium",
+    "unavailable_app": "Premium n'est pas disponible dans l'app pour le moment.",
     "subtitle": "Débloquez des fonctionnalités exclusives",
     "features": {
       "unlimitedLikes": "J'aime illimité",

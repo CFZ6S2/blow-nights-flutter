@@ -197,6 +197,7 @@
   },
   "premium": {
     "title": "Стать Premium",
+    "unavailable_app": "Premium пока недоступен в приложении.",
     "subtitle": "Разблокируйте эксклюзивные функции",
     "features": {
       "unlimitedLikes": "Неограниченное количество лайков",

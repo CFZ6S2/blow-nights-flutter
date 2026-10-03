@@ -17,6 +17,9 @@ class PlatformSettings extends ChangeNotifier {
     // "Amigos cerca" (BLE friend finder). Off until festival tickets are sold; super-admin turns it on.
     'moduleFriendFinder': false,
     'moduleRrppCommissions': true,
+    // Selling Premium inside the app. Off: Google Play doesn't allow charging digital features with Stripe; on only
+    // once the app charges through a method Play accepts (Play Billing or EEA alternative billing).
+    'moduleAppPremium': false,
     'maintenanceMode': false,
   };
 

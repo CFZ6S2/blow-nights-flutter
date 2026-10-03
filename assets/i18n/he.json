@@ -188,6 +188,7 @@
   },
   "premium": {
     "title": "עבור לפרימיום",
+    "unavailable_app": "Premium אינו זמין באפליקציה כרגע.",
     "subtitle": "שחרר תכונות בלעדיות",
     "features": {
       "unlimitedLikes": "לייקים ללא הגבלה",

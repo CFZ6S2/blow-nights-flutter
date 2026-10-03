@@ -197,6 +197,7 @@
   },
   "premium": {
     "title": "Hol dir Premium",
+    "unavailable_app": "Premium ist in der App derzeit nicht verfügbar.",
     "subtitle": "Schalten Sie exklusive Funktionen frei",
     "features": {
       "unlimitedLikes": "Unbegrenzte Likes",

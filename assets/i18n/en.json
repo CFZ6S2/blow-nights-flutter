@@ -161,6 +161,7 @@
   },
   "premium": {
     "title": "Upgrade to Premium",
+    "unavailable_app": "Premium isn't available in the app for now.",
     "subtitle": "Unlock exclusive features",
     "features": {
       "unlimitedLikes": "Unlimited Likes",

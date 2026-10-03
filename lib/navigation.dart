@@ -211,6 +211,13 @@ Future<void> openRoute(BuildContext context, AppRoute route, {Map<String, String
     showToast(context, context.read<I18n>().t('finder.unavailable'));
     return;
   }
+  // Premium isn't sold in the app until super-admin turns moduleAppPremium on (Google Play payments policy). From a
+  // paywall that replaced its screen (a chat without a match), that screen closes too.
+  if (route == AppRoute.premium && !context.read<PlatformSettings>().flag('moduleAppPremium')) {
+    showToast(context, context.read<I18n>().t('premium.unavailable_app'));
+    if (replace) Navigator.of(context).maybePop();
+    return;
+  }
   final shell = context.read<ShellController>();
   final tab = tabRoutes.indexOf(route);
   if (tab >= 0 && shell.navVisible && args.isEmpty) {

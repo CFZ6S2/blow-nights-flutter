@@ -188,6 +188,7 @@
   },
   "premium": {
     "title": "Pásate a Premium",
+    "unavailable_app": "Premium no está disponible en la app por ahora.",
     "subtitle": "Desbloquea características exclusivas",
     "features": {
       "unlimitedLikes": "Likes Ilimitados",
