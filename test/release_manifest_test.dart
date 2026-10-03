@@ -25,9 +25,42 @@ void main() {
     expect(() => parsePubspecVersion('version: 1.2.3\n'), throwsFormatException);
   });
 
-  test('release signing read from the Gradle build type', () {
-    expect(releaseSigning('buildTypes {\n release {\n signingConfig = signingConfigs.getByName("debug")\n }\n}'), 'debug');
-    expect(releaseSigning('buildTypes {\n release {\n signingConfig = signingConfigs.getByName("release")\n }\n}'), 'release');
+  test('release signing: the upload key only when the build type uses it and android/key.properties is there', () {
+    const template = 'buildTypes {\n release {\n signingConfig = signingConfigs.getByName("debug")\n }\n}';
+    const upload = 'buildTypes {\n release {\n signingConfig = if (keystorePropertiesFile.exists()) '
+        'signingConfigs.getByName("upload") else signingConfigs.getByName("debug")\n }\n}';
+    expect(releaseSigning(template, keyProperties: true), 'debug');
+    expect(releaseSigning(upload, keyProperties: false), 'debug');
+    expect(releaseSigning(upload, keyProperties: true), 'upload');
+  });
+
+  test('a Play build never carries the App Check debug token', () {
+    final defines = {'APPCHECK_DEBUG_TOKEN': 'x', 'PLACES_API_KEY': 'y'};
+    expect(playDefines(defines), {'PLACES_API_KEY': 'y'});
+    expect(defines.length, 2); // the QA defines are left alone
+  });
+
+  test('a Play manifest describes the AAB, obfuscated', () {
+    final m = buildManifest(
+      artifact: 'aab',
+      obfuscated: true,
+      applicationId: 'com.blownights.finder',
+      versionName: '1.0.4',
+      versionCode: 5,
+      commit: commit,
+      branch: 'main',
+      buildTime: '2026-10-03T10:00:00Z',
+      flutterVersion: '3.47.5',
+      signing: 'upload',
+      dartDefineKeys: ['PLACES_API_KEY', 'GIT_SHA'],
+      apkFile: 'blow-nights-1.0.4+5-3f2a9c1.aab',
+      apkBytes: 456,
+      apkSha256: 'cd' * 32,
+    );
+    expect(m['variant'], 'play');
+    expect(m['obfuscated'], true);
+    expect(m['aab'], {'file': 'blow-nights-1.0.4+5-3f2a9c1.aab', 'bytes': 456, 'sha256': 'cd' * 32});
+    expect(m.containsKey('apk'), isFalse);
   });
 
   test('the manifest has commit, versions, build time and the APK SHA-256; define keys only, sorted', () {
@@ -38,6 +71,8 @@ void main() {
     expect(m['buildTime'], '2026-10-02T19:12:04Z');
     expect(m['dartDefines'], ['APPCHECK_DEBUG_TOKEN', 'GIT_SHA', 'PLACES_API_KEY']);
     expect(m['apk'], {'file': 'blow-nights-1.0.1+2-3f2a9c1.apk', 'bytes': 123, 'sha256': 'ab' * 32});
+    expect(m['variant'], 'release');
+    expect(m['obfuscated'], false);
     expect(releaseBaseName('1.0.1', 2, commit), 'blow-nights-1.0.1+2-3f2a9c1');
   });
 
