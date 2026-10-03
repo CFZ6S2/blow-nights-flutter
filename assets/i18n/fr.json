@@ -1254,7 +1254,8 @@
     "gift_ticket": "Billet cadeau",
     "err_login": "Vous devez vous connecter pour appuyer",
     "ping_sent": "Touchez envoyé ! 🔥",
-    "err_ping": "Échec de l'envoi du contact"
+    "err_ping": "Échec de l'envoi du contact",
+    "limit_desc_free": "Tu as épuisé tes pings gratuits pour aujourd'hui. Tu en auras d'autres demain."
   },
   "city_manager_pending_apps": "Demandes de locaux en attente",
   "city_manager_pending_apps_desc": "De nouveaux lieux qui veulent entrer dans votre ville. Approuvez-les pour les enregistrer.",
@@ -3270,5 +3271,6 @@
     "withdraw": "Retirer la revendication",
     "back_home": "Retour à l'accueil",
     "document_hint_photo": "Photo du SIRET/numéro fiscal, de la licence d'activité ou d'un document qui vous lie à l'établissement. 10 Mo max. Seule l'équipe Blow Nights la voit."
-  }
+  },
+  "venue_admin_plans_unavailable_app": "La souscription aux formules n'est pas disponible dans l'app pour le moment."
 }

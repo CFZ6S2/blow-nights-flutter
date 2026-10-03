@@ -1364,7 +1364,8 @@
     "gift_ticket": "Gift Ticket",
     "err_login": "You must log in to tap",
     "ping_sent": "Touch sent! 🔥",
-    "err_ping": "Failed to send touch"
+    "err_ping": "Failed to send touch",
+    "limit_desc_free": "You've used up your free pings for today. You'll have more tomorrow."
   },
   "city.buy_tickets": "Buy Tickets",
   "city.buy_tickets_desc": "Public catalog of available tickets",
@@ -3265,5 +3266,6 @@
     "withdraw": "Withdraw claim",
     "back_home": "Back to home",
     "document_hint_photo": "Photo of the tax ID, activity licence or a document linking you to the venue. Max. 10 MB. Only the Blow Nights team sees it."
-  }
+  },
+  "venue_admin_plans_unavailable_app": "Plans can't be purchased in the app for now."
 }

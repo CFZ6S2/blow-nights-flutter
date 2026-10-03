@@ -16,6 +16,10 @@ void main() {
       final premium = (jsonDecode(f.readAsStringSync()) as Map<String, dynamic>)['premium'] as Map<String, dynamic>;
       expect(premium['unavailable_app'], isA<String>(), reason: f.path);
       expect((premium['unavailable_app'] as String).isNotEmpty, isTrue, reason: f.path);
+      final json = jsonDecode(f.readAsStringSync()) as Map<String, dynamic>;
+      // With the module off: the ping limit without paid packs, and venue plans not bought in the app.
+      expect(((json['swipe'] as Map<String, dynamic>)['limit_desc_free'] as String?)?.isNotEmpty, isTrue, reason: f.path);
+      expect((json['venue_admin_plans_unavailable_app'] as String?)?.isNotEmpty, isTrue, reason: f.path);
     }
   });
 }

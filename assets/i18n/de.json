@@ -1287,7 +1287,8 @@
     "gift_ticket": "Geschenkticket",
     "err_login": "Sie müssen sich anmelden, um tippen zu können",
     "ping_sent": "Touch gesendet! 🔥",
-    "err_ping": "Die Kontaktaufnahme konnte nicht gesendet werden"
+    "err_ping": "Die Kontaktaufnahme konnte nicht gesendet werden",
+    "limit_desc_free": "Du hast deine kostenlosen Pings für heute aufgebraucht. Morgen hast du wieder welche."
   },
   "city_manager_pending_apps": "Ausstehende Räumlichkeitenanfragen",
   "city_manager_pending_apps_desc": "Neue Orte, die Ihre Stadt betreten wollen. Genehmigen Sie ihnen die Registrierung.",
@@ -3303,5 +3304,6 @@
     "withdraw": "Anspruch zurückziehen",
     "back_home": "Zur Startseite",
     "document_hint_photo": "Foto der Steuernummer, der Gewerbeerlaubnis oder eines Dokuments, das dich mit dem Lokal verbindet. Max. 10 MB. Nur das Blow-Nights-Team sieht es."
-  }
+  },
+  "venue_admin_plans_unavailable_app": "Pläne können in der App derzeit nicht gebucht werden."
 }

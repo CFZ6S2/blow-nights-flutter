@@ -42,7 +42,8 @@
     "gift_ticket": "Oferă Bilet",
     "err_login": "Trebuie să vă conectați pentru a atinge",
     "ping_sent": "Atinge trimis! 🔥",
-    "err_ping": "Nu s-a putut trimite atingere"
+    "err_ping": "Nu s-a putut trimite atingere",
+    "limit_desc_free": "Ți-ai epuizat ping-urile gratuite de azi. Mâine vei avea altele."
   },
   "city": {
     "select": "Alege-ți orașul",
@@ -3267,5 +3268,6 @@
     "withdraw": "Retrage revendicarea",
     "back_home": "Înapoi la început",
     "document_hint_photo": "Fotografie cu CUI-ul, autorizația de funcționare sau un document care te leagă de local. Max. 10 MB. Doar echipa Blow Nights o vede."
-  }
+  },
+  "venue_admin_plans_unavailable_app": "Abonarea la planuri nu este disponibilă în aplicație deocamdată."
 }

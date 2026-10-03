@@ -411,7 +411,7 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(border: Border(top: BorderSide(color: Tw.w(0.05)))),
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-              if (v?['subscriptionTier'] != null && !canBypass)
+              if (v?['subscriptionTier'] != null && !canBypass && context.watch<PlatformSettings>().flag('moduleAppPremium'))
                 item(context.t('venue_admin_manage_plan'), Icons.settings, false, _checkingOut ? () {} : _manageSubscription),
               if (v?['subscriptionTier'] == 'ticketing' || canBypass)
                 item(context.t('venue_admin_scan'), Icons.qr_code_scanner, false, () => openRoute(context, AppRoute.scanner), color: Tw.fuchsia400),
@@ -549,11 +549,16 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
           const SizedBox(height: 8),
           Text(context.t(descKey), textAlign: TextAlign.center, style: tw(15, color: Tw.slate400)),
           const SizedBox(height: 24),
-          AdminButton(
-            label: context.t('venue_admin_upgrade_plan'),
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-            onTap: _checkingOut ? null : () => _subscribe(tier),
-          ),
+          // Plans are a digital service: bought in the app only while super-admin has moduleAppPremium on
+          // (Google Play payments policy).
+          if (context.watch<PlatformSettings>().flag('moduleAppPremium'))
+            AdminButton(
+              label: context.t('venue_admin_upgrade_plan'),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+              onTap: _checkingOut ? null : () => _subscribe(tier),
+            )
+          else
+            Text(context.t('venue_admin_plans_unavailable_app'), textAlign: TextAlign.center, style: tw(13, color: Tw.slate500)),
         ]),
       );
 
