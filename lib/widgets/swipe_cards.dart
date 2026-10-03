@@ -7,6 +7,7 @@ import '../i18n/i18n.dart';
 import '../models/user_model.dart';
 import '../navigation.dart';
 import '../providers/auth_provider.dart';
+import '../providers/platform_settings.dart';
 import '../services/social.dart';
 import '../theme/app_theme.dart';
 import 'common.dart';
@@ -304,7 +305,11 @@ class _SwipeCardsState extends State<SwipeCards> {
         ),
       );
 
-  Widget _limitModal(BuildContext context) => Container(
+  // Extra pings and the VIP night pass are digital purchases: only while super-admin has moduleAppPremium on (Google
+  // Play payments policy); otherwise the free pings come back tomorrow.
+  Widget _limitModal(BuildContext context) {
+    final selling = context.watch<PlatformSettings>().flag('moduleAppPremium');
+    return Container(
         color: Colors.black.withValues(alpha: 0.8),
         padding: const EdgeInsets.all(24),
         alignment: Alignment.center,
@@ -321,8 +326,10 @@ class _SwipeCardsState extends State<SwipeCards> {
             const SizedBox(height: 16),
             Text(context.t('swipe.limit_title').toUpperCase(), textAlign: TextAlign.center, style: tw(18, weight: black, height: 1.2)),
             const SizedBox(height: 8),
-            Text(context.t('swipe.limit_desc'), textAlign: TextAlign.center, style: tw(12, weight: medium, color: Tw.slate400)),
+            Text(context.t(selling ? 'swipe.limit_desc' : 'swipe.limit_desc_free'), textAlign: TextAlign.center,
+                style: tw(12, weight: medium, color: Tw.slate400)),
             const SizedBox(height: 24),
+            if (selling) ...[
             Pressable(
               onTap: _paying ? () {} : () => _checkout('ping_pack'),
               child: Container(
@@ -355,6 +362,7 @@ class _SwipeCardsState extends State<SwipeCards> {
               ),
             ),
             const SizedBox(height: 24),
+            ],
             GestureDetector(
               onTap: () => setState(() => _limitExceeded = false),
               child: Text(context.t('swipe.back_to_radar').toUpperCase(),
@@ -363,4 +371,5 @@ class _SwipeCardsState extends State<SwipeCards> {
           ]),
         ),
       );
+  }
 }

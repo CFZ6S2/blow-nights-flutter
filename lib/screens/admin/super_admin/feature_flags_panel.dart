@@ -68,12 +68,12 @@ const _modules = [
   ),
   _Module(
     'moduleAppPremium',
-    'Premium en la app Android',
+    'Ventas digitales en la app Android',
     'monetizacion',
     Icons.workspace_premium,
     'Bloqueado por Play',
-    'Venta de Premium dentro de la app. Apagado: la app no abre la pantalla de Premium ni muestra la tarjeta de suscripción; quien ya es Premium conserva sus ventajas. La web no cambia.',
-    'Al activarlo la app vuelve a vender Premium con el cobro que tenga configurado.',
+    'Lo digital que se cobra dentro de la app: Premium, pings extra, Pase Noche VIP y planes de locales. Apagado: la app no lo vende (ni abre Premium, ni muestra los packs al acabarse los pings, ni deja contratar o gestionar el plan del local); quien ya lo tiene lo conserva. Entradas, copas y QR de RRPP se siguen vendiendo. La web no cambia.',
+    'Al activarlo la app vuelve a vender todo eso con el cobro que tenga configurado.',
     'Activar solo cuando el cobro en la app sea Google Play Billing o la facturación alternativa del EEE: con Stripe directo Google Play rechaza la app.',
   ),
   _Module(

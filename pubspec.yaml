@@ -1,7 +1,7 @@
 name: blow_nights
 description: "Blow Nights - Tu guía de la noche"
 publish_to: 'none'
-version: 1.0.4+5
+version: 1.0.5+6
 
 environment:
   sdk: ^3.13.4

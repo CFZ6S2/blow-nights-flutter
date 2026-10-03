@@ -1422,7 +1422,8 @@
     "gift_ticket": "Regalar Entrada",
     "err_login": "Heu d'iniciar sessió per donar un toc",
     "ping_sent": "Toc enviat! 🔥",
-    "err_ping": "Error en enviar el toc"
+    "err_ping": "Error en enviar el toc",
+    "limit_desc_free": "Has esgotat els teus pings gratuïts d'avui. Demà en tindràs més."
   },
   "setup.step_prefix": "Paso ",
   "setup.step_infix": " de ",
@@ -3267,5 +3268,6 @@
     "withdraw": "Retirar reclamació",
     "back_home": "Tornar a l'inici",
     "document_hint_photo": "Foto del CIF, la llicència d'activitat o un document que et vinculi al local. Màx. 10 MB. Només el veu l'equip de Blow Nights."
-  }
+  },
+  "venue_admin_plans_unavailable_app": "La contractació de plans no està disponible a l'app de moment."
 }

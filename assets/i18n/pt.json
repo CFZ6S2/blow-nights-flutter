@@ -1254,7 +1254,8 @@
     "gift_ticket": "Bilhete Presente",
     "err_login": "Você deve fazer login para tocar",
     "ping_sent": "Toque enviado! 🔥",
-    "err_ping": "Falha ao enviar toque"
+    "err_ping": "Falha ao enviar toque",
+    "limit_desc_free": "Esgotaste os teus pings gratuitos de hoje. Amanhã terás mais."
   },
   "city_manager_pending_apps": "Solicitações de instalações pendentes",
   "city_manager_pending_apps_desc": "Novos lugares que querem entrar na sua cidade. Aprove-os para registrá-los.",
@@ -3270,5 +3271,6 @@
     "withdraw": "Retirar reclamação",
     "back_home": "Voltar ao início",
     "document_hint_photo": "Foto do NIF, da licença de atividade ou de um documento que te ligue ao local. Máx. 10 MB. Só a equipa da Blow Nights a vê."
-  }
+  },
+  "venue_admin_plans_unavailable_app": "A contratação de planos não está disponível na app por agora."
 }
