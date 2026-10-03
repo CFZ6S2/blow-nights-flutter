@@ -1,0 +1,26 @@
+{
+  "app": "blow_nights",
+  "applicationId": "com.blownights.finder",
+  "variant": "release",
+  "versionName": "1.0.3",
+  "versionCode": 4,
+  "commit": "a2e6de59aaa3493080ace5038f95ee4e25ace655",
+  "commitShort": "a2e6de5",
+  "branch": "main",
+  "buildTime": "2026-10-03T00:09:34Z",
+  "flutterVersion": "3.47.5",
+  "signing": "debug",
+  "dartDefines": [
+    "APPCHECK_DEBUG_TOKEN",
+    "APP_VERSION_CODE",
+    "APP_VERSION_NAME",
+    "BUILD_TIME",
+    "GIT_SHA",
+    "PLACES_API_KEY"
+  ],
+  "apk": {
+    "file": "blow-nights-1.0.3+4-a2e6de5.apk",
+    "bytes": 93497409,
+    "sha256": "e252aa91d9e59a1df187666e765100916b0b4d85c64e75f5a4fec58a41257e23"
+  }
+}
