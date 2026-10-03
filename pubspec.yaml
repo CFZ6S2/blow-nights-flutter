@@ -1,7 +1,7 @@
 name: blow_nights
 description: "Blow Nights - Tu guía de la noche"
 publish_to: 'none'
-version: 1.0.5+6
+version: 1.0.6+7
 
 environment:
   sdk: ^3.13.4
@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.8
+  cupertino_icons: ^2.0.0
 
   # Firebase
   firebase_core: ^4.15.0
