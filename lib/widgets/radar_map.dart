@@ -18,6 +18,7 @@ import '../navigation.dart';
 import '../providers/auth_provider.dart';
 import '../providers/city_provider.dart';
 import '../services/nearby.dart';
+import '../services/radar_position.dart';
 import '../services/social.dart';
 import '../services/venue_hours.dart';
 import '../theme/app_theme.dart';
@@ -64,6 +65,10 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
   // Wherever the user's zone is (see didChangeDependencies); a wide view until the GPS or a picked city gives one.
   LatLng _center = const LatLng(46, 2);
   String? _zoneKey;
+  // People are read by zone: re-subscribed when the zone moves about 1 km or the account changes.
+  String? _peopleKey;
+  final List<StreamSubscription> _peopleSubs = [];
+  final Map<int, List<QueryDocumentSnapshot<Map<String, dynamic>>>> _peopleParts = {};
   bool? _optimisticAvailable;
 
   bool _openNow = false;
@@ -94,6 +99,12 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
       _subsKey = key;
       _subscribe(uid);
     }
+    final c = city.center;
+    final peopleKey = '$uid|${c == null ? '' : '${c.lat.toStringAsFixed(2)},${c.lng.toStringAsFixed(2)}'}';
+    if (peopleKey != _peopleKey) {
+      _peopleKey = peopleKey;
+      _subscribePeople(uid, c == null ? null : LatLng(c.lat, c.lng));
+    }
     // Re-centre when the zone itself changes (first GPS fix, another city picked), not on every position update.
     final zone = city.center;
     final zoneKey = zone == null ? null : city.cityId ?? 'gps';
@@ -110,26 +121,57 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
     }
   }
 
-  void _subscribe(String? uid) {
-    for (final s in _subs) {
+  // People online around the zone's centre: one query per geohash range (30 each, as the rules allow) plus the old
+  // zone-less query, so profiles without a geohash (older ones) still show. The same as the web (lib/zoneUsers): merged
+  // by id once every query has answered; one that fails counts as empty. The distance slider goes up to 100 km.
+  static const _radarMaxKm = 100.0;
+
+  void _subscribePeople(String? uid, LatLng? center) {
+    for (final s in _peopleSubs) {
       s.cancel();
     }
-    _subs.clear();
+    _peopleSubs.clear();
+    _peopleParts.clear();
     if (uid == null) return;
-
-    final auth = context.read<AuthProvider>();
-    _subs.add(_db.collection('users').where('online', isEqualTo: true).limit(30).snapshots().listen((snap) {
-      final blocked = auth.profile?.data['blockedUsers'];
+    final users = _db.collection('users');
+    final queries = <Query<Map<String, dynamic>>>[
+      if (center != null)
+        for (final b in geohashQueryBounds(center.latitude, center.longitude, _radarMaxKm * 1000))
+          users.where('online', isEqualTo: true).orderBy('geohash').startAt([b[0]]).endAt([b[1]]).limit(30),
+      users.where('online', isEqualTo: true).limit(30),
+    ];
+    void settle(int i, List<QueryDocumentSnapshot<Map<String, dynamic>>> docs) {
+      _peopleParts[i] = docs;
+      if (_peopleParts.length < queries.length || !mounted) return;
+      final blocked = context.read<AuthProvider>().profile?.data['blockedUsers'];
       final blockedIds = blocked is List ? blocked.whereType<String>().toSet() : <String>{};
+      final byId = <String, QueryDocumentSnapshot<Map<String, dynamic>>>{};
+      for (final part in _peopleParts.values) {
+        for (final d in part) {
+          byId[d.id] = d;
+        }
+      }
       setState(() {
-        _rawUsers = snap.docs
+        _rawUsers = byId.values
             .where((d) =>
                 !blockedIds.contains(d.id) && d.id != uid && d.data()['rol'] != 'party_only' && d.data()['appMode'] != 'party')
             .map(UserProfile.fromDoc)
             .toList();
         _loading = false;
       });
-    }, onError: (_) => setState(() => _loading = false)));
+    }
+
+    for (var i = 0; i < queries.length; i++) {
+      _peopleSubs.add(queries[i].snapshots().listen((snap) => settle(i, snap.docs), onError: (_) => settle(i, const [])));
+    }
+  }
+
+  void _subscribe(String? uid) {
+    for (final s in _subs) {
+      s.cancel();
+    }
+    _subs.clear();
+    if (uid == null) return;
 
     _subs.add(_db.collection('users').doc(uid).collection('passes').snapshots().listen((snap) {
       final now = DateTime.now();
@@ -193,6 +235,9 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
     for (final s in _subs) {
       s.cancel();
     }
+    for (final s in _peopleSubs) {
+      s.cancel();
+    }
     _pinName.dispose();
     _queryCtrl.dispose();
     super.dispose();
@@ -208,7 +253,9 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
   List<UserProfile> get _usersNearby => _rawUsers.where((u) => !_passed.contains(u.id) && !_liked.contains(u.id)).toList();
 
   List<UserProfile> get _filteredUsers {
-    final pos = context.read<CityProvider>().position;
+    // Map pins and swipe cards: distance from the GPS fix, else the zone's centre (as the web, lib/radarUsers).
+    final city = context.read<CityProvider>();
+    final pos = city.position ?? city.center;
     final me = _userLocation ?? (pos == null ? null : LatLng(pos.lat, pos.lng));
     return _usersNearby.where((u) {
       if (u.lat == null || u.lng == null) return false;
@@ -307,10 +354,12 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
     try {
       if (next) {
         final pos = await Geolocator.getCurrentPosition();
-        await _db.collection('locations').doc(uid).set({'lat': pos.latitude, 'lng': pos.longitude, 'updatedAt': DateTime.now()});
-        await _db.collection('users').doc(uid).set({'online': true, 'radarVisible': true, 'lat': pos.latitude, 'lng': pos.longitude}, SetOptions(merge: true));
+        // Only the position snapped to ~200 m is stored (services/radar_position), never the GPS fix.
+        final fields = radarOnFields(pos.latitude, pos.longitude);
+        await _db.collection('locations').doc(uid).set({'lat': fields['lat']!, 'lng': fields['lng']!, 'updatedAt': DateTime.now()});
+        await _db.collection('users').doc(uid).set(fields, SetOptions(merge: true));
       } else {
-        await _db.collection('users').doc(uid).set({'online': false, 'radarVisible': false}, SetOptions(merge: true));
+        await _db.collection('users').doc(uid).set(radarOffFields(), SetOptions(merge: true));
       }
       Future.delayed(const Duration(seconds: 1), () {
         if (mounted) setState(() => _optimisticAvailable = null);
@@ -377,7 +426,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
               child: Container(
                 color: Tw.slate950,
                 child: SwipeCards(
-                  users: _usersNearby,
+                  users: _filteredUsers,
                   onSwipe: (id, dir) => setState(() {
                     if (dir == 'left') _passed = {..._passed, id};
                     if (dir == 'right') _liked = {..._liked, id};
