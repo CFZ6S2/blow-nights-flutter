@@ -51,7 +51,6 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
   StreamSubscription? _promoWatch;
   Timer? _promoGiveUp;
   String _tab = 'overview';
-  bool _checkingOut = false;
   bool _updatingTier = false;
   bool _started = false;
 
@@ -127,34 +126,6 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
       list.sort((a, b) => ms(b['purchasedAt']) - ms(a['purchasedAt']));
       setState(() => _tickets = list);
     }, onError: (e) => debugPrint('Error loading tickets for venue: $e'));
-  }
-
-  Future<void> _subscribe(String tier) async {
-    final v = _venue;
-    if (v == null || _checkingOut) return;
-    setState(() => _checkingOut = true);
-    try {
-      final res = await callFn('createVenueSubscriptionCheckout', {'venueId': v['id'], 'tier': tier, 'origin': webBase});
-      await openInApp(res['url'] as String);
-    } catch (_) {
-      if (mounted) showToast(context, context.read<I18n>().t('venue_admin_error_checkout'), error: true);
-    } finally {
-      if (mounted) setState(() => _checkingOut = false);
-    }
-  }
-
-  Future<void> _manageSubscription() async {
-    final v = _venue;
-    if (v == null || _checkingOut) return;
-    setState(() => _checkingOut = true);
-    try {
-      final res = await callFn('createStripePortalSession', {'venueId': v['id']});
-      await openInApp(res['url'] as String);
-    } catch (_) {
-      if (mounted) showToast(context, context.read<I18n>().t('venue_admin_error_stripe'), error: true);
-    } finally {
-      if (mounted) setState(() => _checkingOut = false);
-    }
   }
 
   Future<void> _setTestTier(String tier) async {
@@ -262,9 +233,8 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
           padding: EdgeInsets.fromLTRB(20, top + 68, 20, 80 + MediaQuery.of(context).padding.bottom),
           children: [
             if (v != null) ...[
-              _header(context, v),
+              _header(context, v, canBypass),
               const SizedBox(height: 24),
-              if (v['subscriptionTier'] == null && v['ownerId'] != 'community' && !canBypass) ...[_pricing(context), const SizedBox(height: 24)],
               _tabBody(context, v, canBypass),
             ],
           ],
@@ -411,8 +381,6 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(border: Border(top: BorderSide(color: Tw.w(0.05)))),
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-              if (v?['subscriptionTier'] != null && !canBypass && context.watch<PlatformSettings>().flag('moduleAppPremium'))
-                item(context.t('venue_admin_manage_plan'), Icons.settings, false, _checkingOut ? () {} : _manageSubscription),
               if (v?['subscriptionTier'] == 'ticketing' || canBypass)
                 item(context.t('venue_admin_scan'), Icons.qr_code_scanner, false, () => openRoute(context, AppRoute.scanner), color: Tw.fuchsia400),
               if (v?['id'] is String && context.watch<PlatformSettings>().flag('moduleCashless'))
@@ -429,7 +397,7 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
     );
   }
 
-  Widget _header(BuildContext context, Map<String, dynamic> v) {
+  Widget _header(BuildContext context, Map<String, dynamic> v, bool canBypass) {
     final tier = v['subscriptionTier'] as String?;
     final tierColor = switch (tier) { 'ticketing' => Tw.fuchsia400, 'promo' => Tw.indigo400, 'basico' => Tw.cyan400, _ => Tw.slate400 };
     Widget tierBtn(String value, String label, Color active) {
@@ -465,6 +433,7 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
           ),
         ]),
         Text((v['address'] as String?) ?? context.t('venue_admin_no_address'), style: tw(10, color: Tw.slate500)),
+        if (canBypass) ...[
         const SizedBox(height: 12),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -485,80 +454,20 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
             tierBtn('ticketing', 'Ticketing', Tw.indigo600),
           ]),
         ),
+        ],
       ]),
     );
   }
 
-  Widget _pricing(BuildContext context) {
-    Widget plan(String key, String tier, Color btnColor, {bool featured = false}) => Container(
-          margin: const EdgeInsets.only(bottom: 16),
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: featured ? null : Tw.slate900,
-            gradient: featured
-                ? LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.fuchsia900.withValues(alpha: 0.4), Tw.indigo900.withValues(alpha: 0.4)])
-                : null,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: featured ? Tw.fuchsia500.withValues(alpha: 0.5) : Tw.slate700),
-          ),
-          child: Column(children: [
-            Text(context.t('venue_admin_tier_$key'), style: tw(18, weight: black)),
-            Text('${context.t('venue_admin_tier_${key}_price')}${context.t('venue_admin_per_month')}',
-                style: tw(14, color: Tw.slate500, decoration: TextDecoration.lineThrough)),
-            Text.rich(TextSpan(children: [
-              TextSpan(text: context.t('venue_admin_tier_${key}_promo'), style: tw(20, weight: black, color: Tw.fuchsia400)),
-              TextSpan(text: context.t('venue_admin_per_month'), style: tw(14, color: Tw.slate500)),
-            ])),
-            const SizedBox(height: 8),
-            Text(context.t('venue_admin_tier_${key}_desc'), textAlign: TextAlign.center, style: tw(12, color: Tw.slate400)),
-            const SizedBox(height: 16),
-            AdminButton(
-              icon: Icons.science,
-              label: 'Activar ${tier == 'basico' ? 'Básico' : tier == 'promo' ? 'Promo' : 'Ticketing'} (Prueba 0€)',
-              color: btnColor,
-              outlined: !featured,
-              textColor: Tw.white,
-              expand: true,
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              onTap: _updatingTier ? null : () => _setTestTier(tier),
-            ),
-          ]),
-        );
-    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        margin: const EdgeInsets.only(bottom: 16),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [Tw.fuchsia600.withValues(alpha: 0.2), Tw.indigo600.withValues(alpha: 0.2)]),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.3)),
-        ),
-        child: Text(context.t('venue_admin_launch_promo'), textAlign: TextAlign.center, style: tw(14, weight: black, color: Tw.fuchsia400)),
-      ),
-      plan('basic', 'basico', Tw.cyan400),
-      plan('promo', 'promo', Tw.fuchsia600, featured: true),
-      plan('ticketing', 'ticketing', Tw.indigo500),
-    ]);
-  }
-
-  Widget _upgrade(BuildContext context, String titleKey, String descKey, String tier) => Container(
+  /// A section the venue's plan doesn't include. Venue plans are sold only on the web: here no price, no button and no
+  /// link to buy one (Google Play payments policy).
+  Widget _upgrade(BuildContext context, String titleKey, String descKey) => Container(
         padding: const EdgeInsets.all(32),
         decoration: BoxDecoration(color: Tw.slate900, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.slate800)),
         child: Column(children: [
           Text(context.t(titleKey), textAlign: TextAlign.center, style: tw(20, weight: black)),
           const SizedBox(height: 8),
           Text(context.t(descKey), textAlign: TextAlign.center, style: tw(15, color: Tw.slate400)),
-          const SizedBox(height: 24),
-          // Plans are a digital service: bought in the app only while super-admin has moduleAppPremium on
-          // (Google Play payments policy).
-          if (context.watch<PlatformSettings>().flag('moduleAppPremium'))
-            AdminButton(
-              label: context.t('venue_admin_upgrade_plan'),
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-              onTap: _checkingOut ? null : () => _subscribe(tier),
-            )
-          else
-            Text(context.t('venue_admin_plans_unavailable_app'), textAlign: TextAlign.center, style: tw(13, color: Tw.slate500)),
         ]),
       );
 
@@ -572,13 +481,13 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
       'catalog' => VenueCatalogTab(key: ValueKey('catalog-$id'), venueId: id),
       'events' => tier == 'ticketing' || canBypass
           ? VenueEventsTab(key: ValueKey('events-$id'), venue: v)
-          : _upgrade(context, 'venue_admin_requires_ticketing', 'venue_admin_upgrade_ticketing_desc', 'ticketing'),
+          : _upgrade(context, 'venue_admin_requires_ticketing', 'venue_admin_plan_ticketing_desc'),
       'tickets' => tier != 'ticketing' && !canBypass
-          ? _upgrade(context, 'venue_admin_requires_ticketing', 'venue_admin_upgrade_ticketing_tickets_desc', 'ticketing')
+          ? _upgrade(context, 'venue_admin_requires_ticketing', 'venue_admin_plan_ticketing_tickets_desc')
           : _ticketsTab(context),
       'promos' => ['promo', 'ticketing'].contains(tier) || canBypass
           ? _promosTab(context)
-          : _upgrade(context, 'venue_admin_requires_promo', 'venue_admin_upgrade_promo_desc', 'promo'),
+          : _upgrade(context, 'venue_admin_requires_promo', 'venue_admin_plan_promo_desc'),
       'benefits' => BenefitRulesTab(key: ValueKey('benefits-$id'), venueId: id),
       _ => _overviewTab(context, v),
     };

@@ -16,7 +16,7 @@ import '../../services/social.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/common.dart';
 
-/// "Mi ciudad no está": the profile is saved without a cityId, so it can still be set once when their city arrives.
+/// "Mi ciudad no está": the profile is saved without a cityId (it clears one already set).
 const _noCity = '__none__';
 
 const _appModes = [
@@ -141,7 +141,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
   void _next() {
     final i18n = context.read<I18n>();
     if (_step == 1 && _city.isEmpty) {
-      setState(() => _error = i18n.t('setup_error_city_required', fallback: 'Debes seleccionar tu ciudad. Es obligatorio y permanente.'));
+      setState(() => _error = i18n.t('setup_error_city_required', fallback: 'Elige tu ciudad para continuar.'));
       return;
     }
     if (_step == 2 && _appMode != 'party' && (_rol.isEmpty || _rol == 'party_only')) {
@@ -227,7 +227,9 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
         'fotoUrl': fotoUrl,
         'extraPhotos': extra,
         'privatePhotos': priv,
-        if (_city != _noCity) 'cityId': _city,
+        // The city is the user's free choice and can be changed any time: it no longer decides any partner's share,
+        // users' payments aren't shared with City Managers (2026-10-12).
+        'cityId': _city != _noCity ? _city : FieldValue.delete(),
         'platform': 'blownights',
         'updatedAt': DateTime.now(),
         'needsUpdate': false,
@@ -248,7 +250,6 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final lockedCity = (context.watch<AuthProvider>().profile?.cityId ?? '').isNotEmpty;
     final icons = [Icons.location_city, Icons.local_fire_department, Icons.person];
     final titles = [
       context.t('setup_step_city', fallback: 'Tu Ciudad'),
@@ -324,7 +325,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                 child: KeyedSubtree(
                   key: ValueKey(_step),
                   child: switch (_step) {
-                    1 => _stepCity(context, lockedCity),
+                    1 => _stepCity(context),
                     2 => _stepMode(context),
                     _ => _stepProfile(context),
                   },
@@ -430,18 +431,9 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
         ),
       );
 
-  Widget _stepCity(BuildContext context, bool locked) => Column(children: [
-        Text.rich(
-          TextSpan(children: [
-            TextSpan(text: '${context.t('setup_city_description', fallback: 'Elige la ciudad donde sales de fiesta.')}\n'),
-            TextSpan(
-              text: context.t('setup_city_permanent', fallback: 'Es permanente y no se puede cambiar.'),
-              style: tw(14, weight: bold, color: Tw.fuchsia400),
-            ),
-          ]),
-          textAlign: TextAlign.center,
-          style: tw(14, color: Tw.slate400, height: 1.5),
-        ),
+  Widget _stepCity(BuildContext context) => Column(children: [
+        Text(context.t('setup_city_description', fallback: 'Elige la ciudad donde sales de fiesta.'),
+            textAlign: TextAlign.center, style: tw(14, color: Tw.slate400, height: 1.5)),
         const SizedBox(height: 24),
         GridView.count(
           crossAxisCount: 2,
@@ -452,38 +444,33 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
           childAspectRatio: 2.2,
           children: [
             for (final (id, name) in _cityOptions(context))
-              Opacity(
-                opacity: locked ? 0.6 : 1,
-                child: _selectable(
-                  selected: _city == id,
-                  onTap: locked ? () {} : () => setState(() => _city = id),
-                  child: Center(
-                    child: Label(name, size: 14, color: _city == id ? Tw.white : Tw.slate400, tracking: 0.05),
-                  ),
+              _selectable(
+                selected: _city == id,
+                onTap: () => setState(() => _city = id),
+                child: Center(
+                  child: Label(name, size: 14, color: _city == id ? Tw.white : Tw.slate400, tracking: 0.05),
                 ),
               ),
           ],
         ),
-        if (!locked) ...[
-          const SizedBox(height: 12),
-          _selectable(
-            selected: _city == _noCity,
-            onTap: () => setState(() => _city = _noCity),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 18),
-              child: Center(
-                child: Label(context.t('setup_city_not_listed'), size: 14, color: _city == _noCity ? Tw.white : Tw.slate400, tracking: 0.05),
-              ),
+        const SizedBox(height: 12),
+        _selectable(
+          selected: _city == _noCity,
+          onTap: () => setState(() => _city = _noCity),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 18),
+            child: Center(
+              child: Label(context.t('setup_city_not_listed'), size: 14, color: _city == _noCity ? Tw.white : Tw.slate400, tracking: 0.05),
             ),
           ),
-          if (_city == _noCity) ...[
-            const SizedBox(height: 12),
-            Text(context.t('setup_city_not_listed_hint'), textAlign: TextAlign.center, style: tw(12, color: Tw.slate500)),
-          ],
+        ),
+        if (_city == _noCity) ...[
+          const SizedBox(height: 12),
+          Text(context.t('setup_city_not_listed_hint'), textAlign: TextAlign.center, style: tw(12, color: Tw.slate500)),
         ],
       ]);
 
-  /// Active cities, plus the user's own if it isn't active (it's locked once set).
+  /// Active cities, plus the user's own if it isn't active.
   List<(String, String)> _cityOptions(BuildContext context) {
     final cities = context.watch<CityProvider>().cities;
     final own = context.watch<AuthProvider>().profile?.cityId;

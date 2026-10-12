@@ -1,7 +1,7 @@
 name: blow_nights
 description: "Blow Nights - Tu guía de la noche"
 publish_to: 'none'
-version: 1.0.7+8
+version: 1.0.8+9
 
 environment:
   sdk: ^3.13.4
@@ -61,6 +61,8 @@ dependencies:
   path_provider: ^2.1.6
   vector_map_tiles: ^8.0.0
   nfc_manager: ^4.2.1
+  in_app_purchase: ^3.3.1
+  in_app_purchase_android: ^0.5.3
 
 dev_dependencies:
   flutter_test:

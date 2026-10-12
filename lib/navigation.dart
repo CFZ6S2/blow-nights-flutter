@@ -56,6 +56,7 @@ import 'screens/venues/venues_screen.dart';
 import 'theme/app_theme.dart';
 import 'i18n/i18n.dart';
 import 'providers/platform_settings.dart';
+import 'services/play_billing.dart';
 import 'widgets/common.dart';
 
 const webBase = 'https://blownights.com';
@@ -213,7 +214,7 @@ Future<void> openRoute(BuildContext context, AppRoute route, {Map<String, String
   }
   // Premium isn't sold in the app until super-admin turns moduleAppPremium on (Google Play payments policy). From a
   // paywall that replaced its screen (a chat without a match), that screen closes too.
-  if (route == AppRoute.premium && !context.read<PlatformSettings>().flag('moduleAppPremium')) {
+  if (route == AppRoute.premium && !appSellsDigital(context.read<PlatformSettings>())) {
     showToast(context, context.read<I18n>().t('premium.unavailable_app'));
     if (replace) Navigator.of(context).maybePop();
     return;

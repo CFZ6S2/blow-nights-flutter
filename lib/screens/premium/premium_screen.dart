@@ -1,17 +1,19 @@
 import 'dart:async';
 
-import 'package:cloud_functions/cloud_functions.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../i18n/i18n.dart';
-import '../../navigation.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/platform_settings.dart';
+import '../../services/play_billing.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/common.dart';
 
-/// Port of app/premium/page.tsx
+/// Port of app/premium/page.tsx. In the app everything here is bought through Google Play (docs/PLAY_BILLING.md in
+/// the web repo), at the web's prices; the web keeps selling it with Stripe.
 class PremiumScreen extends StatefulWidget {
   const PremiumScreen({super.key});
 
@@ -26,10 +28,26 @@ class _PremiumScreenState extends State<PremiumScreen> {
   String? _timeLeft;
   Timer? _timer;
 
+  /// subscriptions/{uid}: where the user's plan was bought. `play` is the Google Play one (the server keeps it), and
+  /// `status`/`tier` the web's (Stripe).
+  StreamSubscription? _subDoc;
+  Map<String, dynamic>? _playSub;
+  bool _webSub = false;
+
   @override
   void initState() {
     super.initState();
     _timer = Timer.periodic(const Duration(seconds: 1), (_) => _tick());
+    final uid = context.read<AuthProvider>().user?.uid;
+    if (uid != null) {
+      _subDoc = FirebaseFirestore.instance.collection('subscriptions').doc(uid).snapshots().listen((d) {
+        final data = d.data() ?? const {};
+        setState(() {
+          _playSub = data['play'] is Map ? Map<String, dynamic>.from(data['play'] as Map) : null;
+          _webSub = data['status'] == 'active' && data['tier'] != null;
+        });
+      }, onError: (_) {});
+    }
   }
 
   void _tick() {
@@ -51,32 +69,42 @@ class _PremiumScreenState extends State<PremiumScreen> {
   @override
   void dispose() {
     _timer?.cancel();
+    _subDoc?.cancel();
     super.dispose();
   }
 
-  Future<void> _callCheckout(String fn, Map<String, dynamic> data) async {
-    // No city needed: the membership callables accept a user without one (no City Manager attribution then).
+  Future<void> _buy(String productId, {String? basePlan, String? replacing}) async {
     final i18n = context.read<I18n>();
     setState(() {
       _submitting = true;
       _error = '';
     });
-    try {
-      final res = await FirebaseFunctions.instance.httpsCallable(fn).call<Map<String, dynamic>>(data);
-      final url = res.data['url'] as String?;
-      if (url != null) {
-        await openInApp(url);
-      } else if (fn != 'createStripePortalSession') {
-        setState(() => _error = i18n.t('premium.error_session'));
-      }
-    } on FirebaseFunctionsException catch (e) {
-      if (fn == 'createStripePortalSession') {
-        if (mounted) showToast(context, i18n.t('premium.error_portal'), error: true);
-      } else {
-        setState(() => _error = e.message ?? i18n.t('premium.error_payment'));
-      }
+    final outcome = await context.read<PlayBilling>().buy(productId, basePlan: basePlan, replacing: replacing);
+    if (!mounted) return;
+    setState(() => _submitting = false);
+    switch (outcome) {
+      case PlayOutcome.done:
+        showToast(context, i18n.t('premium.play_done', fallback: '¡Listo! Ya lo tienes.'));
+      case PlayOutcome.pending:
+        showToast(context, i18n.t('premium.play_pending', fallback: 'Pago pendiente: lo activamos en cuanto Google lo confirme.'));
+      case PlayOutcome.canceled:
+        break;
+      case PlayOutcome.unavailable:
+        setState(() => _error = i18n.t('premium.play_unavailable', fallback: 'Las compras no están disponibles ahora mismo. Inténtalo más tarde.'));
+      case PlayOutcome.otherGoogleAccount:
+        setState(() => _error = i18n.t('premium.play_other_account',
+            fallback: 'Tu suscripción es de otra cuenta de Google. Entra en Google Play con esa cuenta para cambiar de plan.'));
+      case PlayOutcome.failed:
+        setState(() => _error = i18n.t('premium.play_error', fallback: 'No se pudo completar la compra. Inténtalo de nuevo.'));
     }
-    if (mounted) setState(() => _submitting = false);
+  }
+
+  /// A Google Play subscription is managed (cancelled, payment method) in Google Play. One bought on the web isn't
+  /// managed from the app: no link out of it (Google Play payments policy).
+  void _manage() {
+    final play = _playSub;
+    if (play == null) return;
+    launchUrl(Uri.parse(playSubscriptionsUrl(play['productId'] as String?)), mode: LaunchMode.externalApplication);
   }
 
   @override
@@ -84,8 +112,9 @@ class _PremiumScreenState extends State<PremiumScreen> {
     final auth = context.watch<AuthProvider>();
     final p = auth.profile;
     if (auth.loading || auth.user == null) return const Scaffold(body: Center(child: CircularProgressIndicator(strokeWidth: 2)));
-    // Not sold in the app until super-admin turns moduleAppPremium on (openRoute doesn't open this screen meanwhile).
-    if (!context.watch<PlatformSettings>().flag('moduleAppPremium')) {
+    // Not sold in the app until super-admin turns moduleAppPremium on, and only on Android (openRoute doesn't open this
+    // screen meanwhile).
+    if (!appSellsDigital(context.watch<PlatformSettings>())) {
       return Scaffold(
         body: SafeArea(
           child: Center(
@@ -108,6 +137,11 @@ class _PremiumScreenState extends State<PremiumScreen> {
     }
     final tier = p?.membershipTier ?? 'free';
     final isPlus = auth.isPlus, isBlack = auth.isBlack, promo = auth.isPromoLifetime;
+    final play = context.watch<PlayBilling>();
+    final playTier = _playSub?['tier'] as String?;
+    // A plan bought on the web is changed or cancelled there, not here: buying another one in the app would charge
+    // both.
+    final fromWeb = (isPlus || isBlack) && playTier == null && _webSub;
     final cur = p?.cityId == 'albuquerque' ? r'$' : '€';
     final monthly = _period == 'monthly';
     final perLabel = monthly ? context.t('premium_per_month', fallback: 'mes') : context.t('premium_per_year', fallback: 'año');
@@ -207,16 +241,22 @@ class _PremiumScreenState extends State<PremiumScreen> {
                           : Text('PLUS', style: tw(24, weight: black, color: Tw.fuchsia400)),
                     ]),
                   ),
-                  Pressable(
-                    onTap: _submitting ? () {} : () => _callCheckout('createStripePortalSession', {}),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(color: Tw.w(0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.1))),
-                      child: Text(context.t('premium.manage'), style: tw(14, weight: bold)),
+                  if (_playSub != null)
+                    Pressable(
+                      onTap: _manage,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        decoration: BoxDecoration(color: Tw.w(0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.1))),
+                        child: Text(context.t('premium.manage'), style: tw(14, weight: bold)),
+                      ),
                     ),
-                  ),
                 ]),
               ),
+              if (fromWeb) ...[
+                const SizedBox(height: 12),
+                Text(context.t('premium.manage_elsewhere', fallback: 'Este plan no se contrató en la app, así que no se puede cambiar desde aquí.'),
+                    textAlign: TextAlign.center, style: tw(12, color: Tw.slate400)),
+              ],
               const SizedBox(height: 32),
             ],
             // FREE
@@ -263,7 +303,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
                             )
                           else
                             Pressable(
-                              onTap: _submitting ? () {} : () => _callCheckout('createBlack8hCheckout', {'origin': webBase}),
+                              onTap: _submitting ? () {} : () => _buy('black_pass_8h'),
                               child: Container(
                                 padding: const EdgeInsets.symmetric(vertical: 8),
                                 decoration: BoxDecoration(
@@ -271,7 +311,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
                                   borderRadius: BorderRadius.circular(12),
                                   boxShadow: [BoxShadow(color: Tw.indigo500.withValues(alpha: 0.2), blurRadius: 15)],
                                 ),
-                                child: Text(context.t('premium.buy_for', params: {'price': '5$cur'}),
+                                child: Text(context.t('premium.buy_for', params: {'price': play.price('black_pass_8h') ?? '5$cur'}),
                                     textAlign: TextAlign.center, style: tw(12, weight: bold)),
                               ),
                             ),
@@ -288,7 +328,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
               border: isPlus ? Tw.fuchsia500 : Tw.w(0.1),
               glow: isPlus ? Tw.fuchsia500.withValues(alpha: 0.2) : null,
               title: Label(context.t('premium_plan_plus', fallback: 'Plus'), size: 20, color: Tw.fuchsia400),
-              price: monthly ? '10$cur' : '90$cur',
+              price: play.price('plus', _period) ?? (monthly ? '10$cur' : '90$cur'),
               per: perLabel,
               features: [
                 (Icons.add_circle, Tw.fuchsia500, context.t('premium.all_free'), true),
@@ -303,7 +343,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
                 padding: const EdgeInsets.only(top: 32),
                 child: !isPlus && !isBlack && !promo
                     ? Pressable(
-                        onTap: _submitting ? () {} : () => _callCheckout('createUserMembershipCheckout', {'tier': 'plus', 'period': _period, 'origin': webBase}),
+                        onTap: _submitting ? () {} : () => _buy('plus', basePlan: _period),
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           decoration: BoxDecoration(color: Tw.white, borderRadius: BorderRadius.circular(16)),
@@ -334,7 +374,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
                 shaderCallback: (r) => const LinearGradient(colors: [Tw.slate300, Tw.white]).createShader(r),
                 child: Label(context.t('premium_plan_black', fallback: 'Black'), size: 20, color: Tw.white),
               ),
-              price: monthly ? '20$cur' : '180$cur',
+              price: play.price('black', _period) ?? (monthly ? '20$cur' : '180$cur'),
               per: perLabel,
               features: [
                 (Icons.add_circle, const Color(0xFFF1F5F9), context.t('premium.all_plus'), true),
@@ -348,9 +388,12 @@ class _PremiumScreenState extends State<PremiumScreen> {
               highlightIndex: 5,
               footer: Padding(
                 padding: const EdgeInsets.only(top: 32),
-                child: !isBlack && !promo
+                child: !isBlack && !promo && fromWeb
+                    ? const SizedBox.shrink()
+                    : !isBlack && !promo
                     ? Pressable(
-                        onTap: _submitting ? () {} : () => _callCheckout('createUserMembershipCheckout', {'tier': 'black', 'period': _period, 'origin': webBase}),
+                        // From Google Play Plus, Black replaces it (Google stops charging Plus).
+                        onTap: _submitting ? () {} : () => _buy('black', basePlan: _period, replacing: playTier == 'plus' ? 'plus' : null),
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           decoration: BoxDecoration(

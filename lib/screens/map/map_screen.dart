@@ -7,6 +7,7 @@ import '../../models/firestore_utils.dart';
 import '../../navigation.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/platform_settings.dart';
+import '../../services/play_billing.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/city_selector.dart';
 import '../../widgets/common.dart';
@@ -114,7 +115,7 @@ class MapScreen extends StatelessWidget {
       ),
       const SizedBox(height: 16),
       // The "go Premium" card only while Premium is sold in the app; a Premium account still sees its status.
-      if (vip || context.watch<PlatformSettings>().flag('moduleAppPremium'))
+      if (vip || appSellsDigital(context.watch<PlatformSettings>()))
       GlassCard(
         onTap: () => openRoute(context, AppRoute.premium),
         radius: 24,

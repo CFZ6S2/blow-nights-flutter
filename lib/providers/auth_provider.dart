@@ -80,8 +80,11 @@ class AuthProvider extends ChangeNotifier with WidgetsBindingObserver {
   bool get isVenueManager => isAdmin || isCityAdmin || role == 'venueOwner';
 
   String get membershipTier => profile?.membershipTier ?? 'free';
-  bool get isPlus => membershipTier == 'plus' && profile?.membershipStatus == 'active';
-  bool get isBlack => membershipTier == 'black' && profile?.membershipStatus == 'active';
+  // The server sets membershipTier from the active Stripe or Google Play subscription (functions/lib/membership) and
+  // clears it when it ends; nothing writes a membershipStatus, so requiring it kept paying users from being recognised
+  // (as on the web).
+  bool get isPlus => membershipTier == 'plus';
+  bool get isBlack => membershipTier == 'black';
   bool get isPromoLifetime => profile?.promoMember == true;
 
   int? get _boostExpiresMs {
