@@ -1,0 +1,26 @@
+{
+  "app": "blow_nights",
+  "applicationId": "com.blownights.finder",
+  "variant": "play",
+  "versionName": "1.0.8",
+  "versionCode": 9,
+  "commit": "dd9f6c175697416899842110960ae15b050fd8f3",
+  "commitShort": "dd9f6c1",
+  "branch": "feat/play-billing-app",
+  "buildTime": "2026-10-12T01:53:11Z",
+  "flutterVersion": "3.47.5",
+  "signing": "upload",
+  "dartDefines": [
+    "APP_VERSION_CODE",
+    "APP_VERSION_NAME",
+    "BUILD_TIME",
+    "GIT_SHA",
+    "PLACES_API_KEY"
+  ],
+  "obfuscated": true,
+  "aab": {
+    "file": "blow-nights-1.0.8+9-dd9f6c1.aab",
+    "bytes": 79812509,
+    "sha256": "f88937ea09fd40fc00947d8bdb4a1f6babddec6c214e0ddaa804a1a0f7dc9cc8"
+  }
+}
