@@ -302,7 +302,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Label(context.t('profile.city'), size: 14, color: Tw.white),
                       const SizedBox(height: 4),
-                      Text(context.t('profile.city_permanent', fallback: 'Tu ciudad es permanente'), style: tw(10, color: Tw.slate500)),
+                      GestureDetector(
+                        onTap: () => openRoute(context, AppRoute.setupProfile),
+                        child: Text(context.t('profile.city_change', fallback: 'Cambiar ciudad'),
+                            style: tw(10, weight: semibold, color: Tw.amber400)),
+                      ),
                     ]),
                   ),
                   Container(

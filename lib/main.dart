@@ -9,6 +9,7 @@ import 'navigation.dart';
 import 'providers/auth_provider.dart';
 import 'providers/city_provider.dart';
 import 'providers/platform_settings.dart';
+import 'services/play_billing.dart';
 import 'providers/venues_provider.dart';
 import 'screens/shell.dart';
 import 'services/finder_background.dart';
@@ -48,6 +49,8 @@ class BlowNightsApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => UnreadChats()),
         ChangeNotifierProvider(create: (_) => ShellController()),
         ChangeNotifierProvider(create: (_) => PlatformSettings()),
+        // Created at start (not lazily): Google can deliver a purchase as soon as the app opens.
+        ChangeNotifierProvider(create: (_) => PlayBilling(), lazy: false),
       ],
       child: Consumer<I18n>(
         builder: (context, i18n, _) => MaterialApp(

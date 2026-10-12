@@ -8,6 +8,7 @@ import '../models/user_model.dart';
 import '../navigation.dart';
 import '../providers/auth_provider.dart';
 import '../providers/platform_settings.dart';
+import '../services/play_billing.dart';
 import '../services/social.dart';
 import '../theme/app_theme.dart';
 import 'common.dart';
@@ -39,23 +40,29 @@ class _SwipeCardsState extends State<SwipeCards> {
     if (old.users != widget.users) _cards = [...widget.users];
   }
 
-  Future<void> _checkout(String type) async {
+  /// 3 extra pings (ping_pack_3) or "fuego esta noche" (vip_night), bought through Google Play.
+  Future<void> _buy(String productId) async {
     final i18n = context.read<I18n>();
-    final auth = context.read<AuthProvider>();
     setState(() => _paying = true);
-    try {
-      final res = await FirebaseFunctions.instance.httpsCallable('createPingCheckoutSession').call<Map<String, dynamic>>({
-        'type': type,
-        'origin': webBase,
-        // Attribution goes to the user's own city; without one, to nobody (never Madrid by default).
-        if (auth.profile?.cityId != null) 'citySlug': auth.profile!.cityId,
-      });
-      final url = res.data['url'] as String?;
-      if (url != null) await openInApp(url);
-    } catch (_) {
-      if (mounted) showToast(context, i18n.t('swipe.err_payment'), error: true);
+    final outcome = await context.read<PlayBilling>().buy(productId);
+    if (!mounted) return;
+    setState(() => _paying = false);
+    switch (outcome) {
+      case PlayOutcome.done:
+        setState(() => _limitExceeded = false);
+        showToast(context, i18n.t('premium.play_done', fallback: '¡Listo! Ya lo tienes.'));
+      case PlayOutcome.pending:
+        setState(() => _limitExceeded = false);
+        showToast(context, i18n.t('premium.play_pending', fallback: 'Pago pendiente: lo activamos en cuanto Google lo confirme.'));
+      case PlayOutcome.canceled:
+        break;
+      case PlayOutcome.unavailable:
+        showToast(context, i18n.t('premium.play_unavailable', fallback: 'Las compras no están disponibles ahora mismo. Inténtalo más tarde.'),
+            error: true);
+      case PlayOutcome.failed:
+      case PlayOutcome.otherGoogleAccount:
+        showToast(context, i18n.t('swipe.err_payment'), error: true);
     }
-    if (mounted) setState(() => _paying = false);
   }
 
   Future<void> _action(UserProfile target, String dir) async {
@@ -305,10 +312,11 @@ class _SwipeCardsState extends State<SwipeCards> {
         ),
       );
 
-  // Extra pings and the VIP night pass are digital purchases: only while super-admin has moduleAppPremium on (Google
-  // Play payments policy); otherwise the free pings come back tomorrow.
+  // Extra pings and the VIP night pass are digital purchases: through Google Play, and only while super-admin has
+  // moduleAppPremium on; otherwise the free pings come back tomorrow.
   Widget _limitModal(BuildContext context) {
-    final selling = context.watch<PlatformSettings>().flag('moduleAppPremium');
+    final selling = appSellsDigital(context.watch<PlatformSettings>());
+    final play = context.watch<PlayBilling>();
     return Container(
         color: Colors.black.withValues(alpha: 0.8),
         padding: const EdgeInsets.all(24),
@@ -331,7 +339,7 @@ class _SwipeCardsState extends State<SwipeCards> {
             const SizedBox(height: 24),
             if (selling) ...[
             Pressable(
-              onTap: _paying ? () {} : () => _checkout('ping_pack'),
+              onTap: _paying ? () {} : () => _buy('ping_pack_3'),
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                 decoration: BoxDecoration(
@@ -341,13 +349,13 @@ class _SwipeCardsState extends State<SwipeCards> {
                 ),
                 child: Row(children: [
                   Expanded(child: Text(context.t('swipe.pack_extra'), style: tw(14, weight: bold))),
-                  Text('1,99 €', style: tw(14, weight: black, color: const Color(0xFFFB923C))),
+                  Text(play.price('ping_pack_3') ?? '1,99 €', style: tw(14, weight: black, color: const Color(0xFFFB923C))),
                 ]),
               ),
             ),
             const SizedBox(height: 12),
             Pressable(
-              onTap: _paying ? () {} : () => _checkout('vip_night'),
+              onTap: _paying ? () {} : () => _buy('vip_night'),
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                 decoration: BoxDecoration(
@@ -357,7 +365,7 @@ class _SwipeCardsState extends State<SwipeCards> {
                 ),
                 child: Row(children: [
                   Expanded(child: Text(context.t('swipe.pass_unlimited'), style: tw(14, weight: black))),
-                  Text('3,99 €', style: tw(14, weight: black)),
+                  Text(play.price('vip_night') ?? '3,99 €', style: tw(14, weight: black)),
                 ]),
               ),
             ),
