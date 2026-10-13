@@ -18,7 +18,7 @@ String _now() {
   return '${two(d.hour)}:${two(d.minute)}:${two(d.second)}';
 }
 
-/// Port of app/bar/scanner/page.tsx ("SCAN & POUR": redeem drink entitlements by QR, PIN, NFC or keyboard-wedge gun).
+/// Port of app/bar/scanner/page.tsx ("SCAN & POUR": redeem drink entitlements by dynamic QR, NFC or keyboard-wedge gun).
 /// On Android it also reads the customer's phone by NFC (services/nfc_pass.dart): the drink's own QR code.
 class BarScannerScreen extends StatefulWidget {
   final String venueId;
@@ -84,17 +84,16 @@ class _BarScannerScreenState extends State<BarScannerScreen> {
     if (clean.isEmpty || _scanning || clean == _last) return;
     _last = clean;
     setState(() => _scanning = true);
-    final isPin = RegExp(r'^\d{4,8}$').hasMatch(clean);
     try {
       Map<String, dynamic> data;
       try {
         data = await callFn('redeemConsumptionEntitlement', {
+          // Only the customer's dynamic QR (no PIN since 2026-10-13).
           'token': clean,
-          'pinCode': isPin ? clean : null,
           'venueId': widget.venueId,
           'terminalId': 'scanner_web_${context.read<AuthProvider>().user?.uid ?? 'anon'}',
           'redemptionPoint': _point,
-          'scanMethod': method ?? (isPin ? 'pin' : 'qr'),
+          'scanMethod': method ?? 'qr',
         }).timeout(const Duration(seconds: 4), onTimeout: () => throw Exception('Red inestable: Tiempo de espera agotado. Verifica la conexión y reintenta.'));
       } on FirebaseFunctionsException catch (e) {
         if (e.code == 'not-found' || (e.message ?? '').contains('NOT_FOUND')) {
@@ -143,8 +142,8 @@ class _BarScannerScreenState extends State<BarScannerScreen> {
         ('EXPIRED', 'Consumición caducada'),
         ('VENUE_MISMATCH', 'Esta consumición pertenece a otro local'),
         ('INVALID_TOKEN', 'QR expirado o inválido (solicita refrescar pantalla)'),
-        ('INVALID_PIN', 'PIN incorrecto'),
-        ('ENTITLEMENT_BLOCKED', 'Consumición bloqueada por exceso de intentos'),
+        ('PROOF_REQUIRED', 'Escanea el QR dinámico del móvil del cliente'),
+        ('ENTITLEMENT_BLOCKED', 'Consumición bloqueada'),
       ].where((p) => msg.contains(p.$1)).firstOrNull?.$2;
       setState(() => _result = (
             status: msg.contains('ALREADY_REDEEMED') ? 'already_redeemed' : 'error',
@@ -270,8 +269,8 @@ class _BarScannerScreenState extends State<BarScannerScreen> {
                   const SizedBox(height: 4),
                   Text(
                       NfcPass.reading
-                          ? 'Acerca el móvil del cliente a este (NFC), usa la pistola o introduce el PIN abajo'
-                          : 'Acerca la pistola al móvil del cliente o introduce el PIN abajo',
+                          ? 'Acerca el móvil del cliente a este (NFC) o usa la pistola en su QR dinámico'
+                          : 'Acerca la pistola al QR dinámico del móvil del cliente',
                       textAlign: TextAlign.center,
                       style: tw(12, color: Tw.slate500)),
                 ]),
@@ -281,7 +280,6 @@ class _BarScannerScreenState extends State<BarScannerScreen> {
               Expanded(
                 child: TextField(
                   controller: _manual,
-                  textCapitalization: TextCapitalization.characters,
                   onSubmitted: (v) {
                     if (v.isNotEmpty) {
                       _scan(v);
@@ -289,7 +287,7 @@ class _BarScannerScreenState extends State<BarScannerScreen> {
                     }
                   },
                   style: tw(14).copyWith(fontFamily: 'monospace'),
-                  decoration: adminInputDecoration('PIN (ej: 4821)', focus: Tw.emerald500).copyWith(fillColor: Tw.slate900),
+                  decoration: adminInputDecoration('Código leído por la pistola', focus: Tw.emerald500).copyWith(fillColor: Tw.slate900),
                 ),
               ),
               const SizedBox(width: 8),

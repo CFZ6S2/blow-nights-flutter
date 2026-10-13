@@ -19,12 +19,13 @@ String dynamicQrValue(String ticketId, String secretKey, [DateTime? now]) {
   return 'dyn:$payload:$sig';
 }
 
+/// The only QR that gets anyone in (functions/lib/validateQR.js): never a static code. Without the ticket's key there
+/// is no QR to show (founder, 2026-10-13).
 class DynamicQR extends StatefulWidget {
   final String ticketId;
   final String? secretKey;
-  final String? fallbackToken;
   final double size;
-  const DynamicQR({super.key, required this.ticketId, this.secretKey, this.fallbackToken, this.size = 200});
+  const DynamicQR({super.key, required this.ticketId, this.secretKey, this.size = 200});
 
   @override
   State<DynamicQR> createState() => _DynamicQRState();
@@ -40,14 +41,32 @@ class _DynamicQRState extends State<DynamicQR> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    _start();
+  }
+
+  @override
+  void didUpdateWidget(covariant DynamicQR old) {
+    super.didUpdateWidget(old);
+    if (old.secretKey != widget.secretKey || old.ticketId != widget.ticketId) _start();
+  }
+
+  void _start() {
+    _timer?.cancel();
+    _timer = null;
+    if (widget.secretKey == null) {
+      _value = '';
+      NfcPass.hide(this);
+      return;
+    }
     _generate();
-    if (widget.secretKey != null) _timer = Timer.periodic(_period, (_) => _generate());
+    _timer = Timer.periodic(_period, (_) => _generate());
   }
 
   void _generate() {
     final key = widget.secretKey;
-    setState(() => _value = key == null ? (widget.fallbackToken ?? '') : dynamicQrValue(widget.ticketId, key));
-    if (key != null) _progress.forward(from: 0);
+    if (key == null) return;
+    setState(() => _value = dynamicQrValue(widget.ticketId, key));
+    _progress.forward(from: 0);
     NfcPass.show(this, _value);
   }
 
@@ -62,6 +81,13 @@ class _DynamicQRState extends State<DynamicQR> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.secretKey == null) {
+      return SizedBox(
+        width: widget.size,
+        child: Text(context.t('dynamic_qr_unavailable', fallback: 'Abre la entrada con conexión para ver el QR.'),
+            textAlign: TextAlign.center, style: tw(13, color: Tw.slate400)),
+      );
+    }
     if (_value.isEmpty) {
       return Container(
         width: widget.size,
@@ -69,7 +95,6 @@ class _DynamicQRState extends State<DynamicQR> with TickerProviderStateMixin {
         decoration: BoxDecoration(color: Tw.slate800, borderRadius: BorderRadius.circular(24)),
       );
     }
-    final dynamicMode = widget.secretKey != null;
     return Column(mainAxisSize: MainAxisSize.min, children: [
       Container(
         padding: const EdgeInsets.all(16),
@@ -81,30 +106,29 @@ class _DynamicQRState extends State<DynamicQR> with TickerProviderStateMixin {
         ),
         child: Stack(children: [
           QrImageView(data: _value, size: widget.size, padding: EdgeInsets.zero, backgroundColor: Tw.white),
-          if (dynamicMode)
-            AnimatedBuilder(
-              animation: _scan,
-              builder: (_, _) => Positioned(
-                top: widget.size * 0.5 * _scan.value,
-                left: 0,
-                right: 0,
-                height: widget.size * 0.5,
-                child: IgnorePointer(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [Colors.transparent, Tw.fuchsia500.withValues(alpha: 0.2), Colors.transparent],
-                      ),
+          AnimatedBuilder(
+            animation: _scan,
+            builder: (_, _) => Positioned(
+              top: widget.size * 0.5 * _scan.value,
+              left: 0,
+              right: 0,
+              height: widget.size * 0.5,
+              child: IgnorePointer(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Colors.transparent, Tw.fuchsia500.withValues(alpha: 0.2), Colors.transparent],
                     ),
                   ),
                 ),
               ),
             ),
+          ),
         ]),
       ),
-      if (dynamicMode) ...[
+      ...[
         const SizedBox(height: 24),
         SizedBox(
           width: 192,

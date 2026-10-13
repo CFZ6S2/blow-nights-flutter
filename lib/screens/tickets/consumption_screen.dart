@@ -347,7 +347,6 @@ class _ConsumptionScreenState extends State<ConsumptionScreen> {
     final beer = t['category'] == 'cerveza';
     final premium = t['isPremium'] == true;
     final iconColor = beer ? Tw.amber400 : (premium ? Tw.purple400 : Tw.fuchsia400);
-    final pin = safeStr(t['pinCode']);
     return Opacity(
       opacity: used ? 0.6 : 1,
       child: Pressable(
@@ -409,17 +408,6 @@ class _ConsumptionScreenState extends State<ConsumptionScreen> {
                   ),
                 ]),
               ),
-              if (pin.isNotEmpty && !used)
-                Padding(
-                  padding: const EdgeInsets.only(top: 6),
-                  child: Text.rich(
-                    TextSpan(children: [
-                      const TextSpan(text: 'PIN: '),
-                      TextSpan(text: pin, style: tw(10, weight: bold, tracking: 0.05).copyWith(fontFamily: 'monospace')),
-                    ]),
-                    style: tw(10, color: Tw.slate400).copyWith(fontFamily: 'monospace'),
-                  ),
-                ),
             ]),
           ]),
         ),
@@ -461,7 +449,7 @@ class _ConsumptionScreenState extends State<ConsumptionScreen> {
                   Text(context.t('consumption_toast_title', fallback: '¡Consumición adquirida!'), style: tw(12, weight: black)),
                   Text(
                     context.t('consumption_toast_desc',
-                        fallback: 'Sin saldos atrapados. Muestra el QR o el PIN en la barra para que te la sirvan.'),
+                        fallback: 'Sin saldos atrapados. Muestra el QR en la barra para que te la sirvan.'),
                     style: tw(11, color: const Color(0xE66EE7B7)),
                   ),
                 ]),
@@ -493,10 +481,12 @@ class _ConsumptionQrSheet extends StatefulWidget {
 }
 
 class _ConsumptionQrSheetState extends State<_ConsumptionQrSheet> {
+  /// Seconds between new signed QRs (each is valid 60 s at the bar), like the tickets' (widgets/dynamic_qr.dart).
+  static const _period = 15;
   String? _qr;
-  String? _pin;
   bool _qrLoading = false;
-  int _countdown = 60;
+  bool _qrError = false;
+  int _countdown = _period;
   Timer? _timer;
 
   String get _id => widget.ticket['id'] as String;
@@ -505,7 +495,6 @@ class _ConsumptionQrSheetState extends State<_ConsumptionQrSheet> {
   @override
   void initState() {
     super.initState();
-    _pin = safeStr(widget.ticket['pinCode']).isNotEmpty ? safeStr(widget.ticket['pinCode']) : null;
     _fetch();
     if (!_used) {
       _timer = Timer.periodic(const Duration(seconds: 1), (_) {
@@ -526,7 +515,10 @@ class _ConsumptionQrSheetState extends State<_ConsumptionQrSheet> {
   }
 
   Future<void> _fetch() async {
-    setState(() => _qrLoading = true);
+    setState(() {
+      _qrLoading = true;
+      _qrError = false;
+    });
     final fn = FirebaseFunctions.instance;
     try {
       try {
@@ -534,8 +526,7 @@ class _ConsumptionQrSheetState extends State<_ConsumptionQrSheet> {
         final d = res.data is Map ? res.data as Map : const {};
         if (d['dynamicToken'] is String) {
           _qr = d['dynamicToken'] as String;
-          if (d['pinCode'] is String) _pin = d['pinCode'] as String;
-          _countdown = 60;
+          _countdown = _period;
           return;
         }
       } catch (_) {
@@ -543,18 +534,23 @@ class _ConsumptionQrSheetState extends State<_ConsumptionQrSheet> {
         final d = res.data is Map ? res.data as Map : const {};
         if (d['dynamicQr'] is String) {
           _qr = d['dynamicQr'] as String;
-          if (d['pinCode'] is String) _pin = d['pinCode'] as String;
-          _countdown = 60;
+          _countdown = _period;
           return;
         }
       }
     } catch (_) {
-      _qr = 'dyn:$_id:${DateTime.now().millisecondsSinceEpoch}';
-      _countdown = 60;
+      // No QR is made up here: the bar only accepts the signed one (until 2026-10-13 an unsigned code was shown).
+      _qr = null;
+      _qrError = true;
+      _countdown = _period;
     } finally {
       if (mounted) {
         setState(() => _qrLoading = false);
-        if (!_used) NfcPass.show(this, _qr);
+        if (!_used && _qr != null) {
+          NfcPass.show(this, _qr);
+        } else {
+          NfcPass.hide(this);
+        }
       }
     }
   }
@@ -612,20 +608,21 @@ class _ConsumptionQrSheetState extends State<_ConsumptionQrSheet> {
                           ? Container(decoration: BoxDecoration(color: const Color(0xFFF1F5F9), borderRadius: BorderRadius.circular(12)))
                           : _qr != null
                               ? QrImageView(data: _qr!, size: 180, padding: EdgeInsets.zero)
-                              : Center(child: Text('Cargando QR...', style: tw(12, weight: bold, color: Tw.black))),
+                              : _qrError
+                                  ? GestureDetector(
+                                      onTap: _fetch,
+                                      child: Center(
+                                        child: Column(mainAxisSize: MainAxisSize.min, children: [
+                                          const Icon(Icons.refresh, size: 28, color: Tw.slate500),
+                                          const SizedBox(height: 8),
+                                          Text('No se ha podido generar el QR. Toca para reintentar.',
+                                              textAlign: TextAlign.center, style: tw(12, weight: bold, color: Tw.black)),
+                                        ]),
+                                      ),
+                                    )
+                                  : Center(child: Text('Cargando QR...', style: tw(12, weight: bold, color: Tw.black))),
                     ),
                   ),
-                  if (_pin != null)
-                    Container(
-                      margin: const EdgeInsets.only(top: 12),
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(color: Tw.slate950, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.slate800)),
-                      child: Row(mainAxisSize: MainAxisSize.min, children: [
-                        Text('PIN de respaldo:', style: tw(11, weight: medium, color: Tw.slate400)),
-                        const SizedBox(width: 8),
-                        Text(_pin!, style: tw(16, weight: black, color: Tw.amber400, tracking: 0.1).copyWith(fontFamily: 'monospace')),
-                      ]),
-                    ),
                   if (!_used && NfcPass.available) const NfcPassHint(),
                   if (!_used)
                     Padding(
@@ -655,7 +652,7 @@ class _ConsumptionQrSheetState extends State<_ConsumptionQrSheet> {
                     constraints: const BoxConstraints(maxWidth: 320),
                     child: Text(
                       context.t('consumption_qr_hint',
-                          fallback: 'Muestra esta pantalla al camarero. Si la cámara tiene reflejos, indícale el PIN de respaldo.'),
+                          fallback: 'Muestra esta pantalla al camarero. El QR cambia cada pocos segundos y solo vale en pantalla.'),
                       textAlign: TextAlign.center,
                       style: tw(10, color: Tw.slate500, height: 1.25),
                     ),
