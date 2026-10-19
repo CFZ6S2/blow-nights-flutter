@@ -719,6 +719,7 @@
   "venue_admin_ghost": "Ghost",
   "venue_admin_public": "Public",
   "venue_admin_requires_ticketing": "Requires Ticketing Tier",
+  "venue_admin_trial_until": "Free trial until {{date}}",
   "venue_admin_no_tickets": "No tickets sold",
   "venue_admin_ticket_valid": "Valid",
   "venue_admin_ticket_used": "Used",

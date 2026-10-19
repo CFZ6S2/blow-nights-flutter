@@ -1303,6 +1303,7 @@
   "venue_admin_ghost": "Φάντασμα",
   "venue_admin_public": "Κοινό",
   "venue_admin_requires_ticketing": "Απαιτεί Tier Ticketing",
+  "venue_admin_trial_until": "Δωρεάν δοκιμή έως {{date}}",
   "venue_admin_no_tickets": "Δεν πωλούνται εισιτήρια",
   "venue_admin_ticket_valid": "Εγκυρος",
   "venue_admin_ticket_used": "Μεταχειρισμένος",

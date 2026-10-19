@@ -9,6 +9,7 @@ import '../../models/firestore_utils.dart';
 import '../../navigation.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/city_provider.dart';
+import '../../services/venue_plans.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/admin_ui.dart';
 import '../../widgets/common.dart';
@@ -78,7 +79,9 @@ class _CityManagerScreenState extends State<CityManagerScreen> {
         final v = {'id': d.id, ...d.data()};
         venues.add(v);
         if (v['isActive'] == true) active++;
-        gross += switch (v['subscriptionTier']) { 'ticketing' => 180, 'promo' => 100, 'basico' => 50, _ => 0 };
+        // Paid, active subscriptions only (services/venue_plans.dart, as the web's venueMrr): a venue in its free
+        // month, cancelled, past due or on a test subscription brings nothing in.
+        gross += venueMrr(v);
       }
       // Real earnings are read like the web does (not shown; the payout is the 50% MRR estimate).
       await _db.collection('cities').doc(city['id'] as String).collection('earnings').get();

@@ -1351,6 +1351,7 @@
   "venue_admin_ghost": "Fantasma",
   "venue_admin_public": "Públic",
   "venue_admin_requires_ticketing": "Requereix Tier Ticketing",
+  "venue_admin_trial_until": "Prova gratuïta fins al {{date}}",
   "venue_admin_no_tickets": "No hi ha entrades venudes",
   "venue_admin_ticket_valid": "Vàlida",
   "venue_admin_ticket_used": "Usada",

@@ -1336,6 +1336,7 @@
   "venue_admin_ghost": "Geist",
   "venue_admin_public": "Öffentlich",
   "venue_admin_requires_ticketing": "Erfordert Stufentickets",
+  "venue_admin_trial_until": "Kostenlose Testphase bis {{date}}",
   "venue_admin_no_tickets": "Es werden keine Tickets verkauft",
   "venue_admin_ticket_valid": "Gültig",
   "venue_admin_ticket_used": "Gebraucht",

@@ -743,6 +743,7 @@
   "venue_admin_ghost": "Fantomă",
   "venue_admin_public": "Public",
   "venue_admin_requires_ticketing": "Necesită Tier Ticketing",
+  "venue_admin_trial_until": "Perioadă de probă gratuită până la {{date}}",
   "venue_admin_no_tickets": "Nu sunt bilete vândute",
   "venue_admin_ticket_valid": "Valid",
   "venue_admin_ticket_used": "Utilizat",

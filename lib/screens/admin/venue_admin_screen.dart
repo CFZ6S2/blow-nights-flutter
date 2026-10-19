@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../i18n/i18n.dart';
@@ -9,6 +10,7 @@ import '../../models/firestore_utils.dart';
 import '../../navigation.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/platform_settings.dart';
+import '../../services/venue_trial.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/admin_ui.dart';
 import '../../widgets/common.dart';
@@ -399,6 +401,7 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
 
   Widget _header(BuildContext context, Map<String, dynamic> v, bool canBypass) {
     final tier = v['subscriptionTier'] as String?;
+    final trial = venueTrial(v);
     final tierColor = switch (tier) { 'ticketing' => Tw.fuchsia400, 'promo' => Tw.indigo400, 'basico' => Tw.cyan400, _ => Tw.slate400 };
     Widget tierBtn(String value, String label, Color active) {
       final on = value == 'none' ? tier == null : tier == value;
@@ -431,6 +434,23 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
             ),
             child: Text((tier != null ? 'Plan $tier' : 'Sin plan activo').toUpperCase(), style: tw(10, weight: bold, color: tierColor)),
           ),
+          // The free month (services/venue_trial.dart), as the web's panel shows it. No price or link: plans are sold
+          // only on the web.
+          if (trial != null && trial.state != VenueTrialState.ended)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+              decoration: BoxDecoration(
+                color: Tw.emerald400.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(99),
+                border: Border.all(color: Tw.emerald400.withValues(alpha: 0.3)),
+              ),
+              child: Text(
+                context.t('venue_admin_trial_until', params: {
+                  'date': DateFormat.yMMMMd(context.read<I18n>().locale.languageCode).format(trial.endsAt),
+                }),
+                style: tw(10, weight: bold, color: Tw.emerald400),
+              ),
+            ),
         ]),
         Text((v['address'] as String?) ?? context.t('venue_admin_no_address'), style: tw(10, color: Tw.slate500)),
         if (canBypass) ...[

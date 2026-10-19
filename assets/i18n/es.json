@@ -743,6 +743,7 @@
   "venue_admin_ghost": "Fantasma",
   "venue_admin_public": "Público",
   "venue_admin_requires_ticketing": "Requiere Tier Ticketing",
+  "venue_admin_trial_until": "Prueba gratis hasta el {{date}}",
   "venue_admin_no_tickets": "No hay entradas vendidas",
   "venue_admin_ticket_valid": "Válida",
   "venue_admin_ticket_used": "Usada",
