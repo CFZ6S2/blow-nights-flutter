@@ -1303,6 +1303,7 @@
   "venue_admin_ghost": "شبح",
   "venue_admin_public": "عام",
   "venue_admin_requires_ticketing": "يتطلب تذاكر الطبقة",
+  "venue_admin_trial_until": "تجربة مجانية حتى {{date}}",
   "venue_admin_no_tickets": "لا توجد تذاكر بيعت",
   "venue_admin_ticket_valid": "صالح",
   "venue_admin_ticket_used": "مستخدم",

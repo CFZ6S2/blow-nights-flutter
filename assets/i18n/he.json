@@ -743,6 +743,7 @@
   "venue_admin_ghost": "רוח רפאים",
   "venue_admin_public": "ציבורי",
   "venue_admin_requires_ticketing": "דורש דרגת כרטוס",
+  "venue_admin_trial_until": "ניסיון חינם עד {{date}}",
   "venue_admin_no_tickets": "אין כרטיסים שנמכרו",
   "venue_admin_ticket_valid": "תקף",
   "venue_admin_ticket_used": "נוצל",

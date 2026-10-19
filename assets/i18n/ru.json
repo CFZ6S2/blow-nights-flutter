@@ -1336,6 +1336,7 @@
   "venue_admin_ghost": "Призрак",
   "venue_admin_public": "Общественный",
   "venue_admin_requires_ticketing": "Требуется билет уровня",
+  "venue_admin_trial_until": "Бесплатный период до {{date}}",
   "venue_admin_no_tickets": "Билеты не проданы",
   "venue_admin_ticket_valid": "Действительный",
   "venue_admin_ticket_used": "Использовал",

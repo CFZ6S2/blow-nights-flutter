@@ -1303,6 +1303,7 @@
   "venue_admin_ghost": "Fantasma",
   "venue_admin_public": "Pubblico",
   "venue_admin_requires_ticketing": "Richiede l'emissione di biglietti a livelli",
+  "venue_admin_trial_until": "Prova gratuita fino al {{date}}",
   "venue_admin_no_tickets": "Non ci sono biglietti venduti",
   "venue_admin_ticket_valid": "Valido",
   "venue_admin_ticket_used": "Usato",
