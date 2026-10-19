@@ -1,0 +1,26 @@
+{
+  "app": "blow_nights",
+  "applicationId": "com.blownights.finder",
+  "variant": "play",
+  "versionName": "1.0.10",
+  "versionCode": 11,
+  "commit": "0048facfb766df7d94e5e7ac0bad1ea573abf494",
+  "commitShort": "0048fac",
+  "branch": "main",
+  "buildTime": "2026-10-19T10:54:33Z",
+  "flutterVersion": "3.47.5",
+  "signing": "upload",
+  "dartDefines": [
+    "APP_VERSION_CODE",
+    "APP_VERSION_NAME",
+    "BUILD_TIME",
+    "GIT_SHA",
+    "PLACES_API_KEY"
+  ],
+  "obfuscated": true,
+  "aab": {
+    "file": "blow-nights-1.0.10+11-0048fac.aab",
+    "bytes": 79686102,
+    "sha256": "b7727c019218c8d3c0e8557d2e021d762e53a64d0909721cdfe1547c7bb1d0aa"
+  }
+}
