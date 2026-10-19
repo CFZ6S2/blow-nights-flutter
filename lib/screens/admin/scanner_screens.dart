@@ -53,7 +53,7 @@ class QrCamera extends StatefulWidget {
   final ValueChanged<String> onCode;
   final bool paused;
   final double frameSize;
-  /// Replaces the default "no camera" panel (DoorScreen offers the PIN and the app settings there).
+  /// Replaces the default "no camera" panel (DoorScreen offers the app settings there).
   final Widget Function(BuildContext context, MobileScannerException error)? errorBuilder;
   const QrCamera({super.key, required this.onCode, this.paused = false, this.frameSize = 208, this.errorBuilder});
 
@@ -138,7 +138,8 @@ Future<void> openAppSettings() async {
   }
 }
 
-/// Port of app/door/page.tsx: tokenised door scanner (no login), camera + NFC + manual PIN.
+/// Port of app/door/page.tsx: tokenised door scanner (no login), camera + NFC. Only the customer's dynamic QR gets
+/// anyone in: no PIN since 2026-10-13.
 /// Without a link it lists the doors saved in the account (web: /door with no params).
 class DoorScreen extends StatefulWidget {
   final String venueId, eventId, token;
@@ -242,84 +243,6 @@ class _DoorScreenState extends State<DoorScreen> {
     });
   }
 
-  Future<void> _pinDialog() async {
-    final ctrl = TextEditingController();
-    var validating = false;
-    await showDialog<void>(
-      context: context,
-      barrierColor: Colors.black.withValues(alpha: 0.8),
-      builder: (ctx) => StatefulBuilder(
-        builder: (ctx, setLocal) {
-          return Dialog(
-            backgroundColor: _doorPanel,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: _doorBorder)),
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(mainAxisSize: MainAxisSize.min, children: [
-                Container(
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    color: Tw.fuchsia600.withValues(alpha: 0.2),
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.3)),
-                  ),
-                  child: const Icon(Icons.pin, color: Tw.fuchsia400),
-                ),
-                const SizedBox(height: 16),
-                Text(ctx.t('door_manual_pin_title', fallback: 'Validación Manual por PIN'), style: tw(18, weight: bold)),
-                const SizedBox(height: 4),
-                Text(ctx.t('door_manual_pin_desc', fallback: 'Introduce el PIN de 4 dígitos impreso en la entrada del cliente.'),
-                    textAlign: TextAlign.center, style: tw(12, color: Tw.slate400)),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: ctrl,
-                  autofocus: true,
-                  keyboardType: TextInputType.number,
-                  maxLength: 8,
-                  textAlign: TextAlign.center,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  onChanged: (_) => setLocal(() {}),
-                  style: tw(30, weight: black, color: Tw.fuchsia400, tracking: 0.1).copyWith(fontFamily: 'monospace'),
-                  decoration: InputDecoration(
-                    counterText: '',
-                    hintText: ctx.t('door_manual_pin_placeholder', fallback: '0000'),
-                    hintStyle: tw(30, weight: black, color: Tw.slate700),
-                    filled: true,
-                    fillColor: Colors.black.withValues(alpha: 0.5),
-                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: _doorRowBorder)),
-                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.fuchsia500)),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Row(children: [
-                  Expanded(
-                    child: AdminButton(label: ctx.t('door_close', fallback: 'Cerrar'), color: Tw.w(0.05), textColor: Tw.slate300, expand: true, onTap: () => Navigator.of(ctx).pop()),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: AdminButton(
-                      label: validating ? '...' : ctx.t('door_validate_pin_btn', fallback: 'Validar PIN'),
-                      expand: true,
-                      onTap: ctrl.text.length < 4 || validating
-                          ? null
-                          : () async {
-                              setLocal(() => validating = true);
-                              await _handleScan(ctrl.text.trim());
-                              if (ctx.mounted) Navigator.of(ctx).pop();
-                            },
-                    ),
-                  ),
-                ]),
-              ]),
-            ),
-          );
-        },
-      ),
-    );
-    ctrl.dispose();
-  }
-
   Widget _cameraError(BuildContext context, MobileScannerException error) => Container(
         color: Colors.black.withValues(alpha: 0.85),
         alignment: Alignment.center,
@@ -327,15 +250,9 @@ class _DoorScreenState extends State<DoorScreen> {
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           const Icon(Icons.videocam_off, size: 40, color: Tw.amber400),
           const SizedBox(height: 12),
-          Text(context.t('door_camera_denied_app', fallback: 'No podemos usar la cámara. Valida con el PIN del pase o permite la cámara en los ajustes de la app.'),
+          Text(context.t('door_camera_needed_app', fallback: 'Para validar hace falta la cámara: permítela en los ajustes de la app. Solo vale el QR dinámico del móvil del cliente.'),
               textAlign: TextAlign.center, style: tw(13, color: Tw.slate300)),
           const SizedBox(height: 16),
-          AdminButton(
-            label: context.t('door_manual_pin_btn', fallback: 'Entrada Manual / PIN'),
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            onTap: _pinDialog,
-          ),
-          const SizedBox(height: 8),
           if (error.errorCode == MobileScannerErrorCode.permissionDenied)
             AdminButton(
               label: context.t('door_open_settings', fallback: 'Abrir ajustes'),
@@ -446,19 +363,6 @@ class _DoorScreenState extends State<DoorScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  Pressable(
-                    onTap: _pinDialog,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      decoration: BoxDecoration(color: _doorRow, borderRadius: BorderRadius.circular(12), border: Border.all(color: _doorRowBorder)),
-                      child: Row(mainAxisSize: MainAxisSize.min, children: [
-                        const Icon(Icons.pin, size: 16, color: Tw.fuchsia400),
-                        const SizedBox(width: 8),
-                        Text(context.t('door_manual_pin_btn', fallback: 'Entrada Manual / PIN'), style: tw(12, weight: bold, color: const Color(0xFFE2E8F0))),
-                      ]),
-                    ),
-                  ),
                 ]),
               ),
             ),
@@ -471,7 +375,8 @@ class _DoorScreenState extends State<DoorScreen> {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-/// Port of app/scanner/page.tsx: authenticated staff scanner (camera, manual, PDA keyboard-wedge, NFC).
+/// Port of app/scanner/page.tsx: authenticated staff scanner (camera, PDA keyboard-wedge, NFC). No manual mode: a code
+/// typed or pasted by hand would be a static one, and only the dynamic QR gets anyone in (2026-10-13).
 class ScannerScreen extends StatefulWidget {
   final String? mode;
   final String? deviceId;
@@ -485,7 +390,6 @@ class _ScannerScreenState extends State<ScannerScreen> {
   late String _mode = widget.mode == 'hardware' ? 'hardware' : 'camera';
   bool _cameraOn = false;
   Map<String, dynamic>? _result;
-  final _manual = TextEditingController();
   final _hw = TextEditingController();
   final _hwFocus = FocusNode();
   bool _validating = false;
@@ -515,7 +419,6 @@ class _ScannerScreenState extends State<ScannerScreen> {
   void dispose() {
     _reset?.cancel();
     NfcPass.stop();
-    _manual.dispose();
     _hw.dispose();
     _hwFocus.dispose();
     super.dispose();
@@ -579,7 +482,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
     if (auth.loading || auth.claims == null) {
       return const Scaffold(backgroundColor: Tw.slate950, body: Center(child: CircularProgressIndicator(strokeWidth: 2, color: Tw.fuchsia500)));
     }
-    final modes = ['camera', 'manual', 'hardware', if (_nfcSupported) 'nfc'];
+    final modes = ['camera', 'hardware', if (_nfcSupported) 'nfc'];
     return Scaffold(
       backgroundColor: Tw.slate950,
       body: SafeArea(
@@ -623,14 +526,14 @@ class _ScannerScreenState extends State<ScannerScreen> {
                     ),
                     child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                       Icon(
-                        switch (m) { 'camera' => Icons.photo_camera, 'manual' => Icons.keyboard, 'nfc' => Icons.nfc, _ => Icons.settings_remote },
+                        switch (m) { 'camera' => Icons.photo_camera, 'nfc' => Icons.nfc, _ => Icons.settings_remote },
                         size: 14,
                         color: _mode == m ? Tw.fuchsia400 : Tw.slate500,
                       ),
                       const SizedBox(width: 4),
                       Flexible(
                         child: Label(
-                          switch (m) { 'camera' => context.t('scanner_camera'), 'manual' => context.t('scanner_manual'), 'nfc' => 'NFC', _ => 'PDA' },
+                          switch (m) { 'camera' => context.t('scanner_camera'), 'nfc' => 'NFC', _ => 'PDA' },
                           color: _mode == m ? Tw.fuchsia400 : Tw.slate500,
                           maxLines: 1,
                         ),
@@ -672,30 +575,6 @@ class _ScannerScreenState extends State<ScannerScreen> {
         ),
         const SizedBox(height: 16),
         Text(context.t('scanner_camera_hint', fallback: 'Apunta la cámara al código QR de la entrada'), textAlign: TextAlign.center, style: tw(10, color: Tw.slate600)),
-      ];
-    }
-    if (_mode == 'manual' && r == null) {
-      return [
-        AdminCard(
-          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            Text(context.t('scanner_token_label', fallback: 'Token de la entrada'), style: tw(12, weight: bold, color: Tw.slate400)),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _manual,
-              onChanged: (_) => setState(() {}),
-              onSubmitted: (v) => _validate(v, 'manual'),
-              style: tw(14).copyWith(fontFamily: 'monospace'),
-              decoration: adminInputDecoration(context.t('scanner_token_placeholder', fallback: 'Pega aquí el token QR del cliente...')),
-            ),
-            const SizedBox(height: 16),
-            AdminButton(
-              label: _validating ? context.t('scanner_validating', fallback: 'Validando...') : context.t('scanner_validate_ticket', fallback: 'Validar Entrada'),
-              expand: true,
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              onTap: _manual.text.isEmpty || _validating ? null : () => _validate(_manual.text, 'manual'),
-            ),
-          ]),
-        ),
       ];
     }
     if (_mode == 'nfc' && r == null) {
@@ -818,10 +697,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
             color: Tw.w(0.1),
             expand: true,
             padding: const EdgeInsets.symmetric(vertical: 16),
-            onTap: () => setState(() {
-              _result = null;
-              _manual.clear();
-            }),
+            onTap: () => setState(() => _result = null),
           ),
         ]),
       ),

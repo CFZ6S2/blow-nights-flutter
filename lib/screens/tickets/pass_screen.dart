@@ -45,13 +45,9 @@ class _PassScreenState extends State<PassScreen> {
         final snap = await db.collection('tickets').doc(widget.id).get();
         if (snap.exists) {
           final t = <String, dynamic>{'id': snap.id, ...?snap.data()};
-          if (t['qrToken'] == null) {
-            final secrets = await db.doc('tickets/${widget.id}/private/secrets').get();
-            if (secrets.exists) {
-              t['qrToken'] = secrets.data()?['qrToken'];
-              t['secretKey'] = secrets.data()?['secretKey'];
-            }
-          }
+          // Only the key that draws the dynamic QR: no static code or PIN is shown (2026-10-13).
+          final secrets = await db.doc('tickets/${widget.id}/private/secrets').get();
+          if (secrets.exists) t['secretKey'] = secrets.data()?['secretKey'];
           _ticket = t;
         }
       }
@@ -217,35 +213,13 @@ class _PassScreenState extends State<PassScreen> {
                             Text(context.t('wallet.ticket_used', fallback: 'Entrada usada'), style: tw(14, weight: bold, color: Tw.emerald400)),
                           ]),
                         )
-                      else if (t['qrToken'] != null)
-                        DynamicQR(
-                          ticketId: safeStr(t['id']),
-                          secretKey: t['secretKey'] as String?,
-                          fallbackToken: t['qrToken'] as String?,
-                          size: 170,
-                        )
+                      else if (t['secretKey'] != null)
+                        DynamicQR(ticketId: safeStr(t['id']), secretKey: t['secretKey'] as String?, size: 170)
                       else
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 24),
                           child: Text(context.t('pass.no_qr', fallback: 'QR no disponible'), style: tw(12, color: Tw.slate500)),
                         ),
-                      if (safeStr(t['pinCode']).isNotEmpty) ...[
-                        const SizedBox(height: 16),
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                          decoration: BoxDecoration(
-                            color: Tw.slate950.withValues(alpha: 0.8),
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: Tw.slate800),
-                          ),
-                          child: Column(children: [
-                            Label(context.t('pass.door_pin'), color: Tw.slate500),
-                            const SizedBox(height: 2),
-                            Text('#${t['pinCode']}', style: tw(24, weight: black, color: Tw.fuchsia400, tracking: 0.25).copyWith(fontFamily: 'monospace')),
-                          ]),
-                        ),
-                      ],
                       if (t['status'] == 'valid') ...[
                         const SizedBox(height: 16),
                         Padding(

@@ -13,15 +13,6 @@ import '../../theme/app_theme.dart';
 import '../../widgets/common.dart';
 import '../../widgets/dynamic_qr.dart';
 
-/// `(parseInt(id.replace(/[^a-f0-9]/gi, ''), 16) % 10000).toString().padStart(4, '0')`, with JS number semantics.
-String legacyChillPin(String id) {
-  final hex = id.replaceAll(RegExp('[^a-fA-F0-9]'), '');
-  if (hex.isEmpty) return '0NaN';
-  final n = BigInt.parse(hex, radix: 16).toDouble();
-  if (n.isInfinite) return 'NaN';
-  return (n % 10000).toInt().toString().padLeft(4, '0');
-}
-
 /// Port of app/ticket/page.tsx (chill access pass for an accepted request).
 class ChillTicketScreen extends StatefulWidget {
   final String id;
@@ -88,16 +79,12 @@ class _ChillTicketScreenState extends State<ChillTicketScreen> {
   void _loadSecrets() {
     if (_secretsRequested || !_accepted || _checkedIn) return;
     _secretsRequested = true;
-    final qr = _request?['qr_code'] as String?;
+    // Only the key that draws the dynamic QR: never the static code, nor a PIN (2026-10-13).
     _db.doc('chill_requests/${widget.id}/private/secrets').get().then((s) {
-      if (s.exists) {
-        _secrets = s.data();
-      } else if (qr != null) {
-        _secrets = {'qrToken': qr};
-      }
+      _secrets = {'secretKey': s.exists ? (s.data()?['secretKey']) : null};
       if (mounted) setState(() {});
     }).catchError((_) {
-      if (qr != null && mounted) setState(() => _secrets = {'qrToken': qr});
+      if (mounted) setState(() => _secrets = const {});
     });
   }
 
@@ -148,7 +135,6 @@ class _ChillTicketScreenState extends State<ChillTicketScreen> {
       return _state(Icons.cancel, Tw.amber500, context.t('ticket.passRevokedTitle'), context.t('ticket.passRevokedDesc'));
     }
 
-    final pin = safeStr(r['pin']).isNotEmpty ? safeStr(r['pin']) : legacyChillPin(widget.id);
     final hasQr = r['qr_code'] != null;
     final address = _exactAddress;
     final mapsQuery = address != null ? Uri.encodeComponent(address) : '${chill['approx_lat']},${chill['approx_lng']}';
@@ -216,12 +202,7 @@ class _ChillTicketScreenState extends State<ChillTicketScreen> {
                       else if (_secrets != null)
                         Padding(
                           padding: const EdgeInsets.only(bottom: 24),
-                          child: DynamicQR(
-                            ticketId: widget.id,
-                            secretKey: _secrets!['secretKey'] as String?,
-                            fallbackToken: (_secrets!['qrToken'] as String?) ?? r['qr_code'] as String?,
-                            size: 180,
-                          ),
+                          child: DynamicQR(ticketId: widget.id, secretKey: _secrets!['secretKey'] as String?, size: 180),
                         )
                       else
                         Container(
@@ -232,14 +213,7 @@ class _ChillTicketScreenState extends State<ChillTicketScreen> {
                           decoration: BoxDecoration(color: Tw.slate800, borderRadius: BorderRadius.circular(16)),
                           child: Text(context.t('ticket.loadingQR', fallback: 'Cargando QR...'), style: tw(12, color: Tw.slate500)),
                         ),
-                      Label(context.t('ticket.accessPin'), weight: bold),
-                      const SizedBox(height: 4),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                        decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.1))),
-                        child: Text('#$pin', style: tw(30, weight: black, tracking: 0.1)),
-                      ),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 8),
                       Container(
                         constraints: const BoxConstraints(maxWidth: 240),
                         margin: const EdgeInsets.only(bottom: 24),

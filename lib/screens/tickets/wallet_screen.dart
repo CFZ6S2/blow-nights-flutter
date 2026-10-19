@@ -137,7 +137,7 @@ class _WalletScreenState extends State<WalletScreen> {
               border: Tw.fuchsia500.withValues(alpha: 0.3),
               leading: const Text('🍹', style: TextStyle(fontSize: 20)),
               title: context.t('wallet.bar_drinks_title', fallback: '¿Tienes consumiciones o copas?'),
-              sub: context.t('wallet.bar_drinks_desc', fallback: 'Sin recargas de saldo: muestra tu QR o PIN directo en la barra'),
+              sub: context.t('wallet.bar_drinks_desc', fallback: 'Sin recargas de saldo: muestra tu QR en la barra'),
               button: _pillButton(
                 context.t('wallet.bar_drinks_btn', fallback: 'Mis Copas →'),
                 const LinearGradient(colors: [Tw.fuchsia600, Tw.amber500]),
@@ -481,11 +481,7 @@ class _TicketDetailState extends State<_TicketDetail> {
                         Padding(
                           padding: const EdgeInsets.only(bottom: 24),
                           child: Center(
-                            child: DynamicQR(
-                              ticketId: t['id'] as String,
-                              secretKey: _secrets!['secretKey'] as String?,
-                              fallbackToken: _secrets!['qrToken'] as String?,
-                            ),
+                            child: DynamicQR(ticketId: t['id'] as String, secretKey: _secrets!['secretKey'] as String?),
                           ),
                         )
                       else if (valid && !_secretsLoaded)
