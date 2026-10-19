@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../navigation.dart';
@@ -325,59 +324,6 @@ class _InvestorsScreenState extends State<InvestorsScreen> {
   }
 
   Widget _docs(BuildContext context) {
-    Future<void> copyLink() async {
-      await Clipboard.setData(const ClipboardData(text: 'https://blownights.com/investors'));
-      if (context.mounted) showToast(context, 'Enlace copiado al portapapeles.');
-    }
-
-    Widget doc(String tag, Color c, String badge, String title, String desc, String button, String path, {bool link = true, Color? btn}) => Container(
-          margin: const EdgeInsets.only(bottom: 16),
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(color: Tw.w(0.03), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            Row(children: [
-              Expanded(child: Text(tag.toUpperCase(), style: tw(11, weight: bold, color: c).copyWith(fontFamily: 'monospace'))),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                decoration: BoxDecoration(color: Tw.w(0.1), borderRadius: BorderRadius.circular(4)),
-                child: Text(badge, style: tw(11, color: Tw.slate300)),
-              ),
-            ]),
-            const SizedBox(height: 8),
-            Text(title, style: tw(18, weight: bold)),
-            const SizedBox(height: 4),
-            Text(desc, style: tw(12, color: Tw.slate400)),
-            const SizedBox(height: 16),
-            Row(children: [
-              Expanded(
-                child: Pressable(
-                  onTap: () => openInApp('$webBase$path'),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    decoration: BoxDecoration(
-                      color: btn ?? Tw.w(0.1),
-                      borderRadius: BorderRadius.circular(12),
-                      border: btn == null ? Border.all(color: Tw.w(0.1)) : null,
-                    ),
-                    child: Text(button, textAlign: TextAlign.center, style: tw(12, weight: bold)),
-                  ),
-                ),
-              ),
-              if (link) ...[
-                const SizedBox(width: 8),
-                Pressable(
-                  onTap: copyLink,
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.1))),
-                    child: const Text('🔗', style: TextStyle(fontSize: 12)),
-                  ),
-                ),
-              ],
-            ]),
-          ]),
-        );
-
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Container(
         padding: const EdgeInsets.all(16),
@@ -391,16 +337,37 @@ class _InvestorsScreenState extends State<InvestorsScreen> {
           ),
         ]),
       ),
-      doc('1 Página · PDF / TXT', Tw.purple400, 'Seed 1M€', 'One-Pager Ejecutivo',
-          'Resumen condensado de propuesta de valor, economía unitaria, foso y términos de la ronda.', 'Descargar (.MD)', '/docs/ONE_PAGER_SEED_1M.md',
-          btn: Tw.purple600),
-      doc('12 Slides · Completo', Tw.pink400, 'Confidencial', 'Pitch Deck Diapositiva a Diapositiva',
-          'Narrativa completa: problema, solución, modelo tridimensional, proyecciones M24 y gobernanza.', 'Descargar (.MD)', '/docs/PITCH_DECK_SEED_1M.md',
-          btn: const Color(0xFFDB2777)),
-      doc('Memorando Técnico', Tw.indigo400, 'Due Diligence', 'Dossier Técnico-Económico',
-          'Desglose de la arquitectura fiscal transfronteriza, flujos Stripe Connect y ledger transaccional.', 'Descargar Dossier (.TXT)',
-          '/docs/dossier_reunion_seed.txt',
-          link: false),
+      // The round's documents aren't served from the web (anyone could download them without the PIN): the founder
+      // sends them by email. As the web's /investors (blow-nights-app #190).
+      Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(color: Tw.w(0.03), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          Row(children: [
+            Expanded(child: Text('ONE-PAGER · PITCH DECK · DOSSIER', style: tw(11, weight: bold, color: Tw.purple400).copyWith(fontFamily: 'monospace'))),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(color: Tw.w(0.1), borderRadius: BorderRadius.circular(4)),
+              child: Text('Confidencial', style: tw(11, color: Tw.slate300)),
+            ),
+          ]),
+          const SizedBox(height: 8),
+          Text('Documentos de la Ronda', style: tw(18, weight: bold)),
+          const SizedBox(height: 4),
+          Text('Por confidencialidad no se descargan desde la web: te los enviamos por correo, a la dirección con la que has accedido.',
+              style: tw(12, color: Tw.slate400)),
+          const SizedBox(height: 16),
+          Pressable(
+            onTap: () => _open('mailto:cesar@blownights.com?subject=${Uri.encodeComponent('Blow Nights Seed Round - Documentos')}'),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              decoration: BoxDecoration(color: Tw.purple600, borderRadius: BorderRadius.circular(12)),
+              child: Text('Solicitar documentos', textAlign: TextAlign.center, style: tw(12, weight: bold)),
+            ),
+          ),
+        ]),
+      ),
       Container(
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
