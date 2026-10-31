@@ -6,7 +6,8 @@ void main() {
   test('an active paid subscription counts at the plan list price', () {
     expect(venueMrr({'subscriptionTier': 'basico', 'subscriptionStatus': 'active'}), 50);
     expect(venueMrr({'subscriptionTier': 'promo', 'subscriptionStatus': 'active'}), 100);
-    expect(venueMrr({'subscriptionTier': 'ticketing', 'subscriptionStatus': 'active'}), 180);
+    expect(venueMrr({'subscriptionTier': 'ticketing', 'subscriptionStatus': 'active', 'ticketingPriceCents': 25000}), 250);
+    expect(venueMrr({'subscriptionTier': 'ticketing', 'subscriptionStatus': 'active'}), 180); // from before agreed prices
   });
 
   test('no plan, cancelled, past due or test subscriptions count nothing', () {
