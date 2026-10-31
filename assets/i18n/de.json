@@ -637,7 +637,7 @@
       "update_bank_details": "Meine Bankdaten aktualisieren",
       "step_1": "Verbinde dein Bankkonto über das sichere Stripe Express-Gateway.",
       "step_2": "Verkaufe Tickets über die Blow Nights-App oder PR-Links.",
-      "step_3": "Das Geld geht über Stripe direkt auf dein Bankkonto. Blow Nights behält nur eine feste Gebühr von 0,50 € pro Ticket ein, die üblichen Kartenkosten trägst du.",
+      "step_3": "Das Geld geht über Stripe direkt auf dein Bankkonto. Blow Nights behält nur eine feste Gebühr pro Ticket ein: 0,50 € im Vorverkauf, 1 € beim Kauf live, während das Lokal geöffnet ist. Die üblichen Kartenkosten trägst du.",
       "connecting": "Verbinden...",
       "setup_bank_account": "Bankkonto einrichten",
       "footer_note": "Der Registrierungsprozess dauert nur 3 Minuten. Halte deinen Ausweis/Steuernummer und deine Kontonummer (IBAN) bereit."

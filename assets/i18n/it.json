@@ -614,7 +614,7 @@
       "update_bank_details": "Aggiorna i miei dati bancari",
       "step_1": "Collega il tuo conto bancario tramite il gateway sicuro di Stripe Express.",
       "step_2": "Vendi biglietti tramite l'App di Blow Nights o link di RRPP.",
-      "step_3": "Il denaro va direttamente sul tuo conto bancario tramite Stripe. Blow Nights trattiene solo una tariffa fissa di 0,50 € per biglietto e tu sostieni i normali costi della carta.",
+      "step_3": "Il denaro va direttamente sul tuo conto bancario tramite Stripe. Blow Nights trattiene solo una tariffa fissa per biglietto: 0,50 € se acquistato in anticipo, 1 € se acquistato dal vivo con il locale aperto. Tu sostieni i normali costi della carta.",
       "connecting": "Connessione in corso...",
       "setup_bank_account": "Configura Conto Bancario",
       "footer_note": "Il processo di registrazione dura solo 3 minuti. Tieni a portata di mano la tua Carta d'Identità/Partita IVA e il tuo numero di conto (IBAN)."

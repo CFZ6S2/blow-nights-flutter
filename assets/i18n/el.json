@@ -598,7 +598,7 @@
       "update_bank_details": "Actualizar mis datos bancarios",
       "step_1": "Conecta tu cuenta bancaria mediante la pasarela segura de Stripe Express.",
       "step_2": "Vende entradas a través de la App de Blow Nights o enlaces de RRPP.",
-      "step_3": "Τα χρήματα πηγαίνουν απευθείας στον τραπεζικό σας λογαριασμό μέσω Stripe. Η Blow Nights κρατά μόνο σταθερή χρέωση 0,50 € ανά εισιτήριο και εσείς καλύπτετε τα συνήθη κόστη κάρτας.",
+      "step_3": "Τα χρήματα πηγαίνουν απευθείας στον τραπεζικό σας λογαριασμό μέσω Stripe. Η Blow Nights κρατά μόνο σταθερή χρέωση ανά εισιτήριο: 0,50 € αν αγοραστεί από πριν, 1 € αν αγοραστεί επί τόπου όσο το κατάστημα είναι ανοιχτό. Εσείς καλύπτετε τα συνήθη κόστη κάρτας.",
       "connecting": "Conectando...",
       "setup_bank_account": "Configurar Cuenta Bancaria",
       "footer_note": "El proceso de alta tarda solo 3 minutos. Ten a mano tu DNI/CIF y tu número de cuenta (IBAN)."

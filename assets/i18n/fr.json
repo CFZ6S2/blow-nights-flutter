@@ -565,7 +565,7 @@
       "update_bank_details": "Mettre à jour mes coordonnées bancaires",
       "step_1": "Connectez votre compte bancaire via la passerelle sécurisée de Stripe Express.",
       "step_2": "Vendez des billets via l'App Blow Nights ou les liens RRPP.",
-      "step_3": "L'argent va directement sur votre compte bancaire via Stripe. Blow Nights ne garde qu'un frais fixe de 0,50 € par billet et vous prenez en charge les frais de carte habituels.",
+      "step_3": "L'argent va directement sur votre compte bancaire via Stripe. Blow Nights ne garde qu'un frais fixe par billet : 0,50 € s'il est acheté à l'avance, 1 € s'il est acheté sur place pendant l'ouverture. Vous prenez en charge les frais de carte habituels.",
       "connecting": "Connexion...",
       "setup_bank_account": "Configurer un Compte Bancaire",
       "footer_note": "Le processus d'inscription ne prend que 3 minutes. Gardez votre carte d'identité/SIRET et votre numéro de compte (IBAN) à portée de main."

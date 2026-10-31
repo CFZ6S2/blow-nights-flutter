@@ -614,7 +614,7 @@
       "update_bank_details": "Update my bank details",
       "step_1": "Connect your bank account through the secure Stripe Express gateway.",
       "step_2": "Sell tickets through the Blow Nights App or PR links.",
-      "step_3": "The money goes straight to your bank account through Stripe. Blow Nights only keeps a fixed fee of €0.50 per ticket, and you cover the usual card costs.",
+      "step_3": "The money goes straight to your bank account through Stripe. Blow Nights only keeps a fixed fee per ticket: €0.50 if bought in advance, €1 if bought live while the venue is open. You cover the usual card costs.",
       "connecting": "Connecting...",
       "setup_bank_account": "Setup Bank Account",
       "footer_note": "The registration process takes just 3 minutes. Have your ID/Company Tax ID and your bank account number (IBAN) handy."
