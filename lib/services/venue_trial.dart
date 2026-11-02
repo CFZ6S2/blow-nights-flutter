@@ -1,6 +1,6 @@
 import '../models/firestore_utils.dart';
 
-/// The free month of the Ticketing plan a venue that joins on its own gets, as frontend/src/lib/venueTrial.ts
+/// The free month of the Basic plan a venue that joins on its own gets, as frontend/src/lib/venueTrial.ts
 /// (functions/lib/venueTrial.js; one a commercial brings pays from the start), then 50% off the first 3 paid months and
 /// the full price. A venue may subscribe during the trial (on the web: plans aren't sold in the app).
 ///   free        in the trial, not subscribed
