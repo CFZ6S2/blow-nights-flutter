@@ -99,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(children: [
-        Positioned(top: -size.height * 0.1, left: -size.width * 0.2, child: Orb(color: Tw.fuchsia600.withValues(alpha: 0.2), size: size.width * 0.9)),
+        Positioned(top: -size.height * 0.1, left: -size.width * 0.2, child: Orb(color: Tw.party.withValues(alpha: 0.2), size: size.width * 0.9)),
         Positioned(bottom: -size.height * 0.1, right: -size.width * 0.2, child: Orb(color: Tw.indigo600.withValues(alpha: 0.2), size: size.width * 0.9)),
         SafeArea(
           child: Center(
@@ -118,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(12),
-              child: IconButton(onPressed: () => Navigator.of(context).pop(), icon: const Icon(Icons.arrow_back, color: Tw.slate400)),
+              child: IconButton(onPressed: () => Navigator.of(context).pop(), icon: const Icon(Icons.arrow_back, color: Tw.inkSoft)),
             ),
           ),
       ]),
@@ -131,9 +131,9 @@ class _LoginScreenState extends State<LoginScreen> {
       constraints: const BoxConstraints(maxWidth: 448),
       padding: const EdgeInsets.all(40),
       decoration: BoxDecoration(
-        color: Tw.w(0.05),
+        color: Tw.panelSoft,
         borderRadius: BorderRadius.circular(48),
-        border: Border.all(color: Tw.w(0.1)),
+        border: Border.all(color: Tw.line),
         boxShadow: const [BoxShadow(color: Color(0x80000000), blurRadius: 100, offset: Offset(0, 50))],
       ),
       child: Column(mainAxisSize: MainAxisSize.min, children: [
@@ -143,9 +143,9 @@ class _LoginScreenState extends State<LoginScreen> {
             width: 64,
             height: 64,
             decoration: BoxDecoration(
-              gradient: const LinearGradient(begin: Alignment.bottomLeft, end: Alignment.topRight, colors: [Tw.fuchsia600, Tw.indigo600]),
+              gradient: const LinearGradient(begin: Alignment.bottomLeft, end: Alignment.topRight, colors: [Tw.sunset, Tw.party]),
               borderRadius: BorderRadius.circular(16),
-              boxShadow: [BoxShadow(color: Tw.fuchsia500.withValues(alpha: 0.3), blurRadius: 40, offset: const Offset(0, 20))],
+              boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.3), blurRadius: 40, offset: const Offset(0, 20))],
             ),
             child: const Icon(Icons.favorite, color: Tw.white, size: 30),
           ),
@@ -186,20 +186,20 @@ class _LoginScreenState extends State<LoginScreen> {
           enabled: enabled,
           background: Tw.black,
           foreground: Tw.white,
-          border: Tw.w(0.1),
+          border: Tw.line,
           icon: const Icon(Icons.apple, color: Tw.white, size: 22),
           label: context.t('login.apple', fallback: 'Continuar con Apple'),
           onTap: _apple,
         ),
         const SizedBox(height: 20),
-        Divider(color: Tw.w(0.1), height: 1),
+        Divider(color: Tw.line, height: 1),
         const SizedBox(height: 16),
         AnimatedSize(
           duration: const Duration(milliseconds: 250),
           child: _showUsername ? _usernameForm(context) : _usernameToggle(context, enabled),
         ),
         const SizedBox(height: 20),
-        Divider(color: Tw.w(0.1), height: 1),
+        Divider(color: Tw.line, height: 1),
         const SizedBox(height: 24),
         Label(context.t('login.pro_question'), weight: bold, align: TextAlign.center),
         const SizedBox(height: 16),
@@ -219,9 +219,9 @@ class _LoginScreenState extends State<LoginScreen> {
           radius: 16,
           padding: const EdgeInsets.all(12),
           child: Column(mainAxisSize: MainAxisSize.min, children: [
-            const Icon(Icons.badge, size: 16, color: Tw.fuchsia400),
+            const Icon(Icons.badge, size: 16, color: Tw.sun),
             const SizedBox(height: 4),
-            Text(context.t('staff_app.entry', fallback: 'Soy personal de un local'), style: tw(12, weight: bold, color: Tw.fuchsia400)),
+            Text(context.t('staff_app.entry', fallback: 'Soy personal de un local'), style: tw(12, weight: bold, color: Tw.sun)),
           ]),
         ),
         const SizedBox(height: 28),
@@ -245,7 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _ageCheckbox(BuildContext context) {
-    final base = tw(10, color: Tw.slate400, height: 1.6);
+    final base = tw(10, color: Tw.inkSoft, height: 1.6);
     return GestureDetector(
       onTap: () => setState(() => _ageConfirmed = !_ageConfirmed),
       behavior: HitTestBehavior.opaque,
@@ -256,9 +256,9 @@ class _LoginScreenState extends State<LoginScreen> {
           height: 20,
           margin: const EdgeInsets.only(top: 2),
           decoration: BoxDecoration(
-            color: _ageConfirmed ? Tw.fuchsia500 : Tw.w(0.05),
+            color: _ageConfirmed ? Tw.party : Tw.panelSoft,
             borderRadius: BorderRadius.circular(6),
-            border: Border.all(color: _ageConfirmed ? Tw.fuchsia500 : Tw.w(0.2), width: 2),
+            border: Border.all(color: _ageConfirmed ? Tw.party : Tw.line, width: 2),
           ),
           child: _ageConfirmed ? const Icon(Icons.check, size: 14, color: Tw.white) : null,
         ),
@@ -270,13 +270,13 @@ class _LoginScreenState extends State<LoginScreen> {
             TextSpan(text: ' ${context.t('login.confirm_age_3')} '),
             TextSpan(
               text: context.t('login.terms'),
-              style: base.copyWith(color: Tw.fuchsia400, decoration: TextDecoration.underline, decorationColor: Tw.fuchsia400),
+              style: base.copyWith(color: Tw.sun, decoration: TextDecoration.underline, decorationColor: Tw.sun),
               recognizer: TapGestureRecognizer()..onTap = () => openRoute(context, AppRoute.terms),
             ),
             const TextSpan(text: ' y la '),
             TextSpan(
               text: context.t('login.privacy'),
-              style: base.copyWith(color: Tw.fuchsia400, decoration: TextDecoration.underline, decorationColor: Tw.fuchsia400),
+              style: base.copyWith(color: Tw.sun, decoration: TextDecoration.underline, decorationColor: Tw.sun),
               recognizer: TapGestureRecognizer()..onTap = () => openRoute(context, AppRoute.privacy),
             ),
             const TextSpan(text: '.'),
@@ -293,11 +293,11 @@ class _LoginScreenState extends State<LoginScreen> {
           radius: 16,
           padding: const EdgeInsets.symmetric(vertical: 16),
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            const Icon(Icons.person, size: 16, color: Tw.slate300),
+            const Icon(Icons.person, size: 16, color: Tw.inkSoft),
             const SizedBox(width: 12),
             Flexible(
               child: Label(context.t('login.username_login', fallback: 'Entrar con usuario y contraseña'),
-                  weight: bold, color: Tw.slate300, tracking: 0.15, align: TextAlign.center),
+                  weight: bold, color: Tw.inkSoft, tracking: 0.15, align: TextAlign.center),
             ),
           ]),
         ),
@@ -341,7 +341,7 @@ class _LoginScreenState extends State<LoginScreen> {
           _showUsername = false;
           _error = '';
         }),
-        child: Label(context.t('common.cancel', fallback: 'Cancelar'), color: Tw.slate500, weight: FontWeight.w400),
+        child: Label(context.t('common.cancel', fallback: 'Cancelar'), color: Tw.inkDim, weight: FontWeight.w400),
       ),
     ]);
   }

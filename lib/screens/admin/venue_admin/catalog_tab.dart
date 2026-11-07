@@ -88,7 +88,7 @@ class _VenueCatalogTabState extends State<VenueCatalogTab> {
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text('Carta de Barra', style: tw(20, weight: black)),
             const SizedBox(height: 4),
-            Text('${_products.length} producto${_products.length != 1 ? 's' : ''} · Venta directa con QR', style: tw(12, color: Tw.slate500)),
+            Text('${_products.length} producto${_products.length != 1 ? 's' : ''} · Venta directa con QR', style: tw(12, color: Tw.inkDim)),
           ]),
         ),
         AdminButton(icon: Icons.add, label: 'Añadir producto', onTap: _openEditor),
@@ -97,13 +97,13 @@ class _VenueCatalogTabState extends State<VenueCatalogTab> {
       if (_products.isEmpty)
         Container(
           padding: const EdgeInsets.all(40),
-          decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+          decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
           child: Column(children: [
-            const Icon(Icons.liquor, size: 40, color: Tw.slate600),
+            const Icon(Icons.liquor, size: 40, color: Tw.inkDim),
             const SizedBox(height: 12),
-            Text('Aún no tienes productos en la carta', style: tw(14, color: Tw.slate400)),
+            Text('Aún no tienes productos en la carta', style: tw(14, color: Tw.inkSoft)),
             const SizedBox(height: 12),
-            GestureDetector(onTap: _openEditor, child: Text('Crear el primero', style: tw(12, weight: bold, color: Tw.fuchsia400))),
+            GestureDetector(onTap: _openEditor, child: Text('Crear el primero', style: tw(12, weight: bold, color: Tw.sun))),
           ]),
         )
       else
@@ -120,7 +120,7 @@ class _VenueCatalogTabState extends State<VenueCatalogTab> {
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: active ? Tw.w(0.1) : Tw.w(0.05))),
+        decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: active ? Tw.line : Tw.lineSoft)),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(cat.$3, style: const TextStyle(fontSize: 20)),
@@ -128,34 +128,34 @@ class _VenueCatalogTabState extends State<VenueCatalogTab> {
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text((p['name'] as String?) ?? '', style: tw(14, weight: black)),
-                Label(cat.$2, color: Tw.slate500, weight: FontWeight.w400, tracking: 0.05),
+                Label(cat.$2, color: Tw.inkDim, weight: FontWeight.w400, tracking: 0.05),
               ]),
             ),
-            Text('${price.toStringAsFixed(2)}€', style: tw(18, weight: black, color: Tw.fuchsia400)),
+            Text('${price.toStringAsFixed(2)}€', style: tw(18, weight: black, color: Tw.sun)),
           ]),
           if ((p['description'] as String?)?.isNotEmpty == true) ...[
             const SizedBox(height: 12),
-            Text(p['description'] as String, style: tw(12, color: Tw.slate400, height: 1.6)),
+            Text(p['description'] as String, style: tw(12, color: Tw.inkSoft, height: 1.6)),
           ],
           if (p['stock'] != null) ...[
             const SizedBox(height: 12),
-            Text.rich(TextSpan(style: tw(10, color: Tw.slate500), children: [
+            Text.rich(TextSpan(style: tw(10, color: Tw.inkDim), children: [
               const TextSpan(text: 'Stock: '),
               TextSpan(text: '${p['stock']}', style: tw(10, weight: bold)),
               const TextSpan(text: ' unidades'),
             ])),
           ],
           const SizedBox(height: 12),
-          Divider(height: 1, color: Tw.w(0.05)),
+          Divider(height: 1, color: Tw.lineSoft),
           const SizedBox(height: 8),
           Row(children: [
-            Expanded(child: AdminButton(icon: Icons.edit, label: 'Editar', color: Tw.w(0.05), textColor: Tw.slate300, fontSize: 10, expand: true, onTap: () => _openEditor(p))),
+            Expanded(child: AdminButton(icon: Icons.edit, label: 'Editar', color: Tw.panelSoft, textColor: Tw.inkSoft, fontSize: 10, expand: true, onTap: () => _openEditor(p))),
             const SizedBox(width: 8),
             Expanded(
               child: AdminButton(
                 icon: active ? Icons.visibility : Icons.visibility_off,
                 label: active ? 'Activo' : 'Oculto',
-                color: active ? Tw.emerald400 : Tw.red400,
+                color: active ? Tw.live : Tw.red400,
                 outlined: true,
                 fontSize: 10,
                 expand: true,
@@ -163,7 +163,7 @@ class _VenueCatalogTabState extends State<VenueCatalogTab> {
               ),
             ),
             const SizedBox(width: 8),
-            IconButton(onPressed: () => _delete(p), icon: const Icon(Icons.delete, size: 16, color: Tw.slate500)),
+            IconButton(onPressed: () => _delete(p), icon: const Icon(Icons.delete, size: 16, color: Tw.inkDim)),
           ]),
         ]),
       ),
@@ -269,8 +269,8 @@ class _ProductFormState extends State<_ProductForm> {
           Expanded(
             child: AdminButton(
               label: 'Cancelar',
-              color: Tw.w(0.05),
-              textColor: Tw.slate400,
+              color: Tw.panelSoft,
+              textColor: Tw.inkSoft,
               expand: true,
               padding: const EdgeInsets.symmetric(vertical: 14),
               onTap: _saving ? null : () => Navigator.of(context).pop(),
@@ -282,7 +282,7 @@ class _ProductFormState extends State<_ProductForm> {
               label: _saving ? 'Guardando...' : widget.product != null ? 'Guardar' : 'Crear',
               fontSize: 12,
               padding: const EdgeInsets.symmetric(vertical: 14),
-              gradient: const LinearGradient(colors: [Tw.fuchsia600, Tw.indigo600]),
+              gradient: const LinearGradient(colors: [Tw.sunset, Tw.party]),
               onTap: _saving ? null : _save,
             ),
           ),

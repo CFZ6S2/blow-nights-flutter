@@ -60,9 +60,9 @@ class _MyPlansScreenState extends State<MyPlansScreen> {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: Tw.fuchsia600,
+              color: Tw.party,
               borderRadius: BorderRadius.circular(16),
-              boxShadow: [BoxShadow(color: Tw.fuchsia600.withValues(alpha: 0.3), blurRadius: 20)],
+              boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.3), blurRadius: 20)],
             ),
             child: const Icon(Icons.add, color: Tw.white),
           ),
@@ -71,12 +71,12 @@ class _MyPlansScreenState extends State<MyPlansScreen> {
       body: SafeArea(
         child: ListView(padding: const EdgeInsets.fromLTRB(24, 24, 24, 128), children: [
           Row(children: [
-            IconButton(padding: EdgeInsets.zero, onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.slate400)),
+            IconButton(padding: EdgeInsets.zero, onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.inkSoft)),
             const SizedBox(width: 8),
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(context.t('my_plans.title', fallback: 'Mis planes'), style: tw(24, weight: black)),
-                Text(context.t('my_plans.subtitle', fallback: 'Planes que has creado'), style: tw(12, color: Tw.slate500)),
+                Text(context.t('my_plans.subtitle', fallback: 'Planes que has creado'), style: tw(12, color: Tw.inkDim)),
               ]),
             ),
             addBtn(),
@@ -86,15 +86,15 @@ class _MyPlansScreenState extends State<MyPlansScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 64),
               child: Column(children: [
-                const Icon(Icons.event_note, size: 48, color: Tw.slate700),
+                const Icon(Icons.event_note, size: 48, color: Tw.line),
                 const SizedBox(height: 16),
-                Text(context.t('my_plans.empty', fallback: 'No tienes planes activos'), style: tw(16, color: Tw.slate500)),
+                Text(context.t('my_plans.empty', fallback: 'No tienes planes activos'), style: tw(16, color: Tw.inkDim)),
                 const SizedBox(height: 16),
                 Pressable(
                   onTap: () => openRoute(context, AppRoute.createPlan),
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                    decoration: BoxDecoration(color: Tw.fuchsia600, borderRadius: BorderRadius.circular(16)),
+                    decoration: BoxDecoration(color: Tw.party, borderRadius: BorderRadius.circular(16)),
                     child: Label(context.t('my_plans.create_first', fallback: 'Crear tu primer plan'), size: 12, color: Tw.white),
                   ),
                 ),
@@ -111,8 +111,8 @@ class _MyPlansScreenState extends State<MyPlansScreen> {
     final status = c['status'] as String? ?? '';
     final (label, color) = switch (status) {
       'full' => (context.t('my_plans.full', fallback: 'Lleno'), Tw.red400),
-      'active' => (context.t('my_plans.active', fallback: 'Activo'), Tw.emerald400),
-      _ => (status, Tw.slate400),
+      'active' => (context.t('my_plans.active', fallback: 'Activo'), Tw.live),
+      _ => (status, Tw.inkSoft),
     };
     final accepted = c['accepted_users'] is List ? (c['accepted_users'] as List).length : 0;
     final pending = c['pending_users'] is List ? (c['pending_users'] as List).length : 0;
@@ -143,17 +143,17 @@ class _MyPlansScreenState extends State<MyPlansScreen> {
               const SizedBox(height: 8),
               Wrap(spacing: 16, children: [
                 Row(mainAxisSize: MainAxisSize.min, children: [
-                  const Icon(Icons.group, size: 12, color: Tw.slate500),
+                  const Icon(Icons.group, size: 12, color: Tw.inkDim),
                   const SizedBox(width: 4),
-                  Text('$accepted/${asInt(c['max_capacity'])}', style: tw(10, color: Tw.slate500)),
+                  Text('$accepted/${asInt(c['max_capacity'])}', style: tw(10, color: Tw.inkDim)),
                 ]),
                 if (pending > 0)
                   Row(mainAxisSize: MainAxisSize.min, children: [
-                    const Icon(Icons.notifications, size: 12, color: Tw.amber400),
+                    const Icon(Icons.notifications, size: 12, color: Tw.sun),
                     const SizedBox(width: 4),
-                    Text('$pending ${context.t('my_plans.pending', fallback: 'pendientes')}', style: tw(10, color: Tw.amber400)),
+                    Text('$pending ${context.t('my_plans.pending', fallback: 'pendientes')}', style: tw(10, color: Tw.sun)),
                   ]),
-                if (created != null) Text(DateFormat('d MMM', 'es').format(created), style: tw(10, color: Tw.slate500)),
+                if (created != null) Text(DateFormat('d MMM', 'es').format(created), style: tw(10, color: Tw.inkDim)),
               ]),
               if (tags.isNotEmpty) ...[
                 const SizedBox(height: 8),
@@ -161,14 +161,14 @@ class _MyPlansScreenState extends State<MyPlansScreen> {
                   for (final t in tags)
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                      decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(4)),
-                      child: Text(t, style: tw(9, color: Tw.slate500)),
+                      decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(4)),
+                      child: Text(t, style: tw(9, color: Tw.inkDim)),
                     ),
                 ]),
               ],
             ]),
           ),
-          const Icon(Icons.chevron_right, color: Tw.slate600),
+          const Icon(Icons.chevron_right, color: Tw.inkDim),
         ]),
       ),
     );

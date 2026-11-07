@@ -57,9 +57,9 @@ class _MatchOverlayState extends State<MatchOverlay> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     final isSuper = widget.matchData['isSuperLike'] == true;
-    final accent = isSuper ? Tw.amber400 : Tw.fuchsia500;
+    final accent = isSuper ? Tw.sun : Tw.party;
     return Scaffold(
-      backgroundColor: Tw.slate950.withValues(alpha: 0.98),
+      backgroundColor: Tw.night.withValues(alpha: 0.98),
       body: AnimatedBuilder(
         animation: Listenable.merge([_intro, _loop]),
         builder: (context, _) {
@@ -86,8 +86,8 @@ class _MatchOverlayState extends State<MatchOverlay> with TickerProviderStateMix
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: isSuper
-                                ? const [Color(0xFFFEF08A), Tw.amber400, Color(0xFFA16207)]
-                                : const [Tw.white, Tw.fuchsia400, Tw.fuchsia600],
+                                ? const [Color(0xFFFEF08A), Tw.sun, Color(0xFFA16207)]
+                                : const [Tw.white, Tw.sun, Tw.party],
                           ).createShader(r),
                           child: Text(isSuper ? 'SUPER MATCH' : 'MATCH!',
                               textAlign: TextAlign.center,
@@ -132,11 +132,11 @@ class _MatchOverlayState extends State<MatchOverlay> with TickerProviderStateMix
                             height: 96,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              border: Border.all(color: Tw.slate950, width: 6),
+                              border: Border.all(color: Tw.night, width: 6),
                               gradient: LinearGradient(
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
-                                colors: isSuper ? const [Tw.amber400, Color(0xFFEA580C)] : const [Tw.fuchsia500, Tw.purple600],
+                                colors: isSuper ? const [Tw.sun, Color(0xFFEA580C)] : const [Tw.sunset, Tw.party],
                               ),
                             ),
                             child: Icon(isSuper ? Icons.star : Icons.favorite, color: Tw.white, size: 44 * (1 + 0.15 * pulse)),
@@ -153,15 +153,15 @@ class _MatchOverlayState extends State<MatchOverlay> with TickerProviderStateMix
                       child: Column(children: [
                         _pill(
                           label: context.t('match.chat_now'),
-                          bg: isSuper ? Tw.amber500 : Tw.white,
-                          fg: Tw.black,
+                          bg: isSuper ? Tw.sun : Tw.white,
+                          fg: Tw.nightDeep,
                           tracking: 0.3,
                           onTap: _goToChat,
                         ),
                         const SizedBox(height: 12),
                         _pill(
                           label: '🍹 ${context.t('match.gift_drink', fallback: 'Invitar a una copa')}',
-                          bg: isSuper ? Tw.orange500 : Tw.fuchsia600,
+                          bg: isSuper ? Tw.orange500 : Tw.party,
                           fg: Tw.white,
                           tracking: 0.1,
                           onTap: () {
@@ -192,7 +192,7 @@ class _MatchOverlayState extends State<MatchOverlay> with TickerProviderStateMix
     final angle = i * 9 * math.pi / 180;
     final scale = t < 0.3 ? t / 0.3 * 1.2 : 1.2 * (1 - (t - 0.3) / 0.7);
     final color = switch (i % 4) {
-      0 => isSuper ? Tw.amber400 : Tw.fuchsia500,
+      0 => isSuper ? Tw.sun : Tw.party,
       1 => Tw.white,
       2 => isSuper ? Tw.orange500 : Tw.indigo500,
       _ => Tw.cyan400,
@@ -224,7 +224,7 @@ class _MatchOverlayState extends State<MatchOverlay> with TickerProviderStateMix
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(42),
-          child: NetImage(url as String?, placeholder: Container(color: Tw.slate800)),
+          child: NetImage(url as String?, placeholder: Container(color: Tw.line)),
         ),
       );
 

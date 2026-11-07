@@ -197,10 +197,10 @@ class _BenefitRulesTabState extends State<BenefitRulesTab> {
             Text(context.t('benefit_rules_title', fallback: 'Reglas de Cortesías en Puerta'), style: tw(18, weight: black)),
             const SizedBox(height: 4),
             Text(context.t('benefit_rules_subtitle', fallback: 'Consumiciones automáticas por tipo de entrada y hora de check-in'),
-                style: tw(12, color: Tw.slate500)),
+                style: tw(12, color: Tw.inkDim)),
           ]),
         ),
-        AdminButton(label: '+ ${context.t('benefit_rules_new', fallback: 'Nueva Regla')}', color: Tw.yellow400, textColor: Tw.black, onTap: _open),
+        AdminButton(label: '+ ${context.t('benefit_rules_new', fallback: 'Nueva Regla')}', color: Tw.yellow400, textColor: Tw.night, onTap: _open),
       ]),
       const SizedBox(height: 24),
       if (_rules.isEmpty && !_showForm)
@@ -208,12 +208,12 @@ class _BenefitRulesTabState extends State<BenefitRulesTab> {
           radius: 16,
           padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
           child: Column(children: [
-            const Icon(Icons.card_giftcard, size: 40, color: Tw.slate600),
+            const Icon(Icons.card_giftcard, size: 40, color: Tw.inkDim),
             const SizedBox(height: 12),
-            Text(context.t('benefit_rules_empty', fallback: 'No hay reglas de cortesía configuradas.'), textAlign: TextAlign.center, style: tw(14, color: Tw.slate400)),
+            Text(context.t('benefit_rules_empty', fallback: 'No hay reglas de cortesía configuradas.'), textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft)),
             const SizedBox(height: 4),
             Text(context.t('benefit_rules_empty_hint', fallback: 'Crea una regla para otorgar consumiciones automáticas al hacer check-in.'),
-                textAlign: TextAlign.center, style: tw(12, color: Tw.slate600)),
+                textAlign: TextAlign.center, style: tw(12, color: Tw.inkDim)),
           ]),
         ),
       for (final r in _rules) _ruleCard(r),
@@ -228,7 +228,7 @@ class _BenefitRulesTabState extends State<BenefitRulesTab> {
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+        decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
             Flexible(child: Text((r['name'] as String?) ?? '', style: tw(14, weight: semibold))),
@@ -242,18 +242,18 @@ class _BenefitRulesTabState extends State<BenefitRulesTab> {
             ],
           ]),
           const SizedBox(height: 6),
-          Text(asStringList(r['ticketTypes']).join(', '), style: tw(12, color: Tw.slate400)),
-          Text.rich(TextSpan(style: tw(12, color: Tw.slate400), children: [
+          Text(asStringList(r['ticketTypes']).join(', '), style: tw(12, color: Tw.inkSoft)),
+          Text.rich(TextSpan(style: tw(12, color: Tw.inkSoft), children: [
             if (r['checkInBefore'] != null) ...[const TextSpan(text: 'Antes de '), TextSpan(text: '${r['checkInBefore']} ', style: tw(12, color: Tw.yellow400))],
             if (r['checkInAfter'] != null) ...[const TextSpan(text: 'Después de '), TextSpan(text: '${r['checkInAfter']}', style: tw(12, color: Tw.yellow400))],
-            if (r['checkInBefore'] == null && r['checkInAfter'] == null) TextSpan(text: 'Sin límite', style: tw(12, color: Tw.slate600)),
-            TextSpan(text: ' · ${r['gracePeriodSeconds'] ?? 0}s', style: tw(12, color: Tw.slate500)),
+            if (r['checkInBefore'] == null && r['checkInAfter'] == null) TextSpan(text: 'Sin límite', style: tw(12, color: Tw.inkDim)),
+            TextSpan(text: ' · ${r['gracePeriodSeconds'] ?? 0}s', style: tw(12, color: Tw.inkDim)),
           ])),
           const SizedBox(height: 6),
           for (final g in grants) Text('${g['quantity']} × ${(g['productName'] as String?)?.isNotEmpty == true ? g['productName'] : g['productId']}', style: tw(12)),
           const SizedBox(height: 8),
           Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-            TextButton(onPressed: () => _toggle(r), child: Text(r['active'] == true ? 'Desactivar' : 'Activar', style: tw(12, color: Tw.slate400))),
+            TextButton(onPressed: () => _toggle(r), child: Text(r['active'] == true ? 'Desactivar' : 'Activar', style: tw(12, color: Tw.inkSoft))),
             TextButton(onPressed: () => _open(r), child: Text('Editar', style: tw(12, color: Tw.blue400))),
             TextButton(onPressed: () => _delete(r['id'] as String), child: Text('Eliminar', style: tw(12, color: Tw.red400))),
           ]),
@@ -262,16 +262,16 @@ class _BenefitRulesTabState extends State<BenefitRulesTab> {
     );
   }
 
-  Widget _label(String t) => Padding(padding: const EdgeInsets.only(bottom: 4, top: 16), child: Label(t, color: Tw.slate500, weight: FontWeight.w400, tracking: 0.05));
+  Widget _label(String t) => Padding(padding: const EdgeInsets.only(bottom: 4, top: 16), child: Label(t, color: Tw.inkDim, weight: FontWeight.w400, tracking: 0.05));
 
   Widget _timeField(String? value, VoidCallback onTap, VoidCallback onClear) => GestureDetector(
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.1))),
+          decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
           child: Row(children: [
-            Expanded(child: Text(value ?? '--:--', style: tw(14, color: value == null ? Tw.slate500 : Tw.white))),
-            if (value != null) GestureDetector(onTap: onClear, child: const Icon(Icons.close, size: 14, color: Tw.slate500)),
+            Expanded(child: Text(value ?? '--:--', style: tw(14, color: value == null ? Tw.inkDim : Tw.white))),
+            if (value != null) GestureDetector(onTap: onClear, child: const Icon(Icons.close, size: 14, color: Tw.inkDim)),
           ]),
         ),
       );
@@ -281,7 +281,7 @@ class _BenefitRulesTabState extends State<BenefitRulesTab> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Row(children: [
             Expanded(child: Label(_editing != null ? 'Editar Regla' : 'Nueva Regla de Cortesía', size: 13, tracking: 0.05)),
-            IconButton(onPressed: () => setState(() => _showForm = false), icon: const Icon(Icons.close, color: Tw.slate500)),
+            IconButton(onPressed: () => setState(() => _showForm = false), icon: const Icon(Icons.close, color: Tw.inkDim)),
           ]),
           _label('Nombre de la regla'),
           AdminInput(controller: _name, hint: 'Ej: Early Bird Copa Gratis'),
@@ -315,8 +315,8 @@ class _BenefitRulesTabState extends State<BenefitRulesTab> {
                   width: 40,
                   height: 40,
                   alignment: Alignment.center,
-                  decoration: BoxDecoration(color: _days?.contains(d) == true ? Tw.fuchsia600 : Tw.w(0.05), borderRadius: BorderRadius.circular(8)),
-                  child: Text(_dayLabels[d], style: tw(12, weight: bold, color: _days?.contains(d) == true ? Tw.white : Tw.slate500)),
+                  decoration: BoxDecoration(color: _days?.contains(d) == true ? Tw.party : Tw.panelSoft, borderRadius: BorderRadius.circular(8)),
+                  child: Text(_dayLabels[d], style: tw(12, weight: bold, color: _days?.contains(d) == true ? Tw.white : Tw.inkDim)),
                 ),
               ),
           ]),
@@ -353,7 +353,7 @@ class _BenefitRulesTabState extends State<BenefitRulesTab> {
             alignment: Alignment.centerLeft,
             child: GestureDetector(
               onTap: () => setState(() => _grants = [..._grants, _Grant()]),
-              child: Text('+ Añadir producto', style: tw(12, color: Tw.fuchsia400)),
+              child: Text('+ Añadir producto', style: tw(12, color: Tw.sun)),
             ),
           ),
           Row(children: [
@@ -379,7 +379,7 @@ class _BenefitRulesTabState extends State<BenefitRulesTab> {
           SizedBox(width: 128, child: AdminInput(controller: _priority, keyboardType: TextInputType.number)),
           const SizedBox(height: 16),
           Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-            TextButton(onPressed: () => setState(() => _showForm = false), child: Text('Cancelar', style: tw(14, color: Tw.slate400))),
+            TextButton(onPressed: () => setState(() => _showForm = false), child: Text('Cancelar', style: tw(14, color: Tw.inkSoft))),
             const SizedBox(width: 8),
             AdminButton(
               label: _saving ? 'Guardando...' : _editing != null ? 'Guardar Cambios' : 'Crear Regla',

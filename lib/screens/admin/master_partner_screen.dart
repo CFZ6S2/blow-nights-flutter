@@ -223,22 +223,22 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
-    final loadingShell = const Scaffold(backgroundColor: Tw.slate950, body: Center(child: CircularProgressIndicator(strokeWidth: 2, color: Tw.fuchsia500)));
+    final loadingShell = const Scaffold(backgroundColor: Tw.night, body: Center(child: CircularProgressIndicator(strokeWidth: 2, color: Tw.party)));
     if (auth.loading || auth.isCityManager) return loadingShell;
     if (!auth.isMasterPartner && !auth.isSuperAdmin) {
       return Scaffold(
-        backgroundColor: Tw.slate950,
-        body: Center(child: Text(context.t('admin.access_denied', fallback: 'Acceso no autorizado.'), style: tw(15, color: Tw.slate400))),
+        backgroundColor: Tw.night,
+        body: Center(child: Text(context.t('admin.access_denied', fallback: 'Acceso no autorizado.'), style: tw(15, color: Tw.inkSoft))),
       );
     }
     if (!_hasAccess(auth)) {
       return Scaffold(
-        backgroundColor: Tw.slate950,
+        backgroundColor: Tw.night,
         body: Center(
           child: Column(mainAxisSize: MainAxisSize.min, children: [
             Text(context.t('master_partner.access_restricted'), style: tw(24, weight: black)),
             const SizedBox(height: 8),
-            Text(context.t('master_partner.access_restricted_desc'), style: tw(15, color: Tw.slate400)),
+            Text(context.t('master_partner.access_restricted_desc'), style: tw(15, color: Tw.inkSoft)),
           ]),
         ),
       );
@@ -257,18 +257,18 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
     ];
 
     return Scaffold(
-      backgroundColor: Tw.slate950,
+      backgroundColor: Tw.night,
       body: Column(children: [
         Container(
           padding: EdgeInsets.fromLTRB(8, top + 8, 16, 0),
-          decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.4), border: Border(bottom: BorderSide(color: Tw.w(0.1)))),
+          decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.4), border: Border(bottom: BorderSide(color: Tw.line))),
           child: Column(children: [
             Row(children: [
-              IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.slate400)),
+              IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.inkSoft)),
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Text(context.t('master_partner.title'), style: tw(20, weight: black)),
-                  Text(context.t('master_partner.subtitle'), style: tw(12, color: Tw.slate400)),
+                  Text(context.t('master_partner.subtitle'), style: tw(12, color: Tw.inkSoft)),
                 ]),
               ),
             ]),
@@ -303,11 +303,11 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                       decoration: BoxDecoration(
-                        color: _tab == id ? Tw.w(0.1) : Colors.transparent,
+                        color: _tab == id ? Tw.lineSoft : Colors.transparent,
                         borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                        border: _tab == id ? const Border(bottom: BorderSide(color: Tw.fuchsia500, width: 2)) : null,
+                        border: _tab == id ? const Border(bottom: BorderSide(color: Tw.party, width: 2)) : null,
                       ),
-                      child: Text(label, style: tw(14, weight: bold, color: _tab == id ? Tw.fuchsia400 : Tw.slate500)),
+                      child: Text(label, style: tw(14, weight: bold, color: _tab == id ? Tw.sun : Tw.inkDim)),
                     ),
                   ),
               ]),
@@ -318,7 +318,7 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
           child: ListView(
             padding: EdgeInsets.fromLTRB(20, 24, 20, 40 + MediaQuery.of(context).padding.bottom),
             children: [
-              Text(data.periodLabel, style: tw(14, color: Tw.slate400)),
+              Text(data.periodLabel, style: tw(14, color: Tw.inkSoft)),
               const SizedBox(height: 24),
               switch (_tab) {
                 'cities' => _citiesTab(context, data, locale),
@@ -336,8 +336,8 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
 
   Widget _statCard(String title, String value, String subtitle, Color color) => AdminCard(
         gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [
-          Color.alphaBlend(color.withValues(alpha: 0.25), Tw.black).withValues(alpha: 0.4),
-          Tw.black,
+          Color.alphaBlend(color.withValues(alpha: 0.25), Tw.nightDeep).withValues(alpha: 0.4),
+          Tw.nightDeep,
         ]),
         borderColor: color.withValues(alpha: 0.3),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -348,7 +348,7 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
             if (value != _pending) TextSpan(text: '€', style: tw(18, color: color)),
           ])),
           const SizedBox(height: 8),
-          Text(subtitle, style: tw(10, color: Tw.slate400)),
+          Text(subtitle, style: tw(10, color: Tw.inkSoft)),
         ]),
       );
 
@@ -357,31 +357,31 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
     final pendingNote = context.t('master_partner.pending_short');
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       _statCard(context.t('master_partner.total_revenue'), centsToEur(d.totalRevenueCents, locale),
-          context.t('master_partner.operations_count', count: d.splitCount), Tw.fuchsia400),
+          context.t('master_partner.operations_count', count: d.splitCount), Tw.sun),
       const SizedBox(height: 16),
       _statCard(context.t('master_partner.costs'), d.settled ? centsToEur(d.costsCents, locale) : _pending,
-          d.settled ? context.t('master_partner.costs_subtitle') : pendingNote, Tw.amber400),
+          d.settled ? context.t('master_partner.costs_subtitle') : pendingNote, Tw.sun),
       const SizedBox(height: 16),
       _statCard(context.t('master_partner.net_profit'), d.settled ? centsToEur(d.netCents, locale) : _pending,
           d.settled ? context.t('master_partner.net_profit_subtitle') : pendingNote, Tw.blue400),
       const SizedBox(height: 16),
       _statCard(context.t('master_partner.partner_block'), d.settled ? centsToEur(d.partnerBlockCents, locale) : _pending,
-          d.settled ? context.t('master_partner.partner_block_subtitle') : pendingNote, Tw.green400),
+          d.settled ? context.t('master_partner.partner_block_subtitle') : pendingNote, Tw.live),
       if (!d.settled) ...[
         const SizedBox(height: 16),
         AdminCard(
-          color: Tw.amber500.withValues(alpha: 0.05),
-          borderColor: Tw.amber500.withValues(alpha: 0.2),
+          color: Tw.sun.withValues(alpha: 0.05),
+          borderColor: Tw.sun.withValues(alpha: 0.2),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Label(context.t('master_partner.pending_title'), size: 12, weight: bold, color: Tw.amber500),
+            Label(context.t('master_partner.pending_title'), size: 12, weight: bold, color: Tw.sun),
             const SizedBox(height: 8),
-            Text(context.t('master_partner.pending_desc'), style: tw(14, color: Tw.slate300)),
+            Text(context.t('master_partner.pending_desc'), style: tw(14, color: Tw.inkSoft)),
           ]),
         ),
       ] else if (d.carryForwardLossCents > 0) ...[
         const SizedBox(height: 16),
         Text(context.t('master_partner.carry_forward_note', params: {'amount': centsToEur(d.carryForwardLossCents, locale)}),
-            style: tw(14, color: Tw.amber400)),
+            style: tw(14, color: Tw.sun)),
       ],
       if (d.cities.isNotEmpty) ...[
         const SizedBox(height: 32),
@@ -406,7 +406,7 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
                           widthFactor: d.shown(c) / maxCents,
                           child: Container(
                             decoration: BoxDecoration(
-                              gradient: const LinearGradient(colors: [Tw.fuchsia600, Tw.fuchsia400]),
+                              gradient: const LinearGradient(colors: [Tw.party, Tw.sun]),
                               borderRadius: BorderRadius.circular(99),
                             ),
                           ),
@@ -415,7 +415,7 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
                     ),
                   ),
                   const SizedBox(width: 12),
-                  Text('${centsToEur(d.shown(c), locale)} €', style: tw(13, color: Tw.green400).copyWith(fontFamily: 'monospace')),
+                  Text('${centsToEur(d.shown(c), locale)} €', style: tw(13, color: Tw.live).copyWith(fontFamily: 'monospace')),
                 ]),
               ),
           ]),
@@ -448,14 +448,14 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
               Expanded(child: Text(c.cityName, style: tw(18, weight: black))),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                decoration: BoxDecoration(color: Tw.fuchsia500.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(99)),
-                child: Text('${c.splitCount} ${context.t('master_partner.ops')}', style: tw(12, color: Tw.fuchsia300).copyWith(fontFamily: 'monospace')),
+                decoration: BoxDecoration(color: Tw.party.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(99)),
+                child: Text('${c.splitCount} ${context.t('master_partner.ops')}', style: tw(12, color: Tw.sun).copyWith(fontFamily: 'monospace')),
               ),
             ]),
             const SizedBox(height: 16),
-            figure(context.t('master_partner.total_income'), centsToEur(c.totalCents, locale), Tw.slate500, Tw.white),
-            figure(context.t('master_partner.your_block'), c.settlement == null ? _pending : centsToEur(c.settlement!.partnerCents, locale), Tw.green500, Tw.green400),
-            figure(context.t('master_partner.central_block'), c.settlement == null ? _pending : centsToEur(c.settlement!.centralCents, locale), Tw.slate500, Tw.slate400),
+            figure(context.t('master_partner.total_income'), centsToEur(c.totalCents, locale), Tw.inkDim, Tw.white),
+            figure(context.t('master_partner.your_block'), c.settlement == null ? _pending : centsToEur(c.settlement!.partnerCents, locale), Tw.live, Tw.live),
+            figure(context.t('master_partner.central_block'), c.settlement == null ? _pending : centsToEur(c.settlement!.centralCents, locale), Tw.inkDim, Tw.inkSoft),
             Padding(
               padding: const EdgeInsets.only(bottom: 12),
               child: Text(
@@ -463,19 +463,19 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
                     ? context.t('master_partner.pending_short')
                     : context.t('master_partner.city_settled_line',
                         params: {'costs': centsToEur(c.settlement!.costsCents, locale), 'net': centsToEur(c.settlement!.netCents, locale)}),
-                style: tw(12, color: Tw.slate500),
+                style: tw(12, color: Tw.inkDim),
               ),
             ),
             if (c.sources.isNotEmpty) ...[
-              Divider(height: 1, color: Tw.w(0.05)),
+              Divider(height: 1, color: Tw.lineSoft),
               const SizedBox(height: 12),
-              Label(context.t('master_partner.by_source'), color: Tw.slate500, weight: FontWeight.w400),
+              Label(context.t('master_partner.by_source'), color: Tw.inkDim, weight: FontWeight.w400),
               const SizedBox(height: 8),
               Wrap(spacing: 8, runSpacing: 8, children: [
                 for (final e in c.sources.entries)
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                    decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(8), border: Border.all(color: Tw.w(0.05))),
+                    decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(8), border: Border.all(color: Tw.lineSoft)),
                     child: Text('${sourceLabels[e.key] ?? e.key}: ${centsToEur(e.value, locale)}€', style: tw(12).copyWith(fontFamily: 'monospace')),
                   ),
               ]),
@@ -510,7 +510,7 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
       else if (_subAgents.isEmpty)
         AdminCard(
           padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
-          borderColor: Tw.w(0.05),
+          borderColor: Tw.lineSoft,
           child: Column(children: [
             Text(context.t('master_partner.no_subagents_title', fallback: 'Aún no tienes subagentes comerciales'),
                 textAlign: TextAlign.center, style: tw(18, weight: bold)),
@@ -520,7 +520,7 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
                   fallback:
                       'Genera códigos y enlaces personalizados para tu equipo de comerciales de calle. Cada local captado quedará atribuido de forma inmutable a tu cuenta y a su subagente.'),
               textAlign: TextAlign.center,
-              style: tw(14, color: Tw.slate500),
+              style: tw(14, color: Tw.inkDim),
             ),
           ]),
         )
@@ -528,10 +528,10 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
         Label(
           '${context.t('master_partner.network_title', fallback: 'Tu Red Comercial')} (${context.t('master_partner.network_active_count', fallback: '{{active}} activos / {{total}} total', params: {'active': active, 'total': _subAgents.length})})',
           size: 13,
-          color: Tw.slate300,
+          color: Tw.inkSoft,
         ),
         const SizedBox(height: 4),
-        Text.rich(TextSpan(style: tw(12, color: Tw.slate500), children: [
+        Text.rich(TextSpan(style: tw(12, color: Tw.inkDim), children: [
           TextSpan(text: '${context.t('master_partner.total_venues_label', fallback: 'Total Venues:')} '),
           TextSpan(text: '$totalVenues', style: tw(12, weight: bold)),
         ])),
@@ -542,18 +542,18 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
       Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Tw.amber500.withValues(alpha: 0.05),
+          color: Tw.sun.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Tw.amber500.withValues(alpha: 0.2)),
+          border: Border.all(color: Tw.sun.withValues(alpha: 0.2)),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Label(context.t('master_partner.blackbox_title', fallback: 'Principio de Caja Negra & Liquidación Territorial'), size: 12, weight: bold, color: Tw.amber500),
+          Label(context.t('master_partner.blackbox_title', fallback: 'Principio de Caja Negra & Liquidación Territorial'), size: 12, weight: bold, color: Tw.sun),
           const SizedBox(height: 8),
           Text(
             context.t('master_partner.blackbox_text',
                 fallback:
                     'Blow Nights liquida el split territorial (50/50) íntegramente a tu cuenta de Stripe Connect. Los acuerdos, porcentajes y pagos internos con tus subagentes o comerciales de calle dependen exclusivamente de ti como Master Partner de la plaza.'),
-            style: tw(14, color: Tw.slate300, height: 1.6),
+            style: tw(14, color: Tw.inkSoft, height: 1.6),
           ),
         ]),
       ),
@@ -568,7 +568,7 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Row(children: [
             Expanded(child: Text(label, style: tw(14, weight: bold, color: color))),
-            Text('${pct.toStringAsFixed(1)}%', style: tw(10, color: Tw.slate500)),
+            Text('${pct.toStringAsFixed(1)}%', style: tw(10, color: Tw.inkDim)),
             const SizedBox(width: 12),
             Text('${centsToEur(cents, locale)} €', style: tw(14, weight: bold).copyWith(fontFamily: 'monospace')),
           ]),
@@ -579,7 +579,7 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
               value: (pct / 100).clamp(0, 1),
               minHeight: 24,
               backgroundColor: Colors.black.withValues(alpha: 0.3),
-              valueColor: AlwaysStoppedAnimation(color == Tw.fuchsia400 ? Tw.fuchsia500 : color == Tw.green400 ? Tw.green500 : Tw.amber500),
+              valueColor: AlwaysStoppedAnimation(color == Tw.sun ? Tw.party : color == Tw.live ? Tw.live : Tw.sun),
             ),
           ),
         ]),
@@ -599,7 +599,7 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
             const SizedBox(height: 4),
             Text(title, style: tw(14, weight: bold)),
             const SizedBox(height: 8),
-            Text(desc, style: tw(12, color: Tw.slate400)),
+            Text(desc, style: tw(12, color: Tw.inkSoft)),
           ]),
         );
 
@@ -610,15 +610,15 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
           AdminSectionTitle(context.t('master_partner.revenue_breakdown')),
           const SizedBox(height: 8),
           Text(context.t('master_partner.revenue_breakdown_desc', params: {'amount': centsToEur(d.totalRevenueCents, locale)}),
-              style: tw(12, color: Tw.slate500)),
+              style: tw(12, color: Tw.inkDim)),
           const SizedBox(height: 32),
           if (!d.settled)
-            Text(context.t('master_partner.pending_desc'), style: tw(14, color: Tw.slate300))
+            Text(context.t('master_partner.pending_desc'), style: tw(14, color: Tw.inkSoft))
           else ...[
-            block(context.t('master_partner.line_costs'), d.costsCents, Tw.amber400),
-            block(context.t('master_partner.line_partner'), d.partnerBlockCents, Tw.green400),
-            block(context.t('master_partner.line_central'), d.centralBlockCents, Tw.fuchsia400),
-            Divider(height: 1, color: Tw.w(0.05)),
+            block(context.t('master_partner.line_costs'), d.costsCents, Tw.sun),
+            block(context.t('master_partner.line_partner'), d.partnerBlockCents, Tw.live),
+            block(context.t('master_partner.line_central'), d.centralBlockCents, Tw.sun),
+            Divider(height: 1, color: Tw.lineSoft),
             for (final c in d.cities.where((c) => c.settlement != null)) ...[
               const SizedBox(height: 16),
               Text(c.cityName, style: tw(12, weight: bold)),
@@ -637,13 +637,13 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 2),
                   child: Row(children: [
-                    Expanded(child: Text(context.t('master_partner.$key'), style: tw(12, color: key == 'line_carry' ? Tw.amber400 : Tw.slate500))),
-                    Text('${centsToEur(cents, locale)} €', style: tw(12, color: Tw.slate300).copyWith(fontFamily: 'monospace')),
+                    Expanded(child: Text(context.t('master_partner.$key'), style: tw(12, color: key == 'line_carry' ? Tw.sun : Tw.inkDim))),
+                    Text('${centsToEur(cents, locale)} €', style: tw(12, color: Tw.inkSoft).copyWith(fontFamily: 'monospace')),
                   ]),
                 ),
               const SizedBox(height: 4),
               Text(context.t('master_partner.transfer_${c.settlement!.transferStatus ?? 'pending'}').toUpperCase(),
-                  style: tw(10, color: Tw.slate500, tracking: 0.1)),
+                  style: tw(10, color: Tw.inkDim, tracking: 0.1)),
             ],
           ],
         ]),
@@ -654,19 +654,19 @@ class _MasterPartnerScreenState extends State<MasterPartnerScreen> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           AdminSectionTitle(context.t('master_partner.how_it_works')),
           const SizedBox(height: 24),
-          explainer(context.t('master_partner.central_pct'), context.t('master_partner.central_title'), context.t('master_partner.central_desc'), Tw.fuchsia400),
+          explainer(context.t('master_partner.central_pct'), context.t('master_partner.central_title'), context.t('master_partner.central_desc'), Tw.sun),
           explainer(context.t('master_partner.mp_pct'), context.t('master_partner.mp_title'), context.t('master_partner.mp_desc'), Tw.blue400),
-          explainer(context.t('master_partner.costs_badge'), context.t('master_partner.costs_title'), context.t('master_partner.costs_desc'), Tw.amber400),
+          explainer(context.t('master_partner.costs_badge'), context.t('master_partner.costs_title'), context.t('master_partner.costs_desc'), Tw.sun),
         ]),
       ),
       const SizedBox(height: 32),
       AdminCard(
-        color: Tw.green500.withValues(alpha: 0.05),
-        borderColor: Tw.green500.withValues(alpha: 0.2),
+        color: Tw.live.withValues(alpha: 0.05),
+        borderColor: Tw.live.withValues(alpha: 0.2),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Label(context.t('master_partner.note_title'), size: 12, weight: bold, color: Tw.green500),
+          Label(context.t('master_partner.note_title'), size: 12, weight: bold, color: Tw.live),
           const SizedBox(height: 8),
-          Text(context.t('master_partner.note_text'), style: tw(14, color: Tw.slate300)),
+          Text(context.t('master_partner.note_text'), style: tw(14, color: Tw.inkSoft)),
         ]),
       ),
     ]);
@@ -750,12 +750,12 @@ class _AddSubAgentFormState extends State<_AddSubAgentForm> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               decoration: BoxDecoration(
-                color: Tw.fuchsia500.withValues(alpha: 0.1),
+                color: Tw.party.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(99),
-                border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.3)),
+                border: Border.all(color: Tw.party.withValues(alpha: 0.3)),
               ),
               child: Text('${context.t('master_partner.code_preview', fallback: 'Código previsto:')} $_preview',
-                  style: tw(12, color: Tw.fuchsia300).copyWith(fontFamily: 'monospace')),
+                  style: tw(12, color: Tw.sun).copyWith(fontFamily: 'monospace')),
             ),
           ),
           if (_error != null)
@@ -829,10 +829,10 @@ class _SubAgentCardState extends State<_SubAgentCard> {
     Widget stat(Object value, String label, Color color) => Expanded(
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.05))),
+            decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.lineSoft)),
             child: Column(children: [
               Text('$value', style: tw(16, weight: black, color: color).copyWith(fontFamily: 'monospace')),
-              Label(label, size: 9, weight: bold, color: Tw.slate500, align: TextAlign.center, maxLines: 1),
+              Label(label, size: 9, weight: bold, color: Tw.inkDim, align: TextAlign.center, maxLines: 1),
             ]),
           ),
         );
@@ -842,38 +842,38 @@ class _SubAgentCardState extends State<_SubAgentCard> {
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: active ? Tw.w(0.1) : Tw.w(0.05))),
+        decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: active ? Tw.line : Tw.lineSoft)),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Wrap(spacing: 8, runSpacing: 6, crossAxisAlignment: WrapCrossAlignment.center, children: [
             Text((a['displayName'] as String?) ?? '', style: tw(16, weight: black)),
             AdminBadge(active ? context.t('master_partner.active', fallback: 'Activo') : context.t('master_partner.inactive', fallback: 'Inactivo'),
-                color: active ? Tw.green400 : Tw.red400),
+                color: active ? Tw.live : Tw.red400),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-              decoration: BoxDecoration(color: Tw.fuchsia500.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(6)),
-              child: Text(code, style: tw(12, weight: bold, color: Tw.fuchsia300).copyWith(fontFamily: 'monospace')),
+              decoration: BoxDecoration(color: Tw.party.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(6)),
+              child: Text(code, style: tw(12, weight: bold, color: Tw.sun).copyWith(fontFamily: 'monospace')),
             ),
           ]),
           const SizedBox(height: 6),
-          Text.rich(TextSpan(style: tw(12, color: Tw.slate500), children: [
+          Text.rich(TextSpan(style: tw(12, color: Tw.inkDim), children: [
             const TextSpan(text: 'Ciudad: '),
-            TextSpan(text: ((a['cityId'] as String?) ?? '').toUpperCase(), style: tw(12, weight: semibold, color: Tw.slate300)),
+            TextSpan(text: ((a['cityId'] as String?) ?? '').toUpperCase(), style: tw(12, weight: semibold, color: Tw.inkSoft)),
             if ((a['phone'] as String?)?.isNotEmpty == true) TextSpan(text: ' · Tel: ${a['phone']}'),
             if (last != null) TextSpan(text: ' · Última captación: ${last.day}/${last.month}/${last.year}'),
           ])),
           const SizedBox(height: 12),
           Row(children: [
-            stat(a['venuesCaptured'] ?? 0, context.t('master_partner.stat_captured', fallback: 'Captados'), Tw.fuchsia400),
+            stat(a['venuesCaptured'] ?? 0, context.t('master_partner.stat_captured', fallback: 'Captados'), Tw.sun),
             const SizedBox(width: 8),
-            stat(a['activeVenues'] ?? 0, context.t('master_partner.stat_active', fallback: 'Activos'), Tw.green400),
+            stat(a['activeVenues'] ?? 0, context.t('master_partner.stat_active', fallback: 'Activos'), Tw.live),
             const SizedBox(width: 8),
-            stat('$mrr €', context.t('master_partner.stat_mrr', fallback: 'MRR Estimado'), Tw.amber400),
+            stat('$mrr €', context.t('master_partner.stat_mrr', fallback: 'MRR Estimado'), Tw.sun),
           ]),
           const SizedBox(height: 12),
           Wrap(spacing: 8, runSpacing: 8, children: [
             AdminButton(
               label: _copied ? '✓ ${context.t('master_partner.copied_btn', fallback: '¡Copiado!')}' : context.t('master_partner.copy_link_btn', fallback: 'Copiar Enlace'),
-              color: Tw.fuchsia400,
+              color: Tw.sun,
               outlined: true,
               onTap: () async {
                 await Clipboard.setData(ClipboardData(text: url));
@@ -886,12 +886,12 @@ class _SubAgentCardState extends State<_SubAgentCard> {
             AdminButton(
               icon: Icons.qr_code_2,
               label: 'QR',
-              color: Tw.w(0.1),
+              color: Tw.lineSoft,
               onTap: () => showDialog(context: context, builder: (_) => _QrDialog(url: url, agentName: (a['displayName'] as String?) ?? '', code: code)),
             ),
             AdminButton(
               label: context.t('master_partner.share_whatsapp', fallback: 'WhatsApp'),
-              color: Tw.green400,
+              color: Tw.live,
               outlined: true,
               onTap: () {
                 final msg = context.read<I18n>().t('master_partner.whatsapp_venue_invite',
@@ -902,7 +902,7 @@ class _SubAgentCardState extends State<_SubAgentCard> {
             ),
             AdminButton(
               label: active ? context.t('master_partner.deactivate', fallback: 'Desactivar') : context.t('master_partner.activate', fallback: 'Activar'),
-              color: Tw.slate500,
+              color: Tw.inkDim,
               outlined: true,
               onTap: () => widget.onToggle(a['id'] as String, active ? 'inactive' : 'active'),
             ),
@@ -957,8 +957,8 @@ class _QrDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Dialog(
-        backgroundColor: Tw.slate900,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: BorderSide(color: Tw.w(0.1))),
+        backgroundColor: Tw.panel,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: BorderSide(color: Tw.line)),
         child: Padding(
           padding: const EdgeInsets.all(28),
           child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -966,7 +966,7 @@ class _QrDialog extends StatelessWidget {
               Expanded(child: Text(context.t('master_partner.qr_title', fallback: 'Código QR'), style: tw(18, weight: black))),
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text(context.t('master_partner.close', fallback: 'Cerrar'), style: tw(14, color: Tw.slate500)),
+                child: Text(context.t('master_partner.close', fallback: 'Cerrar'), style: tw(14, color: Tw.inkDim)),
               ),
             ]),
             const SizedBox(height: 16),
@@ -977,9 +977,9 @@ class _QrDialog extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text.rich(
-              TextSpan(style: tw(12, color: Tw.slate400), children: [
+              TextSpan(style: tw(12, color: Tw.inkSoft), children: [
                 TextSpan(text: '$agentName · '),
-                TextSpan(text: code, style: tw(12, color: Tw.fuchsia300).copyWith(fontFamily: 'monospace')),
+                TextSpan(text: code, style: tw(12, color: Tw.sun).copyWith(fontFamily: 'monospace')),
               ]),
               textAlign: TextAlign.center,
             ),
@@ -997,7 +997,7 @@ class _QrDialog extends StatelessWidget {
               Expanded(
                 child: AdminButton(
                   label: context.t('master_partner.download_svg', fallback: 'Descargar SVG'),
-                  color: Tw.w(0.1),
+                  color: Tw.lineSoft,
                   expand: true,
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   onTap: _shareSvg,
@@ -1011,8 +1011,8 @@ class _QrDialog extends StatelessWidget {
 
 const _lifecycle = {
   'captured': ('Captado', Tw.blue400, Tw.blue500, Icons.person_add),
-  'trialing': ('En Prueba', Tw.amber400, Tw.amber500, Icons.hourglass_top),
-  'active_subscription': ('Suscripción Activa', Tw.green400, Tw.green500, Icons.verified),
+  'trialing': ('En Prueba', Tw.sun, Tw.sun, Icons.hourglass_top),
+  'active_subscription': ('Suscripción Activa', Tw.live, Tw.live, Icons.verified),
   'churned': ('Churn / Cancelado', Tw.red400, Tw.red500, Icons.cancel),
 };
 
@@ -1045,9 +1045,9 @@ class _PipelineViewState extends State<_PipelineView> {
             child: Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: _filter == e.key ? e.value.$3.withValues(alpha: 0.2) : Tw.w(0.05),
+                color: _filter == e.key ? e.value.$3.withValues(alpha: 0.2) : Tw.panelSoft,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: _filter == e.key ? e.value.$3.withValues(alpha: 0.3) : Tw.w(0.1)),
+                border: Border.all(color: _filter == e.key ? e.value.$3.withValues(alpha: 0.3) : Tw.lineSoft),
               ),
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Icon(e.value.$4, size: 18, color: e.value.$2),
@@ -1076,9 +1076,9 @@ class _PipelineViewState extends State<_PipelineView> {
       if (filtered.isEmpty)
         AdminCard(
           padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
-          borderColor: Tw.w(0.05),
+          borderColor: Tw.lineSoft,
           child: Column(children: [
-            const Icon(Icons.storefront, size: 40, color: Tw.slate600),
+            const Icon(Icons.storefront, size: 40, color: Tw.inkDim),
             const SizedBox(height: 12),
             Text(context.t('master_partner.no_venues_title', fallback: 'Sin venues atribuidos'), style: tw(18, weight: bold)),
             const SizedBox(height: 8),
@@ -1086,7 +1086,7 @@ class _PipelineViewState extends State<_PipelineView> {
               context.t('master_partner.no_venues_desc',
                   fallback: 'Los venues captados por tus subagentes aparecerán aquí con su estado de suscripción.'),
               textAlign: TextAlign.center,
-              style: tw(14, color: Tw.slate500),
+              style: tw(14, color: Tw.inkDim),
             ),
           ]),
         )
@@ -1102,7 +1102,7 @@ class _PipelineViewState extends State<_PipelineView> {
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.1))),
+      decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
       child: Row(children: [
         Icon(cfg.$4, size: 18, color: cfg.$2),
         const SizedBox(width: 12),
@@ -1115,7 +1115,7 @@ class _PipelineViewState extends State<_PipelineView> {
                 if (sub != null) '${agentNames[sub] ?? sub}',
                 if (attributed != null) '${attributed.day}/${attributed.month}/${attributed.year}',
               ].join(' · '),
-              style: tw(12, color: Tw.slate500),
+              style: tw(12, color: Tw.inkDim),
             ),
             const SizedBox(height: 6),
             Wrap(spacing: 6, children: [
@@ -1131,8 +1131,8 @@ class _PipelineViewState extends State<_PipelineView> {
               if (v['subscriptionTier'] != null)
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                  decoration: BoxDecoration(color: Tw.w(0.1), borderRadius: BorderRadius.circular(6)),
-                  child: Text('${v['subscriptionTier']}'.toUpperCase(), style: tw(10, color: Tw.slate300).copyWith(fontFamily: 'monospace')),
+                  decoration: BoxDecoration(color: Tw.lineSoft, borderRadius: BorderRadius.circular(6)),
+                  child: Text('${v['subscriptionTier']}'.toUpperCase(), style: tw(10, color: Tw.inkSoft).copyWith(fontFamily: 'monospace')),
                 ),
             ]),
           ]),

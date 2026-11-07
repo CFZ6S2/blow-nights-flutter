@@ -253,7 +253,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
         Expanded(
           child: DecoratedBox(
             decoration: const BoxDecoration(
-              gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Tw.slate950, Tw.slate950, Tw.slate900]),
+              gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Tw.night, Tw.night, Tw.panel]),
             ),
             child: Stack(children: [
               ListView.builder(
@@ -278,8 +278,8 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                         height: 40,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Tw.fuchsia600,
-                          boxShadow: [BoxShadow(color: Tw.fuchsia500.withValues(alpha: 0.3), blurRadius: 15)],
+                          color: Tw.party,
+                          boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.3), blurRadius: 15)],
                         ),
                         child: const Icon(Icons.keyboard_arrow_down, color: Tw.white),
                       ),
@@ -302,7 +302,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
         filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
         child: Container(
           padding: EdgeInsets.fromLTRB(24, MediaQuery.of(context).padding.top + 16, 24, 16),
-          decoration: BoxDecoration(color: Tw.slate900.withValues(alpha: 0.4), border: Border(bottom: BorderSide(color: Tw.w(0.05)))),
+          decoration: BoxDecoration(color: Tw.panel.withValues(alpha: 0.4), border: Border(bottom: BorderSide(color: Tw.lineSoft))),
           child: Row(children: [
             _squareBtn(const Icon(Icons.chevron_left, color: Tw.white), () => Navigator.of(context).maybePop()),
             const SizedBox(width: 16),
@@ -313,8 +313,8 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                 height: 48,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Tw.w(0.1)),
-                  boxShadow: inChat ? [BoxShadow(color: Tw.fuchsia500.withValues(alpha: 0.6), blurRadius: 20)] : null,
+                  border: Border.all(color: Tw.line),
+                  boxShadow: inChat ? [BoxShadow(color: Tw.party.withValues(alpha: 0.6), blurRadius: 20)] : null,
                 ),
                 child: ClipRRect(borderRadius: BorderRadius.circular(15), child: NetImage(other['fotoUrl'] as String?)),
               ),
@@ -327,9 +327,9 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                     height: 16,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Tw.green500,
-                      border: Border.all(color: Tw.slate900, width: 4),
-                      boxShadow: const [BoxShadow(color: Tw.green500, blurRadius: 10)],
+                      color: Tw.live,
+                      border: Border.all(color: Tw.panel, width: 4),
+                      boxShadow: const [BoxShadow(color: Tw.live, blurRadius: 10)],
                     ),
                   ),
                 ),
@@ -343,12 +343,12 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                     child: AnimatedSwitcher(
                       duration: const Duration(milliseconds: 200),
                       child: _otherTyping
-                          ? Label(i18n.t('chat.typing'), key: const ValueKey('t'), size: 9, color: Tw.fuchsia400, maxLines: 1)
+                          ? Label(i18n.t('chat.typing'), key: const ValueKey('t'), size: 9, color: Tw.sun, maxLines: 1)
                           : inChat
                               ? Row(key: const ValueKey('a'), mainAxisSize: MainAxisSize.min, children: [
-                                  Container(width: 6, height: 6, decoration: const BoxDecoration(shape: BoxShape.circle, color: Tw.fuchsia500)),
+                                  Container(width: 6, height: 6, decoration: const BoxDecoration(shape: BoxShape.circle, color: Tw.party)),
                                   const SizedBox(width: 4),
-                                  Label(i18n.t('chat.in_chat'), size: 9, color: Tw.fuchsia500),
+                                  Label(i18n.t('chat.in_chat'), size: 9, color: Tw.party),
                                 ])
                               : Label(
                                   online
@@ -358,15 +358,15 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                                           : i18n.t('chat.offline'),
                                   key: const ValueKey('s'),
                                   size: 9,
-                                  color: online ? Tw.green500.withValues(alpha: 0.6) : Tw.slate500,
+                                  color: online ? Tw.live.withValues(alpha: 0.6) : Tw.inkDim,
                                   maxLines: 1,
                                 ),
                     ),
                   ),
                   const SizedBox(width: 8),
-                  Container(width: 4, height: 4, decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.w(0.1))),
+                  Container(width: 4, height: 4, decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.lineSoft)),
                   const SizedBox(width: 8),
-                  Label('$distance km', size: 9, color: Tw.slate500),
+                  Label('$distance km', size: 9, color: Tw.inkDim),
                 ]),
               ]),
             ),
@@ -378,16 +378,16 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(colors: [Tw.fuchsia600, Tw.amber500]),
+                  gradient: const LinearGradient(colors: [Tw.party, Tw.sun]),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Tw.w(0.1)),
-                  boxShadow: [BoxShadow(color: Tw.fuchsia500.withValues(alpha: 0.3), blurRadius: 15)],
+                  border: Border.all(color: Tw.line),
+                  boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.3), blurRadius: 15)],
                 ),
                 child: const Text('🍹', style: TextStyle(fontSize: 14)),
               ),
             ),
             const SizedBox(width: 8),
-            Builder(builder: (btn) => _squareBtn(const Icon(Icons.more_vert, color: Tw.slate400, size: 18), () => _showOptions(btn, other))),
+            Builder(builder: (btn) => _squareBtn(const Icon(Icons.more_vert, color: Tw.inkSoft, size: 18), () => _showOptions(btn, other))),
           ]),
         ),
       ),
@@ -400,7 +400,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
         child: Container(
           width: 40,
           height: 40,
-          decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.05))),
+          decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.lineSoft)),
           child: icon,
         ),
       );
@@ -421,7 +421,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Row(children: [
-                  Icon(icon, color: color == const Color(0xFFE2E8F0) ? Tw.slate400 : color),
+                  Icon(icon, color: color == const Color(0xFFE2E8F0) ? Tw.inkSoft : color),
                   const SizedBox(width: 12),
                   Expanded(child: Text(label, style: tw(14, weight: bold, color: color))),
                 ]),
@@ -437,9 +437,9 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                 width: 224,
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Tw.slate900.withValues(alpha: 0.9),
+                  color: Tw.panel.withValues(alpha: 0.9),
                   borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: Tw.w(0.1)),
+                  border: Border.all(color: Tw.line),
                 ),
                 child: Column(mainAxisSize: MainAxisSize.min, children: [
                   item(Icons.person, i18n.t('chat.view_profile'), const Color(0xFFE2E8F0), () async {
@@ -453,7 +453,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                       await _sendMessage('¡He desbloqueado mis fotos privadas para ti! 🔥');
                     }
                   }),
-                  Divider(color: Tw.w(0.05), height: 1, indent: 8, endIndent: 8),
+                  Divider(color: Tw.lineSoft, height: 1, indent: 8, endIndent: 8),
                   item(Icons.flag, i18n.t('chat.report'), Tw.orange500, () async {
                     Navigator.of(ctx).pop();
                     if (await confirmDialog(context, message: i18n.t('chat.detail.confirm_report'), confirmText: i18n.t('chat.report'), danger: true)) {
@@ -505,11 +505,11 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
             decoration: BoxDecoration(
-              color: Tw.slate900.withValues(alpha: 0.8),
+              color: Tw.panel.withValues(alpha: 0.8),
               borderRadius: BorderRadius.circular(99),
-              border: Border.all(color: Tw.w(0.05)),
+              border: Border.all(color: Tw.lineSoft),
             ),
-            child: Label(sepLabel, size: 9, color: Tw.slate500),
+            child: Label(sepLabel, size: 9, color: Tw.inkDim),
           ),
         ),
       Padding(
@@ -521,18 +521,18 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                gradient: isMe ? const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.fuchsia600, Tw.purple600]) : null,
-                color: isMe ? null : Tw.slate800.withValues(alpha: 0.8),
+                gradient: isMe ? const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.sunset, Tw.party]) : null,
+                color: isMe ? null : Tw.line.withValues(alpha: 0.8),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(isMe ? 24 : 0),
                   topRight: Radius.circular(isMe ? 0 : 24),
                   bottomLeft: const Radius.circular(24),
                   bottomRight: const Radius.circular(24),
                 ),
-                border: isMe ? null : Border.all(color: Tw.w(0.05)),
+                border: isMe ? null : Border.all(color: Tw.lineSoft),
                 boxShadow: [
                   BoxShadow(
-                    color: isMe ? Tw.fuchsia500.withValues(alpha: 0.15) : Colors.black.withValues(alpha: 0.3),
+                    color: isMe ? Tw.party.withValues(alpha: 0.15) : Colors.black.withValues(alpha: 0.3),
                     blurRadius: 20,
                     offset: const Offset(0, 10),
                   ),
@@ -574,7 +574,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
         context: context,
         barrierDismissible: true,
         barrierLabel: 'img',
-        barrierColor: Tw.slate950.withValues(alpha: 0.9),
+        barrierColor: Tw.night.withValues(alpha: 0.9),
         pageBuilder: (ctx, _, _) => GestureDetector(
           onTap: () => Navigator.of(ctx).pop(),
           child: Center(child: Padding(padding: const EdgeInsets.all(16), child: ClipRRect(borderRadius: BorderRadius.circular(24), child: NetImage(url, fit: BoxFit.contain)))),
@@ -590,7 +590,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
           filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
           child: Container(
             padding: EdgeInsets.fromLTRB(24, 24, 24, 24 + MediaQuery.of(context).padding.bottom + MediaQuery.of(context).viewInsets.bottom * 0),
-            decoration: BoxDecoration(color: Tw.slate900.withValues(alpha: 0.8), border: Border(top: BorderSide(color: Tw.w(0.05)))),
+            decoration: BoxDecoration(color: Tw.panel.withValues(alpha: 0.8), border: Border(top: BorderSide(color: Tw.lineSoft))),
             child: Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
               Pressable(
                 onTap: _pickImage,
@@ -598,15 +598,15 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                 child: Container(
                   width: 48,
                   height: 48,
-                  decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.05))),
-                  child: const Icon(Icons.add_a_photo, color: Tw.slate400),
+                  decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.lineSoft)),
+                  child: const Icon(Icons.add_a_photo, color: Tw.inkSoft),
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(32), border: Border.all(color: Tw.w(0.05))),
+                  decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(32), border: Border.all(color: Tw.lineSoft)),
                   child: _recording
                       ? Container(
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -647,11 +647,11 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                     width: 48,
                     height: 48,
                     decoration: BoxDecoration(
-                      color: _recording ? Tw.red500 : hasText ? Tw.fuchsia600 : Tw.w(0.05),
+                      color: _recording ? Tw.red500 : hasText ? Tw.party : Tw.panelSoft,
                       borderRadius: BorderRadius.circular(16),
-                      boxShadow: hasText && !_recording ? [BoxShadow(color: Tw.fuchsia500.withValues(alpha: 0.2), blurRadius: 15)] : null,
+                      boxShadow: hasText && !_recording ? [BoxShadow(color: Tw.party.withValues(alpha: 0.2), blurRadius: 15)] : null,
                     ),
-                    child: Icon(_recording ? Icons.stop : hasText ? Icons.send : Icons.mic, color: _recording || hasText ? Tw.white : Tw.slate400),
+                    child: Icon(_recording ? Icons.stop : hasText ? Icons.send : Icons.mic, color: _recording || hasText ? Tw.white : Tw.inkSoft),
                   ),
                 ),
               ),
@@ -666,7 +666,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
           child: Container(
             height: 4,
             width: MediaQuery.of(context).size.width * _progress,
-            decoration: const BoxDecoration(color: Tw.fuchsia500, boxShadow: [BoxShadow(color: Tw.fuchsia500, blurRadius: 15)]),
+            decoration: const BoxDecoration(color: Tw.party, boxShadow: [BoxShadow(color: Tw.party, blurRadius: 15)]),
           ),
         ),
     ]);
@@ -695,7 +695,7 @@ class _TypingDotsState extends State<_TypingDots> with SingleTickerProviderState
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           decoration: BoxDecoration(
-            color: Tw.slate800.withValues(alpha: 0.4),
+            color: Tw.line.withValues(alpha: 0.4),
             borderRadius: const BorderRadius.only(topRight: Radius.circular(24), bottomLeft: Radius.circular(24), bottomRight: Radius.circular(24)),
           ),
           child: AnimatedBuilder(
@@ -708,7 +708,7 @@ class _TypingDotsState extends State<_TypingDots> with SingleTickerProviderState
                     width: 6,
                     height: 6,
                     margin: const EdgeInsets.symmetric(horizontal: 3),
-                    decoration: const BoxDecoration(shape: BoxShape.circle, color: Tw.fuchsia500),
+                    decoration: const BoxDecoration(shape: BoxShape.circle, color: Tw.party),
                   ),
                 ),
             ]),
@@ -763,7 +763,7 @@ class _AudioBubbleState extends State<_AudioBubble> {
           child: Container(
             width: 40,
             height: 40,
-            decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.w(0.1)),
+            decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.lineSoft),
             child: Icon(playing ? Icons.pause : Icons.play_arrow, color: Tw.white, size: 20),
           ),
         ),
@@ -777,7 +777,7 @@ class _AudioBubbleState extends State<_AudioBubble> {
               return Container(
                 height: 6,
                 clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(color: Tw.w(0.1), borderRadius: BorderRadius.circular(99)),
+                decoration: BoxDecoration(color: Tw.lineSoft, borderRadius: BorderRadius.circular(99)),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: FractionallySizedBox(

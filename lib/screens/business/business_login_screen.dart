@@ -288,12 +288,12 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
       _ => context.t('business_login_subtitle_landing', fallback: 'La plataforma de ocio nocturno que conecta locales con su público'),
     };
     return Scaffold(
-      backgroundColor: Tw.slate950,
+      backgroundColor: Tw.night,
       body: Stack(children: [
         Positioned(
           top: -120,
           left: -80,
-          child: Container(width: 300, height: 300, decoration: BoxDecoration(shape: BoxShape.circle, boxShadow: [BoxShadow(color: Tw.fuchsia600.withValues(alpha: 0.12), blurRadius: 150, spreadRadius: 60)])),
+          child: Container(width: 300, height: 300, decoration: BoxDecoration(shape: BoxShape.circle, boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.12), blurRadius: 150, spreadRadius: 60)])),
         ),
         Positioned(
           bottom: -120,
@@ -304,7 +304,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
           child: ListView(padding: const EdgeInsets.fromLTRB(24, 32, 24, 48), children: [
             Align(
               alignment: Alignment.centerLeft,
-              child: IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.slate500)),
+              child: IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.inkDim)),
             ),
             Center(
               child: Transform.rotate(
@@ -313,9 +313,9 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
                   width: 80,
                   height: 80,
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.fuchsia600, Tw.indigo600]),
+                    gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.sunset, Tw.party]),
                     borderRadius: BorderRadius.circular(24),
-                    boxShadow: [BoxShadow(color: Tw.fuchsia500.withValues(alpha: 0.2), blurRadius: 30)],
+                    boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.2), blurRadius: 30)],
                   ),
                   child: const Icon(Icons.business, size: 40, color: Tw.white),
                 ),
@@ -329,7 +329,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
                   alignment: PlaceholderAlignment.baseline,
                   baseline: TextBaseline.alphabetic,
                   child: ShaderMask(
-                    shaderCallback: (r) => const LinearGradient(colors: [Tw.fuchsia400, Tw.indigo400]).createShader(r),
+                    shaderCallback: (r) => const LinearGradient(colors: [Tw.sun, Tw.indigo400]).createShader(r),
                     child: Text('Business', style: tw(30, weight: black, tracking: -0.03)),
                   ),
                 ),
@@ -337,7 +337,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
-            Text(subtitle, textAlign: TextAlign.center, style: tw(14, weight: medium, color: Tw.slate500)),
+            Text(subtitle, textAlign: TextAlign.center, style: tw(14, weight: medium, color: Tw.inkDim)),
             const SizedBox(height: 40),
             switch (_mode) {
               'login' => _login(context),
@@ -354,7 +354,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
 
   Widget _card({required Widget child, EdgeInsets padding = const EdgeInsets.all(28)}) => Container(
         padding: padding,
-        decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.w(0.1))),
+        decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.line)),
         child: child,
       );
 
@@ -375,17 +375,17 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Text(title, style: tw(18, weight: black)),
                   const SizedBox(height: 4),
-                  Text(desc, style: tw(14, color: Tw.slate400, height: 1.5)),
+                  Text(desc, style: tw(14, color: Tw.inkSoft, height: 1.5)),
                 ]),
               ),
-              const Icon(Icons.arrow_forward, color: Tw.slate600),
+              const Icon(Icons.arrow_forward, color: Tw.inkDim),
             ]),
           ),
         ),
       );
 
   Widget _landing(BuildContext context) => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        _choice(Icons.business, const [Tw.fuchsia600, Color(0xFF86198F)], context.t('business_login_register_venue', fallback: 'Registrar mi Local'),
+        _choice(Icons.business, const [Tw.party, Color(0xFF86198F)], context.t('business_login_register_venue', fallback: 'Registrar mi Local'),
             context.t('business_login_register_venue_desc', fallback: 'Discoteca, bar, pub o sala de eventos. Gestión de eventos, ticketing y accesos.'), () => _setMode('apply_venue')),
         _choice(Icons.language, const [Tw.emerald600, Color(0xFF065F46)], context.t('business_login_become_cm', fallback: 'Ser City Manager'),
             context.t('business_login_become_cm_desc', fallback: 'Opera Blow Nights en tu ciudad. Captación de locales, gestión territorial y revenue share.'), () => _setMode('apply_cm')),
@@ -395,12 +395,12 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
           child: Row(children: [
-            Expanded(child: Divider(color: Tw.w(0.1))),
+            Expanded(child: Divider(color: Tw.line)),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Label(context.t('business_login_already_have_account', fallback: 'ya tienes cuenta'), color: Tw.slate600),
+              child: Label(context.t('business_login_already_have_account', fallback: 'ya tienes cuenta'), color: Tw.inkDim),
             ),
-            Expanded(child: Divider(color: Tw.w(0.1))),
+            Expanded(child: Divider(color: Tw.line)),
           ]),
         ),
         Pressable(
@@ -428,9 +428,9 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
         child: GestureDetector(
           onTap: () => _setMode('landing'),
           child: Row(mainAxisSize: MainAxisSize.min, children: [
-            const Icon(Icons.arrow_back, size: 16, color: Tw.slate500),
+            const Icon(Icons.arrow_back, size: 16, color: Tw.inkDim),
             const SizedBox(width: 8),
-            Label(context.t('business_login_back', fallback: 'Volver'), size: 12, weight: bold, color: Tw.slate500, tracking: 0.05),
+            Label(context.t('business_login_back', fallback: 'Volver'), size: 12, weight: bold, color: Tw.inkDim, tracking: 0.05),
           ]),
         ),
       );
@@ -442,11 +442,11 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
         child: Text(text, textAlign: TextAlign.center, style: tw(12, weight: bold, color: Tw.red400)),
       );
 
-  Widget _field(String label, TextEditingController c, IconData icon, {String? hint, bool obscure = false, TextInputType? kb, bool enabled = true, Color focus = Tw.fuchsia500}) =>
+  Widget _field(String label, TextEditingController c, IconData icon, {String? hint, bool obscure = false, TextInputType? kb, bool enabled = true, Color focus = Tw.party}) =>
       Padding(
         padding: const EdgeInsets.only(top: 16),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          Padding(padding: const EdgeInsets.only(left: 4, bottom: 4), child: Label(label, color: Tw.slate500, tracking: 0.2)),
+          Padding(padding: const EdgeInsets.only(left: 4, bottom: 4), child: Label(label, color: Tw.inkDim, tracking: 0.2)),
           Opacity(
             opacity: enabled ? 1 : 0.6,
             child: TextField(
@@ -457,11 +457,11 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
               onChanged: (_) => setState(() {}),
               style: tw(14),
               decoration: adminInputDecoration(hint, focus: focus).copyWith(
-                fillColor: Tw.w(0.05),
-                prefixIcon: Icon(icon, size: 16, color: Tw.slate500),
+                fillColor: Tw.panelSoft,
+                prefixIcon: Icon(icon, size: 16, color: Tw.inkDim),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: Tw.w(0.1))),
-                disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: Tw.w(0.1))),
+                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: Tw.line)),
+                disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: Tw.line)),
                 focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: focus)),
               ),
             ),
@@ -479,7 +479,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               const Text('G', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Color(0xFF4285F4))),
               const SizedBox(width: 12),
-              Label(label, size: 14, color: Tw.slate900, tracking: 0.1),
+              Label(label, size: 14, color: Tw.panel, tracking: 0.1),
             ]),
           ),
         ),
@@ -488,9 +488,9 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
   Widget _orDivider(String text) => Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: Row(children: [
-          Expanded(child: Divider(color: Tw.w(0.1))),
-          Padding(padding: const EdgeInsets.symmetric(horizontal: 12), child: Label(text, color: Tw.slate600)),
-          Expanded(child: Divider(color: Tw.w(0.1))),
+          Expanded(child: Divider(color: Tw.line)),
+          Padding(padding: const EdgeInsets.symmetric(horizontal: 12), child: Label(text, color: Tw.inkDim)),
+          Expanded(child: Divider(color: Tw.line)),
         ]),
       );
 
@@ -526,15 +526,15 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: (venue ? Tw.fuchsia600 : Tw.emerald600).withValues(alpha: 0.1),
+            color: (venue ? Tw.party : Tw.emerald600).withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: (venue ? Tw.fuchsia500 : Tw.emerald500).withValues(alpha: 0.2)),
+            border: Border.all(color: (venue ? Tw.party : Tw.live).withValues(alpha: 0.2)),
           ),
           child: Row(children: [
-            Icon(venue ? Icons.business : Icons.language, color: venue ? Tw.fuchsia400 : Tw.emerald400),
+            Icon(venue ? Icons.business : Icons.language, color: venue ? Tw.sun : Tw.live),
             const SizedBox(width: 12),
             Label(venue ? context.t('business_login_register_venue_short', fallback: 'Registrar Local') : context.t('business_login_become_cm', fallback: 'Ser City Manager'),
-                size: 14, color: venue ? Tw.fuchsia300 : const Color(0xFF6EE7B7), tracking: 0.05),
+                size: 14, color: venue ? Tw.sun : const Color(0xFF6EE7B7), tracking: 0.05),
           ]),
         ),
         if (venue && user != null)
@@ -542,31 +542,31 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
             margin: const EdgeInsets.only(top: 24),
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Tw.fuchsia950.withValues(alpha: 0.4),
+              color: Tw.nightDeep.withValues(alpha: 0.4),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.3)),
+              border: Border.all(color: Tw.party.withValues(alpha: 0.3)),
             ),
             child: Row(children: [
               Container(
                 width: 36,
                 height: 36,
                 alignment: Alignment.center,
-                decoration: BoxDecoration(gradient: const LinearGradient(colors: [Tw.fuchsia600, Tw.indigo600]), borderRadius: BorderRadius.circular(12)),
+                decoration: BoxDecoration(gradient: const LinearGradient(colors: [Tw.sunset, Tw.party]), borderRadius: BorderRadius.circular(12)),
                 child: Text((user.displayName ?? user.email ?? 'U')[0].toUpperCase(), style: tw(12, weight: black)),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Label(context.t('business_login_signed_in_as', fallback: 'Sesión iniciada'), color: Tw.fuchsia400, weight: bold),
+                  Label(context.t('business_login_signed_in_as', fallback: 'Sesión iniciada'), color: Tw.sun, weight: bold),
                   Text(user.email ?? '', overflow: TextOverflow.ellipsis, style: tw(12, weight: bold)),
                 ]),
               ),
               GestureDetector(
                 onTap: _signOut,
                 child: Row(children: [
-                  const Icon(Icons.logout, size: 14, color: Tw.slate400),
+                  const Icon(Icons.logout, size: 14, color: Tw.inkSoft),
                   const SizedBox(width: 6),
-                  Text(context.t('business_login_change_account', fallback: 'Cambiar'), style: tw(12, weight: semibold, color: Tw.slate400)),
+                  Text(context.t('business_login_change_account', fallback: 'Cambiar'), style: tw(12, weight: semibold, color: Tw.inkSoft)),
                 ]),
               ),
             ]),
@@ -576,9 +576,9 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
             margin: const EdgeInsets.only(top: 24),
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Tw.amber500.withValues(alpha: 0.1),
+              color: Tw.sun.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Tw.amber500.withValues(alpha: 0.3)),
+              border: Border.all(color: Tw.sun.withValues(alpha: 0.3)),
             ),
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
               Text(context.t('business_login_email_exists_title', fallback: 'Ya existe una cuenta con este email.'), style: tw(12, weight: bold, color: const Color(0xFFFCD34D))),
@@ -586,7 +586,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
               Text(
                 context.t('business_login_email_exists_desc',
                     fallback: 'Si te registraste con Google, pulsa en continuar con Google. Si usas contraseña, introduce la contraseña habitual de tu cuenta.'),
-                style: tw(12, color: Tw.slate300, height: 1.5),
+                style: tw(12, color: Tw.inkSoft, height: 1.5),
               ),
               const SizedBox(height: 12),
               _googleButton(context.t('business_login_continue_with_google', fallback: 'Continuar con Google')),
@@ -607,7 +607,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
               Padding(
                 padding: const EdgeInsets.only(left: 4, bottom: 4),
-                child: Label(context.t('business_login_venue_address', fallback: 'Dirección del Local'), color: Tw.slate500, tracking: 0.2),
+                child: Label(context.t('business_login_venue_address', fallback: 'Dirección del Local'), color: Tw.inkDim, tracking: 0.2),
               ),
               AddressAutocomplete(
                 controller: _venueAddress,
@@ -620,7 +620,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
           Row(children: [
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                Padding(padding: const EdgeInsets.only(left: 4, bottom: 4), child: Label(context.t('business_login_venue_type', fallback: 'Tipo de Local'), color: Tw.slate500, tracking: 0.2)),
+                Padding(padding: const EdgeInsets.only(left: 4, bottom: 4), child: Label(context.t('business_login_venue_type', fallback: 'Tipo de Local'), color: Tw.inkDim, tracking: 0.2)),
                 AdminSelect<String>(
                   value: _venueType,
                   items: [
@@ -638,7 +638,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
             const SizedBox(width: 12),
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                Padding(padding: const EdgeInsets.only(left: 4, bottom: 4), child: Label(context.t('business_login_city', fallback: 'Ciudad'), color: Tw.slate500, tracking: 0.2)),
+                Padding(padding: const EdgeInsets.only(left: 4, bottom: 4), child: Label(context.t('business_login_city', fallback: 'Ciudad'), color: Tw.inkDim, tracking: 0.2)),
                 AdminSelect<String>(
                   value: _cityId,
                   items: [
@@ -676,7 +676,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
           const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.only(left: 4, bottom: 4),
-            child: Label(context.t('business_login_cm_city', fallback: 'Ciudad que quieres gestionar'), color: Tw.slate500, tracking: 0.2),
+            child: Label(context.t('business_login_cm_city', fallback: 'Ciudad que quieres gestionar'), color: Tw.inkDim, tracking: 0.2),
           ),
           AdminSelect<String>(
             value: _cityId.isEmpty ? null : _cityId,
@@ -696,7 +696,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
                 expand: true,
                 fontSize: 13,
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                gradient: const LinearGradient(colors: [Tw.fuchsia600, Tw.indigo600]),
+                gradient: const LinearGradient(colors: [Tw.sunset, Tw.party]),
                 onTap: _loading || !_applyValid ? null : _apply,
               )
             : AdminButton(
@@ -718,8 +718,8 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
           Container(
             width: 80,
             height: 80,
-            decoration: BoxDecoration(color: Tw.green500.withValues(alpha: 0.1), shape: BoxShape.circle),
-            child: const Icon(Icons.check_circle, size: 40, color: Tw.green500),
+            decoration: BoxDecoration(color: Tw.live.withValues(alpha: 0.1), shape: BoxShape.circle),
+            child: const Icon(Icons.check_circle, size: 40, color: Tw.live),
           ),
           const SizedBox(height: 24),
           Text(context.t('business_login_request_received', fallback: 'Solicitud Recibida'), textAlign: TextAlign.center, style: tw(24, weight: black)),
@@ -728,12 +728,12 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
             context.t('business_login_request_received_desc',
                 fallback: 'Hemos recibido tu solicitud. Nuestro equipo la revisará y te contactaremos por email en las próximas 24-48h.'),
             textAlign: TextAlign.center,
-            style: tw(14, color: Tw.slate400, height: 1.6),
+            style: tw(14, color: Tw.inkSoft, height: 1.6),
           ),
           const SizedBox(height: 24),
           AdminButton(
             label: context.t('business_login_back_to_start', fallback: 'Volver al inicio'),
-            color: Tw.w(0.05),
+            color: Tw.panelSoft,
             expand: true,
             padding: const EdgeInsets.symmetric(vertical: 16),
             onTap: () => _setMode('landing'),

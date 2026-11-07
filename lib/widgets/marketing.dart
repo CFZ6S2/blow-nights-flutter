@@ -80,7 +80,7 @@ class SectionHeader extends StatelessWidget {
         Text(title, textAlign: TextAlign.center, style: tw(28, weight: black, height: 1.15, tracking: -0.02)),
         if (subtitle != null) ...[
           const SizedBox(height: 12),
-          Text(subtitle!, textAlign: TextAlign.center, style: tw(14, color: Tw.slate400, height: 1.6)),
+          Text(subtitle!, textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft, height: 1.6)),
         ],
       ]);
 }
@@ -112,7 +112,7 @@ class FeatureCard extends StatelessWidget {
           const SizedBox(height: 16),
           Text(title, style: tw(18, weight: bold)),
           const SizedBox(height: 8),
-          Text(desc, style: tw(14, color: Tw.slate300, height: 1.6)),
+          Text(desc, style: tw(14, color: Tw.inkSoft, height: 1.6)),
         ]),
       );
 }
@@ -129,13 +129,13 @@ class StepCard extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(32),
-        decoration: BoxDecoration(color: Tw.slate900.withValues(alpha: 0.6), borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.w(0.1))),
+        decoration: BoxDecoration(color: Tw.panel.withValues(alpha: 0.6), borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.line)),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(step, style: tw(36, weight: black, color: color)),
           const SizedBox(height: 12),
           Text(title, style: tw(18, weight: bold)),
           const SizedBox(height: 8),
-          Text(desc, style: tw(14, color: Tw.slate400, height: 1.6)),
+          Text(desc, style: tw(14, color: Tw.inkSoft, height: 1.6)),
         ]),
       );
 }
@@ -145,7 +145,7 @@ class CheckItem extends StatelessWidget {
   final String text;
   final Color color;
   final Color textColor;
-  const CheckItem(this.text, {super.key, this.color = Tw.emerald400, this.textColor = Tw.slate300});
+  const CheckItem(this.text, {super.key, this.color = Tw.live, this.textColor = Tw.inkSoft});
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -220,9 +220,9 @@ class MarketingNav extends StatelessWidget {
         right: 0,
         child: Container(
           padding: EdgeInsets.fromLTRB(8, top + 12, 16, 12),
-          decoration: BoxDecoration(color: Tw.slate950.withValues(alpha: 0.85), border: Border(bottom: BorderSide(color: Tw.w(0.1)))),
+          decoration: BoxDecoration(color: Tw.night.withValues(alpha: 0.85), border: Border(bottom: BorderSide(color: Tw.line))),
           child: Row(children: [
-            IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.slate400)),
+            IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.inkSoft)),
             Container(
               width: 36,
               height: 36,

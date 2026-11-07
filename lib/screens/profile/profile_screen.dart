@@ -187,33 +187,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
 
     final subtitleColor = p.role == 'rrpp'
-        ? Tw.fuchsia400
+        ? Tw.sun
         : ['admin', 'superadmin', 'cityAdmin', 'venue'].contains(p.role)
             ? Tw.blue400
-            : Tw.slate500;
+            : Tw.inkDim;
 
     final menu = <(String, IconData, AppRoute, Color)>[
       (context.t('profile.my_visits', fallback: 'Visitas a mi perfil'), Icons.visibility, AppRoute.visits, Tw.purple400),
-      (context.t('profile.my_plans', fallback: 'Mis Chills'), Icons.groups, AppRoute.myPlans, Tw.amber400),
-      (context.t('profile.my_tickets', fallback: 'Mis Entradas'), Icons.confirmation_number, AppRoute.tickets, Tw.fuchsia400),
+      (context.t('profile.my_plans', fallback: 'Mis Chills'), Icons.groups, AppRoute.myPlans, Tw.sun),
+      (context.t('profile.my_tickets', fallback: 'Mis Entradas'), Icons.confirmation_number, AppRoute.tickets, Tw.sun),
       (context.t('profile.my_chats', fallback: 'Mis Chats'), Icons.chat, AppRoute.chat, Tw.blue400),
       if (context.watch<PlatformSettings>().flag('moduleFriendFinder'))
         (context.t('finder.title'), Icons.bluetooth_searching, AppRoute.friendGroups, Tw.cyan400),
       (context.t('profile.edit_profile', fallback: 'Ajustes'), Icons.settings, AppRoute.setupProfile, const Color(0xFFE2E8F0)),
       if (p.role == 'venueOwner' || p.role == 'admin')
-        (context.t('profile.venue_panel', fallback: 'Panel de Local'), Icons.storefront, AppRoute.venueAdmin, Tw.fuchsia400),
+        (context.t('profile.venue_panel', fallback: 'Panel de Local'), Icons.storefront, AppRoute.venueAdmin, Tw.sun),
       if (p.role == 'door')
-        (context.t('profile.staff_scanners', fallback: 'Escáneres del local'), Icons.qr_code_scanner, AppRoute.staffHome, Tw.fuchsia400),
+        (context.t('profile.staff_scanners', fallback: 'Escáneres del local'), Icons.qr_code_scanner, AppRoute.staffHome, Tw.sun),
       if (p.role == 'admin')
-        (context.t('profile.scan_tickets', fallback: 'Escanear Entradas'), Icons.qr_code_scanner, AppRoute.scanner, Tw.fuchsia400),
-      if (p.role == 'rrpp') (context.t('rrpp_panel_title', fallback: 'RRPP independiente'), Icons.confirmation_number, AppRoute.pr, Tw.emerald400),
+        (context.t('profile.scan_tickets', fallback: 'Escanear Entradas'), Icons.qr_code_scanner, AppRoute.scanner, Tw.sun),
+      if (p.role == 'rrpp') (context.t('rrpp_panel_title', fallback: 'RRPP independiente'), Icons.confirmation_number, AppRoute.pr, Tw.live),
       if (_hasDoors) (context.t('door_my_doors', fallback: 'Mis puertas'), Icons.qr_code_scanner, AppRoute.door, Tw.teal400),
       if (_hasClaims) (context.t('venue_claim.my_claims'), Icons.storefront, AppRoute.venueClaims, Tw.purple400),
     ];
 
     return Scaffold(
       body: Stack(children: [
-        Positioned(top: -size.height * 0.1, left: -size.width * 0.2, child: Orb(color: Tw.fuchsia600.withValues(alpha: 0.1), size: size.width * 0.8)),
+        Positioned(top: -size.height * 0.1, left: -size.width * 0.2, child: Orb(color: Tw.party.withValues(alpha: 0.1), size: size.width * 0.8)),
         Positioned(top: size.height * 0.2, right: -size.width * 0.2, child: Orb(color: Tw.indigo600.withValues(alpha: 0.1), size: size.width * 0.7)),
         SafeArea(
           bottom: false,
@@ -226,14 +226,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   height: 128,
                   padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.fuchsia500, Tw.indigo600]),
+                    gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.party, Tw.indigo600]),
                     borderRadius: BorderRadius.circular(40),
-                    border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.3), width: 2),
-                    boxShadow: [BoxShadow(color: Tw.fuchsia500.withValues(alpha: 0.2), blurRadius: 50, offset: const Offset(0, 20))],
+                    border: Border.all(color: Tw.party.withValues(alpha: 0.3), width: 2),
+                    boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.2), blurRadius: 50, offset: const Offset(0, 20))],
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(35),
-                    child: NetImage(p.fotoUrl, placeholder: Container(color: Tw.slate800, child: const Icon(Icons.public, size: 48, color: Tw.slate500))),
+                    child: NetImage(p.fotoUrl, placeholder: Container(color: Tw.line, child: const Icon(Icons.public, size: 48, color: Tw.inkDim))),
                   ),
                 ),
                 if (vip)
@@ -243,10 +243,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        gradient: const LinearGradient(colors: [Tw.amber400, Color(0xFFCA8A04)]),
+                        gradient: const LinearGradient(colors: [Tw.sun, Color(0xFFCA8A04)]),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: const Icon(Icons.stars, size: 14, color: Tw.black),
+                      child: const Icon(Icons.stars, size: 14, color: Tw.nightDeep),
                     ),
                   ),
               ]),
@@ -259,11 +259,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(colors: [Tw.amber400, Color(0xFFCA8A04)]),
+                    gradient: const LinearGradient(colors: [Tw.sun, Color(0xFFCA8A04)]),
                     borderRadius: BorderRadius.circular(6),
-                    boxShadow: [BoxShadow(color: Tw.amber400.withValues(alpha: 0.4), blurRadius: 15)],
+                    boxShadow: [BoxShadow(color: Tw.sun.withValues(alpha: 0.4), blurRadius: 15)],
                   ),
-                  child: Label(context.t('profile.founder'), size: 8, color: Tw.black, tracking: -0.05),
+                  child: Label(context.t('profile.founder'), size: 8, color: Tw.nightDeep, tracking: -0.05),
                 ),
             ]),
             const SizedBox(height: 4),
@@ -274,9 +274,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               spacing: 12,
               children: [
                 for (final s in [
-                  (context.t('profile.plans', fallback: 'Planes'), _plans, Icons.groups, Tw.amber400),
-                  (context.t('profile.tickets', fallback: 'Entradas'), _tickets, Icons.confirmation_number, Tw.fuchsia400),
-                  (context.t('profile.checkins', fallback: 'Check-ins'), _checkins, Icons.location_on, Tw.emerald400),
+                  (context.t('profile.plans', fallback: 'Planes'), _plans, Icons.groups, Tw.sun),
+                  (context.t('profile.tickets', fallback: 'Entradas'), _tickets, Icons.confirmation_number, Tw.sun),
+                  (context.t('profile.checkins', fallback: 'Check-ins'), _checkins, Icons.location_on, Tw.live),
                 ])
                   Expanded(
                     child: GlassCard(
@@ -286,7 +286,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         const SizedBox(height: 4),
                         Text('${s.$2}', style: tw(20, weight: black)),
                         const SizedBox(height: 4),
-                        Label(s.$1, size: 8, color: Tw.slate500, maxLines: 1),
+                        Label(s.$1, size: 8, color: Tw.inkDim, maxLines: 1),
                       ]),
                     ),
                   ),
@@ -305,17 +305,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       GestureDetector(
                         onTap: () => openRoute(context, AppRoute.setupProfile),
                         child: Text(context.t('profile.city_change', fallback: 'Cambiar ciudad'),
-                            style: tw(10, weight: semibold, color: Tw.amber400)),
+                            style: tw(10, weight: semibold, color: Tw.sun)),
                       ),
                     ]),
                   ),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                     decoration: BoxDecoration(
-                      color: Tw.fuchsia600,
+                      color: Tw.party,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Tw.fuchsia500),
-                      boxShadow: [BoxShadow(color: Tw.fuchsia500.withValues(alpha: 0.2), blurRadius: 15)],
+                      border: Border.all(color: Tw.party),
+                      boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.2), blurRadius: 15)],
                     ),
                     child: Label('${p.cityId![0].toUpperCase()}${p.cityId!.substring(1)}', color: Tw.white),
                   ),
@@ -333,10 +333,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Row(children: [
                       Flexible(child: Label(context.t('profile.push_notifications'), size: 14, color: Tw.white)),
                       const SizedBox(width: 8),
-                      _miniPill('FCM', Tw.green400),
+                      _miniPill('FCM', Tw.live),
                     ]),
                     const SizedBox(height: 4),
-                    Text(context.t('profile.push_desc'), style: tw(10, color: Tw.slate500)),
+                    Text(context.t('profile.push_desc'), style: tw(10, color: Tw.inkDim)),
                   ]),
                 ),
                 const SizedBox(width: 12),
@@ -357,10 +357,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 32),
             // Photos
             Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
-              Expanded(child: Label(context.t('profile.my_photos'), size: 14, color: Tw.slate500, tracking: 0.2)),
+              Expanded(child: Label(context.t('profile.my_photos'), size: 14, color: Tw.inkDim, tracking: 0.2)),
               GestureDetector(
                 onTap: () => openRoute(context, AppRoute.setupProfile),
-                child: Label(context.t('profile.manage'), color: Tw.fuchsia500),
+                child: Label(context.t('profile.manage'), color: Tw.party),
               ),
             ]),
             const SizedBox(height: 16),
@@ -379,9 +379,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Container(
                       clipBehavior: Clip.antiAlias,
                       decoration: BoxDecoration(
-                        color: Tw.w(0.05),
+                        color: Tw.panelSoft,
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Tw.w(0.1)),
+                        border: Border.all(color: Tw.line),
                       ),
                       child: NetImage(url),
                     ),
@@ -390,13 +390,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Pressable(
                     onTap: () => openRoute(context, AppRoute.setupProfile),
                     child: CustomPaint(
-                      painter: _DashedBorder(Tw.w(0.2), 16),
+                      painter: _DashedBorder(Tw.line, 16),
                       child: Container(
-                        decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16)),
+                        decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16)),
                         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                          const Icon(Icons.add_a_photo, size: 20, color: Tw.slate500),
+                          const Icon(Icons.add_a_photo, size: 20, color: Tw.inkDim),
                           const SizedBox(height: 4),
-                          Label(context.t('profile.add_photo'), size: 8, color: Tw.slate500, tracking: -0.05),
+                          Label(context.t('profile.add_photo'), size: 8, color: Tw.inkDim, tracking: -0.05),
                         ]),
                       ),
                     ),
@@ -413,7 +413,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Icon(m.$2, color: m.$4),
                   const SizedBox(width: 16),
                   Expanded(child: Text(m.$1, style: tw(14, weight: bold, tracking: -0.025))),
-                  const Icon(Icons.chevron_right, color: Tw.slate600),
+                  const Icon(Icons.chevron_right, color: Tw.inkDim),
                 ]),
               ),
               const SizedBox(height: 12),
@@ -449,20 +449,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Tw.w(0.05),
+                  color: Tw.panelSoft,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Tw.w(0.05)),
+                  border: Border.all(color: Tw.lineSoft),
                 ),
                 child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Icon(_deleting ? Icons.sync : Icons.delete_forever, size: 14, color: Tw.slate600),
+                  Icon(_deleting ? Icons.sync : Icons.delete_forever, size: 14, color: Tw.inkDim),
                   const SizedBox(width: 12),
-                  Label(_deleting ? context.t('profile.deleting') : context.t('profile.delete_account'), color: Tw.slate600),
+                  Label(_deleting ? context.t('profile.deleting') : context.t('profile.delete_account'), color: Tw.inkDim),
                 ]),
               ),
             ),
             // Which build this is (version, commit, build time): to match a report on an APK to its exact commit.
             const SizedBox(height: 24),
-            Center(child: SelectableText(BuildInfo.label, style: tw(10, color: Tw.slate600))),
+            Center(child: SelectableText(BuildInfo.label, style: tw(10, color: Tw.inkDim))),
           ]),
         ),
       ]),
@@ -485,14 +485,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Row(children: [
                 Flexible(child: Label(context.t('credentials.title', fallback: 'Acceso alternativo'), size: 14, color: Tw.white)),
-                if (active) ...[const SizedBox(width: 8), _miniPill(context.t('credentials.active', fallback: 'Activo'), Tw.green400)],
+                if (active) ...[const SizedBox(width: 8), _miniPill(context.t('credentials.active', fallback: 'Activo'), Tw.live)],
               ]),
               const SizedBox(height: 4),
               Text(
                 active
                     ? context.t('credentials.current_user', fallback: 'Tu usuario: ') + (username ?? '')
                     : context.t('credentials.description', fallback: 'Crea un usuario y contraseña para acceder desde otro dispositivo.'),
-                style: tw(10, color: Tw.slate500),
+                style: tw(10, color: Tw.inkDim),
               ),
             ]),
           ),
@@ -509,7 +509,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   : active
                       ? context.t('credentials.change', fallback: 'Cambiar')
                       : context.t('credentials.setup', fallback: 'Configurar'),
-              color: Tw.fuchsia500,
+              color: Tw.party,
             ),
           ),
         ]),
@@ -552,7 +552,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                     if (_credSuccess) ...[
                       const SizedBox(height: 12),
-                      Text(context.t('credentials.success', fallback: 'Credenciales guardadas correctamente.'), style: tw(12, color: Tw.green400)),
+                      Text(context.t('credentials.success', fallback: 'Credenciales guardadas correctamente.'), style: tw(12, color: Tw.live)),
                     ],
                     const SizedBox(height: 12),
                     Opacity(
@@ -562,9 +562,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           decoration: BoxDecoration(
-                            color: Tw.fuchsia600,
+                            color: Tw.party,
                             borderRadius: BorderRadius.circular(16),
-                            boxShadow: [BoxShadow(color: Tw.fuchsia500.withValues(alpha: 0.2), blurRadius: 15)],
+                            boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.2), blurRadius: 15)],
                           ),
                           child: _credLoading
                               ? const Center(child: SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Tw.white)))
@@ -593,7 +593,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         context: context,
         barrierDismissible: true,
         barrierLabel: 'img',
-        barrierColor: Tw.slate950.withValues(alpha: 0.9),
+        barrierColor: Tw.night.withValues(alpha: 0.9),
         pageBuilder: (ctx, _, _) => SafeArea(
           child: Center(
             child: Padding(
@@ -611,7 +611,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Container(
                       width: 40,
                       height: 40,
-                      decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.w(0.1), border: Border.all(color: Tw.w(0.1))),
+                      decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.lineSoft, border: Border.all(color: Tw.line)),
                       child: const Icon(Icons.close, color: Tw.white),
                     ),
                   ),
@@ -627,9 +627,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         barrierColor: Colors.black.withValues(alpha: 0.8),
         builder: (ctx) => StatefulBuilder(
           builder: (ctx, setLocal) => Dialog(
-            backgroundColor: Tw.slate900,
+            backgroundColor: Tw.panel,
             insetPadding: const EdgeInsets.all(24),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(48), side: BorderSide(color: Tw.w(0.1))),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(48), side: BorderSide(color: Tw.line)),
             child: Padding(
               padding: const EdgeInsets.all(40),
               child: Column(mainAxisSize: MainAxisSize.min, children: [
@@ -642,7 +642,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const SizedBox(height: 32),
                 Text(ctx.t('profile.say_goodbye'), textAlign: TextAlign.center, style: tw(24, weight: black, tracking: -0.025)),
                 const SizedBox(height: 8),
-                Text(ctx.t('profile.delete_desc'), textAlign: TextAlign.center, style: tw(14, color: Tw.slate400, height: 1.6)),
+                Text(ctx.t('profile.delete_desc'), textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft, height: 1.6)),
                 const SizedBox(height: 32),
                 Pressable(
                   onTap: _deleting
@@ -670,7 +670,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Container(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(vertical: 20),
-                    decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16)),
+                    decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16)),
                     child: Label(ctx.t('profile.no_stay'), size: 12, tracking: 0.2, align: TextAlign.center),
                   ),
                 ),
@@ -693,7 +693,7 @@ class _Switch extends StatelessWidget {
           duration: const Duration(milliseconds: 200),
           width: 56,
           height: 32,
-          decoration: BoxDecoration(color: on ? Tw.fuchsia600 : Tw.slate800, borderRadius: BorderRadius.circular(99)),
+          decoration: BoxDecoration(color: on ? Tw.party : Tw.line, borderRadius: BorderRadius.circular(99)),
           child: AnimatedAlign(
             duration: const Duration(milliseconds: 200),
             alignment: on ? Alignment.centerRight : Alignment.centerLeft,
@@ -743,7 +743,7 @@ class _ProfileSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget box(double h, {double? w, double r = 24}) =>
-        Container(height: h, width: w, decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(r)));
+        Container(height: h, width: w, decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(r)));
     return Scaffold(
       body: SafeArea(
         child: ListView(padding: const EdgeInsets.fromLTRB(24, 32, 24, 24), children: [

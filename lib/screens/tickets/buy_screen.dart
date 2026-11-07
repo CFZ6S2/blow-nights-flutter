@@ -212,14 +212,14 @@ class _BuyScreenState extends State<BuyScreen> {
       return _message(context, Icons.error_outline, Tw.red500, context.t('buy.invalid_link.title'), context.t('buy.invalid_link.description'));
     }
     if (_tiers.isEmpty) {
-      return _message(context, Icons.confirmation_number, Tw.slate700, context.t('buy.sold_out.title'), context.t('buy.sold_out.description'));
+      return _message(context, Icons.confirmation_number, Tw.line, context.t('buy.sold_out.title'), context.t('buy.sold_out.description'));
     }
     final currency = context.watch<CityProvider>().currency;
     final user = context.watch<AuthProvider>().user;
     final noStripe = !_hasStripe;
 
     return Scaffold(
-      backgroundColor: Tw.black,
+      backgroundColor: Tw.nightDeep,
       body: SafeArea(
         child: Stack(children: [
           Center(
@@ -229,9 +229,9 @@ class _BuyScreenState extends State<BuyScreen> {
                 constraints: const BoxConstraints(maxWidth: 448),
                 clipBehavior: Clip.antiAlias,
                 decoration: BoxDecoration(
-                  color: Tw.slate900.withValues(alpha: 0.8),
+                  color: Tw.panel.withValues(alpha: 0.8),
                   borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: Tw.w(0.05)),
+                  border: Border.all(color: Tw.lineSoft),
                   boxShadow: const [BoxShadow(color: Color(0x80000000), blurRadius: 50, offset: Offset(0, 25))],
                 ),
                 child: Stack(children: [
@@ -239,11 +239,11 @@ class _BuyScreenState extends State<BuyScreen> {
                     padding: const EdgeInsets.all(32),
                     child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                       const SizedBox(height: 16),
-                      Label(_venueName.isNotEmpty ? _venueName : context.t('buy.buy_ticket'), size: 24, color: Tw.fuchsia400),
+                      Label(_venueName.isNotEmpty ? _venueName : context.t('buy.buy_ticket'), size: 24, color: Tw.sun),
                       const SizedBox(height: 4),
                       if (_eventTitle.isNotEmpty) Text(_eventTitle, style: tw(14, weight: bold)),
                       const SizedBox(height: 4),
-                      Text(context.t('buy.qr_generated_instantly'), style: tw(12, color: Tw.slate500)),
+                      Text(context.t('buy.qr_generated_instantly'), style: tw(12, color: Tw.inkDim)),
                       const SizedBox(height: 24),
                       if (noStripe) ...[_testModeBanner(context), const SizedBox(height: 24)],
                       if (_error.isNotEmpty) ...[
@@ -259,19 +259,19 @@ class _BuyScreenState extends State<BuyScreen> {
                         const SizedBox(height: 24),
                       ],
                       if (_tiers.length > 1) ...[
-                        Label(context.t('buy.ticket_type_label'), size: 12, weight: bold, color: Tw.slate500),
+                        Label(context.t('buy.ticket_type_label'), size: 12, weight: bold, color: Tw.inkDim),
                         const SizedBox(height: 8),
                         for (final tier in _tiers) _tierOption(context, tier, currency),
                         const SizedBox(height: 16),
                       ],
                       if (_buyback.isNotEmpty) ...[
-                        Label(context.t('buyback.available_label', fallback: 'Entradas por recompra'), size: 12, weight: bold, color: Tw.amber400),
+                        Label(context.t('buyback.available_label', fallback: 'Entradas por recompra'), size: 12, weight: bold, color: Tw.sun),
                         const SizedBox(height: 8),
                         for (final bb in _buyback) _buybackOption(context, bb, currency),
                         const SizedBox(height: 16),
                       ],
                       if (user == null) ...[
-                        Label(context.t('buy.guest_name', fallback: 'Tu nombre'), size: 12, weight: bold, color: Tw.slate500),
+                        Label(context.t('buy.guest_name', fallback: 'Tu nombre'), size: 12, weight: bold, color: Tw.inkDim),
                         const SizedBox(height: 4),
                         TextField(controller: _guestName, style: tw(14), decoration: _dec('Nombre para la entrada')),
                         const SizedBox(height: 12),
@@ -280,7 +280,7 @@ class _BuyScreenState extends State<BuyScreen> {
                           '(${_freeOrTest ? context.t('buy.optional', fallback: 'opcional') : context.t('buy.required_for_receipt', fallback: 'para recibir tu entrada')})',
                           size: 12,
                           weight: bold,
-                          color: Tw.slate500,
+                          color: Tw.inkDim,
                         ),
                         const SizedBox(height: 4),
                         TextField(controller: _guestEmail, keyboardType: TextInputType.emailAddress, style: tw(14), decoration: _dec('tu@email.com')),
@@ -309,9 +309,9 @@ class _BuyScreenState extends State<BuyScreen> {
                       if (_total > 0 && _hasStripe) ...[
                         const SizedBox(height: 16),
                         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                          const Icon(Icons.lock, size: 12, color: Tw.slate600),
+                          const Icon(Icons.lock, size: 12, color: Tw.inkDim),
                           const SizedBox(width: 8),
-                          Text(context.t('buy.secure_payment_stripe'), style: tw(10, weight: bold, color: Tw.slate600)),
+                          Text(context.t('buy.secure_payment_stripe'), style: tw(10, weight: bold, color: Tw.inkDim)),
                         ]),
                       ],
                     ]),
@@ -321,7 +321,7 @@ class _BuyScreenState extends State<BuyScreen> {
                     right: 0,
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                      decoration: const BoxDecoration(color: Tw.fuchsia600, borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16))),
+                      decoration: const BoxDecoration(color: Tw.party, borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16))),
                       child: Label(context.t('buy.secure_purchase'), color: Tw.white),
                     ),
                   ),
@@ -332,7 +332,7 @@ class _BuyScreenState extends State<BuyScreen> {
           Positioned(
             top: 8,
             left: 8,
-            child: IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.slate400)),
+            child: IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.inkSoft)),
           ),
         ]),
       ),
@@ -347,22 +347,22 @@ class _BuyScreenState extends State<BuyScreen> {
   Widget _testModeBanner(BuildContext context) => Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Tw.amber500.withValues(alpha: 0.1),
+          color: Tw.sun.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Tw.amber500.withValues(alpha: 0.3)),
+          border: Border.all(color: Tw.sun.withValues(alpha: 0.3)),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
-            const Icon(Icons.science, size: 14, color: Tw.amber400),
+            const Icon(Icons.science, size: 14, color: Tw.sun),
             const SizedBox(width: 8),
-            Flexible(child: Label(context.t('buy.test_mode_title', fallback: 'Modo de prueba (Local sin Stripe)'), size: 12, weight: bold, color: Tw.amber400, tracking: 0.05)),
+            Flexible(child: Label(context.t('buy.test_mode_title', fallback: 'Modo de prueba (Local sin Stripe)'), size: 12, weight: bold, color: Tw.sun, tracking: 0.05)),
           ]),
           const SizedBox(height: 4),
           Text(
             context.t('buy.test_mode_desc',
                 fallback:
                     'Este local aún no tiene Stripe vinculado para cobros bancarios. Puedes emitir un Pase de Prueba gratis para verificar el acceso y el escáner QR de puerta.'),
-            style: tw(12, color: Tw.slate300),
+            style: tw(12, color: Tw.inkSoft),
           ),
         ]),
       );
@@ -383,9 +383,9 @@ class _BuyScreenState extends State<BuyScreen> {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: on ? Tw.fuchsia500.withValues(alpha: 0.1) : Tw.w(0.05),
+            color: on ? Tw.party.withValues(alpha: 0.1) : Tw.panelSoft,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: on ? Tw.fuchsia500.withValues(alpha: 0.5) : Tw.w(0.05)),
+            border: Border.all(color: on ? Tw.party.withValues(alpha: 0.5) : Tw.panelSoft),
           ),
           child: Row(children: [
             Expanded(
@@ -393,13 +393,13 @@ class _BuyScreenState extends State<BuyScreen> {
                 Text(safeStr(tier['name']), style: tw(14, weight: bold)),
                 const SizedBox(height: 2),
                 Row(children: [
-                  Text('$remaining ${context.t('buy.available')}', style: tw(10, color: Tw.slate500)),
+                  Text('$remaining ${context.t('buy.available')}', style: tw(10, color: Tw.inkDim)),
                   if (almost) ...[
                     const SizedBox(width: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                      decoration: BoxDecoration(color: Tw.amber500.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(99)),
-                      child: Text(context.t('events.spots_left', count: remaining, fallback: '$remaining left'), style: tw(9, weight: bold, color: Tw.amber400)),
+                      decoration: BoxDecoration(color: Tw.sun.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(99)),
+                      child: Text(context.t('events.spots_left', count: remaining, fallback: '$remaining left'), style: tw(9, weight: bold, color: Tw.sun)),
                     ),
                   ],
                 ]),
@@ -424,15 +424,15 @@ class _BuyScreenState extends State<BuyScreen> {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: on ? Tw.amber500.withValues(alpha: 0.1) : Tw.w(0.05),
+            color: on ? Tw.sun.withValues(alpha: 0.1) : Tw.panelSoft,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: on ? Tw.amber500.withValues(alpha: 0.5) : Tw.w(0.05)),
+            border: Border.all(color: on ? Tw.sun.withValues(alpha: 0.5) : Tw.panelSoft),
           ),
           child: Row(children: [
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(safeStr(bb['tierName']).isNotEmpty ? safeStr(bb['tierName']) : 'General', style: tw(14, weight: bold)),
-                Text(context.t('buyback.badge', fallback: 'Recompra oficial'), style: tw(10, color: Tw.amber400)),
+                Text(context.t('buyback.badge', fallback: 'Recompra oficial'), style: tw(10, color: Tw.sun)),
               ]),
             ),
             Text(formatPrice(asInt(bb['currentTierPriceCents']) / 100, currency), style: tw(18, weight: black)),
@@ -444,29 +444,29 @@ class _BuyScreenState extends State<BuyScreen> {
 
   Widget _summary(BuildContext context, String currency, bool noStripe) => Container(
         padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.05))),
+        decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.lineSoft)),
         child: Column(children: [
           Row(children: [
             Expanded(
               child: Text(safeStr(_currentTier?['name']).isNotEmpty ? safeStr(_currentTier?['name']) : context.t('buy.default_ticket_name'),
-                  style: tw(14, color: Tw.slate300)),
+                  style: tw(14, color: Tw.inkSoft)),
             ),
-            Text(formatPrice(_ticketPrice, currency), style: tw(14, weight: bold, color: Tw.slate300)),
+            Text(formatPrice(_ticketPrice, currency), style: tw(14, weight: bold, color: Tw.inkSoft)),
           ]),
           if (_total > 0 && !noStripe) ...[
             const SizedBox(height: 8),
             Row(children: [
-              Expanded(child: Text(context.t('buy.platform_fee'), style: tw(14, color: Tw.slate500))),
-              Text(formatPrice(_platformFee, currency), style: tw(14, weight: bold, color: Tw.slate500)),
+              Expanded(child: Text(context.t('buy.platform_fee'), style: tw(14, color: Tw.inkDim))),
+              Text(formatPrice(_platformFee, currency), style: tw(14, weight: bold, color: Tw.inkDim)),
             ]),
           ],
           const SizedBox(height: 8),
-          Divider(color: Tw.w(0.1), height: 16),
+          Divider(color: Tw.line, height: 16),
           Row(children: [
             Expanded(child: Text(context.t('buy.total'), style: tw(16, weight: black))),
             Text(
               noStripe ? '0 € (Pase de prueba)' : (_total == 0 ? context.t('buy.free', fallback: 'GRATIS') : formatPrice(_total, currency)),
-              style: tw(20, weight: black, color: Tw.fuchsia400),
+              style: tw(20, weight: black, color: Tw.sun),
             ),
           ]),
         ]),
@@ -500,14 +500,14 @@ class _BuyScreenState extends State<BuyScreen> {
             borderRadius: BorderRadius.circular(12),
             boxShadow: const [BoxShadow(color: Color(0x40000000), blurRadius: 15, offset: Offset(0, 5))],
           ),
-          child: Label(label, size: 14, color: Tw.black, align: TextAlign.center),
+          child: Label(label, size: 14, color: Tw.nightDeep, align: TextAlign.center),
         ),
       ),
     );
   }
 
   Widget _message(BuildContext context, IconData icon, Color color, String title, String desc) => Scaffold(
-        backgroundColor: Tw.black,
+        backgroundColor: Tw.nightDeep,
         body: SafeArea(
           child: Stack(children: [
             Center(
@@ -518,14 +518,14 @@ class _BuyScreenState extends State<BuyScreen> {
                   const SizedBox(height: 16),
                   Text(title, textAlign: TextAlign.center, style: tw(20, weight: black)),
                   const SizedBox(height: 8),
-                  Text(desc, textAlign: TextAlign.center, style: tw(14, color: Tw.slate500)),
+                  Text(desc, textAlign: TextAlign.center, style: tw(14, color: Tw.inkDim)),
                 ]),
               ),
             ),
             Positioned(
               top: 8,
               left: 8,
-              child: IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.slate400)),
+              child: IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.inkSoft)),
             ),
           ]),
         ),
@@ -538,17 +538,17 @@ class _BuySkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget box(double h, {double? w, double r = 8, Color? c}) =>
-        Container(height: h, width: w, decoration: BoxDecoration(color: c ?? Tw.w(0.05), borderRadius: BorderRadius.circular(r)));
+        Container(height: h, width: w, decoration: BoxDecoration(color: c ?? Tw.panelSoft, borderRadius: BorderRadius.circular(r)));
     return Scaffold(
-      backgroundColor: Tw.black,
+      backgroundColor: Tw.nightDeep,
       body: Center(
         child: Container(
           margin: const EdgeInsets.all(24),
           padding: const EdgeInsets.all(32),
           constraints: const BoxConstraints(maxWidth: 448),
-          decoration: BoxDecoration(color: Tw.slate900.withValues(alpha: 0.8), borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.w(0.05))),
+          decoration: BoxDecoration(color: Tw.panel.withValues(alpha: 0.8), borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.lineSoft)),
           child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            Align(alignment: Alignment.centerRight, child: box(16, w: 80, r: 99, c: Tw.fuchsia500.withValues(alpha: 0.2))),
+            Align(alignment: Alignment.centerRight, child: box(16, w: 80, r: 99, c: Tw.party.withValues(alpha: 0.2))),
             const SizedBox(height: 24),
             FractionallySizedBox(alignment: Alignment.centerLeft, widthFactor: 0.66, child: box(24)),
             const SizedBox(height: 8),
@@ -558,7 +558,7 @@ class _BuySkeleton extends StatelessWidget {
             const SizedBox(height: 12),
             box(64, r: 16),
             const SizedBox(height: 24),
-            box(48, r: 12, c: Tw.w(0.1)),
+            box(48, r: 12, c: Tw.lineSoft),
             const SizedBox(height: 24),
             box(56, r: 12),
           ]),

@@ -142,12 +142,12 @@ class _CityManagerScreenState extends State<CityManagerScreen> {
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
     if (auth.loading || _loading) {
-      return const Scaffold(backgroundColor: Tw.slate950, body: Center(child: CircularProgressIndicator(strokeWidth: 2, color: Tw.fuchsia500)));
+      return const Scaffold(backgroundColor: Tw.night, body: Center(child: CircularProgressIndicator(strokeWidth: 2, color: Tw.party)));
     }
     final city = _city;
     if (city == null) {
       return Scaffold(
-        backgroundColor: Tw.slate950,
+        backgroundColor: Tw.night,
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(24),
@@ -156,11 +156,11 @@ class _CityManagerScreenState extends State<CityManagerScreen> {
               const SizedBox(height: 16),
               Text(context.t('city_manager_access_denied'), textAlign: TextAlign.center, style: tw(24, weight: bold)),
               const SizedBox(height: 8),
-              Text(context.t('city_manager_no_franchise'), textAlign: TextAlign.center, style: tw(15, color: Tw.slate400)),
+              Text(context.t('city_manager_no_franchise'), textAlign: TextAlign.center, style: tw(15, color: Tw.inkSoft)),
               const SizedBox(height: 32),
               AdminButton(
                 label: context.t('city_manager_back_home'),
-                color: Tw.w(0.1),
+                color: Tw.lineSoft,
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                 onTap: () => Navigator.of(context).popUntil((r) => r.isFirst),
               ),
@@ -173,20 +173,20 @@ class _CityManagerScreenState extends State<CityManagerScreen> {
     final sym = currencySymbol(context.watch<CityProvider>().currency);
     final top = MediaQuery.of(context).padding.top;
     return Scaffold(
-      backgroundColor: Tw.slate950,
+      backgroundColor: Tw.night,
       body: Column(children: [
         Container(
           padding: EdgeInsets.fromLTRB(16, top + 12, 16, 12),
-          decoration: const BoxDecoration(color: Tw.slate900, border: Border(bottom: BorderSide(color: Tw.slate800))),
+          decoration: const BoxDecoration(color: Tw.panel, border: Border(bottom: BorderSide(color: Tw.line))),
           child: Row(children: [
-            IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.slate400)),
+            IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.inkSoft)),
             Container(
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.fuchsia600, Tw.indigo600]),
+                gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.sunset, Tw.party]),
                 borderRadius: BorderRadius.circular(12),
-                boxShadow: [BoxShadow(color: Tw.fuchsia500.withValues(alpha: 0.2), blurRadius: 12)],
+                boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.2), blurRadius: 12)],
               ),
               child: const Icon(Icons.business, size: 20, color: Tw.white),
             ),
@@ -200,14 +200,14 @@ class _CityManagerScreenState extends State<CityManagerScreen> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
-                color: Tw.green500.withValues(alpha: 0.1),
+                color: Tw.live.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(99),
-                border: Border.all(color: Tw.green500.withValues(alpha: 0.2)),
+                border: Border.all(color: Tw.live.withValues(alpha: 0.2)),
               ),
               child: Row(mainAxisSize: MainAxisSize.min, children: [
-                const PulseDot(color: Tw.green500),
+                const PulseDot(color: Tw.live),
                 const SizedBox(width: 6),
-                Label(context.t('city_manager_active_license'), color: Tw.green400, tracking: 0.05),
+                Label(context.t('city_manager_active_license'), color: Tw.live, tracking: 0.05),
               ]),
             ),
           ]),
@@ -217,7 +217,7 @@ class _CityManagerScreenState extends State<CityManagerScreen> {
             padding: EdgeInsets.fromLTRB(20, 24, 20, 80 + MediaQuery.of(context).padding.bottom),
             children: [
               if (_applications.isNotEmpty) ...[_applicationsCard(context), const SizedBox(height: 40)],
-              Label(context.t('city_manager_financial_metrics'), size: 13, color: Tw.slate500),
+              Label(context.t('city_manager_financial_metrics'), size: 13, color: Tw.inkDim),
               const SizedBox(height: 16),
               AdminGrid(gap: 16, children: [
                 _metric(context.t('city_manager.active_venues'), '$_activeVenues', context.t('city_manager.active_b2b_subs'), Icons.business),
@@ -229,10 +229,10 @@ class _CityManagerScreenState extends State<CityManagerScreen> {
               ]),
               const SizedBox(height: 40),
               Row(children: [
-                Expanded(child: Label(context.t('city_manager_venues_census'), size: 13, color: Tw.slate500)),
+                Expanded(child: Label(context.t('city_manager_venues_census'), size: 13, color: Tw.inkDim)),
                 AdminButton(
                   label: context.t('city_manager_copy_affiliate'),
-                  color: Tw.fuchsia400,
+                  color: Tw.sun,
                   outlined: true,
                   fontSize: 11,
                   onTap: () async {
@@ -244,15 +244,15 @@ class _CityManagerScreenState extends State<CityManagerScreen> {
               const SizedBox(height: 16),
               Container(
                 clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(color: Tw.slate900, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.slate800)),
+                decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.line)),
                 child: _venues.isEmpty
                     ? Padding(
                         padding: const EdgeInsets.all(32),
-                        child: Text(context.t('city_manager_no_venues'), textAlign: TextAlign.center, style: tw(14, color: Tw.slate500)),
+                        child: Text(context.t('city_manager_no_venues'), textAlign: TextAlign.center, style: tw(14, color: Tw.inkDim)),
                       )
                     : Column(children: [
                         for (var i = 0; i < _venues.length; i++) ...[
-                          if (i > 0) Divider(height: 1, color: Tw.slate800.withValues(alpha: 0.5)),
+                          if (i > 0) Divider(height: 1, color: Tw.line.withValues(alpha: 0.5)),
                           _venueRow(context, _venues[i]),
                         ],
                       ]),
@@ -266,7 +266,7 @@ class _CityManagerScreenState extends State<CityManagerScreen> {
 
   Widget _applicationsCard(BuildContext context) => Container(
         padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(color: Tw.slate900, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.5), width: 2)),
+        decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.party.withValues(alpha: 0.5), width: 2)),
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
           const Text('💼', style: TextStyle(fontSize: 36)),
           const SizedBox(width: 16),
@@ -274,24 +274,24 @@ class _CityManagerScreenState extends State<CityManagerScreen> {
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
               Text(context.t('city_manager_pending_apps'), style: tw(20, weight: black, height: 1)),
               const SizedBox(height: 4),
-              Text(context.t('city_manager_pending_apps_desc'), style: tw(14, color: Tw.slate400)),
+              Text(context.t('city_manager_pending_apps_desc'), style: tw(14, color: Tw.inkSoft)),
               const SizedBox(height: 16),
               for (final app in _applications)
                 Container(
                   margin: const EdgeInsets.only(bottom: 12),
                   padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.1))),
+                  decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text((app['name'] as String?) ?? '', style: tw(18, weight: bold)),
-                    Text(((app['cityId'] as String?) ?? '').toUpperCase(), style: tw(12, weight: bold, color: Tw.fuchsia400)),
+                    Text(((app['cityId'] as String?) ?? '').toUpperCase(), style: tw(12, weight: bold, color: Tw.sun)),
                     const SizedBox(height: 6),
                     Wrap(spacing: 8, children: [
-                      AdminBadge(context.t('city_manager_local_label'), color: Tw.fuchsia400),
+                      AdminBadge(context.t('city_manager_local_label'), color: Tw.sun),
                       AdminBadge(context.t('city_manager_pending_label'), color: Tw.yellow500),
                     ]),
                     const SizedBox(height: 8),
-                    Text('📞 ${app['phone'] ?? ''} | ✉️ ${app['email'] ?? ''}', style: tw(14, color: Tw.slate300)),
-                    if (app['venueName'] != null) Text('🍸 ${app['venueName']}', style: tw(14, weight: bold, color: Tw.fuchsia300)),
+                    Text('📞 ${app['phone'] ?? ''} | ✉️ ${app['email'] ?? ''}', style: tw(14, color: Tw.inkSoft)),
+                    if (app['venueName'] != null) Text('🍸 ${app['venueName']}', style: tw(14, weight: bold, color: Tw.sun)),
                     const SizedBox(height: 16),
                     Wrap(spacing: 8, runSpacing: 8, children: [
                       AdminButton(label: context.t('city_manager_approve_venue'), onTap: () => _approve(app)),
@@ -316,23 +316,23 @@ class _CityManagerScreenState extends State<CityManagerScreen> {
         clipBehavior: Clip.antiAlias,
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: highlight ? null : Tw.slate900,
+          color: highlight ? null : Tw.panel,
           gradient: highlight
-              ? LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.fuchsia900.withValues(alpha: 0.4), Tw.indigo900.withValues(alpha: 0.4)])
+              ? LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.panel.withValues(alpha: 0.4), Tw.indigo900.withValues(alpha: 0.4)])
               : null,
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: highlight ? Tw.fuchsia500.withValues(alpha: 0.2) : Tw.slate800),
+          border: Border.all(color: highlight ? Tw.party.withValues(alpha: 0.2) : Tw.line),
         ),
         child: Stack(children: [
-          if (icon != null) Positioned(top: -8, right: -8, child: Icon(icon, size: 72, color: Tw.w(0.05))),
+          if (icon != null) Positioned(top: -8, right: -8, child: Icon(icon, size: 72, color: Tw.panelSoft)),
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(label, style: tw(13, weight: bold, color: highlight ? Tw.fuchsia300 : Tw.slate400)),
+            Text(label, style: tw(13, weight: bold, color: highlight ? Tw.sun : Tw.inkSoft)),
             const SizedBox(height: 4),
             FittedBox(fit: BoxFit.scaleDown, alignment: Alignment.centerLeft, child: Text(value, style: tw(26, weight: black))),
             const SizedBox(height: 12),
-            Divider(height: 1, color: highlight ? Tw.fuchsia500.withValues(alpha: 0.2) : Tw.slate800.withValues(alpha: 0.5)),
+            Divider(height: 1, color: highlight ? Tw.party.withValues(alpha: 0.2) : Tw.line.withValues(alpha: 0.5)),
             const SizedBox(height: 12),
-            Text(footer, style: tw(11, weight: medium, color: highlight ? const Color(0x80F5D0FE) : Tw.slate500)),
+            Text(footer, style: tw(11, weight: medium, color: highlight ? const Color(0x80F5D0FE) : Tw.inkDim)),
           ]),
         ]),
       );
@@ -341,9 +341,9 @@ class _CityManagerScreenState extends State<CityManagerScreen> {
     final tier = v['subscriptionTier'];
     final (tierLabel, tierColor) = switch (tier) {
       'ticketing' => ('TICKETING', Tw.indigo400),
-      'promo' => ('PROMO', Tw.fuchsia400),
+      'promo' => ('PROMO', Tw.sun),
       'basico' => ('BÁSICO', Tw.blue400),
-      _ => ('FREE', Tw.slate400),
+      _ => ('FREE', Tw.inkSoft),
     };
     final active = v['isActive'] == true;
     final created = parseDate(v['createdAt']) ?? DateTime.now();
@@ -356,10 +356,10 @@ class _CityManagerScreenState extends State<CityManagerScreen> {
             width: 48,
             height: 48,
             clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(color: Tw.slate800, borderRadius: BorderRadius.circular(12)),
+            decoration: BoxDecoration(color: Tw.line, borderRadius: BorderRadius.circular(12)),
             child: (v['coverImage'] as String?)?.isNotEmpty == true
                 ? NetImage(v['coverImage'] as String)
-                : const Icon(Icons.business, size: 20, color: Tw.slate600),
+                : const Icon(Icons.business, size: 20, color: Tw.inkDim),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -367,7 +367,7 @@ class _CityManagerScreenState extends State<CityManagerScreen> {
               Text((v['name'] as String?) ?? '', style: tw(15, weight: bold)),
               Text(
                 '${context.t('city_manager_venue_type_$type', fallback: type)} • Creado el ${created.day}/${created.month}/${created.year}',
-                style: tw(12, color: Tw.slate400),
+                style: tw(12, color: Tw.inkSoft),
               ),
             ]),
           ),
@@ -376,18 +376,18 @@ class _CityManagerScreenState extends State<CityManagerScreen> {
         Wrap(spacing: 8, runSpacing: 8, crossAxisAlignment: WrapCrossAlignment.center, children: [
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-            decoration: BoxDecoration(color: active ? Tw.green500.withValues(alpha: 0.1) : Tw.slate800, borderRadius: BorderRadius.circular(99)),
+            decoration: BoxDecoration(color: active ? Tw.live.withValues(alpha: 0.1) : Tw.line, borderRadius: BorderRadius.circular(99)),
             child: Label(active ? context.t('city_manager_venue_active') : context.t('city_manager_venue_inactive'),
-                size: 12, weight: bold, color: active ? Tw.green400 : Tw.slate400, tracking: 0.05),
+                size: 12, weight: bold, color: active ? Tw.live : Tw.inkSoft, tracking: 0.05),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-            decoration: BoxDecoration(color: tier == null ? Tw.slate800 : tierColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(99)),
+            decoration: BoxDecoration(color: tier == null ? Tw.line : tierColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(99)),
             child: Label(tierLabel, size: 12, weight: bold, color: tierColor, tracking: 0.05),
           ),
           AdminButton(
             label: context.t('city_manager_manage'),
-            color: Tw.slate800,
+            color: Tw.line,
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             onTap: () => openRoute(context, AppRoute.venueAdmin),
           ),

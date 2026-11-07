@@ -77,16 +77,16 @@ class _PartnerApplyScreenState extends State<PartnerApplyScreen> {
   Widget _label(String t) => Padding(padding: const EdgeInsets.only(left: 4, bottom: 4, top: 20), child: Label(t, size: 12, weight: bold, tracking: 0.05));
 
   InputDecoration _deco(String hint) => adminInputDecoration(hint, focus: Tw.purple500).copyWith(
-        fillColor: Tw.slate950,
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.slate800)),
+        fillColor: Tw.night,
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.line)),
       );
 
   @override
   Widget build(BuildContext context) {
-    if (context.watch<AuthProvider>().loading) return const Scaffold(backgroundColor: Tw.slate950);
+    if (context.watch<AuthProvider>().loading) return const Scaffold(backgroundColor: Tw.night);
     final valid = _city.isNotEmpty && _name.text.trim().isNotEmpty && _phone.text.trim().isNotEmpty && _experience.text.trim().isNotEmpty;
     return Scaffold(
-      backgroundColor: Tw.slate950,
+      backgroundColor: Tw.night,
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color(0xFF25D366),
         foregroundColor: Tw.white,
@@ -102,7 +102,7 @@ class _PartnerApplyScreenState extends State<PartnerApplyScreen> {
             child: GestureDetector(
               onTap: () => Navigator.of(context).maybePop(),
               child: Row(mainAxisSize: MainAxisSize.min, children: [
-                const Icon(Icons.arrow_back, size: 16, color: Tw.slate400),
+                const Icon(Icons.arrow_back, size: 16, color: Tw.inkSoft),
                 const SizedBox(width: 8),
                 Label(context.t('partners_apply.back'), size: 14, weight: bold, tracking: 0.05),
               ]),
@@ -111,25 +111,25 @@ class _PartnerApplyScreenState extends State<PartnerApplyScreen> {
           const SizedBox(height: 32),
           if (_success)
             AdminCard(
-              color: Tw.slate900,
-              borderColor: Tw.green500.withValues(alpha: 0.3),
+              color: Tw.panel,
+              borderColor: Tw.live.withValues(alpha: 0.3),
               padding: const EdgeInsets.all(28),
               child: Column(children: [
                 Container(
                   width: 80,
                   height: 80,
-                  decoration: BoxDecoration(color: Tw.green500.withValues(alpha: 0.1), shape: BoxShape.circle),
-                  child: const Icon(Icons.check_circle, size: 40, color: Tw.green500),
+                  decoration: BoxDecoration(color: Tw.live.withValues(alpha: 0.1), shape: BoxShape.circle),
+                  child: const Icon(Icons.check_circle, size: 40, color: Tw.live),
                 ),
                 const SizedBox(height: 24),
                 Text(context.t('partners_apply.success_title'), textAlign: TextAlign.center, style: tw(28, weight: black)),
                 const SizedBox(height: 16),
-                Text(context.t('partners_apply.success_desc'), textAlign: TextAlign.center, style: tw(15, color: Tw.slate400)),
+                Text(context.t('partners_apply.success_desc'), textAlign: TextAlign.center, style: tw(15, color: Tw.inkSoft)),
                 const SizedBox(height: 32),
                 AdminButton(
                   label: context.t('partners_apply.back_to_home'),
                   color: Tw.white,
-                  textColor: Tw.black,
+                  textColor: Tw.night,
                   padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                   onTap: () => Navigator.of(context).popUntil((r) => r.isFirst),
                 ),
@@ -137,13 +137,13 @@ class _PartnerApplyScreenState extends State<PartnerApplyScreen> {
             )
           else
             AdminCard(
-              color: Tw.slate900,
-              borderColor: Tw.slate800,
+              color: Tw.panel,
+              borderColor: Tw.line,
               padding: const EdgeInsets.all(28),
               child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                 Text(context.t('partners_apply.form_title'), style: tw(28, weight: black)),
                 const SizedBox(height: 8),
-                Text(context.t('partners_apply.form_desc'), style: tw(14, color: Tw.slate400)),
+                Text(context.t('partners_apply.form_desc'), style: tw(14, color: Tw.inkSoft)),
                 const SizedBox(height: 12),
                 _label(context.t('partners_apply.city_label')),
                 AdminSelect<String>(
@@ -169,7 +169,7 @@ class _PartnerApplyScreenState extends State<PartnerApplyScreen> {
                   expand: true,
                   fontSize: 13,
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  gradient: const LinearGradient(colors: [Tw.purple600, Tw.indigo600]),
+                  gradient: const LinearGradient(colors: [Tw.party, Tw.sunset]),
                   onTap: _submitting || !valid ? null : _submit,
                 ),
               ]),

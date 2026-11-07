@@ -23,10 +23,10 @@ class _RoleOption {
 
 const _roleOptions = [
   _RoleOption('venueOwner', 'Venue Manager', Icons.storefront, Tw.blue400, '/venue-admin'),
-  _RoleOption('cityAdmin', 'City Manager', Icons.location_city, Tw.green400, '/city-manager'),
+  _RoleOption('cityAdmin', 'City Manager', Icons.location_city, Tw.live, '/city-manager'),
   _RoleOption('admin', 'Admin', Icons.admin_panel_settings, Tw.purple400, '/admin'),
   _RoleOption('superadmin', 'Super Admin', Icons.local_police, Tw.red400, '/super-admin'),
-  _RoleOption('rrpp', 'RRPP', Icons.badge, Tw.fuchsia400, '/'),
+  _RoleOption('rrpp', 'RRPP', Icons.badge, Tw.sun, '/'),
   _RoleOption('door', 'Puerta', Icons.meeting_room, Tw.orange400, '/door'),
 ];
 
@@ -319,7 +319,7 @@ class _UsersPanelState extends State<UsersPanel> {
           ]),
           const SizedBox(height: 24),
           if (_searchResults.isNotEmpty) ...[
-            Label('${context.t('super_admin.search_results')} (${_searchResults.length})', size: 12, weight: bold, color: Tw.fuchsia400),
+            Label('${context.t('super_admin.search_results')} (${_searchResults.length})', size: 12, weight: bold, color: Tw.sun),
             const SizedBox(height: 8),
             for (final u in _searchResults) _userRow(u, showCity: false),
           ] else ...[
@@ -333,12 +333,12 @@ class _UsersPanelState extends State<UsersPanel> {
               ),
             ]),
             const SizedBox(height: 16),
-            Divider(height: 1, color: Tw.w(0.1)),
+            Divider(height: 1, color: Tw.line),
             const SizedBox(height: 16),
             if (_loadingUsers)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                child: Text(context.t('super_admin.loading_users'), textAlign: TextAlign.center, style: tw(14, color: Tw.slate500)),
+                child: Text(context.t('super_admin.loading_users'), textAlign: TextAlign.center, style: tw(14, color: Tw.inkDim)),
               )
             else
               for (final u in filtered) _userRow(u, showCity: true),
@@ -363,9 +363,9 @@ class _UsersPanelState extends State<UsersPanel> {
         child: Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: active ? Tw.fuchsia500.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.3),
+            color: active ? Tw.party.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: active ? Tw.fuchsia500.withValues(alpha: 0.5) : Tw.w(0.05)),
+            border: Border.all(color: active ? Tw.party.withValues(alpha: 0.5) : Tw.panelSoft),
           ),
           child: Row(children: [
             ClipOval(child: NetImage(avatarUrl(u), width: 40, height: 40)),
@@ -382,12 +382,12 @@ class _UsersPanelState extends State<UsersPanel> {
                     AdminBadge(context.t('super_admin.banned'), color: Tw.red400, background: Tw.red900.withValues(alpha: 0.3)),
                   ],
                 ]),
-                Text((u['email'] as String?) ?? '', overflow: TextOverflow.ellipsis, style: tw(10, color: Tw.slate400)),
+                Text((u['email'] as String?) ?? '', overflow: TextOverflow.ellipsis, style: tw(10, color: Tw.inkSoft)),
               ]),
             ),
             const SizedBox(width: 8),
             Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-              AdminBadge((u['role'] as String?) ?? 'user', color: Tw.slate500, background: Tw.w(0.05)),
+              AdminBadge((u['role'] as String?) ?? 'user', color: Tw.inkDim, background: Tw.panelSoft),
               if (showCity && city != null && city.isNotEmpty) ...[
                 const SizedBox(height: 4),
                 AdminBadge(city, color: Tw.blue400, background: Tw.blue900.withValues(alpha: 0.2)),
@@ -408,7 +408,7 @@ class _UsersPanelState extends State<UsersPanel> {
         if (u == null)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 40),
-            child: Text(context.t('super_admin.select_user_prompt'), textAlign: TextAlign.center, style: tw(14, color: Tw.slate500)),
+            child: Text(context.t('super_admin.select_user_prompt'), textAlign: TextAlign.center, style: tw(14, color: Tw.inkDim)),
           )
         else ...[
           Row(children: [
@@ -417,10 +417,10 @@ class _UsersPanelState extends State<UsersPanel> {
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text((u['nick'] as String?) ?? context.t('super_admin.no_nick'), style: tw(24, weight: black)),
-                Text((u['email'] as String?) ?? '', style: tw(14, color: Tw.slate400)),
+                Text((u['email'] as String?) ?? '', style: tw(14, color: Tw.inkSoft)),
                 const SizedBox(height: 8),
                 Wrap(spacing: 8, runSpacing: 4, children: [
-                  AdminBadge((u['role'] as String?) ?? 'user', color: Tw.white, background: Tw.w(0.1)),
+                  AdminBadge((u['role'] as String?) ?? 'user', color: Tw.white, background: Tw.lineSoft),
                   if (u['premium'] == true) AdminBadge('Premium', color: Tw.yellow500),
                   if (u['banned'] == true) AdminBadge(context.t('super_admin.banned'), color: Tw.red400, background: Tw.red900.withValues(alpha: 0.3)),
                 ]),
@@ -429,13 +429,13 @@ class _UsersPanelState extends State<UsersPanel> {
           ]),
           const SizedBox(height: 24),
           AdminGrid(children: [
-            _infoBox('ID (UID)', Text(u['id'] as String, style: tw(12, color: Tw.slate300).copyWith(fontFamily: 'monospace'))),
+            _infoBox('ID (UID)', Text(u['id'] as String, style: tw(12, color: Tw.inkSoft).copyWith(fontFamily: 'monospace'))),
             _infoBox(
               context.t('super_admin.created_date'),
-              Text(u['createdAt'] != null ? shortDate(u['createdAt']) : context.t('super_admin.unknown'), style: tw(12, color: Tw.slate300)),
+              Text(u['createdAt'] != null ? shortDate(u['createdAt']) : context.t('super_admin.unknown'), style: tw(12, color: Tw.inkSoft)),
             ),
             _infoBox(context.t('super_admin.phone'),
-                Text((u['phone'] as String?) ?? context.t('super_admin.not_registered'), style: tw(12, color: Tw.slate300))),
+                Text((u['phone'] as String?) ?? context.t('super_admin.not_registered'), style: tw(12, color: Tw.inkSoft))),
             _infoBox(
               context.t('super_admin.rrpp_city'),
               AdminSelect<String>(
@@ -447,17 +447,17 @@ class _UsersPanelState extends State<UsersPanel> {
             ),
           ]),
           const SizedBox(height: 32),
-          Label(context.t('super_admin.moderation_actions'), size: 12, weight: bold, color: Tw.slate500),
+          Label(context.t('super_admin.moderation_actions'), size: 12, weight: bold, color: Tw.inkDim),
           const SizedBox(height: 8),
-          Divider(height: 1, color: Tw.w(0.1)),
+          Divider(height: 1, color: Tw.line),
           const SizedBox(height: 12),
-          _action(Icons.chat, context.t('super_admin.send_dm'), Tw.white, Tw.w(0.05), Tw.w(0.1), _sendDm),
+          _action(Icons.chat, context.t('super_admin.send_dm'), Tw.white, Tw.panelSoft, Tw.lineSoft, _sendDm),
           _action(
             Icons.assignment_ind,
             u['role'] == 'rrpp' ? context.t('super_admin.already_rrpp') : context.t('super_admin.convert_to_rrpp'),
-            Tw.fuchsia400,
-            Tw.fuchsia900.withValues(alpha: 0.2),
-            Tw.fuchsia500.withValues(alpha: 0.2),
+            Tw.sun,
+            Tw.panel.withValues(alpha: 0.2),
+            Tw.party.withValues(alpha: 0.2),
             _actionLoading || u['role'] == 'rrpp' ? null : () => _fastTrackRrpp(u['id'] as String),
           ),
           AdminSelect<String>(
@@ -498,9 +498,9 @@ class _UsersPanelState extends State<UsersPanel> {
 
   Widget _infoBox(String label, Widget value) => Container(
         padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.05))),
+        decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.lineSoft)),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Label(label, color: Tw.slate500, weight: bold),
+          Label(label, color: Tw.inkDim, weight: bold),
           const SizedBox(height: 4),
           value,
         ]),
@@ -553,31 +553,31 @@ class _UsersPanelState extends State<UsersPanel> {
             const SizedBox(height: 24),
             Container(
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+              decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Row(children: [
                   Container(
                     width: 48,
                     height: 48,
-                    decoration: BoxDecoration(color: Tw.fuchsia500.withValues(alpha: 0.2), shape: BoxShape.circle),
-                    child: const Icon(Icons.person, color: Tw.fuchsia400),
+                    decoration: BoxDecoration(color: Tw.party.withValues(alpha: 0.2), shape: BoxShape.circle),
+                    child: const Icon(Icons.person, color: Tw.sun),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Text((r['nick'] as String?) ?? context.t('super_admin.no_nick'), style: tw(18, weight: bold)),
-                      Text((r['email'] as String?) ?? '', style: tw(12, color: Tw.slate400)),
+                      Text((r['email'] as String?) ?? '', style: tw(12, color: Tw.inkSoft)),
                     ]),
                   ),
                 ]),
                 const SizedBox(height: 12),
                 Row(children: [
-                  Text(context.t('super_admin.current_role'), style: tw(12, color: Tw.slate500)),
+                  Text(context.t('super_admin.current_role'), style: tw(12, color: Tw.inkDim)),
                   const SizedBox(width: 8),
                   AdminBadge(
                     (r['role'] as String?) ?? 'user',
-                    color: r['role'] != null && r['role'] != 'user' ? Tw.fuchsia400 : Tw.slate500,
-                    background: r['role'] != null && r['role'] != 'user' ? Tw.fuchsia500.withValues(alpha: 0.2) : Tw.w(0.05),
+                    color: r['role'] != null && r['role'] != 'user' ? Tw.sun : Tw.inkDim,
+                    background: r['role'] != null && r['role'] != 'user' ? Tw.party.withValues(alpha: 0.2) : Tw.panelSoft,
                   ),
                 ]),
               ]),
@@ -591,16 +591,16 @@ class _UsersPanelState extends State<UsersPanel> {
                   child: Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: _selectedRole == opt.value ? Tw.fuchsia500.withValues(alpha: 0.1) : Tw.w(0.05),
+                      color: _selectedRole == opt.value ? Tw.party.withValues(alpha: 0.1) : Tw.panelSoft,
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: _selectedRole == opt.value ? Tw.fuchsia500.withValues(alpha: 0.5) : Tw.w(0.05)),
+                      border: Border.all(color: _selectedRole == opt.value ? Tw.party.withValues(alpha: 0.5) : Tw.panelSoft),
                     ),
                     child: Row(children: [
                       Icon(opt.icon, color: opt.color),
                       const SizedBox(width: 12),
                       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                         Text(opt.label, style: tw(14, weight: bold)),
-                        Text('${context.t('super_admin.redirects_to')} ${opt.redirect}', style: tw(10, color: Tw.slate500)),
+                        Text('${context.t('super_admin.redirects_to')} ${opt.redirect}', style: tw(10, color: Tw.inkDim)),
                       ]),
                     ]),
                   ),
@@ -626,7 +626,7 @@ class _UsersPanelState extends State<UsersPanel> {
             AdminButton(
               label: _assigning ? context.t('super_admin.assigning') : context.t('super_admin.assign_role_btn', params: {'role': _selectedRole}),
               color: Tw.white,
-              textColor: Tw.black,
+              textColor: Tw.night,
               expand: true,
               padding: const EdgeInsets.symmetric(vertical: 14),
               loading: _assigning,
@@ -640,7 +640,7 @@ class _UsersPanelState extends State<UsersPanel> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           AdminSectionTitle('${context.t('super_admin.users_with_role')} (${_assignments.length})'),
           const SizedBox(height: 16),
-          if (_assignments.isEmpty) Text(context.t('super_admin.no_special_roles'), style: tw(14, color: Tw.slate500)),
+          if (_assignments.isEmpty) Text(context.t('super_admin.no_special_roles'), style: tw(14, color: Tw.inkDim)),
           for (final u in _assignments) _assignmentRow(u),
         ]),
       ),
@@ -649,11 +649,11 @@ class _UsersPanelState extends State<UsersPanel> {
 
   Widget _assignmentRow(Map<String, dynamic> u) {
     final info = _roleOptions.where((r) => r.value == u['role']).firstOrNull;
-    final color = info?.color ?? Tw.slate400;
+    final color = info?.color ?? Tw.inkSoft;
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.05))),
+      decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.lineSoft)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
           Icon(info?.icon ?? Icons.person, color: color),
@@ -661,10 +661,10 @@ class _UsersPanelState extends State<UsersPanel> {
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text((u['nick'] as String?) ?? context.t('super_admin.no_nick'), overflow: TextOverflow.ellipsis, style: tw(14, weight: bold)),
-              Text((u['email'] as String?) ?? '', overflow: TextOverflow.ellipsis, style: tw(10, color: Tw.slate400)),
+              Text((u['email'] as String?) ?? '', overflow: TextOverflow.ellipsis, style: tw(10, color: Tw.inkSoft)),
             ]),
           ),
-          AdminBadge(info?.label ?? (u['role'] as String? ?? ''), color: color, background: Tw.w(0.05)),
+          AdminBadge(info?.label ?? (u['role'] as String? ?? ''), color: color, background: Tw.panelSoft),
           const SizedBox(width: 8),
           GestureDetector(
             onTap: () => _revokeRole(u['id'] as String, (u['email'] ?? u['nick'] ?? '') as String),
@@ -678,7 +678,7 @@ class _UsersPanelState extends State<UsersPanel> {
         if (u['cityId'] != null)
           Padding(
             padding: const EdgeInsets.only(left: 36, top: 4),
-            child: Text('${context.t('super_admin.city_label')} ${u['cityId']}', style: tw(10, color: Tw.green400)),
+            child: Text('${context.t('super_admin.city_label')} ${u['cityId']}', style: tw(10, color: Tw.live)),
           ),
       ]),
     );

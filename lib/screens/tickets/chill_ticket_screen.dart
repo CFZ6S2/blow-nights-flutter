@@ -100,7 +100,7 @@ class _ChillTicketScreenState extends State<ChillTicketScreen> {
   }
 
   Widget _state(IconData icon, Color color, String title, String desc) => Scaffold(
-        backgroundColor: Tw.black,
+        backgroundColor: Tw.nightDeep,
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(24),
@@ -109,7 +109,7 @@ class _ChillTicketScreenState extends State<ChillTicketScreen> {
               const SizedBox(height: 16),
               Text(title, textAlign: TextAlign.center, style: tw(20, weight: black)),
               const SizedBox(height: 8),
-              Text(desc, textAlign: TextAlign.center, style: tw(14, color: Tw.slate400)),
+              Text(desc, textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft)),
             ]),
           ),
         ),
@@ -117,7 +117,7 @@ class _ChillTicketScreenState extends State<ChillTicketScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) return const Scaffold(backgroundColor: Tw.black, body: Center(child: CircularProgressIndicator(strokeWidth: 2)));
+    if (_loading) return const Scaffold(backgroundColor: Tw.nightDeep, body: Center(child: CircularProgressIndicator(strokeWidth: 2)));
     final r = _request;
     final chill = _chill;
     if (r == null || chill == null) {
@@ -125,14 +125,14 @@ class _ChillTicketScreenState extends State<ChillTicketScreen> {
     }
     final user = context.watch<AuthProvider>().user;
     if (user == null) {
-      return _state(Icons.login, Tw.amber500, context.t('ticket.loginRequired', fallback: 'Inicia sesion'),
+      return _state(Icons.login, Tw.sun, context.t('ticket.loginRequired', fallback: 'Inicia sesion'),
           context.t('ticket.loginRequiredDesc', fallback: 'Necesitas iniciar sesion para ver tu pase.'));
     }
     if (r['user_uid'] != user.uid) {
       return _state(Icons.lock, Tw.red500, context.t('ticket.accessDeniedTitle'), context.t('ticket.accessDeniedDesc'));
     }
     if (!_accepted) {
-      return _state(Icons.cancel, Tw.amber500, context.t('ticket.passRevokedTitle'), context.t('ticket.passRevokedDesc'));
+      return _state(Icons.cancel, Tw.sun, context.t('ticket.passRevokedTitle'), context.t('ticket.passRevokedDesc'));
     }
 
     final hasQr = r['qr_code'] != null;
@@ -141,7 +141,7 @@ class _ChillTicketScreenState extends State<ChillTicketScreen> {
     final nick = safeStr(r['user_nick']).isNotEmpty ? safeStr(r['user_nick']) : safeStr(r['userName']);
 
     return Scaffold(
-      backgroundColor: Tw.black,
+      backgroundColor: Tw.nightDeep,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
@@ -154,9 +154,9 @@ class _ChillTicketScreenState extends State<ChillTicketScreen> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(colors: [Tw.fuchsia600, Tw.purple600]),
+                    gradient: const LinearGradient(colors: [Tw.sunset, Tw.party]),
                     borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-                    boxShadow: [BoxShadow(color: Tw.fuchsia500.withValues(alpha: 0.2), blurRadius: 20)],
+                    boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.2), blurRadius: 20)],
                   ),
                   child: Column(children: [
                     Label(context.t('ticket.digitalAccessPass'), color: Tw.w(0.8), tracking: 0.2),
@@ -173,12 +173,12 @@ class _ChillTicketScreenState extends State<ChillTicketScreen> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    color: Tw.slate900.withValues(alpha: 0.8),
+                    color: Tw.panel.withValues(alpha: 0.8),
                     borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
                     border: Border(
-                      left: BorderSide(color: Tw.w(0.05)),
-                      right: BorderSide(color: Tw.w(0.05)),
-                      bottom: BorderSide(color: Tw.w(0.05)),
+                      left: BorderSide(color: Tw.lineSoft),
+                      right: BorderSide(color: Tw.lineSoft),
+                      bottom: BorderSide(color: Tw.lineSoft),
                     ),
                   ),
                   child: Column(children: [
@@ -189,14 +189,14 @@ class _ChillTicketScreenState extends State<ChillTicketScreen> {
                           height: 192,
                           margin: const EdgeInsets.only(bottom: 24),
                           decoration: BoxDecoration(
-                            color: Tw.emerald500.withValues(alpha: 0.1),
+                            color: Tw.live.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: Tw.emerald500.withValues(alpha: 0.5), width: 2),
+                            border: Border.all(color: Tw.live.withValues(alpha: 0.5), width: 2),
                           ),
                           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                            const Icon(Icons.check_circle, size: 48, color: Tw.emerald400),
+                            const Icon(Icons.check_circle, size: 48, color: Tw.live),
                             const SizedBox(height: 8),
-                            Text(context.t('ticket.passValidated'), textAlign: TextAlign.center, style: tw(14, weight: bold, color: Tw.emerald400)),
+                            Text(context.t('ticket.passValidated'), textAlign: TextAlign.center, style: tw(14, weight: bold, color: Tw.live)),
                           ]),
                         )
                       else if (_secrets != null)
@@ -210,8 +210,8 @@ class _ChillTicketScreenState extends State<ChillTicketScreen> {
                           height: 192,
                           margin: const EdgeInsets.only(bottom: 24),
                           alignment: Alignment.center,
-                          decoration: BoxDecoration(color: Tw.slate800, borderRadius: BorderRadius.circular(16)),
-                          child: Text(context.t('ticket.loadingQR', fallback: 'Cargando QR...'), style: tw(12, color: Tw.slate500)),
+                          decoration: BoxDecoration(color: Tw.line, borderRadius: BorderRadius.circular(16)),
+                          child: Text(context.t('ticket.loadingQR', fallback: 'Cargando QR...'), style: tw(12, color: Tw.inkDim)),
                         ),
                       const SizedBox(height: 8),
                       Container(
@@ -219,15 +219,15 @@ class _ChillTicketScreenState extends State<ChillTicketScreen> {
                         margin: const EdgeInsets.only(bottom: 24),
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Tw.amber500.withValues(alpha: 0.1),
+                          color: Tw.sun.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Tw.amber500.withValues(alpha: 0.2)),
+                          border: Border.all(color: Tw.sun.withValues(alpha: 0.2)),
                         ),
                         child: Column(children: [
                           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                            const Icon(Icons.warning, size: 10, color: Tw.amber500),
+                            const Icon(Icons.warning, size: 10, color: Tw.sun),
                             const SizedBox(width: 4),
-                            Flexible(child: Label(context.t('ticket.attendeeNotice'), size: 9, weight: bold, color: Tw.amber500)),
+                            Flexible(child: Label(context.t('ticket.attendeeNotice'), size: 9, weight: bold, color: Tw.sun)),
                           ]),
                           const SizedBox(height: 4),
                           Text(context.t('ticket.disclaimer'),
@@ -241,19 +241,19 @@ class _ChillTicketScreenState extends State<ChillTicketScreen> {
                         margin: const EdgeInsets.only(bottom: 24),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Tw.fuchsia500.withValues(alpha: 0.1),
-                          border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.3)),
+                          color: Tw.party.withValues(alpha: 0.1),
+                          border: Border.all(color: Tw.party.withValues(alpha: 0.3)),
                         ),
-                        child: const Icon(Icons.vpn_key, size: 36, color: Tw.fuchsia500),
+                        child: const Icon(Icons.vpn_key, size: 36, color: Tw.party),
                       ),
                     Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Label(context.t('ticket.yourName'), size: 9, weight: bold, tracking: 0.05),
                       const SizedBox(height: 4),
                       SizedBox(width: double.infinity, child: Text(nick, style: tw(14, weight: bold))),
                       const SizedBox(height: 16),
-                      Divider(color: Tw.w(0.1), height: 1),
+                      Divider(color: Tw.line, height: 1),
                       const SizedBox(height: 16),
-                      Label(context.t('ticket.unlockedLocation'), size: 9, weight: bold, color: Tw.emerald400, tracking: 0.05),
+                      Label(context.t('ticket.unlockedLocation'), size: 9, weight: bold, color: Tw.live, tracking: 0.05),
                       const SizedBox(height: 4),
                       Text(address ?? context.t('ticket.loadingAddress'), style: tw(14, weight: medium, color: const Color(0xFFE2E8F0))),
                       const SizedBox(height: 12),
@@ -270,11 +270,11 @@ class _ChillTicketScreenState extends State<ChillTicketScreen> {
                       ),
                       if (safeStr(chill['instructions']).isNotEmpty) ...[
                         const SizedBox(height: 16),
-                        Divider(color: Tw.w(0.1), height: 1),
+                        Divider(color: Tw.line, height: 1),
                         const SizedBox(height: 16),
-                        Label(context.t('ticket.arrivalInstructions'), size: 9, weight: bold, color: Tw.amber400, tracking: 0.05),
+                        Label(context.t('ticket.arrivalInstructions'), size: 9, weight: bold, color: Tw.sun, tracking: 0.05),
                         const SizedBox(height: 4),
-                        Text('"${chill['instructions']}"', style: tw(12, color: Tw.slate300, style: FontStyle.italic)),
+                        Text('"${chill['instructions']}"', style: tw(12, color: Tw.inkSoft, style: FontStyle.italic)),
                       ],
                     ]),
                   ]),
@@ -285,7 +285,7 @@ class _ChillTicketScreenState extends State<ChillTicketScreen> {
                   child: Label(context.t('ticket.viewRadar').replaceAll('&rarr;', '→'), size: 12, weight: bold, color: Tw.purple400, tracking: 0.05),
                 ),
                 const SizedBox(height: 24),
-                Text(context.t('ticket.selfDestruct'), textAlign: TextAlign.center, style: tw(10, color: Tw.slate600)),
+                Text(context.t('ticket.selfDestruct'), textAlign: TextAlign.center, style: tw(10, color: Tw.inkDim)),
               ]),
             ),
           ),

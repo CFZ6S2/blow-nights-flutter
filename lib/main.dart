@@ -29,7 +29,7 @@ Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.light,
-    systemNavigationBarColor: Tw.slate950,
+    systemNavigationBarColor: Tw.night,
   ));
   runApp(BlowNightsApp(i18n: i18n));
 }

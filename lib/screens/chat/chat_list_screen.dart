@@ -96,7 +96,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
         IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.chevron_left, size: 28)),
         Expanded(child: Text(context.t('chat.title'), textAlign: TextAlign.center, style: tw(24, weight: bold))),
         if (auth.isSuperAdmin)
-          IconButton(onPressed: () => openRoute(context, AppRoute.profile), icon: const Icon(Icons.person, color: Tw.slate400))
+          IconButton(onPressed: () => openRoute(context, AppRoute.profile), icon: const Icon(Icons.person, color: Tw.inkSoft))
         else
           const SizedBox(width: 48),
       ]),
@@ -115,7 +115,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                         child: Column(children: [
                           const Text('💬', style: TextStyle(fontSize: 60)),
                           const SizedBox(height: 16),
-                          Text(context.t('chat.empty_messages'), style: tw(16, color: Tw.slate500)),
+                          Text(context.t('chat.empty_messages'), style: tw(16, color: Tw.inkDim)),
                         ]),
                       )
                     : ListView.separated(
@@ -131,8 +131,8 @@ class _ChatListScreenState extends State<ChatListScreen> {
                           return GlassCard(
                             onTap: () => openRoute(context, AppRoute.chatDetail, args: {'id': c['id'] as String}),
                             radius: 24,
-                            color: has ? Tw.fuchsia500.withValues(alpha: 0.05) : Tw.w(0.05),
-                            borderColor: has ? Tw.fuchsia500.withValues(alpha: 0.2) : Tw.w(0.05),
+                            color: has ? Tw.party.withValues(alpha: 0.05) : Tw.panelSoft,
+                            borderColor: has ? Tw.party.withValues(alpha: 0.2) : Tw.panelSoft,
                             child: Row(children: [
                               Stack(children: [
                                 Container(
@@ -140,9 +140,9 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                   height: 56,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    border: Border.all(color: has ? Tw.fuchsia500.withValues(alpha: 0.5) : Tw.purple500.withValues(alpha: 0.3)),
+                                    border: Border.all(color: has ? Tw.party.withValues(alpha: 0.5) : Tw.purple500.withValues(alpha: 0.3)),
                                   ),
-                                  child: ClipOval(child: NetImage(other['fotoUrl'] as String?, placeholder: Container(color: Tw.slate800))),
+                                  child: ClipOval(child: NetImage(other['fotoUrl'] as String?, placeholder: Container(color: Tw.line))),
                                 ),
                                 if (other['online'] == true)
                                   Positioned(
@@ -153,8 +153,8 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                       height: 16,
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
-                                        color: Tw.green500,
-                                        border: Border.all(color: Tw.slate950, width: 2),
+                                        color: Tw.live,
+                                        border: Border.all(color: Tw.night, width: 2),
                                       ),
                                     ),
                                   ),
@@ -165,17 +165,17 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                   Row(children: [
                                     Expanded(
                                       child: Text(safeStr(other['nick']),
-                                          overflow: TextOverflow.ellipsis, style: tw(16, weight: bold, color: has ? Tw.white : Tw.slate300)),
+                                          overflow: TextOverflow.ellipsis, style: tw(16, weight: bold, color: has ? Tw.white : Tw.inkSoft)),
                                     ),
                                     Text(last != null ? timeAgo(last, i18n) : '',
-                                        style: tw(10, weight: has ? bold : FontWeight.w400, color: has ? Tw.fuchsia400 : Tw.slate500)),
+                                        style: tw(10, weight: has ? bold : FontWeight.w400, color: has ? Tw.sun : Tw.inkDim)),
                                   ]),
                                   const SizedBox(height: 4),
                                   Text(
                                     safeStr(c['lastMessage']).isNotEmpty ? safeStr(c['lastMessage']) : context.t('chat.say_hi'),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
-                                    style: tw(14, weight: has ? semibold : FontWeight.w400, color: has ? Tw.white : Tw.slate400),
+                                    style: tw(14, weight: has ? semibold : FontWeight.w400, color: has ? Tw.white : Tw.inkSoft),
                                   ),
                                 ]),
                               ),
@@ -187,13 +187,13 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                       padding: const EdgeInsets.symmetric(horizontal: 4),
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
-                                        color: Tw.fuchsia500,
+                                        color: Tw.party,
                                         borderRadius: BorderRadius.circular(99),
-                                        boxShadow: [BoxShadow(color: Tw.fuchsia500.withValues(alpha: 0.4), blurRadius: 10)],
+                                        boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.4), blurRadius: 10)],
                                       ),
                                       child: Text(unread > 99 ? '99+' : '$unread', style: tw(10, weight: black)),
                                     )
-                                  : const Icon(Icons.chevron_right, color: Tw.slate600, size: 18),
+                                  : const Icon(Icons.chevron_right, color: Tw.inkDim, size: 18),
                             ]),
                           );
                         },
@@ -212,15 +212,15 @@ class _ChatSkeleton extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(24)),
+        decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(24)),
         child: Row(children: [
-          Container(width: 56, height: 56, decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.w(0.05))),
+          Container(width: 56, height: 56, decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.panelSoft)),
           const SizedBox(width: 16),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Container(height: 14, width: 120, color: Tw.w(0.05)),
+              Container(height: 14, width: 120, color: Tw.panelSoft),
               const SizedBox(height: 8),
-              Container(height: 12, width: 200, color: Tw.w(0.05)),
+              Container(height: 12, width: 200, color: Tw.panelSoft),
             ]),
           ),
         ]),

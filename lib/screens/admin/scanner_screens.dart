@@ -87,7 +87,7 @@ class _QrCameraState extends State<QrCamera> {
               const Icon(Icons.videocam_off, size: 40, color: Tw.red500),
               const SizedBox(height: 12),
               Text(error.errorDetails?.message ?? context.t('scanner_camera_error', fallback: 'No se pudo acceder a la cámara'),
-                  textAlign: TextAlign.center, style: tw(12, color: Tw.slate400)),
+                  textAlign: TextAlign.center, style: tw(12, color: Tw.inkSoft)),
             ]),
           ),
         ),
@@ -123,7 +123,7 @@ class _PulseBoxState extends State<PulseBox> with SingleTickerProviderStateMixin
         child: Container(
           width: widget.size,
           height: widget.size,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.6), width: 2)),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.party.withValues(alpha: 0.6), width: 2)),
         ),
       );
 }
@@ -248,23 +248,23 @@ class _DoorScreenState extends State<DoorScreen> {
         alignment: Alignment.center,
         padding: const EdgeInsets.all(24),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
-          const Icon(Icons.videocam_off, size: 40, color: Tw.amber400),
+          const Icon(Icons.videocam_off, size: 40, color: Tw.sun),
           const SizedBox(height: 12),
           Text(context.t('door_camera_needed_app', fallback: 'Para validar hace falta la cámara: permítela en los ajustes de la app. Solo vale el QR dinámico del móvil del cliente.'),
-              textAlign: TextAlign.center, style: tw(13, color: Tw.slate300)),
+              textAlign: TextAlign.center, style: tw(13, color: Tw.inkSoft)),
           const SizedBox(height: 16),
           if (error.errorCode == MobileScannerErrorCode.permissionDenied)
             AdminButton(
               label: context.t('door_open_settings', fallback: 'Abrir ajustes'),
-              color: Tw.w(0.05),
-              textColor: Tw.slate300,
+              color: Tw.panelSoft,
+              textColor: Tw.inkSoft,
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
               onTap: () => openAppSettings().catchError((_) {}),
             ),
           const SizedBox(height: 4),
           TextButton(
             onPressed: () => setState(() => _cameraAttempt++),
-            child: Text(context.t('door_camera_retry', fallback: 'Reintentar cámara'), style: tw(12, weight: bold, color: Tw.fuchsia400)),
+            child: Text(context.t('door_camera_retry', fallback: 'Reintentar cámara'), style: tw(12, weight: bold, color: Tw.sun)),
           ),
         ]),
       );
@@ -272,7 +272,7 @@ class _DoorScreenState extends State<DoorScreen> {
   @override
   Widget build(BuildContext context) {
     if (!_hasLink) return const MyDoorsScreen();
-    if (_authLoading) return const Scaffold(backgroundColor: _doorBg, body: Center(child: CircularProgressIndicator(strokeWidth: 2, color: Tw.fuchsia500)));
+    if (_authLoading) return const Scaffold(backgroundColor: _doorBg, body: Center(child: CircularProgressIndicator(strokeWidth: 2, color: Tw.party)));
     if (_authError.isNotEmpty || !_authorized) {
       return Scaffold(
         backgroundColor: _doorBg,
@@ -284,14 +284,14 @@ class _DoorScreenState extends State<DoorScreen> {
               const SizedBox(height: 16),
               Text(context.t('door_access_denied', fallback: 'Acceso denegado'), style: tw(20, weight: black)),
               const SizedBox(height: 8),
-              Text(_authError, textAlign: TextAlign.center, style: tw(14, color: Tw.slate400)),
+              Text(_authError, textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft)),
             ]),
           ),
         ),
       );
     }
     final r = _result;
-    final resultColor = r == null ? Tw.white : r.status == 'VALID' ? Tw.emerald400 : r.status == 'USED' ? Tw.amber400 : Tw.red400;
+    final resultColor = r == null ? Tw.white : r.status == 'VALID' ? Tw.live : r.status == 'USED' ? Tw.sun : Tw.red400;
     final resultBg = r == null
         ? Colors.transparent
         : r.status == 'VALID'
@@ -312,7 +312,7 @@ class _DoorScreenState extends State<DoorScreen> {
               child: Row(children: [
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Label(context.t('door_access_control', fallback: 'Control de Acceso'), size: 9, color: Tw.fuchsia500, tracking: 0),
+                    Label(context.t('door_access_control', fallback: 'Control de Acceso'), size: 9, color: Tw.party, tracking: 0),
                     Text(_eventTitle, maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(14, weight: bold)),
                   ]),
                 ),
@@ -321,18 +321,18 @@ class _DoorScreenState extends State<DoorScreen> {
                     margin: const EdgeInsets.only(right: 8),
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                     decoration: BoxDecoration(
-                      color: NfcPass.reading ? Tw.emerald500.withValues(alpha: 0.1) : Tw.w(0.05),
+                      color: NfcPass.reading ? Tw.live.withValues(alpha: 0.1) : Tw.panelSoft,
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: NfcPass.reading ? Tw.emerald500.withValues(alpha: 0.3) : Tw.w(0.1)),
+                      border: Border.all(color: NfcPass.reading ? Tw.live.withValues(alpha: 0.3) : Tw.lineSoft),
                     ),
-                    child: Icon(Icons.nfc, size: 16, color: NfcPass.reading ? Tw.emerald400 : Tw.slate600),
+                    child: Icon(Icons.nfc, size: 16, color: NfcPass.reading ? Tw.live : Tw.inkDim),
                   ),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(color: _doorRow, borderRadius: BorderRadius.circular(8), border: Border.all(color: _doorRowBorder)),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
                     Label(context.t('door_validated', fallback: 'Validados'), size: 8, weight: bold, tracking: 0),
-                    Text('$_count', style: tw(18, weight: black, color: Tw.emerald400, height: 1)),
+                    Text('$_count', style: tw(18, weight: black, color: Tw.live, height: 1)),
                   ]),
                 ),
               ]),
@@ -345,7 +345,7 @@ class _DoorScreenState extends State<DoorScreen> {
                       aspectRatio: 3 / 4,
                       child: Container(
                         clipBehavior: Clip.antiAlias,
-                        decoration: BoxDecoration(color: Tw.black, borderRadius: BorderRadius.circular(16), border: Border.all(color: const Color(0xFF2B2F52))),
+                        decoration: BoxDecoration(color: Tw.nightDeep, borderRadius: BorderRadius.circular(16), border: Border.all(color: const Color(0xFF2B2F52))),
                         child: Stack(fit: StackFit.expand, children: [
                           QrCamera(key: ValueKey(_cameraAttempt), paused: !_scanning, onCode: _handleScan, errorBuilder: _cameraError),
                           if (r != null)
@@ -480,37 +480,37 @@ class _ScannerScreenState extends State<ScannerScreen> {
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
     if (auth.loading || auth.claims == null) {
-      return const Scaffold(backgroundColor: Tw.slate950, body: Center(child: CircularProgressIndicator(strokeWidth: 2, color: Tw.fuchsia500)));
+      return const Scaffold(backgroundColor: Tw.night, body: Center(child: CircularProgressIndicator(strokeWidth: 2, color: Tw.party)));
     }
     final modes = ['camera', 'hardware', if (_nfcSupported) 'nfc'];
     return Scaffold(
-      backgroundColor: Tw.slate950,
+      backgroundColor: Tw.night,
       body: SafeArea(
         child: ListView(padding: const EdgeInsets.fromLTRB(24, 16, 24, 120), children: [
           Row(children: [
-            IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.slate400)),
-            const Icon(Icons.qr_code_scanner, color: Tw.fuchsia400),
+            IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.inkSoft)),
+            const Icon(Icons.qr_code_scanner, color: Tw.sun),
             const SizedBox(width: 12),
             Expanded(child: Text(context.t('scanner_title'), style: tw(22, weight: black))),
             if (_mode == 'hardware')
               Container(
                 margin: const EdgeInsets.only(right: 12),
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(8), border: Border.all(color: Tw.w(0.1))),
+                decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(8), border: Border.all(color: Tw.line)),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-                  Label(context.t('scanner_validated_count', fallback: 'Validados'), size: 8, weight: bold, color: Tw.slate600, tracking: 0),
-                  Text('$_count', style: tw(14, weight: black, color: Tw.emerald400, height: 1)),
+                  Label(context.t('scanner_validated_count', fallback: 'Validados'), size: 8, weight: bold, color: Tw.inkDim, tracking: 0),
+                  Text('$_count', style: tw(14, weight: black, color: Tw.live, height: 1)),
                 ]),
               ),
             Container(
               width: 8,
               height: 8,
-              decoration: BoxDecoration(color: _latency != null && _latency! > 2000 ? Tw.amber500 : Tw.green500, shape: BoxShape.circle),
+              decoration: BoxDecoration(color: _latency != null && _latency! > 2000 ? Tw.sun : Tw.live, shape: BoxShape.circle),
             ),
             const SizedBox(width: 6),
-            Text(_latency != null ? '${_latency}ms' : '', style: tw(10, weight: bold, color: Tw.slate500)),
+            Text(_latency != null ? '${_latency}ms' : '', style: tw(10, weight: bold, color: Tw.inkDim)),
           ]),
-          Text(context.t('scanner_subtitle'), style: tw(12, color: Tw.slate500)),
+          Text(context.t('scanner_subtitle'), style: tw(12, color: Tw.inkDim)),
           const SizedBox(height: 24),
           Row(children: [
             for (final m in modes) ...[
@@ -520,21 +520,21 @@ class _ScannerScreenState extends State<ScannerScreen> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     decoration: BoxDecoration(
-                      color: _mode == m ? Tw.fuchsia500.withValues(alpha: 0.2) : Tw.w(0.05),
+                      color: _mode == m ? Tw.party.withValues(alpha: 0.2) : Tw.panelSoft,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: _mode == m ? Tw.fuchsia500.withValues(alpha: 0.3) : Tw.w(0.1)),
+                      border: Border.all(color: _mode == m ? Tw.party.withValues(alpha: 0.3) : Tw.lineSoft),
                     ),
                     child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                       Icon(
                         switch (m) { 'camera' => Icons.photo_camera, 'nfc' => Icons.nfc, _ => Icons.settings_remote },
                         size: 14,
-                        color: _mode == m ? Tw.fuchsia400 : Tw.slate500,
+                        color: _mode == m ? Tw.sun : Tw.inkDim,
                       ),
                       const SizedBox(width: 4),
                       Flexible(
                         child: Label(
                           switch (m) { 'camera' => context.t('scanner_camera'), 'nfc' => 'NFC', _ => 'PDA' },
-                          color: _mode == m ? Tw.fuchsia400 : Tw.slate500,
+                          color: _mode == m ? Tw.sun : Tw.inkDim,
                           maxLines: 1,
                         ),
                       ),
@@ -560,7 +560,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
           aspectRatio: 4 / 3,
           child: Container(
             clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(color: Tw.black, borderRadius: BorderRadius.circular(24)),
+            decoration: BoxDecoration(color: Tw.nightDeep, borderRadius: BorderRadius.circular(24)),
             child: _cameraOn
                 ? QrCamera(frameSize: 192, paused: _validating, onCode: (c) => _validate(c, 'camera'))
                 : Center(
@@ -574,7 +574,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
           ),
         ),
         const SizedBox(height: 16),
-        Text(context.t('scanner_camera_hint', fallback: 'Apunta la cámara al código QR de la entrada'), textAlign: TextAlign.center, style: tw(10, color: Tw.slate600)),
+        Text(context.t('scanner_camera_hint', fallback: 'Apunta la cámara al código QR de la entrada'), textAlign: TextAlign.center, style: tw(10, color: Tw.inkDim)),
       ];
     }
     if (_mode == 'nfc' && r == null) {
@@ -583,7 +583,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
           padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
           child: Column(children: [
             Stack(clipBehavior: Clip.none, children: [
-              Icon(Icons.nfc, size: 72, color: Tw.fuchsia500.withValues(alpha: 0.6)),
+              Icon(Icons.nfc, size: 72, color: Tw.party.withValues(alpha: 0.6)),
               if (NfcPass.reading)
                 Positioned(
                   top: -2,
@@ -591,16 +591,16 @@ class _ScannerScreenState extends State<ScannerScreen> {
                   child: Container(
                     width: 16,
                     height: 16,
-                    decoration: BoxDecoration(color: Tw.emerald500, shape: BoxShape.circle, border: Border.all(color: Tw.slate950, width: 2)),
+                    decoration: BoxDecoration(color: Tw.live, shape: BoxShape.circle, border: Border.all(color: Tw.night, width: 2)),
                   ),
                 ),
             ]),
             const SizedBox(height: 24),
             Text(_validating ? context.t('scanner_validating', fallback: 'Validando...') : context.t('nfc_pass.scanner_prompt', fallback: 'Acerca el móvil del cliente'),
-                textAlign: TextAlign.center, style: tw(16, weight: bold, color: Tw.slate400)),
+                textAlign: TextAlign.center, style: tw(16, weight: bold, color: Tw.inkSoft)),
             const SizedBox(height: 8),
             Text(NfcPass.reading ? context.t('nfc_pass.listening', fallback: 'Escuchando NFC...') : context.t('nfc_pass.starting', fallback: 'Iniciando lector NFC...'),
-                style: tw(10, color: Tw.slate600)),
+                style: tw(10, color: Tw.inkDim)),
           ]),
         ),
       ];
@@ -611,14 +611,14 @@ class _ScannerScreenState extends State<ScannerScreen> {
           AdminCard(
             padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
             child: Column(children: [
-              Icon(Icons.qr_code_scanner, size: 72, color: Tw.fuchsia500.withValues(alpha: 0.4)),
+              Icon(Icons.qr_code_scanner, size: 72, color: Tw.party.withValues(alpha: 0.4)),
               const SizedBox(height: 16),
               Text(_validating ? context.t('scanner_validating', fallback: 'Validando...') : context.t('scanner_trigger_prompt', fallback: 'Pulsa el gatillo para escanear'),
-                  textAlign: TextAlign.center, style: tw(16, weight: bold, color: Tw.slate400)),
+                  textAlign: TextAlign.center, style: tw(16, weight: bold, color: Tw.inkSoft)),
               const SizedBox(height: 8),
-              Text.rich(TextSpan(style: tw(10, color: Tw.slate600), children: [
+              Text.rich(TextSpan(style: tw(10, color: Tw.inkDim), children: [
                 TextSpan(text: context.t('scanner_pda_mode', fallback: 'Modo PDA / Hardware Scanner')),
-                if (widget.deviceId?.isNotEmpty == true) TextSpan(text: '  (${widget.deviceId})', style: tw(10, color: Tw.fuchsia500.withValues(alpha: 0.6))),
+                if (widget.deviceId?.isNotEmpty == true) TextSpan(text: '  (${widget.deviceId})', style: tw(10, color: Tw.party.withValues(alpha: 0.6))),
               ])),
             ]),
           )
@@ -650,22 +650,22 @@ class _ScannerScreenState extends State<ScannerScreen> {
     if (r == null) return const [];
 
     final valid = r['valid'] == true;
-    final color = valid ? Tw.green400 : Tw.red400;
+    final color = valid ? Tw.live : Tw.red400;
     final ticket = r['ticket'] is Map ? r['ticket'] as Map : null;
     return [
       Container(
         padding: const EdgeInsets.all(32),
         decoration: BoxDecoration(
-          color: (valid ? Tw.green500 : Tw.red500).withValues(alpha: 0.1),
+          color: (valid ? Tw.live : Tw.red500).withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(48),
-          border: Border.all(color: (valid ? Tw.green500 : Tw.red500).withValues(alpha: 0.2)),
+          border: Border.all(color: (valid ? Tw.live : Tw.red500).withValues(alpha: 0.2)),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Center(
             child: Container(
               width: 80,
               height: 80,
-              decoration: BoxDecoration(color: (valid ? Tw.green500 : Tw.red500).withValues(alpha: 0.2), borderRadius: BorderRadius.circular(32)),
+              decoration: BoxDecoration(color: (valid ? Tw.live : Tw.red500).withValues(alpha: 0.2), borderRadius: BorderRadius.circular(32)),
               child: Icon(valid ? Icons.check_circle : Icons.cancel, size: 48, color: color),
             ),
           ),
@@ -673,7 +673,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
           Text(valid ? context.t('scanner_access_granted', fallback: 'ACCESO PERMITIDO') : context.t('scanner_access_denied', fallback: 'ACCESO DENEGADO'),
               textAlign: TextAlign.center, style: tw(20, weight: black, color: color)),
           const SizedBox(height: 8),
-          Text('${r['message'] ?? ''}', textAlign: TextAlign.center, style: tw(14, color: Tw.slate400)),
+          Text('${r['message'] ?? ''}', textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft)),
           if (ticket != null) ...[
             const SizedBox(height: 24),
             Container(
@@ -686,7 +686,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
                 ],
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Text('${ticket['userName'] ?? ''}', style: tw(14, weight: black)),
-                  Text('${ticket['ticketType'] ?? ''}', style: tw(10, color: Tw.slate500)),
+                  Text('${ticket['ticketType'] ?? ''}', style: tw(10, color: Tw.inkDim)),
                 ]),
               ]),
             ),
@@ -694,7 +694,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
           const SizedBox(height: 24),
           AdminButton(
             label: context.t('scanner_scan_another', fallback: 'Escanear otra entrada'),
-            color: Tw.w(0.1),
+            color: Tw.lineSoft,
             expand: true,
             padding: const EdgeInsets.symmetric(vertical: 16),
             onTap: () => setState(() => _result = null),
@@ -706,15 +706,15 @@ class _ScannerScreenState extends State<ScannerScreen> {
 
   Widget _bigResult(BuildContext context, Map<String, dynamic> r) {
     final valid = r['valid'] == true;
-    final color = valid ? Tw.green400 : Tw.red400;
+    final color = valid ? Tw.live : Tw.red400;
     final ticket = r['ticket'] is Map ? r['ticket'] as Map : null;
     return Container(
       constraints: const BoxConstraints(minHeight: 320),
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: (valid ? Tw.green500 : Tw.red500).withValues(alpha: 0.1),
+        color: (valid ? Tw.live : Tw.red500).withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: (valid ? Tw.green500 : Tw.red500).withValues(alpha: 0.2)),
+        border: Border.all(color: (valid ? Tw.live : Tw.red500).withValues(alpha: 0.2)),
       ),
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Icon(valid ? Icons.check_circle : Icons.cancel, size: 80, color: color),
@@ -722,11 +722,11 @@ class _ScannerScreenState extends State<ScannerScreen> {
         Text(valid ? context.t('scanner_access_granted', fallback: 'ACCESO PERMITIDO') : context.t('scanner_access_denied', fallback: 'ACCESO DENEGADO'),
             textAlign: TextAlign.center, style: tw(24, weight: black, color: color)),
         const SizedBox(height: 8),
-        Text('${r['message'] ?? ''}', textAlign: TextAlign.center, style: tw(14, color: Tw.slate400)),
+        Text('${r['message'] ?? ''}', textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft)),
         if (ticket != null) ...[
           const SizedBox(height: 16),
           Text('${ticket['userName'] ?? ''}', style: tw(18, weight: bold)),
-          Text('${ticket['ticketType'] ?? ''}', style: tw(10, color: Tw.slate500)),
+          Text('${ticket['ticketType'] ?? ''}', style: tw(10, color: Tw.inkDim)),
         ],
       ]),
     );

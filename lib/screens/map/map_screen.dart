@@ -68,14 +68,14 @@ class MapScreen extends StatelessWidget {
               const SizedBox(height: 12),
               Text(title, style: tw(16, weight: bold)),
               const SizedBox(height: 4),
-              Text(sub, style: tw(10, color: Tw.slate400)),
+              Text(sub, style: tw(10, color: Tw.inkSoft)),
             ]),
           ),
         );
     return Column(children: [
       IntrinsicHeight(
         child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          tile(Icons.nightlife, Tw.fuchsia400, context.t('city.where_going'), context.t('city.choose_spot'), AppRoute.venues),
+          tile(Icons.nightlife, Tw.sun, context.t('city.where_going'), context.t('city.choose_spot'), AppRoute.venues),
           const SizedBox(width: 16),
           tile(Icons.confirmation_number, const Color(0xFFFACC15), context.t('city.my_wallet'), context.t('city.tickets_passes'), AppRoute.tickets),
         ]),
@@ -83,10 +83,10 @@ class MapScreen extends StatelessWidget {
       const SizedBox(height: 16),
       IntrinsicHeight(
         child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          tile(Icons.event, Tw.emerald400, context.t('city.events', fallback: 'Eventos'), context.t('city.whats_on', fallback: 'Que hay esta noche'),
+          tile(Icons.event, Tw.live, context.t('city.events', fallback: 'Eventos'), context.t('city.whats_on', fallback: 'Que hay esta noche'),
               AppRoute.events),
           const SizedBox(width: 16),
-          tile(Icons.groups, Tw.amber400, context.t('city.plans', fallback: 'Planes'), context.t('city.your_plans', fallback: 'Tus quedadas'),
+          tile(Icons.groups, Tw.sun, context.t('city.plans', fallback: 'Planes'), context.t('city.your_plans', fallback: 'Tus quedadas'),
               AppRoute.myPlans),
         ]),
       ),
@@ -103,13 +103,13 @@ class MapScreen extends StatelessWidget {
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(context.t('city.buy_tickets'), style: tw(16, weight: bold)),
               const SizedBox(height: 4),
-              Text(context.t('city.buy_tickets_desc'), style: tw(10, color: Tw.slate400)),
+              Text(context.t('city.buy_tickets_desc'), style: tw(10, color: Tw.inkSoft)),
             ]),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(color: const Color(0xFFFACC15), borderRadius: BorderRadius.circular(99)),
-            child: Label(context.t('city.no_register'), size: 9, color: Tw.black, tracking: -0.05),
+            child: Label(context.t('city.no_register'), size: 9, color: Tw.nightDeep, tracking: -0.05),
           ),
         ]),
       ),
@@ -129,7 +129,7 @@ class MapScreen extends StatelessWidget {
               Text(vip ? context.t('city.vip_account') : context.t('city.go_premium'),
                   style: tw(16, weight: bold, color: vip ? const Color(0xFFFACC15) : Tw.white)),
               const SizedBox(height: 4),
-              Text(vip ? context.t('city.enjoy_advantages') : context.t('city.see_plans'), style: tw(10, color: Tw.slate400)),
+              Text(vip ? context.t('city.enjoy_advantages') : context.t('city.see_plans'), style: tw(10, color: Tw.inkSoft)),
             ]),
           ),
           if (!vip)
@@ -140,7 +140,7 @@ class MapScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(99),
                 boxShadow: [BoxShadow(color: Tw.w(0.3), blurRadius: 15)],
               ),
-              child: Label(context.t('city.see_more'), size: 9, color: Tw.black, tracking: -0.05),
+              child: Label(context.t('city.see_more'), size: 9, color: Tw.nightDeep, tracking: -0.05),
             ),
         ]),
       ),
@@ -174,15 +174,15 @@ class _Header extends SliverPersistentHeaderDelegate {
                 border: Border.all(color: color.withValues(alpha: 0.5)),
               ),
               child: Row(mainAxisSize: MainAxisSize.min, children: [
-                Icon(icon, size: 12, color: color == Tw.fuchsia600 ? Tw.fuchsia400 : Tw.purple400),
+                Icon(icon, size: 12, color: color == Tw.party ? Tw.sun : Tw.purple400),
                 const SizedBox(width: 4),
-                Label(label, size: 9, color: color == Tw.fuchsia600 ? Tw.fuchsia400 : Tw.purple400, tracking: 0),
+                Label(label, size: 9, color: color == Tw.party ? Tw.sun : Tw.purple400, tracking: 0),
               ]),
             ),
           ),
         );
     final actions = <Widget>[
-      if (auth.isSuperAdmin) pill(Icons.admin_panel_settings, 'Maestro', Tw.fuchsia600, AppRoute.superAdmin),
+      if (auth.isSuperAdmin) pill(Icons.admin_panel_settings, 'Maestro', Tw.party, AppRoute.superAdmin),
       if (auth.isAdmin) pill(Icons.tune, 'Admin', Tw.purple600, AppRoute.admin),
       const LanguageSelector(),
       const SizedBox(width: 6),
@@ -195,11 +195,11 @@ class _Header extends SliverPersistentHeaderDelegate {
           height: 26,
           padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
-            color: Tw.w(0.05),
+            color: Tw.panelSoft,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Tw.w(0.05)),
+            border: Border.all(color: Tw.lineSoft),
           ),
-          child: const Icon(Icons.logout, size: 12, color: Tw.slate400),
+          child: const Icon(Icons.logout, size: 12, color: Tw.inkSoft),
         ),
       ),
     ];
@@ -207,8 +207,8 @@ class _Header extends SliverPersistentHeaderDelegate {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: Tw.slate900.withValues(alpha: 0.9),
-        border: Border(bottom: BorderSide(color: Tw.w(0.05))),
+        color: Tw.panel.withValues(alpha: 0.9),
+        border: Border(bottom: BorderSide(color: Tw.lineSoft)),
       ),
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Row(children: [
@@ -216,7 +216,7 @@ class _Header extends SliverPersistentHeaderDelegate {
           padding: EdgeInsets.zero,
           visualDensity: VisualDensity.compact,
           onPressed: () => Navigator.of(context).maybePop(),
-          icon: const Icon(Icons.arrow_back, color: Tw.slate400, size: 20),
+          icon: const Icon(Icons.arrow_back, color: Tw.inkSoft, size: 20),
         ),
         const CitySelector(),
         const SizedBox(width: 12),
@@ -233,7 +233,7 @@ class _Header extends SliverPersistentHeaderDelegate {
               ]),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: tw(10, weight: medium, color: Tw.slate400),
+              style: tw(10, weight: medium, color: Tw.inkSoft),
             ),
           ]),
         ),
@@ -264,13 +264,13 @@ class _VipPanel extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.black.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Tw.w(0.05)),
+            border: Border.all(color: Tw.lineSoft),
           ),
           child: Row(children: [
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(title, style: tw(14, weight: bold)),
-                Text(sub, style: tw(10, color: Tw.slate500)),
+                Text(sub, style: tw(10, color: Tw.inkDim)),
               ]),
             ),
             trailing,
@@ -304,7 +304,7 @@ class _VipPanel extends StatelessWidget {
               width: 48,
               height: 24,
               decoration: BoxDecoration(
-                color: incognito ? const Color(0xFFEAB308) : Tw.slate700,
+                color: incognito ? const Color(0xFFEAB308) : Tw.line,
                 borderRadius: BorderRadius.circular(99),
               ),
               child: AnimatedAlign(
@@ -333,9 +333,9 @@ class _VipPanel extends StatelessWidget {
                     }, SetOptions(merge: true)),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(color: cooldown ? Tw.slate800 : Tw.white, borderRadius: BorderRadius.circular(12)),
+              decoration: BoxDecoration(color: cooldown ? Tw.line : Tw.white, borderRadius: BorderRadius.circular(12)),
               child: Label(cooldown ? context.t('city.used') : context.t('city.activate_boost'), size: 9,
-                  color: cooldown ? Tw.slate500 : Tw.black, tracking: -0.05),
+                  color: cooldown ? Tw.inkDim : Tw.nightDeep, tracking: -0.05),
             ),
           ),
         ),

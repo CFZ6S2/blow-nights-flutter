@@ -108,7 +108,7 @@ class _ConsumptionScreenState extends State<ConsumptionScreen> {
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
-    if (auth.loading) return const Scaffold(backgroundColor: Tw.black, body: Center(child: CircularProgressIndicator(strokeWidth: 2)));
+    if (auth.loading) return const Scaffold(backgroundColor: Tw.nightDeep, body: Center(child: CircularProgressIndicator(strokeWidth: 2)));
     if (auth.user == null) return _loginPrompt(context);
 
     final available = _tickets.where((t) => t['status'] == 'issued' || t['status'] == 'valid').toList();
@@ -116,7 +116,7 @@ class _ConsumptionScreenState extends State<ConsumptionScreen> {
     final list = _usedTab ? used : available;
 
     return Scaffold(
-      backgroundColor: Tw.black,
+      backgroundColor: Tw.nightDeep,
       body: Stack(children: [
         Column(children: [
           _header(context),
@@ -127,12 +127,12 @@ class _ConsumptionScreenState extends State<ConsumptionScreen> {
               Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(colors: [Tw.slate900, Color(0xE60F172A), Tw.slate950]),
+                  gradient: const LinearGradient(colors: [Tw.panel, Color(0xE60F172A), Tw.night]),
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Tw.slate800),
+                  border: Border.all(color: Tw.line),
                 ),
                 child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  const Padding(padding: EdgeInsets.only(top: 2), child: Icon(Icons.verified_user, size: 20, color: Tw.emerald400)),
+                  const Padding(padding: EdgeInsets.only(top: 2), child: Icon(Icons.verified_user, size: 20, color: Tw.live)),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text.rich(
@@ -146,7 +146,7 @@ class _ConsumptionScreenState extends State<ConsumptionScreen> {
                                 fallback:
                                     'Solo pagas lo que consumes. Muestra el código en la barra: el camarero lo escanea en 1 segundo y te sirve al momento.')),
                       ]),
-                      style: tw(11, color: Tw.slate300, height: 1.6),
+                      style: tw(11, color: Tw.inkSoft, height: 1.6),
                     ),
                   ),
                 ]),
@@ -163,7 +163,7 @@ class _ConsumptionScreenState extends State<ConsumptionScreen> {
                   Container(
                     height: 80,
                     margin: const EdgeInsets.only(bottom: 12),
-                    decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16)),
+                    decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16)),
                   )
               else if (!_usedTab && available.isEmpty)
                 _emptyAvailable(context)
@@ -171,7 +171,7 @@ class _ConsumptionScreenState extends State<ConsumptionScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 64),
                   child: Text(context.t('consumption_no_used', fallback: 'Aún no has canjeado ninguna consumición hoy.'),
-                      textAlign: TextAlign.center, style: tw(12, color: Tw.slate500)),
+                      textAlign: TextAlign.center, style: tw(12, color: Tw.inkDim)),
                 )
               else
                 for (final t in list) _ticketCard(context, t),
@@ -184,7 +184,7 @@ class _ConsumptionScreenState extends State<ConsumptionScreen> {
   }
 
   Widget _loginPrompt(BuildContext context) => Scaffold(
-        backgroundColor: Tw.black,
+        backgroundColor: Tw.nightDeep,
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(24),
@@ -192,8 +192,8 @@ class _ConsumptionScreenState extends State<ConsumptionScreen> {
               Container(
                 width: 64,
                 height: 64,
-                decoration: BoxDecoration(color: Tw.slate900, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.w(0.05))),
-                child: const Icon(Icons.wine_bar, size: 30, color: Tw.fuchsia400),
+                decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.lineSoft)),
+                child: const Icon(Icons.wine_bar, size: 30, color: Tw.sun),
               ),
               const SizedBox(height: 16),
               Text(context.t('consumption_login_title', fallback: 'Inicia sesión para ver tus copas'),
@@ -204,13 +204,13 @@ class _ConsumptionScreenState extends State<ConsumptionScreen> {
                 child: Text(
                   context.t('consumption_login_desc', fallback: 'Tus consumiciones unitarias compradas aparecen aquí directamente en tu pantalla.'),
                   textAlign: TextAlign.center,
-                  style: tw(12, color: Tw.slate400),
+                  style: tw(12, color: Tw.inkSoft),
                 ),
               ),
               const SizedBox(height: 24),
               GradientButton(
                 label: context.t('login_btn', fallback: 'Iniciar Sesión'),
-                gradient: const LinearGradient(colors: [Tw.fuchsia600, Color(0xFFDB2777)]),
+                gradient: const LinearGradient(colors: [Tw.party, Color(0xFFDB2777)]),
                 radius: 12,
                 fontSize: 14,
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -224,16 +224,16 @@ class _ConsumptionScreenState extends State<ConsumptionScreen> {
   Widget _header(BuildContext context) => Container(
         padding: EdgeInsets.fromLTRB(16, MediaQuery.of(context).padding.top + 14, 16, 14),
         decoration: BoxDecoration(
-          color: Tw.slate950.withValues(alpha: 0.9),
-          border: Border(bottom: BorderSide(color: Tw.slate800.withValues(alpha: 0.8))),
+          color: Tw.night.withValues(alpha: 0.9),
+          border: Border(bottom: BorderSide(color: Tw.line.withValues(alpha: 0.8))),
         ),
         child: Row(children: [
           Pressable(
             onTap: _back,
             child: Container(
               padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: Tw.slate900, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.slate800)),
-              child: const Icon(Icons.arrow_back, size: 16, color: Tw.slate400),
+              decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
+              child: const Icon(Icons.arrow_back, size: 16, color: Tw.inkSoft),
             ),
           ),
           const SizedBox(width: 12),
@@ -241,11 +241,11 @@ class _ConsumptionScreenState extends State<ConsumptionScreen> {
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Wrap(crossAxisAlignment: WrapCrossAlignment.center, spacing: 8, children: [
                 Text(context.t('consumption_title', fallback: 'MIS COPAS'), style: tw(16, weight: black, tracking: -0.025, height: 1)),
-                _pill('CASHLESS V1', Tw.fuchsia400, Tw.fuchsia500),
+                _pill('CASHLESS V1', Tw.sun, Tw.party),
               ]),
               const SizedBox(height: 2),
               Text(context.t('consumption_subtitle', fallback: '1 Ticket = 1 Copa • Sin recargas ni comisiones'),
-                  style: tw(11, weight: medium, color: Tw.slate400)),
+                  style: tw(11, weight: medium, color: Tw.inkSoft)),
             ]),
           ),
           Pressable(
@@ -254,9 +254,9 @@ class _ConsumptionScreenState extends State<ConsumptionScreen> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                gradient: const LinearGradient(colors: [Tw.fuchsia600, Tw.amber500]),
+                gradient: const LinearGradient(colors: [Tw.party, Tw.sun]),
                 borderRadius: BorderRadius.circular(12),
-                boxShadow: [BoxShadow(color: Tw.fuchsia600.withValues(alpha: 0.2), blurRadius: 10)],
+                boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.2), blurRadius: 10)],
               ),
               child: Row(mainAxisSize: MainAxisSize.min, children: [
                 const Icon(Icons.add, size: 14, color: Tw.white),
@@ -273,10 +273,10 @@ class _ConsumptionScreenState extends State<ConsumptionScreen> {
         decoration: BoxDecoration(
           color: const Color(0xFF022C22).withValues(alpha: 0.6),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Tw.emerald500.withValues(alpha: 0.4)),
+          border: Border.all(color: Tw.live.withValues(alpha: 0.4)),
         ),
         child: Row(children: [
-          Container(width: 10, height: 10, decoration: const BoxDecoration(shape: BoxShape.circle, color: Tw.emerald400)),
+          Container(width: 10, height: 10, decoration: const BoxDecoration(shape: BoxShape.circle, color: Tw.live)),
           const SizedBox(width: 10),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -290,8 +290,8 @@ class _ConsumptionScreenState extends State<ConsumptionScreen> {
             scale: 0.95,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(color: Tw.emerald500, borderRadius: BorderRadius.circular(12)),
-              child: Text('Pedir copa', style: tw(12, weight: black, color: Tw.black)),
+              decoration: BoxDecoration(color: Tw.live, borderRadius: BorderRadius.circular(12)),
+              child: Text('Pedir copa', style: tw(12, weight: black, color: Tw.night)),
             ),
           ),
         ]),
@@ -303,8 +303,8 @@ class _ConsumptionScreenState extends State<ConsumptionScreen> {
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(vertical: 8),
           alignment: Alignment.center,
-          decoration: BoxDecoration(color: active ? Tw.white : Tw.slate900, borderRadius: BorderRadius.circular(12)),
-          child: Text(label, style: tw(12, weight: black, color: active ? Tw.black : Tw.slate400)),
+          decoration: BoxDecoration(color: active ? Tw.white : Tw.panel, borderRadius: BorderRadius.circular(12)),
+          child: Text(label, style: tw(12, weight: black, color: active ? Tw.night : Tw.inkSoft)),
         ),
       );
 
@@ -314,8 +314,8 @@ class _ConsumptionScreenState extends State<ConsumptionScreen> {
           Container(
             width: 64,
             height: 64,
-            decoration: BoxDecoration(color: Tw.slate900, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.slate800)),
-            child: const Icon(Icons.wine_bar, size: 30, color: Tw.slate600),
+            decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.line)),
+            child: const Icon(Icons.wine_bar, size: 30, color: Tw.inkDim),
           ),
           const SizedBox(height: 12),
           Text(context.t('consumption_empty_title', fallback: 'No tienes copas pendientes'), style: tw(16, weight: black)),
@@ -326,13 +326,13 @@ class _ConsumptionScreenState extends State<ConsumptionScreen> {
               context.t('consumption_empty_desc',
                   fallback: 'Pide tu copa directamente desde el móvil con Apple Pay, Google Pay o tarjeta, sin esperar colas.'),
               textAlign: TextAlign.center,
-              style: tw(12, color: Tw.slate400),
+              style: tw(12, color: Tw.inkSoft),
             ),
           ),
           const SizedBox(height: 24),
           GradientButton(
             label: context.t('consumption_empty_action', fallback: 'Ver Carta de Bebidas'),
-            gradient: const LinearGradient(colors: [Tw.fuchsia600, Tw.amber400]),
+            gradient: const LinearGradient(colors: [Tw.party, Tw.sun]),
             radius: 12,
             fontSize: 12,
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -346,7 +346,7 @@ class _ConsumptionScreenState extends State<ConsumptionScreen> {
     final used = _isUsed(t);
     final beer = t['category'] == 'cerveza';
     final premium = t['isPremium'] == true;
-    final iconColor = beer ? Tw.amber400 : (premium ? Tw.purple400 : Tw.fuchsia400);
+    final iconColor = beer ? Tw.sun : (premium ? Tw.purple400 : Tw.sun);
     return Opacity(
       opacity: used ? 0.6 : 1,
       child: Pressable(
@@ -356,9 +356,9 @@ class _ConsumptionScreenState extends State<ConsumptionScreen> {
           margin: const EdgeInsets.only(bottom: 12),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: used ? Tw.slate950.withValues(alpha: 0.6) : Tw.slate900.withValues(alpha: 0.9),
+            color: used ? Tw.night.withValues(alpha: 0.6) : Tw.panel.withValues(alpha: 0.9),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: used ? Tw.slate800.withValues(alpha: 0.6) : Tw.slate800),
+            border: Border.all(color: used ? Tw.line.withValues(alpha: 0.6) : Tw.line),
           ),
           child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Container(
@@ -375,9 +375,9 @@ class _ConsumptionScreenState extends State<ConsumptionScreen> {
                   if (premium) _pill('PREMIUM', const Color(0xFFD8B4FE), Tw.purple500, radius: 4),
                 ]),
                 if (safeStr(t['selectedMixer']).isNotEmpty)
-                  Padding(padding: const EdgeInsets.only(top: 2), child: Text('Con ${t['selectedMixer']}', style: tw(11, color: Tw.slate400))),
+                  Padding(padding: const EdgeInsets.only(top: 2), child: Text('Con ${t['selectedMixer']}', style: tw(11, color: Tw.inkSoft))),
                 if (safeStr(t['venueName']).isNotEmpty)
-                  Padding(padding: const EdgeInsets.only(top: 2), child: Text(safeStr(t['venueName']), style: tw(10, color: Tw.slate500))),
+                  Padding(padding: const EdgeInsets.only(top: 2), child: Text(safeStr(t['venueName']), style: tw(10, color: Tw.inkDim))),
                 if (t['isGift'] == true)
                   Padding(
                     padding: const EdgeInsets.only(top: 4),
@@ -391,20 +391,20 @@ class _ConsumptionScreenState extends State<ConsumptionScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: used ? Tw.slate800 : Tw.emerald500.withValues(alpha: 0.2),
+                  color: used ? Tw.line : Tw.live.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(99),
-                  border: used ? null : Border.all(color: Tw.emerald500.withValues(alpha: 0.3)),
+                  border: used ? null : Border.all(color: Tw.live.withValues(alpha: 0.3)),
                 ),
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
                   if (!used) ...[
-                    Container(width: 6, height: 6, decoration: const BoxDecoration(shape: BoxShape.circle, color: Tw.emerald400)),
+                    Container(width: 6, height: 6, decoration: const BoxDecoration(shape: BoxShape.circle, color: Tw.live)),
                     const SizedBox(width: 4),
                   ],
                   Text(
                     used
                         ? '✓ ${context.t('consumption_status_used', fallback: 'Servida')}'
                         : context.t('consumption_status_ready', fallback: 'Ver QR'),
-                    style: tw(10, weight: bold, color: used ? Tw.slate400 : Tw.emerald400),
+                    style: tw(10, weight: bold, color: used ? Tw.inkSoft : Tw.live),
                   ),
                 ]),
               ),
@@ -438,11 +438,11 @@ class _ConsumptionScreenState extends State<ConsumptionScreen> {
             decoration: BoxDecoration(
               color: const Color(0xFF022C22).withValues(alpha: 0.9),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Tw.emerald500.withValues(alpha: 0.5)),
+              border: Border.all(color: Tw.live.withValues(alpha: 0.5)),
               boxShadow: const [BoxShadow(color: Color(0x80000000), blurRadius: 50, offset: Offset(0, 25))],
             ),
             child: Row(children: [
-              const Icon(Icons.check_circle, size: 24, color: Tw.emerald400),
+              const Icon(Icons.check_circle, size: 24, color: Tw.live),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -569,9 +569,9 @@ class _ConsumptionQrSheetState extends State<_ConsumptionQrSheet> {
             child: Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: Tw.slate900,
+                color: Tw.panel,
                 borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: Tw.slate700.withValues(alpha: 0.8)),
+                border: Border.all(color: Tw.line.withValues(alpha: 0.8)),
                 boxShadow: const [BoxShadow(color: Color(0x80000000), blurRadius: 50, offset: Offset(0, 25))],
               ),
               child: Stack(children: [
@@ -579,19 +579,19 @@ class _ConsumptionQrSheetState extends State<_ConsumptionQrSheet> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                     decoration: BoxDecoration(
-                      color: Tw.emerald500.withValues(alpha: 0.1),
+                      color: Tw.live.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(99),
-                      border: Border.all(color: Tw.emerald500.withValues(alpha: 0.3)),
+                      border: Border.all(color: Tw.live.withValues(alpha: 0.3)),
                     ),
                     child: Text(_used ? 'COPA YA CONSUMIDA' : 'LISTO PARA LA BARRA',
-                        style: tw(10, weight: black, color: Tw.emerald400, tracking: 0.05)),
+                        style: tw(10, weight: black, color: Tw.live, tracking: 0.05)),
                   ),
                   const SizedBox(height: 8),
                   Text(name, textAlign: TextAlign.center, style: tw(18, weight: black)),
                   if (safeStr(t['selectedMixer']).isNotEmpty)
                     Padding(
                       padding: const EdgeInsets.only(top: 2, bottom: 16),
-                      child: Text('Con ${t['selectedMixer']}', style: tw(12, color: Tw.slate300)),
+                      child: Text('Con ${t['selectedMixer']}', style: tw(12, color: Tw.inkSoft)),
                     ),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 8),
@@ -613,14 +613,14 @@ class _ConsumptionQrSheetState extends State<_ConsumptionQrSheet> {
                                       onTap: _fetch,
                                       child: Center(
                                         child: Column(mainAxisSize: MainAxisSize.min, children: [
-                                          const Icon(Icons.refresh, size: 28, color: Tw.slate500),
+                                          const Icon(Icons.refresh, size: 28, color: Tw.inkDim),
                                           const SizedBox(height: 8),
                                           Text('No se ha podido generar el QR. Toca para reintentar.',
-                                              textAlign: TextAlign.center, style: tw(12, weight: bold, color: Tw.black)),
+                                              textAlign: TextAlign.center, style: tw(12, weight: bold, color: Tw.night)),
                                         ]),
                                       ),
                                     )
-                                  : Center(child: Text('Cargando QR...', style: tw(12, weight: bold, color: Tw.black))),
+                                  : Center(child: Text('Cargando QR...', style: tw(12, weight: bold, color: Tw.night))),
                     ),
                   ),
                   if (!_used && NfcPass.available) const NfcPassHint(),
@@ -628,7 +628,7 @@ class _ConsumptionQrSheetState extends State<_ConsumptionQrSheet> {
                     Padding(
                       padding: const EdgeInsets.only(top: 12),
                       child: Row(mainAxisSize: MainAxisSize.min, children: [
-                        const Icon(Icons.schedule, size: 14, color: Tw.emerald400),
+                        const Icon(Icons.schedule, size: 14, color: Tw.live),
                         const SizedBox(width: 8),
                         Flexible(
                           child: Text.rich(
@@ -636,14 +636,14 @@ class _ConsumptionQrSheetState extends State<_ConsumptionQrSheet> {
                               TextSpan(text: '${context.t('consumption_qr_refresh', fallback: 'Código dinámico seguro')} '),
                               TextSpan(text: '(${_countdown}s)', style: tw(11, weight: bold).copyWith(fontFamily: 'monospace')),
                             ]),
-                            style: tw(11, color: Tw.slate400),
+                            style: tw(11, color: Tw.inkSoft),
                           ),
                         ),
                         IconButton(
                           onPressed: _fetch,
                           tooltip: 'Regenerar ahora',
                           visualDensity: VisualDensity.compact,
-                          icon: const Icon(Icons.refresh, size: 14, color: Tw.slate400),
+                          icon: const Icon(Icons.refresh, size: 14, color: Tw.inkSoft),
                         ),
                       ]),
                     ),
@@ -654,7 +654,7 @@ class _ConsumptionQrSheetState extends State<_ConsumptionQrSheet> {
                       context.t('consumption_qr_hint',
                           fallback: 'Muestra esta pantalla al camarero. El QR cambia cada pocos segundos y solo vale en pantalla.'),
                       textAlign: TextAlign.center,
-                      style: tw(10, color: Tw.slate500, height: 1.25),
+                      style: tw(10, color: Tw.inkDim, height: 1.25),
                     ),
                   ),
                 ]),
@@ -665,8 +665,8 @@ class _ConsumptionQrSheetState extends State<_ConsumptionQrSheet> {
                     onTap: () => Navigator.of(context).pop(),
                     child: Container(
                       padding: const EdgeInsets.all(6),
-                      decoration: const BoxDecoration(color: Tw.slate800, shape: BoxShape.circle),
-                      child: const Icon(Icons.close, size: 14, color: Tw.slate400),
+                      decoration: const BoxDecoration(color: Tw.line, shape: BoxShape.circle),
+                      child: const Icon(Icons.close, size: 14, color: Tw.inkSoft),
                     ),
                   ),
                 ),

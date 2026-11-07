@@ -52,24 +52,24 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) return const Scaffold(backgroundColor: Tw.slate950, body: Center(child: CircularProgressIndicator(strokeWidth: 2, color: Tw.fuchsia500)));
+    if (_loading) return const Scaffold(backgroundColor: Tw.night, body: Center(child: CircularProgressIndicator(strokeWidth: 2, color: Tw.party)));
     return Scaffold(
-      backgroundColor: Tw.slate950,
+      backgroundColor: Tw.night,
       body: SafeArea(
         child: ListView(padding: const EdgeInsets.fromLTRB(16, 24, 16, 96), children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              GradientText('DISCOVER', align: TextAlign.start, style: tw(30, weight: black, style: FontStyle.italic, tracking: -0.05), colors: const [Tw.fuchsia400, Tw.amber400]),
+              GradientText('DISCOVER', align: TextAlign.start, style: tw(30, weight: black, style: FontStyle.italic, tracking: -0.05), colors: const [Tw.sun, Tw.sun]),
               const SizedBox(height: 4),
-              Text(context.t('discover.subtitle', fallback: 'El pulso de la noche en directo'), style: tw(14, weight: medium, color: Tw.slate400)),
+              Text(context.t('discover.subtitle', fallback: 'El pulso de la noche en directo'), style: tw(14, weight: medium, color: Tw.inkSoft)),
             ]),
           ),
           const SizedBox(height: 24),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Row(children: [
-              const PulseDot(color: Tw.green500),
+              const PulseDot(color: Tw.live),
               const SizedBox(width: 8),
               Text(context.t('discover.online_now', fallback: 'Saliendo ahora'), style: tw(18, weight: black)),
             ]),
@@ -79,10 +79,10 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 24),
               child: Column(children: [
-                const Icon(Icons.person_off, size: 30, color: Tw.slate700),
+                const Icon(Icons.person_off, size: 30, color: Tw.line),
                 const SizedBox(height: 8),
-                Text(context.t('discover.no_users', fallback: 'Nadie conectado ahora'), style: tw(12, weight: bold, color: Tw.slate500)),
-                Text(context.t('discover.check_later', fallback: 'Vuelve más tarde'), style: tw(10, color: Tw.slate600)),
+                Text(context.t('discover.no_users', fallback: 'Nadie conectado ahora'), style: tw(12, weight: bold, color: Tw.inkDim)),
+                Text(context.t('discover.check_later', fallback: 'Vuelve más tarde'), style: tw(10, color: Tw.inkDim)),
               ]),
             )
           else
@@ -98,7 +98,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                         width: 64,
                         height: 64,
                         clipBehavior: Clip.antiAlias,
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1), width: 2)),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line, width: 2)),
                         child: Stack(fit: StackFit.expand, children: [
                           NetImage(u['fotoUrl'] as String?),
                           DecoratedBox(
@@ -123,9 +123,9 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Row(children: [
-              const Icon(Icons.local_fire_department, color: Tw.amber400),
+              const Icon(Icons.local_fire_department, color: Tw.sun),
               const SizedBox(width: 8),
-              Text(context.t('discover.hot_venues', fallback: 'Locales On Fire'), style: tw(18, weight: black, color: Tw.amber400)),
+              Text(context.t('discover.hot_venues', fallback: 'Locales On Fire'), style: tw(18, weight: black, color: Tw.sun)),
             ]),
           ),
           const SizedBox(height: 16),
@@ -133,9 +133,9 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 32),
               child: Column(children: [
-                const Icon(Icons.explore_off, size: 40, color: Tw.slate700),
+                const Icon(Icons.explore_off, size: 40, color: Tw.line),
                 const SizedBox(height: 8),
-                Text(context.t('discover.no_venues', fallback: 'Sin locales activos'), style: tw(12, weight: bold, color: Tw.slate500)),
+                Text(context.t('discover.no_venues', fallback: 'Sin locales activos'), style: tw(12, weight: bold, color: Tw.inkDim)),
               ]),
             )
           else
@@ -146,7 +146,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                   height: 128,
                   margin: const EdgeInsets.fromLTRB(8, 0, 8, 16),
                   clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.w(0.1))),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.line)),
                   child: Stack(fit: StackFit.expand, children: [
                     NetImage((v['coverUrl'] ?? v['logoUrl']) as String?),
                     DecoratedBox(
@@ -163,9 +163,9 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                       child: Column(mainAxisAlignment: MainAxisAlignment.end, crossAxisAlignment: CrossAxisAlignment.start, children: [
                         Text((v['name'] as String?) ?? '', style: tw(20, weight: black)),
                         Row(children: [
-                          const Icon(Icons.location_on, size: 12, color: Tw.amber400),
+                          const Icon(Icons.location_on, size: 12, color: Tw.sun),
                           const SizedBox(width: 4),
-                          Text((v['city'] as String?) ?? 'Tu zona', style: tw(12, weight: bold, color: Tw.amber400)),
+                          Text((v['city'] as String?) ?? 'Tu zona', style: tw(12, weight: bold, color: Tw.sun)),
                         ]),
                       ]),
                     ),
@@ -273,7 +273,7 @@ class _LocalEntradasScreenState extends State<LocalEntradasScreen> {
   @override
   Widget build(BuildContext context) {
     if (_loading || _venue == null) {
-      return const Scaffold(backgroundColor: Tw.slate950, body: Center(child: CircularProgressIndicator(strokeWidth: 2, color: Tw.fuchsia500)));
+      return const Scaffold(backgroundColor: Tw.night, body: Center(child: CircularProgressIndicator(strokeWidth: 2, color: Tw.party)));
     }
     final v = _venue!;
     final sym = currencySymbol(context.watch<CityProvider>().currency);
@@ -284,7 +284,7 @@ class _LocalEntradasScreenState extends State<LocalEntradasScreen> {
           onTap: onTap,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-            decoration: BoxDecoration(color: Tw.slate950.withValues(alpha: 0.8), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.1))),
+            decoration: BoxDecoration(color: Tw.night.withValues(alpha: 0.8), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
             child: Row(mainAxisSize: MainAxisSize.min, children: [
               Icon(icon, size: 16, color: iconColor),
               const SizedBox(width: 6),
@@ -294,7 +294,7 @@ class _LocalEntradasScreenState extends State<LocalEntradasScreen> {
         );
 
     return Scaffold(
-      backgroundColor: Tw.slate950,
+      backgroundColor: Tw.night,
       body: ListView(padding: EdgeInsets.only(bottom: 96 + MediaQuery.of(context).padding.bottom), children: [
         SizedBox(
           height: max(320, MediaQuery.of(context).size.height * 0.45),
@@ -302,7 +302,7 @@ class _LocalEntradasScreenState extends State<LocalEntradasScreen> {
             NetImage((v['fotoUrl'] as String?) ?? 'https://images.unsplash.com/photo-1566737236500-c8ac43014a67?w=1200&auto=format&fit=crop'),
             DecoratedBox(
               decoration: BoxDecoration(
-                gradient: LinearGradient(begin: Alignment.bottomCenter, end: Alignment.topCenter, colors: [Tw.slate950, Tw.slate950.withValues(alpha: 0.6), Colors.transparent]),
+                gradient: LinearGradient(begin: Alignment.bottomCenter, end: Alignment.topCenter, colors: [Tw.night, Tw.night.withValues(alpha: 0.6), Colors.transparent]),
               ),
             ),
             Positioned(
@@ -318,7 +318,7 @@ class _LocalEntradasScreenState extends State<LocalEntradasScreen> {
                   Future.delayed(const Duration(milliseconds: 2500), () {
                     if (mounted) setState(() => _copied = false);
                   });
-                }, iconColor: _copied ? Tw.emerald400 : Tw.white),
+                }, iconColor: _copied ? Tw.live : Tw.white),
               ]),
             ),
             Positioned(
@@ -329,24 +329,24 @@ class _LocalEntradasScreenState extends State<LocalEntradasScreen> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Tw.fuchsia500.withValues(alpha: 0.2),
+                    color: Tw.party.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(99),
-                    border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.3)),
+                    border: Border.all(color: Tw.party.withValues(alpha: 0.3)),
                   ),
                   child: Row(mainAxisSize: MainAxisSize.min, children: [
-                    const Icon(Icons.verified_user, size: 14, color: Tw.fuchsia300),
+                    const Icon(Icons.verified_user, size: 14, color: Tw.sun),
                     const SizedBox(width: 8),
-                    Label(context.t('venue_tickets.official_wall'), color: Tw.fuchsia300),
+                    Label(context.t('venue_tickets.official_wall'), color: Tw.sun),
                   ]),
                 ),
                 const SizedBox(height: 8),
                 Text(((v['nombre'] ?? v['name']) as String? ?? '').toUpperCase(), style: tw(36, weight: black, height: 1)),
                 const SizedBox(height: 8),
                 Row(children: [
-                  const Icon(Icons.location_on, size: 16, color: Tw.fuchsia400),
+                  const Icon(Icons.location_on, size: 16, color: Tw.sun),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: Text('${v['direccion'] ?? v['address'] ?? ''} • ${v['ciudad'] ?? v['cityId'] ?? ''}', style: tw(14, weight: medium, color: Tw.slate300)),
+                    child: Text('${v['direccion'] ?? v['address'] ?? ''} • ${v['ciudad'] ?? v['cityId'] ?? ''}', style: tw(14, weight: medium, color: Tw.inkSoft)),
                   ),
                 ]),
               ]),
@@ -357,23 +357,23 @@ class _LocalEntradasScreenState extends State<LocalEntradasScreen> {
           padding: const EdgeInsets.fromLTRB(24, 32, 24, 0),
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             AdminCard(
-              color: Tw.slate900.withValues(alpha: 0.6),
+              color: Tw.panel.withValues(alpha: 0.6),
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(context.t('venue_tickets.no_registration'), style: tw(18, weight: black)),
                 const SizedBox(height: 2),
-                Text(context.t('venue_tickets.qr_delivery'), style: tw(12, color: Tw.slate400)),
+                Text(context.t('venue_tickets.qr_delivery'), style: tw(12, color: Tw.inkSoft)),
                 const SizedBox(height: 12),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
-                    color: Tw.emerald500.withValues(alpha: 0.1),
+                    color: Tw.live.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Tw.emerald500.withValues(alpha: 0.2)),
+                    border: Border.all(color: Tw.live.withValues(alpha: 0.2)),
                   ),
                   child: Row(mainAxisSize: MainAxisSize.min, children: [
-                    const Icon(Icons.verified_user, size: 16, color: Tw.emerald400),
+                    const Icon(Icons.verified_user, size: 16, color: Tw.live),
                     const SizedBox(width: 8),
-                    Text(context.t('venue_tickets.secure_stripe'), style: tw(12, weight: bold, color: Tw.emerald400)),
+                    Text(context.t('venue_tickets.secure_stripe'), style: tw(12, weight: bold, color: Tw.live)),
                   ]),
                 ),
               ]),
@@ -394,28 +394,28 @@ class _LocalEntradasScreenState extends State<LocalEntradasScreen> {
         Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            color: featured ? null : Tw.slate900,
-            gradient: featured ? LinearGradient(colors: [Tw.fuchsia950.withValues(alpha: 0.3), Tw.slate900, Tw.slate900]) : null,
+            color: featured ? null : Tw.panel,
+            gradient: featured ? LinearGradient(colors: [Tw.nightDeep.withValues(alpha: 0.3), Tw.panel, Tw.panel]) : null,
             borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: featured ? Tw.fuchsia500.withValues(alpha: 0.6) : Tw.w(0.1)),
+            border: Border.all(color: featured ? Tw.party.withValues(alpha: 0.6) : Tw.lineSoft),
           ),
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             Wrap(spacing: 12, crossAxisAlignment: WrapCrossAlignment.end, children: [
               Text('${tk['nombre']}', style: tw(24, weight: black)),
-              GradientText('${tk['precio']}$sym', align: TextAlign.start, style: tw(30, weight: black), colors: const [Tw.fuchsia400, Tw.indigo400]),
+              GradientText('${tk['precio']}$sym', align: TextAlign.start, style: tw(30, weight: black), colors: const [Tw.sun, Tw.indigo400]),
             ]),
             const SizedBox(height: 8),
-            Text('${tk['descripcion'] ?? ''}', style: tw(12, color: Tw.slate400, height: 1.6)),
+            Text('${tk['descripcion'] ?? ''}', style: tw(12, color: Tw.inkSoft, height: 1.6)),
             const SizedBox(height: 8),
             Wrap(spacing: 8, runSpacing: 8, children: [
               for (final inc in (tk['incluye'] as List? ?? const []))
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                  decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(8), border: Border.all(color: Tw.w(0.05))),
+                  decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(8), border: Border.all(color: Tw.lineSoft)),
                   child: Row(mainAxisSize: MainAxisSize.min, children: [
-                    const Icon(Icons.check, size: 12, color: Tw.fuchsia400),
+                    const Icon(Icons.check, size: 12, color: Tw.sun),
                     const SizedBox(width: 4),
-                    Text('$inc', style: tw(10, weight: bold, color: Tw.slate300)),
+                    Text('$inc', style: tw(10, weight: bold, color: Tw.inkSoft)),
                   ]),
                 ),
             ]),
@@ -427,14 +427,14 @@ class _LocalEntradasScreenState extends State<LocalEntradasScreen> {
                     expand: true,
                     fontSize: 12,
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    gradient: const LinearGradient(colors: [Tw.fuchsia600, Tw.indigo600]),
+                    gradient: const LinearGradient(colors: [Tw.sunset, Tw.party]),
                     onTap: _buying == tk['id'] ? null : () => _checkout(tk),
                   )
                 : AdminButton(
                     icon: Icons.shopping_bag,
                     label: _buying == tk['id'] ? context.t('venue_tickets.processing') : context.t('venue_tickets.buy_ticket'),
                     color: Tw.white,
-                    textColor: Tw.slate950,
+                    textColor: Tw.night,
                     expand: true,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     onTap: _buying == tk['id'] ? null : () => _checkout(tk),
@@ -447,7 +447,7 @@ class _LocalEntradasScreenState extends State<LocalEntradasScreen> {
             left: 32,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              decoration: BoxDecoration(gradient: const LinearGradient(colors: [Tw.fuchsia600, Tw.indigo600]), borderRadius: BorderRadius.circular(99)),
+              decoration: BoxDecoration(gradient: const LinearGradient(colors: [Tw.sunset, Tw.party]), borderRadius: BorderRadius.circular(99)),
               child: Row(mainAxisSize: MainAxisSize.min, children: [
                 const Icon(Icons.auto_awesome, size: 12, color: Tw.white),
                 const SizedBox(width: 4),

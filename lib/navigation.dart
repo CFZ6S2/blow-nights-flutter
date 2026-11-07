@@ -318,9 +318,9 @@ class _CountBadgeState extends State<CountBadge> with SingleTickerProviderStateM
           padding: const EdgeInsets.symmetric(horizontal: 4),
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: Tw.fuchsia500,
+            color: Tw.party,
             borderRadius: BorderRadius.circular(99),
-            boxShadow: [BoxShadow(color: Tw.fuchsia500.withValues(alpha: 0.4), blurRadius: 10)],
+            boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.4), blurRadius: 10)],
           ),
           child: Text(widget.count > 99 ? '99+' : '${widget.count}', style: tw(9, weight: black)),
         ),

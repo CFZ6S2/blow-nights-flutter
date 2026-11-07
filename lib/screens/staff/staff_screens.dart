@@ -130,18 +130,18 @@ class _StaffJoinScreenState extends State<StaffJoinScreen> {
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 400),
               child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                const Icon(Icons.badge, size: 40, color: Tw.fuchsia400),
+                const Icon(Icons.badge, size: 40, color: Tw.sun),
                 const SizedBox(height: 8),
                 Text(context.t('staff_join.title', fallback: 'Únete al equipo'), textAlign: TextAlign.center, style: tw(24, weight: black)),
                 if (info != null) ...[
                   const SizedBox(height: 4),
                   Text(context.t('staff_join.subtitle', fallback: 'Personal de {{venue}}', params: {'venue': info['venueName'] ?? ''}),
-                      textAlign: TextAlign.center, style: tw(14, color: Tw.slate300)),
+                      textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft)),
                 ],
                 const SizedBox(height: 20),
                 if (info == null) ...[
                   Text(context.t('staff_app.scan_or_tap', fallback: 'Escanea el QR del local o acerca tu móvil al del encargado (NFC).'),
-                      textAlign: TextAlign.center, style: tw(13, color: Tw.slate400)),
+                      textAlign: TextAlign.center, style: tw(13, color: Tw.inkSoft)),
                   const SizedBox(height: 16),
                   // QrCamera fills its box (StackFit.expand): it needs a bounded one inside the scroll view.
                   Center(
@@ -152,18 +152,18 @@ class _StaffJoinScreenState extends State<StaffJoinScreen> {
                   ),
                   if (_checking) ...[
                     const SizedBox(height: 12),
-                    Text(context.t('staff_join.loading', fallback: 'Comprobando la invitación…'), textAlign: TextAlign.center, style: tw(12, color: Tw.slate400)),
+                    Text(context.t('staff_join.loading', fallback: 'Comprobando la invitación…'), textAlign: TextAlign.center, style: tw(12, color: Tw.inkSoft)),
                   ],
                 ] else ...[
                   AdminCard(
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Label(context.t('staff_join.scopes', fallback: 'Podrás escanear:'), color: Tw.slate500),
+                      Label(context.t('staff_join.scopes', fallback: 'Podrás escanear:'), color: Tw.inkDim),
                       const SizedBox(height: 8),
                       for (final s in [for (final x in (info['scopes'] as List? ?? const [])) '$x'])
                         Padding(
                           padding: const EdgeInsets.only(bottom: 4),
                           child: Row(children: [
-                            Icon(s == 'door' ? Icons.qr_code_scanner : Icons.local_bar, size: 18, color: Tw.fuchsia400),
+                            Icon(s == 'door' ? Icons.qr_code_scanner : Icons.local_bar, size: 18, color: Tw.sun),
                             const SizedBox(width: 8),
                             Text(_scopeLabel(context, s), style: tw(14, weight: bold)),
                           ]),
@@ -176,7 +176,7 @@ class _StaffJoinScreenState extends State<StaffJoinScreen> {
                   if (signedIn) ...[
                     const SizedBox(height: 8),
                     Text(context.t('staff_join.session_note', fallback: 'Si hay una sesión abierta en este dispositivo, se cerrará.'),
-                        style: tw(11, color: Tw.amber400)),
+                        style: tw(11, color: Tw.sun)),
                   ],
                   const SizedBox(height: 16),
                   AdminButton(label: context.t('staff_join.cta', fallback: 'Entrar'), loading: _joining, expand: true, onTap: _join),
@@ -208,7 +208,7 @@ class StaffHomeScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(24),
             child: Text(context.t('staff_home.not_staff', fallback: 'Esta pantalla es para el personal de un local. Pide al local un QR de acceso.'),
-                textAlign: TextAlign.center, style: tw(14, color: Tw.slate300)),
+                textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft)),
           ),
         ),
       );
@@ -221,12 +221,12 @@ class StaffHomeScreen extends StatelessWidget {
             radius: 24,
             padding: const EdgeInsets.all(24),
             child: Row(children: [
-              Icon(icon, size: 48, color: Tw.fuchsia400),
+              Icon(icon, size: 48, color: Tw.sun),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Text(title, style: tw(20, weight: black)),
-                  Text(desc, style: tw(13, color: Tw.slate400)),
+                  Text(desc, style: tw(13, color: Tw.inkSoft)),
                 ]),
               ),
             ]),
@@ -249,7 +249,7 @@ class StaffHomeScreen extends StatelessWidget {
                   ),
                 ),
                 if (auth.user?.displayName?.isNotEmpty == true)
-                  Text(auth.user!.displayName!, textAlign: TextAlign.center, style: tw(14, color: Tw.slate400)),
+                  Text(auth.user!.displayName!, textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft)),
                 const SizedBox(height: 24),
                 if (scopes.contains('door'))
                   tile('door', Icons.qr_code_scanner, context.t('staff_home.door', fallback: 'Puerta'),
@@ -259,7 +259,7 @@ class StaffHomeScreen extends StatelessWidget {
                       context.t('staff_home.bar_desc', fallback: 'Canjear consumiciones'), () => openRoute(context, AppRoute.barScanner, args: {'venue': venueId})),
                 TextButton(
                   onPressed: () => context.read<AuthProvider>().logout(),
-                  child: Text(context.t('staff_home.logout', fallback: 'Cerrar sesión'), style: tw(13, weight: bold, color: Tw.slate400)),
+                  child: Text(context.t('staff_home.logout', fallback: 'Cerrar sesión'), style: tw(13, weight: bold, color: Tw.inkSoft)),
                 ),
               ]),
             ),

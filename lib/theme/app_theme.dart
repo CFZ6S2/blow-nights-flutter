@@ -74,27 +74,50 @@ class Tw {
   static const sky400 = Color(0xFF38BDF8);
   static const lime400 = Color(0xFFA3E635);
 
+  // "Fiesta" redesign (web globals.css, 2026-10), "Atardecer" palette: night plum ground, sunset orange,
+  // party pink, sun yellow, live mint.
+  static const night = Color(0xFF150B24);
+  static const nightDeep = Color(0xFF0D0717);
+  static const panel = Color(0xFF21143A);
+  static const line = Color(0xFF3A2858);
+  static const inkSoft = Color(0xFFD2C2E6);
+  static const inkDim = Color(0xFF9784B3);
+  static const sunset = Color(0xFFFF5A36);
+  static const party = Color(0xFFE8318A);
+  static const sun = Color(0xFFFFD23D);
+  static const live = Color(0xFF3DF5C1);
+
+  /// bg-panel/70: the web's card fill (was bg-white/5).
+  static const panelSoft = Color(0xB321143A);
+
+  /// border-line/60 and bg-line/60 (was border-white/5, bg-white/10).
+  static const lineSoft = Color(0x993A2858);
+
   /// bg-white/5, border-white/10 etc.
   static Color w(double alpha) => white.withValues(alpha: alpha);
 }
 
 class AppTheme {
-  static const Color primary = Tw.fuchsia500;
-  static const Color primaryDark = Tw.purple600;
-  static const Color background = Tw.slate950;
-  static const Color surface = Tw.slate900;
-  static const Color surfaceLight = Tw.slate800;
+  static const Color primary = Tw.party;
+  static const Color primaryDark = Tw.sunset;
+  static const Color background = Tw.night;
+  static const Color surface = Tw.panel;
+  static const Color surfaceLight = Tw.line;
   static const Color textPrimary = Tw.white;
-  static const Color textSecondary = Tw.slate400;
-  static const Color success = Tw.green500;
+  static const Color textSecondary = Tw.inkSoft;
+  static const Color success = Tw.live;
   static const Color error = Tw.red500;
-  static const Color warning = Tw.amber500;
+  static const Color warning = Tw.sun;
 
-  /// bg-gradient-to-r from-fuchsia-600 to-indigo-600 (primary CTA on the web)
-  static const Gradient ctaGradient = LinearGradient(colors: [Tw.fuchsia600, Tw.indigo600]);
+  /// Text font (web: font-fig) and headings font (web: font-party).
+  static const String textFont = 'Figtree';
+  static const String partyFont = 'Bricolage';
 
-  /// from-fuchsia-500 via-purple-500 to-indigo-500 (BLOW NIGHTS wordmark)
-  static const Gradient wordmarkGradient = LinearGradient(colors: [Tw.fuchsia500, Tw.purple500, Tw.indigo500]);
+  /// .bn-cta: sunset -> party (main call to action on the web)
+  static const Gradient ctaGradient = LinearGradient(colors: [Tw.sunset, Tw.party]);
+
+  /// BLOW NIGHTS wordmark and big headings: sun -> sunset -> party
+  static const Gradient wordmarkGradient = LinearGradient(colors: [Tw.sun, Tw.sunset, Tw.party]);
 
   static const Gradient brandGradient = ctaGradient;
 
@@ -103,13 +126,50 @@ class AppTheme {
         brightness: Brightness.dark,
         primaryColor: primary,
         scaffoldBackgroundColor: background,
-        fontFamily: null,
+        fontFamily: textFont,
         colorScheme: const ColorScheme.dark(
           primary: primary,
           secondary: primaryDark,
+          tertiary: Tw.sun,
           surface: surface,
           onPrimary: Colors.white,
           onSurface: textPrimary,
+          outline: Tw.line,
+          outlineVariant: Tw.lineSoft,
+        ),
+        canvasColor: background,
+        cardColor: surface,
+        dialogTheme: const DialogThemeData(
+          backgroundColor: Tw.panel,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(24)),
+            side: BorderSide(color: Tw.line),
+          ),
+        ),
+        bottomSheetTheme: const BottomSheetThemeData(
+          backgroundColor: Tw.panel,
+          modalBackgroundColor: Tw.panel,
+        ),
+        popupMenuTheme: const PopupMenuThemeData(
+          color: Tw.panel,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16)),
+            side: BorderSide(color: Tw.line),
+          ),
+        ),
+        switchTheme: SwitchThemeData(
+          thumbColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? Tw.white : Tw.inkDim),
+          trackColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? Tw.party : Tw.line),
+          trackOutlineColor: const WidgetStatePropertyAll(Colors.transparent),
+        ),
+        checkboxTheme: CheckboxThemeData(
+          fillColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? Tw.party : Colors.transparent),
+          side: const BorderSide(color: Tw.line, width: 1.5),
+        ),
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: Tw.sun,
+          selectionColor: Tw.party.withValues(alpha: 0.3),
+          selectionHandleColor: Tw.party,
         ),
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.transparent,
@@ -118,32 +178,32 @@ class AppTheme {
         ),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
-          fillColor: Tw.w(0.05),
+          fillColor: Tw.nightDeep.withValues(alpha: 0.6),
           contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          hintStyle: const TextStyle(color: Tw.slate500, fontSize: 14),
+          hintStyle: const TextStyle(color: Tw.inkDim, fontSize: 14),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(color: Tw.w(0.1)),
+            borderSide: const BorderSide(color: Tw.line),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(color: Tw.w(0.1)),
+            borderSide: const BorderSide(color: Tw.line),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(color: Tw.fuchsia500.withValues(alpha: 0.5)),
+            borderSide: const BorderSide(color: Tw.sunset),
           ),
         ),
         snackBarTheme: SnackBarThemeData(
-          backgroundColor: Tw.slate900,
-          contentTextStyle: const TextStyle(color: textPrimary, fontWeight: FontWeight.w700),
+          backgroundColor: Tw.panel,
+          contentTextStyle: const TextStyle(color: textPrimary, fontWeight: FontWeight.w700, fontFamily: textFont),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
-            side: BorderSide(color: Tw.w(0.1)),
+            side: const BorderSide(color: Tw.line),
           ),
           behavior: SnackBarBehavior.floating,
         ),
-        dividerTheme: DividerThemeData(color: Tw.w(0.1), thickness: 1),
-        progressIndicatorTheme: const ProgressIndicatorThemeData(color: Tw.fuchsia500),
+        dividerTheme: const DividerThemeData(color: Tw.line, thickness: 1),
+        progressIndicatorTheme: const ProgressIndicatorThemeData(color: Tw.party),
       );
 }

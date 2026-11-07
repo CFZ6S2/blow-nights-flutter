@@ -73,7 +73,7 @@ String _flag(String country) =>
     const {'ES': '🇪🇸', 'UK': '🇬🇧', 'PT': '🇵🇹', 'FR': '🇫🇷', 'DE': '🇩🇪'}[country] ?? '🌍';
 
 const _bg = Color(0xFF04060E);
-const _brandGradient = LinearGradient(colors: [Tw.fuchsia600, Tw.purple600, Tw.indigo600]);
+const _brandGradient = LinearGradient(colors: [Tw.sunset, Tw.party]);
 
 /// Port of app/page.tsx — the guest landing. [onEnter] opens the radar shell.
 class LandingScreen extends StatefulWidget {
@@ -164,16 +164,16 @@ class _LandingScreenState extends State<LandingScreen> {
               padding: EdgeInsets.fromLTRB(12, top + 12, 12, 12),
               decoration: BoxDecoration(
                 color: _bg.withValues(alpha: 0.8),
-                border: Border(bottom: BorderSide(color: Tw.w(0.08))),
+                border: Border(bottom: BorderSide(color: Tw.lineSoft)),
               ),
               child: Row(children: [
                 Container(
                   width: 32,
                   height: 32,
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(begin: Alignment.bottomLeft, end: Alignment.topRight, colors: [Tw.fuchsia600, Tw.indigo600]),
+                    gradient: const LinearGradient(begin: Alignment.bottomLeft, end: Alignment.topRight, colors: [Tw.sunset, Tw.party]),
                     borderRadius: BorderRadius.circular(12),
-                    boxShadow: [BoxShadow(color: Tw.fuchsia500.withValues(alpha: 0.25), blurRadius: 15)],
+                    boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.25), blurRadius: 15)],
                   ),
                   child: const Icon(Icons.radar, size: 16, color: Tw.white),
                 ),
@@ -185,10 +185,10 @@ class _LandingScreenState extends State<LandingScreen> {
                       WidgetSpan(
                         alignment: PlaceholderAlignment.baseline,
                         baseline: TextBaseline.alphabetic,
-                        child: _GradientText('BLOW', const LinearGradient(colors: [Tw.white, Color(0xFFF1F5F9), Tw.slate400]),
+                        child: _GradientText('BLOW', const LinearGradient(colors: [Tw.white, Color(0xFFF1F5F9), Tw.inkSoft]),
                             style: tw(18, weight: black, tracking: -0.025)),
                       ),
-                      TextSpan(text: 'NIGHTS', style: tw(18, weight: black, color: Tw.fuchsia500, tracking: -0.025)),
+                      TextSpan(text: 'NIGHTS', style: tw(18, weight: black, color: Tw.party, tracking: -0.025)),
                     ])),
                   ),
                 ),
@@ -206,7 +206,7 @@ class _LandingScreenState extends State<LandingScreen> {
                     decoration: BoxDecoration(
                       gradient: _brandGradient,
                       borderRadius: BorderRadius.circular(12),
-                      boxShadow: [BoxShadow(color: Tw.fuchsia500.withValues(alpha: 0.25), blurRadius: 15)],
+                      boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.25), blurRadius: 15)],
                     ),
                     child: const Icon(Icons.explore, size: 16, color: Tw.white),
                   ),
@@ -219,7 +219,7 @@ class _LandingScreenState extends State<LandingScreen> {
 
   Widget _headerIcon(IconData icon, VoidCallback onTap) => Pressable(
         onTap: onTap,
-        child: Padding(padding: const EdgeInsets.all(8), child: Icon(icon, size: 16, color: Tw.slate300)),
+        child: Padding(padding: const EdgeInsets.all(8), child: Icon(icon, size: 16, color: Tw.inkSoft)),
       );
 
   Widget _cityDropdown(BuildContext context) => Builder(
@@ -227,11 +227,11 @@ class _LandingScreenState extends State<LandingScreen> {
           onTap: () => _openCityMenu(btnCtx),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.1))),
+            decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
             child: Row(mainAxisSize: MainAxisSize.min, children: [
               Text(_flag(_city.country), style: const TextStyle(fontSize: 14)),
               const SizedBox(width: 4),
-              const Icon(Icons.expand_more, size: 12, color: Tw.slate600),
+              const Icon(Icons.expand_more, size: 12, color: Tw.inkDim),
             ]),
           ),
         ),
@@ -257,9 +257,9 @@ class _LandingScreenState extends State<LandingScreen> {
               width: 192,
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
-                color: Tw.slate900.withValues(alpha: 0.95),
+                color: Tw.panel.withValues(alpha: 0.95),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Tw.w(0.1)),
+                border: Border.all(color: Tw.line),
                 boxShadow: const [BoxShadow(color: Color(0xCC000000), blurRadius: 50, offset: Offset(0, 20))],
               ),
               child: Column(mainAxisSize: MainAxisSize.min, children: [
@@ -272,14 +272,14 @@ class _LandingScreenState extends State<LandingScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                       decoration: BoxDecoration(
-                        color: _slug == e.key ? Tw.fuchsia500.withValues(alpha: 0.15) : Colors.transparent,
+                        color: _slug == e.key ? Tw.party.withValues(alpha: 0.15) : Colors.transparent,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(children: [
                         Text(_flag(e.value.country), style: const TextStyle(fontSize: 16)),
                         const SizedBox(width: 10),
-                        Expanded(child: Text(e.value.label, style: tw(12, weight: bold, color: _slug == e.key ? Tw.fuchsia300 : Tw.slate300))),
-                        if (_slug == e.key) const Icon(Icons.check, size: 16, color: Tw.fuchsia400),
+                        Expanded(child: Text(e.value.label, style: tw(12, weight: bold, color: _slug == e.key ? Tw.sun : Tw.inkSoft))),
+                        if (_slug == e.key) const Icon(Icons.check, size: 16, color: Tw.sun),
                       ]),
                     ),
                   ),
@@ -302,11 +302,11 @@ class _LandingScreenState extends State<LandingScreen> {
           _FadeIn(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-              decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(99), border: Border.all(color: Tw.w(0.1))),
+              decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(99), border: Border.all(color: Tw.line)),
               child: Row(mainAxisSize: MainAxisSize.min, children: [
-                const _Pulse(child: SizedBox(width: 8, height: 8, child: DecoratedBox(decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.fuchsia500)))),
+                const _Pulse(child: SizedBox(width: 8, height: 8, child: DecoratedBox(decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.party)))),
                 const SizedBox(width: 8),
-                Flexible(child: Label(context.t('landing_live_badge'), size: 11, weight: bold, color: Tw.slate300, tracking: 0.25)),
+                Flexible(child: Label(context.t('landing_live_badge'), size: 11, weight: bold, color: Tw.inkSoft, tracking: 0.25)),
               ]),
             ),
           ),
@@ -321,7 +321,7 @@ class _LandingScreenState extends State<LandingScreen> {
                   baseline: TextBaseline.alphabetic,
                   child: _GradientText(
                     context.t('landing_hero_title_2'),
-                    const LinearGradient(colors: [Tw.fuchsia400, Color(0xFFD8B4FE), Tw.indigo400]),
+                    const LinearGradient(colors: [Tw.sun, Tw.sunset, Tw.party]),
                     style: tw(36, weight: black, tracking: -0.025, height: 1.02),
                   ),
                 ),
@@ -334,7 +334,7 @@ class _LandingScreenState extends State<LandingScreen> {
           _FadeIn(
             delay: 200,
             child: Text(context.t('landing_hero_description'),
-                textAlign: TextAlign.center, style: tw(16, weight: FontWeight.w300, color: Tw.slate300, height: 1.6)),
+                textAlign: TextAlign.center, style: tw(16, weight: FontWeight.w300, color: Tw.inkSoft, height: 1.6)),
           ),
           const SizedBox(height: 32),
           _FadeIn(
@@ -348,7 +348,7 @@ class _LandingScreenState extends State<LandingScreen> {
                   decoration: BoxDecoration(
                     gradient: _brandGradient,
                     borderRadius: BorderRadius.circular(16),
-                    boxShadow: [BoxShadow(color: Tw.fuchsia500.withValues(alpha: 0.3), blurRadius: 50, offset: const Offset(0, 25))],
+                    boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.3), blurRadius: 50, offset: const Offset(0, 25))],
                   ),
                   child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     const Icon(Icons.radar, size: 18, color: Tw.white),
@@ -372,9 +372,9 @@ class _LandingScreenState extends State<LandingScreen> {
                 child: Container(
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                  decoration: BoxDecoration(color: Tw.w(0.06), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+                  decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
                   child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    const Icon(Icons.confirmation_number, size: 18, color: Tw.fuchsia400),
+                    const Icon(Icons.confirmation_number, size: 18, color: Tw.sun),
                     const SizedBox(width: 8),
                     Flexible(child: Label(context.t('landing_cta_tickets'), size: 14, weight: semibold, color: const Color(0xFFE2E8F0), tracking: 0.15)),
                   ]),
@@ -395,16 +395,16 @@ class _LandingScreenState extends State<LandingScreen> {
       decoration: BoxDecoration(
         color: const Color(0xFF080C1B).withValues(alpha: 0.9),
         borderRadius: BorderRadius.circular(40),
-        border: Border.all(color: Tw.w(0.15)),
+        border: Border.all(color: Tw.line),
         boxShadow: [
-          BoxShadow(color: Tw.fuchsia600.withValues(alpha: 0.15), blurRadius: 40),
+          BoxShadow(color: Tw.party.withValues(alpha: 0.15), blurRadius: 40),
           const BoxShadow(color: Color(0xCC000000), blurRadius: 50, offset: Offset(0, 25)),
         ],
       ),
       child: Column(children: [
         Container(
           padding: const EdgeInsets.only(bottom: 16),
-          decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Tw.w(0.08)))),
+          decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Tw.lineSoft))),
           child: Row(children: [
             const _PingDot(),
             const SizedBox(width: 8),
@@ -412,11 +412,11 @@ class _LandingScreenState extends State<LandingScreen> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
-                color: Tw.fuchsia500.withValues(alpha: 0.1),
+                color: Tw.party.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(99),
-                border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.2)),
+                border: Border.all(color: Tw.party.withValues(alpha: 0.2)),
               ),
-              child: Text(context.t('landing_demo_badge'), style: tw(11, color: Tw.fuchsia400).copyWith(fontFamily: 'monospace')),
+              child: Text(context.t('landing_demo_badge'), style: tw(11, color: Tw.sun).copyWith(fontFamily: 'monospace')),
             ),
           ]),
         ),
@@ -435,15 +435,15 @@ class _LandingScreenState extends State<LandingScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                       decoration: BoxDecoration(
-                        gradient: slug == _slug ? const LinearGradient(colors: [Tw.fuchsia600, Tw.indigo600]) : null,
-                        color: slug == _slug ? null : Tw.w(0.05),
+                        gradient: slug == _slug ? const LinearGradient(colors: [Tw.sunset, Tw.party]) : null,
+                        color: slug == _slug ? null : Tw.panelSoft,
                         borderRadius: BorderRadius.circular(12),
-                        border: slug == _slug ? null : Border.all(color: Tw.w(0.05)),
+                        border: slug == _slug ? null : Border.all(color: Tw.lineSoft),
                       ),
                       child: Row(mainAxisSize: MainAxisSize.min, children: [
                         Text(_flag(_cities[slug]?.country ?? 'ES')),
                         const SizedBox(width: 6),
-                        Text(_cities[slug]?.label ?? slug, style: tw(12, weight: semibold, color: slug == _slug ? Tw.white : Tw.slate400)),
+                        Text(_cities[slug]?.label ?? slug, style: tw(12, weight: semibold, color: slug == _slug ? Tw.white : Tw.inkSoft)),
                       ]),
                     ),
                   ),
@@ -465,13 +465,13 @@ class _LandingScreenState extends State<LandingScreen> {
         const SizedBox(height: 20),
         Container(
           padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(color: Tw.w(0.04), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.08))),
+          decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.lineSoft)),
           child: Row(children: [
             Container(
               width: 36,
               height: 36,
               decoration: BoxDecoration(
-                gradient: const LinearGradient(begin: Alignment.bottomLeft, end: Alignment.topRight, colors: [Tw.fuchsia600, Tw.indigo600]),
+                gradient: const LinearGradient(begin: Alignment.bottomLeft, end: Alignment.topRight, colors: [Tw.sunset, Tw.party]),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: const Icon(Icons.nightlife, size: 18, color: Tw.white),
@@ -480,7 +480,7 @@ class _LandingScreenState extends State<LandingScreen> {
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(active.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(12, weight: bold)),
-                Text(city.label, maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(11, color: Tw.slate400)),
+                Text(city.label, maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(11, color: Tw.inkSoft)),
               ]),
             ),
             const SizedBox(width: 12),
@@ -488,7 +488,7 @@ class _LandingScreenState extends State<LandingScreen> {
               onTap: () => _openRadar(),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                decoration: BoxDecoration(color: Tw.w(0.1), borderRadius: BorderRadius.circular(12)),
+                decoration: BoxDecoration(color: Tw.lineSoft, borderRadius: BorderRadius.circular(12)),
                 child: const Icon(Icons.arrow_forward, size: 14, color: Tw.white),
               ),
             ),
@@ -513,7 +513,7 @@ class _LandingScreenState extends State<LandingScreen> {
           const SizedBox(height: 24),
           Text(title, textAlign: TextAlign.center, style: tw(titleSize, weight: black, tracking: -0.025, height: 1.1)),
           const SizedBox(height: 16),
-          Text(subtitle, textAlign: TextAlign.center, style: tw(16, weight: FontWeight.w300, color: Tw.slate400, height: 1.6)),
+          Text(subtitle, textAlign: TextAlign.center, style: tw(16, weight: FontWeight.w300, color: Tw.inkSoft, height: 1.6)),
         ]),
       );
 
@@ -523,9 +523,9 @@ class _LandingScreenState extends State<LandingScreen> {
           margin: const EdgeInsets.only(bottom: 24),
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
-            gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Tw.w(0.06), Tw.w(0.02)]),
+            gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Tw.panelSoft, Tw.panelSoft]),
             borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: Tw.w(0.1)),
+            border: Border.all(color: Tw.line),
           ),
           child: Stack(children: [
             Positioned(top: -80, right: -80, child: Orb(color: accent.withValues(alpha: 0.12), size: 280)),
@@ -543,7 +543,7 @@ class _LandingScreenState extends State<LandingScreen> {
                 const SizedBox(height: 8),
                 Text(title, style: tw(24, weight: bold, height: 1.2)),
                 const SizedBox(height: 12),
-                Text(desc, style: tw(14, color: Tw.slate400, height: 1.6)),
+                Text(desc, style: tw(14, color: Tw.inkSoft, height: 1.6)),
                 if (footer != null) ...[const SizedBox(height: 24), footer],
               ]),
             ),
@@ -554,10 +554,10 @@ class _LandingScreenState extends State<LandingScreen> {
   Widget _bento(BuildContext context) => Padding(
         padding: const EdgeInsets.fromLTRB(20, 64, 20, 40),
         child: Column(children: [
-          _sectionHead(context, context.t('landing_bento_badge'), Tw.fuchsia400, context.t('landing_bento_title'), context.t('landing_bento_subtitle')),
+          _sectionHead(context, context.t('landing_bento_badge'), Tw.sun, context.t('landing_bento_title'), context.t('landing_bento_subtitle')),
           const SizedBox(height: 48),
           _bentoCard(
-            accent: Tw.fuchsia500,
+            accent: Tw.party,
             icon: Icons.radar,
             label: context.t('landing_bento1_label'),
             title: context.t('landing_bento1_title'),
@@ -582,7 +582,7 @@ class _LandingScreenState extends State<LandingScreen> {
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text(context.t('landing_bento2_scan'), style: tw(12, weight: bold)),
-                    Text(context.t('landing_bento2_scan_desc'), style: tw(11, color: Tw.slate400)),
+                    Text(context.t('landing_bento2_scan_desc'), style: tw(11, color: Tw.inkSoft)),
                   ]),
                 ),
               ]),
@@ -618,8 +618,8 @@ class _LandingScreenState extends State<LandingScreen> {
                   Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.symmetric(horizontal: 6),
-                    decoration: BoxDecoration(color: Tw.w(0.04), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.1))),
-                    child: Text(context.t(k), textAlign: TextAlign.center, maxLines: 2, style: tw(12, weight: medium, color: Tw.slate300)),
+                    decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
+                    child: Text(context.t(k), textAlign: TextAlign.center, maxLines: 2, style: tw(12, weight: medium, color: Tw.inkSoft)),
                   ),
               ],
             ),
@@ -640,7 +640,7 @@ class _LandingScreenState extends State<LandingScreen> {
   // ─── Cities ───
   Widget _citiesShowcase(BuildContext context) => Container(
         padding: const EdgeInsets.fromLTRB(20, 96, 20, 96),
-        decoration: BoxDecoration(border: Border(top: BorderSide(color: Tw.w(0.08)))),
+        decoration: BoxDecoration(border: Border(top: BorderSide(color: Tw.lineSoft))),
         child: Column(children: [
           _sectionHead(context, context.t('landing_cities_badge'), Tw.indigo400, context.t('landing_cities_title'), context.t('landing_cities_subtitle')),
           const SizedBox(height: 64),
@@ -652,7 +652,7 @@ class _LandingScreenState extends State<LandingScreen> {
                   child: Container(
                     margin: const EdgeInsets.only(bottom: 20),
                     padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(color: Tw.w(0.04), borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.w(0.1))),
+                    decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.line)),
                     child: Column(children: [
                       Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                         Expanded(
@@ -661,17 +661,17 @@ class _LandingScreenState extends State<LandingScreen> {
                             const SizedBox(height: 8),
                             Text(city.label, style: tw(24, weight: black)),
                             const SizedBox(height: 2),
-                            Text(city.tag, style: tw(12, color: Tw.slate400)),
+                            Text(city.tag, style: tw(12, color: Tw.inkSoft)),
                           ]),
                         ),
                       ]),
                       const SizedBox(height: 32),
                       Container(
                         padding: const EdgeInsets.only(top: 16),
-                        decoration: BoxDecoration(border: Border(top: BorderSide(color: Tw.w(0.08)))),
+                        decoration: BoxDecoration(border: Border(top: BorderSide(color: Tw.lineSoft))),
                         child: Row(children: [
-                          Expanded(child: Label(context.t('landing_cities_open_radar'), size: 12, weight: bold, color: Tw.slate300, tracking: 0.05)),
-                          const Icon(Icons.arrow_forward, size: 16, color: Tw.fuchsia400),
+                          Expanded(child: Label(context.t('landing_cities_open_radar'), size: 12, weight: bold, color: Tw.inkSoft, tracking: 0.05)),
+                          const Icon(Icons.arrow_forward, size: 16, color: Tw.sun),
                         ]),
                       ),
                     ]),
@@ -689,9 +689,9 @@ class _LandingScreenState extends State<LandingScreen> {
           _FadeIn(
             child: Container(
               padding: const EdgeInsets.all(6),
-              decoration: BoxDecoration(color: Tw.w(0.06), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+              decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
               child: Row(mainAxisSize: MainAxisSize.min, children: [
-                _audienceTab(context.t('landing_tab_clubbers'), !_clubsTab, Tw.fuchsia600, () => setState(() => _clubsTab = false)),
+                _audienceTab(context.t('landing_tab_clubbers'), !_clubsTab, Tw.party, () => setState(() => _clubsTab = false)),
                 _audienceTab(context.t('landing_tab_clubs'), _clubsTab, Tw.indigo600, () => setState(() => _clubsTab = true)),
               ]),
             ),
@@ -718,7 +718,7 @@ class _LandingScreenState extends State<LandingScreen> {
             borderRadius: BorderRadius.circular(12),
             boxShadow: active ? [BoxShadow(color: color.withValues(alpha: 0.25), blurRadius: 15)] : null,
           ),
-          child: Label(label, size: 11, weight: bold, color: active ? Tw.white : Tw.slate400, tracking: 0.05),
+          child: Label(label, size: 11, weight: bold, color: active ? Tw.white : Tw.inkSoft, tracking: 0.05),
         ),
       );
 
@@ -730,15 +730,15 @@ class _LandingScreenState extends State<LandingScreen> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [const Color(0xFF4A044E).withValues(alpha: 0.3), Tw.slate900.withValues(alpha: 0.6), const Color(0xFF1E1B4B).withValues(alpha: 0.3)],
+            colors: [const Color(0xFF4A044E).withValues(alpha: 0.3), Tw.panel.withValues(alpha: 0.6), const Color(0xFF1E1B4B).withValues(alpha: 0.3)],
           ),
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.2)),
+          border: Border.all(color: Tw.party.withValues(alpha: 0.2)),
         ),
         child: Column(children: [
           Text(context.t('landing_clubbers_title'), textAlign: TextAlign.center, style: tw(30, weight: black, height: 1.15)),
           const SizedBox(height: 16),
-          Text(context.t('landing_clubbers_desc'), textAlign: TextAlign.center, style: tw(16, weight: FontWeight.w300, color: Tw.slate300, height: 1.5)),
+          Text(context.t('landing_clubbers_desc'), textAlign: TextAlign.center, style: tw(16, weight: FontWeight.w300, color: Tw.inkSoft, height: 1.5)),
           const SizedBox(height: 32),
           Pressable(
             onTap: () => _openRadar(),
@@ -747,7 +747,7 @@ class _LandingScreenState extends State<LandingScreen> {
               decoration: BoxDecoration(
                 gradient: AppTheme.ctaGradient,
                 borderRadius: BorderRadius.circular(16),
-                boxShadow: [BoxShadow(color: Tw.fuchsia500.withValues(alpha: 0.25), blurRadius: 25)],
+                boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.25), blurRadius: 25)],
               ),
               child: Row(mainAxisSize: MainAxisSize.min, children: [
                 const Icon(Icons.bolt, size: 18, color: Tw.white),
@@ -767,7 +767,7 @@ class _LandingScreenState extends State<LandingScreen> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [const Color(0xFF1E1B4B).withValues(alpha: 0.4), Tw.slate900.withValues(alpha: 0.6), Tw.slate950],
+            colors: [const Color(0xFF1E1B4B).withValues(alpha: 0.4), Tw.panel.withValues(alpha: 0.6), Tw.night],
           ),
           borderRadius: BorderRadius.circular(24),
           border: Border.all(color: Tw.indigo500.withValues(alpha: 0.2)),
@@ -785,14 +785,14 @@ class _LandingScreenState extends State<LandingScreen> {
           const SizedBox(height: 16),
           Text(context.t('landing_clubs_title'), textAlign: TextAlign.center, style: tw(30, weight: black, height: 1.15)),
           const SizedBox(height: 16),
-          Text(context.t('landing_clubs_desc'), textAlign: TextAlign.center, style: tw(16, weight: FontWeight.w300, color: Tw.slate300, height: 1.5)),
+          Text(context.t('landing_clubs_desc'), textAlign: TextAlign.center, style: tw(16, weight: FontWeight.w300, color: Tw.inkSoft, height: 1.5)),
           const SizedBox(height: 32),
           Pressable(
             onTap: () => openRoute(context, AppRoute.business),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
               decoration: BoxDecoration(color: Tw.white, borderRadius: BorderRadius.circular(16)),
-              child: Label(context.t('landing_clubs_cta_register'), size: 14, weight: bold, color: Tw.slate950, tracking: 0.1, align: TextAlign.center),
+              child: Label(context.t('landing_clubs_cta_register'), size: 14, weight: bold, color: Tw.night, tracking: 0.1, align: TextAlign.center),
             ),
           ),
           const SizedBox(height: 16),
@@ -800,7 +800,7 @@ class _LandingScreenState extends State<LandingScreen> {
             onTap: () => openRoute(context, AppRoute.business, args: const {'type': 'rrpp'}),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-              decoration: BoxDecoration(color: Tw.w(0.08), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+              decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
               child: Label(context.t('landing_clubs_cta_rrpp'), size: 14, weight: semibold, color: Tw.white, tracking: 0.05, align: TextAlign.center),
             ),
           ),
@@ -809,7 +809,7 @@ class _LandingScreenState extends State<LandingScreen> {
             onTap: () => openRoute(context, AppRoute.scanner),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-              decoration: BoxDecoration(color: Tw.w(0.08), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+              decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
               child: Label(context.t('landing_clubs_cta_scanner'), size: 14, weight: semibold, color: Tw.white, tracking: 0.05, align: TextAlign.center),
             ),
           ),
@@ -824,11 +824,11 @@ class _LandingScreenState extends State<LandingScreen> {
         );
     return Container(
       padding: EdgeInsets.fromLTRB(20, 56, 20, 56 + MediaQuery.of(context).padding.bottom),
-      decoration: BoxDecoration(color: const Color(0xFF020308), border: Border(top: BorderSide(color: Tw.w(0.08)))),
+      decoration: BoxDecoration(color: const Color(0xFF020308), border: Border(top: BorderSide(color: Tw.lineSoft))),
       child: Column(children: [
-        _GradientText('BLOW NIGHTS', const LinearGradient(colors: [Tw.fuchsia500, Tw.indigo500]), style: tw(18, weight: black, tracking: -0.025)),
+        _GradientText('BLOW NIGHTS', const LinearGradient(colors: [Tw.sunset, Tw.party]), style: tw(18, weight: black, tracking: -0.025)),
         const SizedBox(height: 8),
-        Text(context.t('landing_footer_tagline'), textAlign: TextAlign.center, style: tw(12, weight: FontWeight.w300, color: Tw.slate500)),
+        Text(context.t('landing_footer_tagline'), textAlign: TextAlign.center, style: tw(12, weight: FontWeight.w300, color: Tw.inkDim)),
         const SizedBox(height: 32),
         Wrap(alignment: WrapAlignment.center, spacing: 32, runSpacing: 16, children: [
           link('landing_footer_radar', () => _openRadar()),
@@ -840,7 +840,7 @@ class _LandingScreenState extends State<LandingScreen> {
         ]),
         const SizedBox(height: 32),
         Text('© ${DateTime.now().year} ${context.t('landing_footer_copyright')}',
-            style: tw(12, color: Tw.slate600).copyWith(fontFamily: 'monospace')),
+            style: tw(12, color: Tw.inkDim).copyWith(fontFamily: 'monospace')),
       ]),
     );
   }
@@ -862,11 +862,11 @@ class _Aurora extends StatelessWidget {
             width: 700,
             height: 450,
             decoration: BoxDecoration(
-              gradient: RadialGradient(colors: [Tw.fuchsia600.withValues(alpha: 0.18), Tw.indigo600.withValues(alpha: 0.08), Colors.transparent]),
+              gradient: RadialGradient(colors: [Tw.party.withValues(alpha: 0.18), Tw.sunset.withValues(alpha: 0.08), Colors.transparent]),
             ),
           ),
         ),
-        Positioned(top: size.height * 0.35, left: -size.width * 0.1 - 150, child: Orb(color: Tw.purple600.withValues(alpha: 0.1), size: 500)),
+        Positioned(top: size.height * 0.35, left: -size.width * 0.1 - 150, child: Orb(color: Tw.sunset.withValues(alpha: 0.1), size: 500)),
         Positioned(top: size.height * 0.6, right: -size.width * 0.1 - 150, child: Orb(color: const Color(0xFF0891B2).withValues(alpha: 0.1), size: 550)),
         Positioned.fill(child: CustomPaint(painter: _DotGridPainter())),
       ]),
@@ -918,7 +918,7 @@ class _RadarScreenState extends State<_RadarScreen> with TickerProviderStateMixi
         decoration: BoxDecoration(
           color: const Color(0xFF050713),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Tw.w(0.08)),
+          border: Border.all(color: Tw.lineSoft),
         ),
         child: LayoutBuilder(builder: (context, c) {
           final w = c.maxWidth;
@@ -931,11 +931,11 @@ class _RadarScreenState extends State<_RadarScreen> with TickerProviderStateMixi
                 ),
               );
           return Stack(clipBehavior: Clip.none, children: [
-            ring(0.8, Tw.fuchsia500.withValues(alpha: 0.15)),
+            ring(0.8, Tw.party.withValues(alpha: 0.15)),
             ring(0.55, Tw.indigo500.withValues(alpha: 0.2)),
-            ring(0.3, Tw.w(0.1)),
-            Positioned(left: 0, right: 0, top: h / 2, child: Container(height: 1, color: Tw.w(0.06))),
-            Positioned(top: 0, bottom: 0, left: w / 2, child: Container(width: 1, color: Tw.w(0.06))),
+            ring(0.3, Tw.lineSoft),
+            Positioned(left: 0, right: 0, top: h / 2, child: Container(height: 1, color: Tw.panelSoft)),
+            Positioned(top: 0, bottom: 0, left: w / 2, child: Container(width: 1, color: Tw.panelSoft)),
             Positioned.fill(
               child: IgnorePointer(
                 child: RotationTransition(
@@ -947,7 +947,7 @@ class _RadarScreenState extends State<_RadarScreen> with TickerProviderStateMixi
                         gradient: SweepGradient(
                           startAngle: -math.pi / 2,
                           endAngle: 3 * math.pi / 2,
-                          colors: [Tw.fuchsia500.withValues(alpha: 0.25), Colors.transparent],
+                          colors: [Tw.party.withValues(alpha: 0.25), Colors.transparent],
                           stops: const [0, 65 / 360],
                         ),
                       ),
@@ -971,7 +971,7 @@ class _RadarScreenState extends State<_RadarScreen> with TickerProviderStateMixi
                 ),
                 Positioned(
                   top: 16,
-                  child: Text(widget.youLabel, style: tw(9, color: Tw.slate400, tracking: 0.1).copyWith(fontFamily: 'monospace')),
+                  child: Text(widget.youLabel, style: tw(9, color: Tw.inkSoft, tracking: 0.1).copyWith(fontFamily: 'monospace')),
                 ),
               ]),
             ),
@@ -994,7 +994,7 @@ class _RadarScreenState extends State<_RadarScreen> with TickerProviderStateMixi
         child: Stack(clipBehavior: Clip.none, alignment: Alignment.center, children: [
           if (isActive)
             IgnorePointer(
-              child: _Ping(child: Container(width: 32, height: 32, decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.fuchsia500.withValues(alpha: 0.3)))),
+              child: _Ping(child: Container(width: 32, height: 32, decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.party.withValues(alpha: 0.3)))),
             ),
           GestureDetector(
             onTap: () => widget.onSelect(i),
@@ -1007,8 +1007,8 @@ class _RadarScreenState extends State<_RadarScreen> with TickerProviderStateMixi
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isActive ? Tw.fuchsia500 : Tw.indigo600.withValues(alpha: 0.8),
-                  boxShadow: isActive ? [BoxShadow(color: Tw.fuchsia500.withValues(alpha: 0.8), blurRadius: 15)] : null,
+                  color: isActive ? Tw.party : Tw.indigo600.withValues(alpha: 0.8),
+                  boxShadow: isActive ? [BoxShadow(color: Tw.party.withValues(alpha: 0.8), blurRadius: 15)] : null,
                 ),
                 child: const Icon(Icons.nightlife, size: 12, color: Tw.white),
               ),
@@ -1023,9 +1023,9 @@ class _RadarScreenState extends State<_RadarScreen> with TickerProviderStateMixi
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Tw.slate900.withValues(alpha: 0.95),
+                    color: Tw.panel.withValues(alpha: 0.95),
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Tw.w(0.2)),
+                    border: Border.all(color: Tw.line),
                   ),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
                     Text(v.name, softWrap: false, style: tw(11, weight: bold, height: 1.2)),
@@ -1078,8 +1078,8 @@ class _PingDot extends StatelessWidget {
         width: 12,
         height: 12,
         child: Stack(children: [
-          _Ping(child: Container(decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.fuchsia400.withValues(alpha: 0.75)))),
-          Container(decoration: const BoxDecoration(shape: BoxShape.circle, color: Tw.fuchsia500)),
+          _Ping(child: Container(decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.sun.withValues(alpha: 0.75)))),
+          Container(decoration: const BoxDecoration(shape: BoxShape.circle, color: Tw.party)),
         ]),
       );
 }

@@ -98,7 +98,7 @@ class _PlanManageScreenState extends State<PlanManageScreen> {
       return Scaffold(
         body: Center(
           child: Column(mainAxisSize: MainAxisSize.min, children: [
-            const Icon(Icons.event_busy, size: 48, color: Tw.slate700),
+            const Icon(Icons.event_busy, size: 48, color: Tw.line),
             const SizedBox(height: 16),
             Text(context.t('plan_manage.not_found', fallback: 'Plan no encontrado'), style: tw(20, weight: black)),
             const SizedBox(height: 16),
@@ -106,7 +106,7 @@ class _PlanManageScreenState extends State<PlanManageScreen> {
               onTap: () => Navigator.of(context).maybePop(),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                decoration: BoxDecoration(color: Tw.fuchsia600, borderRadius: BorderRadius.circular(16)),
+                decoration: BoxDecoration(color: Tw.party, borderRadius: BorderRadius.circular(16)),
                 child: Label(context.t('plan_manage.back', fallback: 'Mis planes'), size: 12, color: Tw.white),
               ),
             ),
@@ -115,7 +115,7 @@ class _PlanManageScreenState extends State<PlanManageScreen> {
       );
     }
     final status = c['status'] as String? ?? '';
-    final statusColor = status == 'active' ? Tw.emerald400 : status == 'full' ? Tw.red400 : Tw.slate400;
+    final statusColor = status == 'active' ? Tw.live : status == 'full' ? Tw.red400 : Tw.inkSoft;
     final isHost = auth.user?.uid == c['host_uid'];
     final isActive = status == 'active' || status == 'full';
     final accepted = c['accepted_users'] is List ? (c['accepted_users'] as List).length : 0;
@@ -130,7 +130,7 @@ class _PlanManageScreenState extends State<PlanManageScreen> {
               child: Container(
                 width: 40,
                 height: 40,
-                decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.w(0.05), border: Border.all(color: Tw.w(0.1))),
+                decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.panelSoft, border: Border.all(color: Tw.line)),
                 child: const Icon(Icons.arrow_back, color: Tw.white),
               ),
             ),
@@ -150,7 +150,7 @@ class _PlanManageScreenState extends State<PlanManageScreen> {
                     child: Label(status, size: 9, weight: bold, color: statusColor, tracking: 0),
                   ),
                   const SizedBox(width: 8),
-                  Text('$accepted/${asInt(c['max_capacity'])}', style: tw(10, color: Tw.slate500)),
+                  Text('$accepted/${asInt(c['max_capacity'])}', style: tw(10, color: Tw.inkDim)),
                 ]),
               ]),
             ),
@@ -158,7 +158,7 @@ class _PlanManageScreenState extends State<PlanManageScreen> {
           const SizedBox(height: 24),
           Container(
             padding: const EdgeInsets.all(4),
-            decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16)),
+            decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16)),
             child: Row(children: [
               for (final t in ['info', 'requests', 'chat'])
                 Expanded(
@@ -166,10 +166,10 @@ class _PlanManageScreenState extends State<PlanManageScreen> {
                     onTap: () => _setTab(t),
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 10),
-                      decoration: BoxDecoration(color: _tab == t ? Tw.fuchsia600 : null, borderRadius: BorderRadius.circular(12)),
+                      decoration: BoxDecoration(color: _tab == t ? Tw.party : null, borderRadius: BorderRadius.circular(12)),
                       child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                         Icon(t == 'info' ? Icons.info : t == 'requests' ? Icons.person_add : Icons.chat, size: 14,
-                            color: _tab == t ? Tw.white : Tw.slate500),
+                            color: _tab == t ? Tw.white : Tw.inkDim),
                         const SizedBox(width: 6),
                         Flexible(
                           child: Label(
@@ -178,7 +178,7 @@ class _PlanManageScreenState extends State<PlanManageScreen> {
                                 : t == 'requests'
                                     ? '${context.t('plan_manage.tab_requests', fallback: 'Solicitudes')}${_requests.isNotEmpty ? ' (${_requests.length})' : ''}'
                                     : context.t('plan_manage.tab_chat', fallback: 'Chat'),
-                            color: _tab == t ? Tw.white : Tw.slate500,
+                            color: _tab == t ? Tw.white : Tw.inkDim,
                             maxLines: 1,
                           ),
                         ),
@@ -206,13 +206,13 @@ class _PlanManageScreenState extends State<PlanManageScreen> {
               Icon(icon, size: 20, color: color),
               const SizedBox(height: 4),
               Text('$value', style: tw(18, weight: black)),
-              Label(label, size: 9, weight: FontWeight.w400, color: Tw.slate500, tracking: 0),
+              Label(label, size: 9, weight: FontWeight.w400, color: Tw.inkDim, tracking: 0),
             ]),
           ),
         );
     return [
       if (safeStr(c['description']).isNotEmpty) ...[
-        GlassCard(radius: 16, child: Text(safeStr(c['description']), style: tw(14, color: Tw.slate300))),
+        GlassCard(radius: 16, child: Text(safeStr(c['description']), style: tw(14, color: Tw.inkSoft))),
         const SizedBox(height: 16),
       ],
       if (tags.isNotEmpty) ...[
@@ -220,18 +220,18 @@ class _PlanManageScreenState extends State<PlanManageScreen> {
           for (final t in tags)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(99), border: Border.all(color: Tw.w(0.1))),
+              decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(99), border: Border.all(color: Tw.line)),
               child: Label(t, weight: bold, tracking: 0),
             ),
         ]),
         const SizedBox(height: 16),
       ],
       Row(children: [
-        stat(Icons.group, Tw.fuchsia400, accepted, context.t('plan_manage.accepted', fallback: 'Aceptados')),
+        stat(Icons.group, Tw.sun, accepted, context.t('plan_manage.accepted', fallback: 'Aceptados')),
         const SizedBox(width: 12),
-        stat(Icons.hourglass_top, Tw.amber400, _requests.length, context.t('plan_manage.pending', fallback: 'Pendientes')),
+        stat(Icons.hourglass_top, Tw.sun, _requests.length, context.t('plan_manage.pending', fallback: 'Pendientes')),
         const SizedBox(width: 12),
-        stat(Icons.block, Tw.slate400, denied, context.t('plan_manage.denied', fallback: 'Denegados')),
+        stat(Icons.block, Tw.inkSoft, denied, context.t('plan_manage.denied', fallback: 'Denegados')),
       ]),
       if (canEnd) ...[
         const SizedBox(height: 16),
@@ -258,9 +258,9 @@ class _PlanManageScreenState extends State<PlanManageScreen> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 48),
           child: Column(children: [
-            const Icon(Icons.inbox, size: 36, color: Tw.slate700),
+            const Icon(Icons.inbox, size: 36, color: Tw.line),
             const SizedBox(height: 12),
-            Text(context.t('plan_manage.no_requests', fallback: 'No hay solicitudes pendientes'), style: tw(14, color: Tw.slate500)),
+            Text(context.t('plan_manage.no_requests', fallback: 'No hay solicitudes pendientes'), style: tw(14, color: Tw.inkDim)),
           ]),
         ),
       ];
@@ -278,7 +278,7 @@ class _PlanManageScreenState extends State<PlanManageScreen> {
                   height: 48,
                   child: NetImage(
                     r['user_foto'] as String?,
-                    placeholder: Container(color: Tw.slate800, child: const Icon(Icons.person, color: Tw.slate600)),
+                    placeholder: Container(color: Tw.line, child: const Icon(Icons.person, color: Tw.inkDim)),
                   ),
                 ),
               ),
@@ -286,12 +286,12 @@ class _PlanManageScreenState extends State<PlanManageScreen> {
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Text(safeStr(r['user_nick'] ?? r['userName']), maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(14, weight: black)),
-                  if (r['user_edad'] != null) Text('${r['user_edad']} ${context.t('plan_manage.years', fallback: 'anos')}', style: tw(10, color: Tw.slate500)),
+                  if (r['user_edad'] != null) Text('${r['user_edad']} ${context.t('plan_manage.years', fallback: 'anos')}', style: tw(10, color: Tw.inkDim)),
                   if (safeStr(r['user_bio']).isNotEmpty)
-                    Text(safeStr(r['user_bio']), maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(10, color: Tw.slate400)),
+                    Text(safeStr(r['user_bio']), maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(10, color: Tw.inkSoft)),
                 ]),
               ),
-              for (final a in [('accept', Icons.check, Tw.emerald500, Tw.emerald400), ('deny', Icons.close, Tw.red500, Tw.red400)]) ...[
+              for (final a in [('accept', Icons.check, Tw.live, Tw.live), ('deny', Icons.close, Tw.red500, Tw.red400)]) ...[
                 const SizedBox(width: 8),
                 Opacity(
                   opacity: _respondingTo == r['user_uid'] ? 0.5 : 1,
@@ -322,9 +322,9 @@ class _PlanManageScreenState extends State<PlanManageScreen> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 48),
           child: Column(children: [
-            const Icon(Icons.forum, size: 36, color: Tw.slate700),
+            const Icon(Icons.forum, size: 36, color: Tw.line),
             const SizedBox(height: 12),
-            Text(context.t('plan_manage.no_messages', fallback: 'No hay mensajes todavia'), style: tw(14, color: Tw.slate500)),
+            Text(context.t('plan_manage.no_messages', fallback: 'No hay mensajes todavia'), style: tw(14, color: Tw.inkDim)),
           ]),
         ),
       ];
@@ -346,12 +346,12 @@ class _PlanManageScreenState extends State<PlanManageScreen> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
-                    color: m['uid'] == uid ? Tw.fuchsia600.withValues(alpha: 0.3) : Tw.w(0.05),
+                    color: m['uid'] == uid ? Tw.party.withValues(alpha: 0.3) : Tw.panelSoft,
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    if (m['uid'] != uid) Text(safeStr(m['nick']), style: tw(9, weight: bold, color: Tw.fuchsia400)),
-                    Text(safeStr(m['text']), style: tw(14, color: m['uid'] == uid ? Tw.white : Tw.slate300)),
+                    if (m['uid'] != uid) Text(safeStr(m['nick']), style: tw(9, weight: bold, color: Tw.sun)),
+                    Text(safeStr(m['text']), style: tw(14, color: m['uid'] == uid ? Tw.white : Tw.inkSoft)),
                   ]),
                 ),
               ),

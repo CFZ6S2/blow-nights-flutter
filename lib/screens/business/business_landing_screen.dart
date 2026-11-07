@@ -26,9 +26,9 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
   Widget build(BuildContext context) {
     final top = MediaQuery.of(context).padding.top;
     return Scaffold(
-      backgroundColor: Tw.slate950,
+      backgroundColor: Tw.night,
       body: Stack(children: [
-        AmbientGlow(colors: [Tw.fuchsia600.withValues(alpha: 0.1), Tw.indigo600.withValues(alpha: 0.1), const Color(0xFFDB2777).withValues(alpha: 0.1)]),
+        AmbientGlow(colors: [Tw.party.withValues(alpha: 0.1), Tw.indigo600.withValues(alpha: 0.1), const Color(0xFFDB2777).withValues(alpha: 0.1)]),
         SingleChildScrollView(
           padding: EdgeInsets.fromLTRB(24, top + 96, 24, 40),
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -51,7 +51,7 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
               title: context.t('business_step1_title', fallback: '1. Auditoría de tus necesidades'),
               desc: context.t('business_step1_desc',
                   fallback: 'Hablamos por llamada o WhatsApp para entender qué software o método usas hoy y qué te gustaría mejorar.'),
-              color: Tw.fuchsia400,
+              color: Tw.sun,
             ),
             StepCard(
               step: '02',
@@ -64,22 +64,22 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
               step: '03',
               title: context.t('business_step3_title', fallback: '3. Marcha blanca en directo'),
               desc: context.t('business_step3_desc', fallback: 'Probamos un fin de semana sin riesgo. Si te convence, sigues con nosotros.'),
-              color: Tw.emerald400,
+              color: Tw.live,
             ),
             const SizedBox(height: 32),
             Container(
               padding: const EdgeInsets.all(28),
               decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [Tw.fuchsia950.withValues(alpha: 0.4), Tw.indigo950.withValues(alpha: 0.4), Tw.slate900]),
+                gradient: LinearGradient(colors: [Tw.nightDeep.withValues(alpha: 0.4), Tw.nightDeep.withValues(alpha: 0.4), Tw.panel]),
                 borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: Tw.w(0.1)),
+                border: Border.all(color: Tw.line),
               ),
               child: Column(children: [
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                  decoration: BoxDecoration(color: Tw.w(0.1), borderRadius: BorderRadius.circular(99)),
+                  decoration: BoxDecoration(color: Tw.lineSoft, borderRadius: BorderRadius.circular(99)),
                   child: Row(mainAxisSize: MainAxisSize.min, children: [
-                    const Icon(Icons.verified_user, size: 14, color: Tw.fuchsia400),
+                    const Icon(Icons.verified_user, size: 14, color: Tw.sun),
                     const SizedBox(width: 8),
                     Label(context.t('business_guarantee_badge', fallback: 'Cero Fricción'), color: Tw.white),
                   ]),
@@ -92,7 +92,7 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
                       fallback:
                           'Los camareros y porteros no quieren cursos de 3 horas ni sistemas lentos. Nuestras herramientas de barra y puerta están diseñadas para responder en milisegundos incluso con guantes, poca luz y ruido alto.'),
                   textAlign: TextAlign.center,
-                  style: tw(14, color: Tw.slate300, height: 1.6),
+                  style: tw(14, color: Tw.inkSoft, height: 1.6),
                 ),
               ]),
             ),
@@ -103,28 +103,28 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
             CtaButton(
               label: context.t('business_cta_register', fallback: 'Crear Cuenta de Negocio'),
               icon: Icons.arrow_forward,
-              gradient: const [Tw.fuchsia600, Tw.indigo600],
+              gradient: const [Tw.sunset, Tw.party],
               onTap: () => openRoute(context, AppRoute.business),
             ),
             const SizedBox(height: 12),
-            CtaButton(label: context.t('business_cta_whatsapp_btn', fallback: 'Contactar con el Equipo'), leadingIcon: Icons.chat, tint: Tw.emerald400, onTap: () => openWhatsApp(_wa)),
+            CtaButton(label: context.t('business_cta_whatsapp_btn', fallback: 'Contactar con el Equipo'), leadingIcon: Icons.chat, tint: Tw.live, onTap: () => openWhatsApp(_wa)),
             const SizedBox(height: 48),
-            Divider(color: Tw.w(0.1)),
+            Divider(color: Tw.line),
             const SizedBox(height: 24),
             Text('© ${DateTime.now().year} ${context.t('business_footer_copyright', fallback: 'Blow Nights. Todos los derechos reservados.')}',
-                textAlign: TextAlign.center, style: tw(12, color: Tw.slate500)),
+                textAlign: TextAlign.center, style: tw(12, color: Tw.inkDim)),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              TextButton(onPressed: () => openRoute(context, AppRoute.privacy), child: Text('Privacidad', style: tw(12, color: Tw.slate400))),
-              TextButton(onPressed: () => openRoute(context, AppRoute.terms), child: Text('Términos', style: tw(12, color: Tw.slate400))),
+              TextButton(onPressed: () => openRoute(context, AppRoute.privacy), child: Text('Privacidad', style: tw(12, color: Tw.inkSoft))),
+              TextButton(onPressed: () => openRoute(context, AppRoute.terms), child: Text('Términos', style: tw(12, color: Tw.inkSoft))),
             ]),
           ]),
         ),
         MarketingNav(
           top: top,
           icon: Icons.business,
-          gradient: const [Tw.fuchsia600, Tw.indigo600],
+          gradient: const [Tw.sunset, Tw.party],
           brand: 'Venues',
-          brandColors: const [Tw.fuchsia400, Tw.indigo400],
+          brandColors: const [Tw.sun, Tw.indigo400],
           cta: context.t('business_nav_venue_access', fallback: 'Acceso Locales'),
           onCta: () => openRoute(context, AppRoute.business),
         ),
@@ -134,11 +134,11 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
 
   Widget _hero(BuildContext context) => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Center(
-          child: PillBadge(icon: Icons.auto_awesome, text: context.t('business_hero_badge_carta_blanca', fallback: 'Custom Mode: 100% adaptable a tu operativa'), color: Tw.fuchsia400),
+          child: PillBadge(icon: Icons.auto_awesome, text: context.t('business_hero_badge_carta_blanca', fallback: 'Custom Mode: 100% adaptable a tu operativa'), color: Tw.sun),
         ),
         const SizedBox(height: 24),
         GradientText(context.t('business_hero_title_accent', fallback: 'Tu Local, Tus Reglas.'),
-            style: tw(38, weight: black, height: 1.08, tracking: -0.02), colors: const [Tw.fuchsia400, Tw.pink400, Tw.indigo400]),
+            style: tw(38, weight: black, height: 1.08, tracking: -0.02), colors: const [Tw.sun, Tw.pink400, Tw.indigo400]),
         const SizedBox(height: 12),
         Text(
           context.t('business_hero_title_lead', fallback: 'La plataforma que se adapta a tu manera de trabajar con entradas, barras y promotores.'),
@@ -150,34 +150,34 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
           context.t('business_hero_subtitle_carta_blanca',
               fallback: 'Tú eliges qué servicios activas, bajo qué reglas y cómo interactúas con la app. Sin ataduras ni obligaciones de cambiar tu TPV o proveedores.'),
           textAlign: TextAlign.center,
-          style: tw(16, color: Tw.slate400, height: 1.6),
+          style: tw(16, color: Tw.inkSoft, height: 1.6),
         ),
         const SizedBox(height: 24),
         CtaButton(
           label: context.t('business_hero_cta_explore', fallback: 'Explorar Módulos'),
           icon: Icons.arrow_forward,
-          gradient: const [Tw.fuchsia600, Tw.indigo600],
+          gradient: const [Tw.sunset, Tw.party],
           onTap: () {
             final ctx = _customKey.currentContext;
             if (ctx != null) Scrollable.ensureVisible(ctx, duration: const Duration(milliseconds: 500), curve: Curves.easeOut);
           },
         ),
         const SizedBox(height: 12),
-        CtaButton(label: context.t('business_hero_cta_whatsapp', fallback: 'Hablar por WhatsApp'), leadingIcon: Icons.chat, tint: Tw.emerald400, onTap: () => openWhatsApp(_wa)),
+        CtaButton(label: context.t('business_hero_cta_whatsapp', fallback: 'Hablar por WhatsApp'), leadingIcon: Icons.chat, tint: Tw.live, onTap: () => openWhatsApp(_wa)),
         const SizedBox(height: 24),
         for (final (key, fb, c) in [
-          ('business_stat_venues_active', '+120 locales conectados', Tw.emerald400),
-          ('business_stat_conversion', 'Venta directa sin comisiones abusivas', Tw.fuchsia400),
+          ('business_stat_venues_active', '+120 locales conectados', Tw.live),
+          ('business_stat_conversion', 'Venta directa sin comisiones abusivas', Tw.sun),
           ('business_stat_instant_setup', 'Listo en menos de 24h', Tw.indigo400),
         ])
           Container(
             margin: const EdgeInsets.only(bottom: 8),
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-            decoration: BoxDecoration(color: Tw.w(0.03), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.05))),
+            decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.lineSoft)),
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Icon(Icons.check_circle, size: 16, color: c),
               const SizedBox(width: 8),
-              Flexible(child: Text(context.t(key, fallback: fb), style: tw(12, weight: semibold, color: Tw.slate400))),
+              Flexible(child: Text(context.t(key, fallback: fb), style: tw(12, weight: semibold, color: Tw.inkSoft))),
             ]),
           ),
       ]);
@@ -190,7 +190,7 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
         const SizedBox(height: 24),
         Container(
           padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(color: Tw.slate950.withValues(alpha: 0.7), borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.w(0.1))),
+          decoration: BoxDecoration(color: Tw.night.withValues(alpha: 0.7), borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.line)),
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             Wrap(spacing: 6, runSpacing: 6, alignment: WrapAlignment.center, children: [
               for (final (id, key, fb, icon) in const [
@@ -205,13 +205,13 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
-                      gradient: _tab == id ? const LinearGradient(colors: [Tw.fuchsia600, Tw.indigo600]) : null,
+                      gradient: _tab == id ? const LinearGradient(colors: [Tw.sunset, Tw.party]) : null,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(mainAxisSize: MainAxisSize.min, children: [
-                      Icon(icon, size: 14, color: _tab == id ? Tw.white : Tw.slate400),
+                      Icon(icon, size: 14, color: _tab == id ? Tw.white : Tw.inkSoft),
                       const SizedBox(width: 6),
-                      Label(context.t(key, fallback: fb), size: 11, color: _tab == id ? Tw.white : Tw.slate400, tracking: 0.05),
+                      Label(context.t(key, fallback: fb), size: 11, color: _tab == id ? Tw.white : Tw.inkSoft, tracking: 0.05),
                     ]),
                   ),
                 ),
@@ -219,9 +219,9 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
             const SizedBox(height: 16),
             Container(
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(color: Tw.w(0.02), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.05))),
+              decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.lineSoft)),
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text.rich(TextSpan(style: tw(12, color: Tw.slate400), children: [
+                Text.rich(TextSpan(style: tw(12, color: Tw.inkSoft), children: [
                   TextSpan(text: 'Custom Mode: ', style: tw(12, weight: bold)),
                   TextSpan(text: context.t('business_cb_simulate', fallback: 'Simula tu combinación de módulos. Haz clic para activar/desactivar.')),
                 ])),
@@ -241,16 +241,16 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
-                            color: _toggles[key]! ? Tw.fuchsia500.withValues(alpha: 0.2) : Tw.slate900,
+                            color: _toggles[key]! ? Tw.party.withValues(alpha: 0.2) : Tw.panel,
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: _toggles[key]! ? Tw.fuchsia500.withValues(alpha: 0.4) : Tw.w(0.1)),
+                            border: Border.all(color: _toggles[key]! ? Tw.party.withValues(alpha: 0.4) : Tw.lineSoft),
                           ),
                           child: Row(mainAxisSize: MainAxisSize.min, children: [
                             _toggles[key]!
-                                ? const PulseDot(color: Tw.emerald400)
-                                : Container(width: 8, height: 8, decoration: const BoxDecoration(color: Tw.slate600, shape: BoxShape.circle)),
+                                ? const PulseDot(color: Tw.live)
+                                : Container(width: 8, height: 8, decoration: const BoxDecoration(color: Tw.inkDim, shape: BoxShape.circle)),
                             const SizedBox(width: 6),
-                            Label('$name: ${_toggles[key]! ? 'ACTIVO' : 'OFF'}', size: 11, color: _toggles[key]! ? Tw.fuchsia300 : Tw.slate500, tracking: 0.05),
+                            Label('$name: ${_toggles[key]! ? 'ACTIVO' : 'OFF'}', size: 11, color: _toggles[key]! ? Tw.sun : Tw.inkDim, tracking: 0.05),
                           ]),
                         ),
                       ),
@@ -260,7 +260,7 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
             ),
             const SizedBox(height: 12),
             Text(context.t('business_cb_toggle_notice', fallback: 'Cualquiera de estos módulos puede funcionar de forma 100% independiente o combinada.'),
-                textAlign: TextAlign.center, style: tw(12, color: Tw.slate500, style: FontStyle.italic)),
+                textAlign: TextAlign.center, style: tw(12, color: Tw.inkDim, style: FontStyle.italic)),
           ]),
         ),
       ]);
@@ -279,7 +279,7 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
         margin: const EdgeInsets.only(bottom: 32),
         padding: const EdgeInsets.all(28),
         decoration: BoxDecoration(
-          gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.slate900.withValues(alpha: 0.9), Tw.slate950]),
+          gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.panel.withValues(alpha: 0.9), Tw.night]),
           borderRadius: BorderRadius.circular(40),
           border: Border.all(color: color.withValues(alpha: 0.2)),
         ),
@@ -299,7 +299,7 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
           const SizedBox(height: 20),
           Text(title, style: tw(28, weight: black, height: 1.15)),
           const SizedBox(height: 12),
-          Text(tagline, style: tw(16, weight: medium, color: Tw.slate300)),
+          Text(tagline, style: tw(16, weight: medium, color: Tw.inkSoft)),
           const SizedBox(height: 16),
           for (final f in feats)
             Padding(
@@ -313,19 +313,19 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
                   child: Icon(Icons.check_circle, size: 14, color: color),
                 ),
                 const SizedBox(width: 12),
-                Expanded(child: Text(f, style: tw(14, color: Tw.slate300))),
+                Expanded(child: Text(f, style: tw(14, color: Tw.inkSoft))),
               ]),
             ),
           const SizedBox(height: 8),
           Container(
             padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(color: Tw.w(0.04), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+            decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
             child: note,
           ),
           const SizedBox(height: 24),
           Container(
             padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(color: Tw.slate950.withValues(alpha: 0.8), borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.w(0.1))),
+            decoration: BoxDecoration(color: Tw.night.withValues(alpha: 0.8), borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.line)),
             child: preview,
           ),
         ]),
@@ -343,14 +343,14 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
             ),
           ]),
           const SizedBox(height: 12),
-          Divider(height: 1, color: Tw.w(0.1)),
+          Divider(height: 1, color: Tw.line),
         ]),
       );
 
   Widget _row(IconData icon, Color iconColor, String left, String right, Color rightColor) => Container(
         margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.05))),
+        decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.lineSoft)),
         child: Row(children: [
           Icon(icon, size: 16, color: iconColor),
           const SizedBox(width: 8),
@@ -360,7 +360,7 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
       );
 
   Widget _ticketingModule(BuildContext context) => _module(
-        color: Tw.fuchsia400,
+        color: Tw.sun,
         badgeIcon: Icons.qr_code_2,
         badge: 'Módulo 01 · Ticketing & Venta',
         title: context.t('business_mod_ticketing_title', fallback: 'Ticketing Flexible y a Tu Medida'),
@@ -371,36 +371,36 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
           context.t('business_mod_ticketing_feat3', fallback: 'Reservados VIP, botellas y tramos horarios con aforo configurable.'),
         ],
         note: Row(children: [
-          const Icon(Icons.open_in_new, size: 16, color: Tw.fuchsia400),
+          const Icon(Icons.open_in_new, size: 16, color: Tw.sun),
           const SizedBox(width: 12),
           Expanded(
             child: Text(context.t('business_mod_ticketing_link_mode', fallback: '¿Ya vendes en otra ticketera? Enlazamos tu ticketera externa sin problema.'),
-                style: tw(12, weight: bold, color: Tw.slate400)),
+                style: tw(12, weight: bold, color: Tw.inkSoft)),
           ),
         ]),
         preview: Column(children: [
-          _previewHeader('Preview Entrada Digital', 'VALIDADA', Tw.emerald400),
+          _previewHeader('Preview Entrada Digital', 'VALIDADA', Tw.live),
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [Tw.fuchsia950.withValues(alpha: 0.4), Tw.indigo950.withValues(alpha: 0.4)]),
+              gradient: LinearGradient(colors: [Tw.nightDeep.withValues(alpha: 0.4), Tw.nightDeep.withValues(alpha: 0.4)]),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.3)),
+              border: Border.all(color: Tw.party.withValues(alpha: 0.3)),
             ),
             child: Column(children: [
               Container(
                 width: 96,
                 height: 96,
                 decoration: BoxDecoration(color: Tw.white, borderRadius: BorderRadius.circular(12)),
-                child: const Icon(Icons.qr_code_2, size: 60, color: Tw.slate950),
+                child: const Icon(Icons.qr_code_2, size: 60, color: Tw.night),
               ),
               const SizedBox(height: 12),
               Text('General + 1 Consumición', style: tw(14, weight: black)),
-              Text('Acceso antes de las 02:00h', style: tw(12, weight: semibold, color: Tw.fuchsia400)),
+              Text('Acceso antes de las 02:00h', style: tw(12, weight: semibold, color: Tw.sun)),
               const SizedBox(height: 8),
-              Divider(color: Tw.w(0.1)),
+              Divider(color: Tw.line),
               Row(children: [
-                Text('Pago directo Stripe', style: tw(11, color: Tw.slate400)),
+                Text('Pago directo Stripe', style: tw(11, color: Tw.inkSoft)),
                 const Spacer(),
                 Text('18,00 €', style: tw(11, weight: bold)),
               ]),
@@ -410,7 +410,7 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
       );
 
   Widget _drinksModule(BuildContext context) => _module(
-        color: Tw.amber400,
+        color: Tw.sun,
         badgeIcon: Icons.wine_bar,
         badge: 'Módulo 02 · Barra & Consumiciones',
         title: context.t('business_mod_drinks_title', fallback: 'Gestión de Bebidas & Consumiciones'),
@@ -420,15 +420,15 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
           context.t('business_mod_drinks_feat2', fallback: 'Carta digital y venta anticipada de botellas y copas con descuento.'),
           context.t('business_mod_drinks_feat3', fallback: 'Scanner de barman ultra-rápido para móviles, tablets o TPV existente.'),
         ],
-        note: Text.rich(TextSpan(style: tw(12, color: Tw.slate400), children: [
+        note: Text.rich(TextSpan(style: tw(12, color: Tw.inkSoft), children: [
           TextSpan(text: 'Custom Mode: ', style: tw(12, weight: bold, color: const Color(0xFFFCD34D))),
           TextSpan(text: context.t('business_mod_drinks_custom', fallback: 'Personaliza suplementos de marcas premium según tu propio stock.')),
         ])),
         preview: Column(children: [
-          _previewHeader('Barra Express / Scanner', '1-CLICK', Tw.amber400),
-          _row(Icons.wine_bar, Tw.amber400, 'Copa Nacional (Valet)', 'Canjeada (0€)', Tw.emerald400),
-          _row(Icons.wine_bar, Tw.amber400, 'Suplemento Premium', '+3,00 €', Tw.white),
-          _row(Icons.bolt, Tw.amber400, 'Pack 2 Red Bull + Ron', '14,00 €', Tw.white),
+          _previewHeader('Barra Express / Scanner', '1-CLICK', Tw.sun),
+          _row(Icons.wine_bar, Tw.sun, 'Copa Nacional (Valet)', 'Canjeada (0€)', Tw.live),
+          _row(Icons.wine_bar, Tw.sun, 'Suplemento Premium', '+3,00 €', Tw.white),
+          _row(Icons.bolt, Tw.sun, 'Pack 2 Red Bull + Ron', '14,00 €', Tw.white),
         ]),
       );
 
@@ -443,35 +443,35 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
           context.t('business_mod_door_feat2', fallback: 'Contador de afluencia y sincronización en vivo con el Radar de la ciudad.'),
           context.t('business_mod_door_feat3', fallback: 'Modo offline garantizado ante caídas de cobertura en sótanos o salas.'),
         ],
-        note: Text.rich(TextSpan(style: tw(12, color: Tw.slate400), children: [
+        note: Text.rich(TextSpan(style: tw(12, color: Tw.inkSoft), children: [
           TextSpan(text: 'Seguridad Total: ', style: tw(12, weight: bold, color: const Color(0xFFA5B4FC))),
           TextSpan(text: context.t('business_mod_door_roles', fallback: 'Gestión de personal de puerta con permisos independientes y revocables.')),
         ])),
         preview: Column(children: [
-          _previewHeader('Terminal de Puerta', 'EN LÍNEA (OFFLINE READY)', Tw.emerald400),
+          _previewHeader('Terminal de Puerta', 'EN LÍNEA (OFFLINE READY)', Tw.live),
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Tw.emerald500.withValues(alpha: 0.1),
+              color: Tw.live.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Tw.emerald500.withValues(alpha: 0.3)),
+              border: Border.all(color: Tw.live.withValues(alpha: 0.3)),
             ),
             child: Column(children: [
-              Label('Entrada Válida', size: 12, color: Tw.emerald400, tracking: 0),
+              Label('Entrada Válida', size: 12, color: Tw.live, tracking: 0),
               Text('Carlos Romero + 1', style: tw(18, weight: black)),
-              Text('Acceso VIP · Lista RRPP: Marcos', style: tw(11, color: Tw.slate400)),
+              Text('Acceso VIP · Lista RRPP: Marcos', style: tw(11, color: Tw.inkSoft)),
             ]),
           ),
           const SizedBox(height: 8),
           Row(children: [
-            for (final (label, value, c) in const [('AFORO ACTUAL', '412 / 600', Tw.white), ('TIEMPO ESCANEO', '0.32 s', Tw.emerald400)]) ...[
+            for (final (label, value, c) in const [('AFORO ACTUAL', '412 / 600', Tw.white), ('TIEMPO ESCANEO', '0.32 s', Tw.live)]) ...[
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.05))),
+                  decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.lineSoft)),
                   child: Column(children: [
-                    Text(label, style: tw(10, color: Tw.slate400)),
+                    Text(label, style: tw(10, color: Tw.inkSoft)),
                     Text(value, style: tw(16, weight: black, color: c)),
                   ]),
                 ),
@@ -483,7 +483,7 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
       );
 
   Widget _rrppModule(BuildContext context) => _module(
-        color: Tw.emerald400,
+        color: Tw.live,
         badgeIcon: Icons.group,
         badge: 'Módulo 04 · Promotores Propios del Local',
         title: context.t('business_mod_rrpp_title', fallback: 'Red de RRPPs y Listas Automatizadas'),
@@ -493,12 +493,12 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
           context.t('business_mod_rrpp_feat2', fallback: 'Cálculo automatizado de comisiones y liquidaciones transparentes.'),
           context.t('business_mod_rrpp_feat3', fallback: 'Validación de listas en puerta por nombre o QR sin hojas de papel mojadas.'),
         ],
-        note: Text.rich(TextSpan(style: tw(12, color: Tw.slate400), children: [
+        note: Text.rich(TextSpan(style: tw(12, color: Tw.inkSoft), children: [
           TextSpan(text: 'Independencia Controlada: ', style: tw(12, weight: bold, color: const Color(0xFF6EE7B7))),
           TextSpan(text: context.t('business_mod_rrpp_claim', fallback: 'Permite a tus RRPPs gestionar sus invitados mientras tú mantienes el control total.')),
         ])),
         preview: Column(children: [
-          _previewHeader('Ranking de RRPPs (En Directo)', 'ESTA NOCHE', Tw.fuchsia400),
+          _previewHeader('Ranking de RRPPs (En Directo)', 'ESTA NOCHE', Tw.sun),
           for (final (rank, name, guests, commission) in const [
             ('🥇', 'Alex M. (VIP)', 64, '128 €'),
             ('🥈', 'Laura B. (Listas)', 48, '96 €'),
@@ -507,14 +507,14 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
             Container(
               margin: const EdgeInsets.only(bottom: 8),
               padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.05))),
+              decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.lineSoft)),
               child: Row(children: [
                 Text(rank),
                 const SizedBox(width: 8),
                 Expanded(child: Text(name, style: tw(12, weight: bold))),
                 Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
                   Text('$guests pax', style: tw(12, weight: bold)),
-                  Text(commission, style: tw(10, color: Tw.slate400)),
+                  Text(commission, style: tw(10, color: Tw.inkSoft)),
                 ]),
               ]),
             ),
@@ -523,9 +523,9 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
 
   Widget _radar(BuildContext context) => Container(
         padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(color: Tw.w(0.02), borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.w(0.1))),
+        decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.line)),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          Align(alignment: Alignment.centerLeft, child: PillBadge(icon: Icons.radar, text: context.t('business_radar_badge', fallback: 'Impacto en directo'), color: Tw.fuchsia400)),
+          Align(alignment: Alignment.centerLeft, child: PillBadge(icon: Icons.radar, text: context.t('business_radar_badge', fallback: 'Impacto en directo'), color: Tw.sun)),
           const SizedBox(height: 20),
           Text(context.t('business_radar_title', fallback: 'Aparece justo cuando están decidiendo'), style: tw(30, weight: black, height: 1.15)),
           const SizedBox(height: 16),
@@ -533,43 +533,43 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
             context.t('business_radar_desc',
                 fallback:
                     'El usuario de ocio nocturno abre Blow Nights cuando está en la calle, en el taxi o en la previa decidiendo a dónde ir. Si tu local tiene ambiente o una oferta atractiva, el radar los guía directos a tu puerta.'),
-            style: tw(15, color: Tw.slate400, height: 1.6),
+            style: tw(15, color: Tw.inkSoft, height: 1.6),
           ),
           const SizedBox(height: 16),
           for (final (icon, c, key, fb) in const [
             (Icons.local_fire_department, Tw.orange400, 'business_radar_fuego', 'Indicador Fuego: cuando el local está al máximo'),
             (Icons.bolt, Tw.yellow400, 'business_radar_promos', 'Promos Flash: lanza ofertas en 5 km a la redonda en minutos'),
-            (Icons.bar_chart, Tw.emerald400, 'business_radar_agenda', 'Agenda de Eventos: visibilidad garantizada en la ciudad'),
+            (Icons.bar_chart, Tw.live, 'business_radar_agenda', 'Agenda de Eventos: visibilidad garantizada en la ciudad'),
           ])
             Container(
               margin: const EdgeInsets.only(bottom: 12),
               padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.05))),
+              decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.lineSoft)),
               child: Row(children: [
                 Icon(icon, color: c),
                 const SizedBox(width: 12),
-                Expanded(child: Text(context.t(key, fallback: fb), style: tw(14, weight: semibold, color: Tw.slate300))),
+                Expanded(child: Text(context.t(key, fallback: fb), style: tw(14, weight: semibold, color: Tw.inkSoft))),
               ]),
             ),
           const SizedBox(height: 16),
           Container(
             padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(color: Tw.slate900, borderRadius: BorderRadius.circular(40), border: Border.all(color: Tw.w(0.15), width: 2)),
+            decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(40), border: Border.all(color: Tw.line, width: 2)),
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-              Center(child: Container(width: 112, height: 16, decoration: BoxDecoration(color: Tw.slate950, borderRadius: BorderRadius.circular(99)))),
+              Center(child: Container(width: 112, height: 16, decoration: BoxDecoration(color: Tw.night, borderRadius: BorderRadius.circular(99)))),
               const SizedBox(height: 12),
               Row(children: [
-                Text('BlowNights Radar', style: tw(12, weight: black, color: Tw.fuchsia400)),
+                Text('BlowNights Radar', style: tw(12, weight: black, color: Tw.sun)),
                 const Spacer(),
-                Text('23:45 · Vía Augusta', style: tw(10, color: Tw.slate500)),
+                Text('23:45 · Vía Augusta', style: tw(10, color: Tw.inkDim)),
               ]),
               const SizedBox(height: 12),
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [Tw.fuchsia600.withValues(alpha: 0.3), Tw.indigo600.withValues(alpha: 0.3)]),
+                  gradient: LinearGradient(colors: [Tw.party.withValues(alpha: 0.3), Tw.indigo600.withValues(alpha: 0.3)]),
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.4)),
+                  border: Border.all(color: Tw.party.withValues(alpha: 0.4)),
                 ),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Row(children: [
@@ -586,12 +586,12 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
                     ),
                   ]),
                   const SizedBox(height: 6),
-                  Text('Pista al 85% · DJ Invitado', style: tw(11, color: Tw.slate300)),
+                  Text('Pista al 85% · DJ Invitado', style: tw(11, color: Tw.inkSoft)),
                   const SizedBox(height: 8),
-                  Divider(height: 1, color: Tw.w(0.1)),
+                  Divider(height: 1, color: Tw.line),
                   const SizedBox(height: 8),
                   Row(children: [
-                    Expanded(child: Text('Promo Flash: 2x1 hasta 01:30', style: tw(10, weight: bold, color: Tw.fuchsia300))),
+                    Expanded(child: Text('Promo Flash: 2x1 hasta 01:30', style: tw(10, weight: bold, color: Tw.sun))),
                     Text('A 350m', style: tw(10, weight: black)),
                   ]),
                 ]),
@@ -599,10 +599,10 @@ class _BusinessLandingScreenState extends State<BusinessLandingScreen> {
               const SizedBox(height: 12),
               Container(
                 padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.05))),
+                decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.lineSoft)),
                 child: Row(children: [
-                  Expanded(child: Text('Personas viendo tu local ahora:', style: tw(11, color: Tw.slate400))),
-                  Text('+184 en directo', style: tw(11, weight: bold, color: Tw.emerald400)),
+                  Expanded(child: Text('Personas viendo tu local ahora:', style: tw(11, color: Tw.inkSoft))),
+                  Text('+184 en directo', style: tw(11, weight: bold, color: Tw.live)),
                 ]),
               ),
             ]),

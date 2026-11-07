@@ -125,22 +125,22 @@ class _StaffInvitePanelState extends State<StaffInvitePanel> {
     return AdminCard(
       radius: 16,
       color: _panel,
-      borderColor: Tw.fuchsia500.withValues(alpha: 0.3),
+      borderColor: Tw.party.withValues(alpha: 0.3),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Text(context.t('staff_invite.title', fallback: 'Añadir personal'), style: tw(20, weight: bold)),
         const SizedBox(height: 4),
-        Text(context.t('staff_invite.desc'), style: tw(12, color: Tw.slate400)),
+        Text(context.t('staff_invite.desc'), style: tw(12, color: Tw.inkSoft)),
         const SizedBox(height: 16),
         Wrap(spacing: 8, runSpacing: 8, crossAxisAlignment: WrapCrossAlignment.center, children: [
           for (final s in const ['door', 'bar'])
             FilterChip(
               selected: _scopes[s]!,
               onSelected: (on) => setState(() => _scopes[s] = on),
-              avatar: Icon(s == 'door' ? Icons.qr_code_scanner : Icons.local_bar, size: 16, color: _scopes[s]! ? Tw.fuchsia300 : Tw.slate400),
-              label: Text(_label(s), style: tw(13, weight: bold, color: _scopes[s]! ? Tw.white : Tw.slate400)),
+              avatar: Icon(s == 'door' ? Icons.qr_code_scanner : Icons.local_bar, size: 16, color: _scopes[s]! ? Tw.sun : Tw.inkSoft),
+              label: Text(_label(s), style: tw(13, weight: bold, color: _scopes[s]! ? Tw.white : Tw.inkSoft)),
               backgroundColor: _row,
-              selectedColor: Tw.fuchsia600.withValues(alpha: 0.2),
-              side: BorderSide(color: _scopes[s]! ? Tw.fuchsia500 : _rowBorder),
+              selectedColor: Tw.party.withValues(alpha: 0.2),
+              side: BorderSide(color: _scopes[s]! ? Tw.party : _rowBorder),
               showCheckmark: false,
             ),
           AdminButton(label: context.t('staff_invite.create', fallback: 'Generar QR'), loading: _creating, onTap: _create),
@@ -161,14 +161,14 @@ class _StaffInvitePanelState extends State<StaffInvitePanel> {
               const SizedBox(height: 12),
               Text(_list(invite['scopes']).map(_label).join(' · '), textAlign: TextAlign.center, style: tw(14, weight: bold)),
               const SizedBox(height: 6),
-              Text(context.t('staff_invite.scan_hint'), textAlign: TextAlign.center, style: tw(12, color: Tw.slate400)),
+              Text(context.t('staff_invite.scan_hint'), textAlign: TextAlign.center, style: tw(12, color: Tw.inkSoft)),
               if (NfcPass.available) ...[
                 const SizedBox(height: 6),
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  const Icon(Icons.nfc, size: 14, color: Tw.emerald400),
+                  const Icon(Icons.nfc, size: 14, color: Tw.live),
                   const SizedBox(width: 6),
                   Flexible(
-                    child: Text(context.t('staff_invite.nfc_hint'), textAlign: TextAlign.center, style: tw(12, color: Tw.emerald400)),
+                    child: Text(context.t('staff_invite.nfc_hint'), textAlign: TextAlign.center, style: tw(12, color: Tw.live)),
                   ),
                 ]),
               ],
@@ -176,7 +176,7 @@ class _StaffInvitePanelState extends State<StaffInvitePanel> {
               Wrap(alignment: WrapAlignment.center, spacing: 8, runSpacing: 8, children: [
                 AdminButton(
                   label: context.t('staff_invite.copy', fallback: 'Copiar enlace'),
-                  color: Tw.slate400,
+                  color: Tw.inkSoft,
                   outlined: true,
                   onTap: () async {
                     await Clipboard.setData(ClipboardData(text: invite['url'] as String));
@@ -185,14 +185,14 @@ class _StaffInvitePanelState extends State<StaffInvitePanel> {
                 ),
                 AdminButton(
                   label: context.t('staff_invite.whatsapp', fallback: 'Enviar por WhatsApp'),
-                  color: Tw.emerald400,
+                  color: Tw.live,
                   outlined: true,
                   onTap: () => launchUrl(Uri.parse('https://wa.me/?text=${Uri.encodeComponent(_shareText)}'), mode: LaunchMode.externalApplication),
                 ),
                 AdminButton(
                   label: context.t('finder.share', fallback: 'Compartir'),
                   icon: Icons.share,
-                  color: Tw.slate400,
+                  color: Tw.inkSoft,
                   outlined: true,
                   onTap: () => SharePlus.instance.share(ShareParams(text: _shareText)),
                 ),
@@ -205,13 +205,13 @@ class _StaffInvitePanelState extends State<StaffInvitePanel> {
               ]),
               const SizedBox(height: 8),
               Text(context.t('staff_invite.expires', fallback: 'Caduca: {{time}}', params: {'time': _time((invite['expiresAt'] as num).toInt())}),
-                  textAlign: TextAlign.center, style: tw(11, color: Tw.slate500)),
+                  textAlign: TextAlign.center, style: tw(11, color: Tw.inkDim)),
             ]),
           ),
         ],
         if (_live.isNotEmpty) ...[
           const SizedBox(height: 16),
-          Label(context.t('staff_invite.live_title', fallback: 'Invitaciones activas'), color: Tw.slate500),
+          Label(context.t('staff_invite.live_title', fallback: 'Invitaciones activas'), color: Tw.inkDim),
           const SizedBox(height: 8),
           for (final i in _live)
             Container(
@@ -225,7 +225,7 @@ class _StaffInvitePanelState extends State<StaffInvitePanel> {
                     Text(
                       '${context.t('staff_invite.uses', fallback: 'Se han unido: {{count}}', params: {'count': i['uses'] ?? 0})} · '
                       '${context.t('staff_invite.expires', fallback: 'Caduca: {{time}}', params: {'time': _time((i['expiresAt'] as num).toInt())})}',
-                      style: tw(11, color: Tw.slate400),
+                      style: tw(11, color: Tw.inkSoft),
                     ),
                   ]),
                 ),

@@ -86,14 +86,14 @@ class _InvestorsScreenState extends State<InvestorsScreen> {
               const SizedBox(height: 64),
               KeyedSubtree(key: _roomKey, child: _dataRoom(context)),
               const SizedBox(height: 48),
-              Divider(color: Tw.w(0.1)),
+              Divider(color: Tw.line),
               const SizedBox(height: 24),
-              Text('© ${DateTime.now().year} Blow Nights LLC. Todos los derechos reservados.', textAlign: TextAlign.center, style: tw(12, color: Tw.slate500)),
+              Text('© ${DateTime.now().year} Blow Nights LLC. Todos los derechos reservados.', textAlign: TextAlign.center, style: tw(12, color: Tw.inkDim)),
               const SizedBox(height: 12),
               Wrap(alignment: WrapAlignment.center, spacing: 24, crossAxisAlignment: WrapCrossAlignment.center, children: [
-                GestureDetector(onTap: () => openRoute(context, AppRoute.terms), child: Text('Términos', style: tw(12, color: Tw.slate500))),
-                GestureDetector(onTap: () => openRoute(context, AppRoute.privacy), child: Text('Privacidad', style: tw(12, color: Tw.slate500))),
-                Text('TCS Global Solutions LLC', style: tw(12, color: Tw.slate600)),
+                GestureDetector(onTap: () => openRoute(context, AppRoute.terms), child: Text('Términos', style: tw(12, color: Tw.inkDim))),
+                GestureDetector(onTap: () => openRoute(context, AppRoute.privacy), child: Text('Privacidad', style: tw(12, color: Tw.inkDim))),
+                Text('TCS Global Solutions LLC', style: tw(12, color: Tw.inkDim)),
               ]),
             ]),
           ),
@@ -104,7 +104,7 @@ class _InvestorsScreenState extends State<InvestorsScreen> {
 
   Widget _nav(BuildContext context) => Container(
         padding: const EdgeInsets.only(bottom: 24),
-        decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Tw.w(0.1)))),
+        decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Tw.line))),
         child: Row(children: [
           Container(
             width: 40,
@@ -121,14 +121,14 @@ class _InvestorsScreenState extends State<InvestorsScreen> {
           Expanded(child: Text('BLOW NIGHTS', style: tw(18, weight: black, tracking: 0.05))),
           GestureDetector(
             onTap: () => Navigator.of(context).popUntil((r) => r.isFirst),
-            child: Text('← Ir a la App', style: tw(12, color: Tw.slate400)),
+            child: Text('← Ir a la App', style: tw(12, color: Tw.inkSoft)),
           ),
           const SizedBox(width: 12),
           Pressable(
             onTap: _toRoom,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              decoration: BoxDecoration(color: Tw.w(0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.1))),
+              decoration: BoxDecoration(color: Tw.lineSoft, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
               child: Text('Data Room', style: tw(12, weight: bold)),
             ),
           ),
@@ -145,7 +145,7 @@ class _InvestorsScreenState extends State<InvestorsScreen> {
               border: Border.all(color: Tw.purple500.withValues(alpha: 0.3)),
             ),
             child: Row(mainAxisSize: MainAxisSize.min, children: [
-              const PulseDot(color: Tw.green400),
+              const PulseDot(color: Tw.live),
               const SizedBox(width: 8),
               Text('RONDA SEED 1.000.000 € · EN PRODUCCIÓN', style: tw(12, weight: semibold, color: const Color(0xFFD8B4FE))),
             ]),
@@ -167,7 +167,7 @@ class _InvestorsScreenState extends State<InvestorsScreen> {
         Text(
           'Conectamos el descubrimiento social hiperlocal en tiempo real (B2C) con el software operativo, ticketing directo y control de accesos para salas y macro-eventos (B2B SaaS).',
           textAlign: TextAlign.center,
-          style: tw(18, color: Tw.slate400, height: 1.6),
+          style: tw(18, color: Tw.inkSoft, height: 1.6),
         ),
         const SizedBox(height: 32),
         CtaButton(label: 'Desbloquear Data Room →', gradient: const [Tw.purple600, Color(0xFFDB2777)], onTap: _toRoom),
@@ -176,7 +176,7 @@ class _InvestorsScreenState extends State<InvestorsScreen> {
           onTap: () => _open('mailto:cesar@blownights.com?subject=${Uri.encodeComponent('Blow Nights Seed Round Meeting')}'),
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 16),
-            decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+            decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
             child: Text('Contactar con el Fundador', textAlign: TextAlign.center, style: tw(14, weight: bold)),
           ),
         ),
@@ -185,9 +185,9 @@ class _InvestorsScreenState extends State<InvestorsScreen> {
   Widget _metrics() {
     Widget m(String label, String value, String note, Color c) => Container(
           padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(color: Tw.w(0.03), borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.w(0.1))),
+          decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.line)),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(label.toUpperCase(), style: tw(11, color: Tw.slate400, tracking: 0.1).copyWith(fontFamily: 'monospace')),
+            Text(label.toUpperCase(), style: tw(11, color: Tw.inkSoft, tracking: 0.1).copyWith(fontFamily: 'monospace')),
             const SizedBox(height: 8),
             FittedBox(
               fit: BoxFit.scaleDown,
@@ -200,9 +200,9 @@ class _InvestorsScreenState extends State<InvestorsScreen> {
         );
     return AdminGrid(gap: 16, children: [
       m('Margen Plataforma', '85%+', '1,00 € fee ticket + 2,5% cashless', Tw.purple400),
-      m('Break-Even Operativo', 'Mes 4', '<20k € consumo en valle', Tw.green400),
+      m('Break-Even Operativo', 'Mes 4', '<20k € consumo en valle', Tw.live),
       m('Expansión P2', '50/50', 'Master Partners territoriales', Tw.pink400),
-      m('White-Label Enterprise', 'Multi-Tenant', 'SaaS corporativo en producción', Tw.amber400),
+      m('White-Label Enterprise', 'Multi-Tenant', 'SaaS corporativo en producción', Tw.sun),
     ]);
   }
 
@@ -211,9 +211,9 @@ class _InvestorsScreenState extends State<InvestorsScreen> {
           margin: const EdgeInsets.only(bottom: 20),
           padding: const EdgeInsets.all(32),
           decoration: BoxDecoration(
-            gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Tw.w(0.05), Colors.transparent]),
+            gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Tw.panelSoft, Colors.transparent]),
             borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: Tw.w(0.1)),
+            border: Border.all(color: Tw.line),
           ),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Container(
@@ -226,7 +226,7 @@ class _InvestorsScreenState extends State<InvestorsScreen> {
             const SizedBox(height: 16),
             Text(title, style: tw(20, weight: bold)),
             const SizedBox(height: 12),
-            Text(desc, style: tw(14, color: Tw.slate400, height: 1.6)),
+            Text(desc, style: tw(14, color: Tw.inkSoft, height: 1.6)),
           ]),
         );
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -244,7 +244,7 @@ class _InvestorsScreenState extends State<InvestorsScreen> {
   Widget _tech() => Container(
         padding: const EdgeInsets.all(32),
         decoration: BoxDecoration(
-          gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [const Color(0xFF3B0764).withValues(alpha: 0.4), Tw.slate900, Tw.black]),
+          gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [const Color(0xFF3B0764).withValues(alpha: 0.4), Tw.panel, Tw.nightDeep]),
           borderRadius: BorderRadius.circular(24),
           border: Border.all(color: Tw.purple500.withValues(alpha: 0.2)),
         ),
@@ -257,7 +257,7 @@ class _InvestorsScreenState extends State<InvestorsScreen> {
             for (final (v, l) in const [('93', 'Cloud Functions v2'), ('~299', 'Tests en CI/CD'), ('<80 ms', 'Validación en Puerta'), ('12', 'Idiomas Nativos')])
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(v, style: tw(24, weight: black).copyWith(fontFamily: 'monospace')),
-                Text(l, style: tw(12, color: Tw.slate400)),
+                Text(l, style: tw(12, color: Tw.inkSoft)),
               ]),
           ]),
         ]),
@@ -265,7 +265,7 @@ class _InvestorsScreenState extends State<InvestorsScreen> {
 
   Widget _dataRoom(BuildContext context) => Container(
         padding: const EdgeInsets.all(28),
-        decoration: BoxDecoration(color: Tw.w(0.02), borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.w(0.1))),
+        decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.line)),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Text('ACCESO CONFIDENCIAL', textAlign: TextAlign.center, style: tw(12, weight: bold, color: Tw.pink400, tracking: 0.1).copyWith(fontFamily: 'monospace')),
           const SizedBox(height: 12),
@@ -274,7 +274,7 @@ class _InvestorsScreenState extends State<InvestorsScreen> {
           Text(
             'Documentación ejecutiva, modelo de negocio, análisis de unit economics y detalles técnicos de la Ronda Seed de 1.000.000 €.',
             textAlign: TextAlign.center,
-            style: tw(14, color: Tw.slate400),
+            style: tw(14, color: Tw.inkSoft),
           ),
           const SizedBox(height: 40),
           if (!_unlocked) _gate() else _docs(context),
@@ -282,12 +282,12 @@ class _InvestorsScreenState extends State<InvestorsScreen> {
       );
 
   Widget _gate() {
-    InputDecoration deco(String hint) => adminInputDecoration(hint, focus: Tw.purple500).copyWith(fillColor: Colors.black.withValues(alpha: 0.4), hintStyle: tw(14, color: Tw.slate600));
+    InputDecoration deco(String hint) => adminInputDecoration(hint, focus: Tw.purple500).copyWith(fillColor: Colors.black.withValues(alpha: 0.4), hintStyle: tw(14, color: Tw.inkDim));
     Widget label(String t, {String? trailing}) => Padding(
           padding: const EdgeInsets.only(bottom: 4, top: 16),
           child: Row(children: [
-            Expanded(child: Text(t, style: tw(12, weight: semibold, color: Tw.slate400))),
-            if (trailing != null) Text(trailing, style: tw(10, color: Tw.slate500).copyWith(fontFamily: 'monospace')),
+            Expanded(child: Text(t, style: tw(12, weight: semibold, color: Tw.inkSoft))),
+            if (trailing != null) Text(trailing, style: tw(10, color: Tw.inkDim).copyWith(fontFamily: 'monospace')),
           ]),
         );
     final valid = _name.text.trim().isNotEmpty && _email.text.contains('@');
@@ -328,12 +328,12 @@ class _InvestorsScreenState extends State<InvestorsScreen> {
       Container(
         padding: const EdgeInsets.all(16),
         margin: const EdgeInsets.only(bottom: 24),
-        decoration: BoxDecoration(color: Tw.green500.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.green500.withValues(alpha: 0.2))),
+        decoration: BoxDecoration(color: Tw.live.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.live.withValues(alpha: 0.2))),
         child: Row(children: [
           Expanded(child: Text('✓ Acceso concedido al Data Room de Blow Nights.', style: tw(14, color: const Color(0xFF86EFAC)))),
           GestureDetector(
             onTap: () => setState(() => _unlocked = false),
-            child: Text('Cerrar Sesión', style: tw(12, color: Tw.slate400, decoration: TextDecoration.underline)),
+            child: Text('Cerrar Sesión', style: tw(12, color: Tw.inkSoft, decoration: TextDecoration.underline)),
           ),
         ]),
       ),
@@ -342,21 +342,21 @@ class _InvestorsScreenState extends State<InvestorsScreen> {
       Container(
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(color: Tw.w(0.03), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+        decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Row(children: [
             Expanded(child: Text('ONE-PAGER · PITCH DECK · DOSSIER', style: tw(11, weight: bold, color: Tw.purple400).copyWith(fontFamily: 'monospace'))),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-              decoration: BoxDecoration(color: Tw.w(0.1), borderRadius: BorderRadius.circular(4)),
-              child: Text('Confidencial', style: tw(11, color: Tw.slate300)),
+              decoration: BoxDecoration(color: Tw.lineSoft, borderRadius: BorderRadius.circular(4)),
+              child: Text('Confidencial', style: tw(11, color: Tw.inkSoft)),
             ),
           ]),
           const SizedBox(height: 8),
           Text('Documentos de la Ronda', style: tw(18, weight: bold)),
           const SizedBox(height: 4),
           Text('Por confidencialidad no se descargan desde la web: te los enviamos por correo, a la dirección con la que has accedido.',
-              style: tw(12, color: Tw.slate400)),
+              style: tw(12, color: Tw.inkSoft)),
           const SizedBox(height: 16),
           Pressable(
             onTap: () => _open('mailto:cesar@blownights.com?subject=${Uri.encodeComponent('Blow Nights Seed Round - Documentos')}'),
@@ -376,18 +376,18 @@ class _InvestorsScreenState extends State<InvestorsScreen> {
           border: Border.all(color: Tw.purple500.withValues(alpha: 0.3)),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          Text('REUNIÓN DE 30 MIN', style: tw(11, weight: bold, color: Tw.green400).copyWith(fontFamily: 'monospace')),
+          Text('REUNIÓN DE 30 MIN', style: tw(11, weight: bold, color: Tw.live).copyWith(fontFamily: 'monospace')),
           const SizedBox(height: 8),
           Text('Agendar Reunión con el Fundador', style: tw(18, weight: bold)),
           const SizedBox(height: 4),
-          Text('Resuelve dudas de Due Diligence directamente con César Herrera Rojo (Fundador & CTO).', style: tw(12, color: Tw.slate400)),
+          Text('Resuelve dudas de Due Diligence directamente con César Herrera Rojo (Fundador & CTO).', style: tw(12, color: Tw.inkSoft)),
           const SizedBox(height: 16),
           Pressable(
             onTap: () => _open('mailto:cesar@blownights.com?subject=${Uri.encodeComponent('Blow Nights Seed Round Due Diligence')}'),
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(color: Tw.white, borderRadius: BorderRadius.circular(12)),
-              child: Text('CESAR@BLOWNIGHTS.COM', textAlign: TextAlign.center, style: tw(12, weight: black, color: Tw.black, tracking: 0.05)),
+              child: Text('CESAR@BLOWNIGHTS.COM', textAlign: TextAlign.center, style: tw(12, weight: black, color: Tw.night, tracking: 0.05)),
             ),
           ),
         ]),

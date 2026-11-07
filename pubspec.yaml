@@ -75,3 +75,30 @@ flutter:
     - assets/i18n/
     - assets/i18n_app/
     - assets/data/
+
+  # "Fiesta" redesign (same as the web): Figtree for text, Bricolage Grotesque for headings. SIL OFL 1.1 (assets/fonts).
+  fonts:
+    - family: Figtree
+      fonts:
+        - asset: assets/fonts/Figtree-400.ttf
+          weight: 400
+        - asset: assets/fonts/Figtree-500.ttf
+          weight: 500
+        - asset: assets/fonts/Figtree-600.ttf
+          weight: 600
+        - asset: assets/fonts/Figtree-700.ttf
+          weight: 700
+        - asset: assets/fonts/Figtree-800.ttf
+          weight: 800
+        - asset: assets/fonts/Figtree-900.ttf
+          weight: 900
+    - family: Bricolage
+      fonts:
+        - asset: assets/fonts/BricolageGrotesque-500.ttf
+          weight: 500
+        - asset: assets/fonts/BricolageGrotesque-600.ttf
+          weight: 600
+        - asset: assets/fonts/BricolageGrotesque-700.ttf
+          weight: 700
+        - asset: assets/fonts/BricolageGrotesque-800.ttf
+          weight: 800

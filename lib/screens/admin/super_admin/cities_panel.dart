@@ -236,16 +236,16 @@ class _CitiesPanelState extends State<CitiesPanel> {
           const SizedBox(height: 12),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-            decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.1))),
+            decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
             child: Row(children: [
-              Text(context.t('super_admin.annual_fee_label'), style: tw(14, color: Tw.slate400)),
+              Text(context.t('super_admin.annual_fee_label'), style: tw(14, color: Tw.inkSoft)),
               const SizedBox(width: 12),
               SizedBox(
                 width: 96,
                 child: TextField(
                   controller: _annualFee,
                   keyboardType: TextInputType.number,
-                  style: tw(14, weight: bold, color: Tw.green400).copyWith(fontFamily: 'monospace'),
+                  style: tw(14, weight: bold, color: Tw.live).copyWith(fontFamily: 'monospace'),
                   decoration: const InputDecoration(border: InputBorder.none, isDense: true),
                 ),
               ),
@@ -266,7 +266,7 @@ class _CitiesPanelState extends State<CitiesPanel> {
             ])),
           ),
           const SizedBox(height: 8),
-          Text(context.t('super_admin.territory_hint'), style: tw(10, color: Tw.slate500)),
+          Text(context.t('super_admin.territory_hint'), style: tw(10, color: Tw.inkDim)),
           const SizedBox(height: 8),
           TerritoryMapPicker(key: ValueKey(_pickerKey), onPolygonChange: (p) => _polygon = p),
           const SizedBox(height: 16),
@@ -305,7 +305,7 @@ class _CitiesPanelState extends State<CitiesPanel> {
       decoration: BoxDecoration(
         color: Colors.black.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: isMadrid ? Tw.fuchsia500.withValues(alpha: 0.5) : Tw.w(0.05)),
+        border: Border.all(color: isMadrid ? Tw.party.withValues(alpha: 0.5) : Tw.panelSoft),
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -313,9 +313,9 @@ class _CitiesPanelState extends State<CitiesPanel> {
             child: Wrap(spacing: 8, crossAxisAlignment: WrapCrossAlignment.center, children: [
               Text((c['name'] ?? id) as String, style: tw(18, weight: bold)),
               if (isMadrid)
-                AdminBadge(context.t('super_admin.direct_parent'), color: Tw.fuchsia400)
+                AdminBadge(context.t('super_admin.direct_parent'), color: Tw.sun)
               else
-                AdminBadge((license?['status'] as String?) ?? context.t('super_admin.no_license'), color: isActive ? Tw.green400 : Tw.red400),
+                AdminBadge((license?['status'] as String?) ?? context.t('super_admin.no_license'), color: isActive ? Tw.live : Tw.red400),
             ]),
           ),
           if (!isMadrid)
@@ -333,7 +333,7 @@ class _CitiesPanelState extends State<CitiesPanel> {
             ),
         ]),
         const SizedBox(height: 4),
-        Text.rich(TextSpan(style: tw(11, color: Tw.slate400), children: [
+        Text.rich(TextSpan(style: tw(11, color: Tw.inkSoft), children: [
           const TextSpan(text: 'Partner: '),
           TextSpan(text: (c['partner_name'] as String?) ?? context.t('super_admin.nobody'), style: tw(11)),
           TextSpan(text: ' (${(c['partner_email'] as String?) ?? context.t('super_admin.no_email')})'),
@@ -361,7 +361,7 @@ class _CitiesPanelState extends State<CitiesPanel> {
             const SizedBox(width: 4),
             AdminButton(
               label: 'X',
-              color: Tw.w(0.1),
+              color: Tw.lineSoft,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               onTap: () => setState(() => _editingStripeCity = null),
             ),
@@ -385,15 +385,15 @@ class _CitiesPanelState extends State<CitiesPanel> {
           Container(
             margin: const EdgeInsets.only(top: 8),
             padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(8)),
+            decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(8)),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text.rich(TextSpan(style: tw(10, color: Tw.slate400), children: [
+              Text.rich(TextSpan(style: tw(10, color: Tw.inkSoft), children: [
                 TextSpan(text: '${context.t('super_admin.fee_label')} '),
-                TextSpan(text: '${license['annual_fee']}€', style: tw(10, weight: bold, color: Tw.green400).copyWith(fontFamily: 'monospace')),
+                TextSpan(text: '${license['annual_fee']}€', style: tw(10, weight: bold, color: Tw.live).copyWith(fontFamily: 'monospace')),
               ])),
               Text(
                 '${context.t('super_admin.expires_label')} ${license['expires_at'] != null ? shortDate(license['expires_at']) : context.t('super_admin.no_date')}',
-                style: tw(10, color: Tw.slate400),
+                style: tw(10, color: Tw.inkSoft),
               ),
             ]),
           ),
@@ -401,17 +401,17 @@ class _CitiesPanelState extends State<CitiesPanel> {
           Padding(
             padding: const EdgeInsets.only(top: 8),
             child: Row(children: [
-              const Icon(Icons.pentagon, size: 12, color: Tw.fuchsia400),
+              const Icon(Icons.pentagon, size: 12, color: Tw.sun),
               const SizedBox(width: 4),
-              Text(context.t('super_admin.territory_defined', count: vertexCount), style: tw(10, weight: bold, color: Tw.fuchsia400)),
+              Text(context.t('super_admin.territory_defined', count: vertexCount), style: tw(10, weight: bold, color: Tw.sun)),
             ]),
           ),
         if (!isMadrid)
           Container(
             margin: const EdgeInsets.only(top: 8),
             padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(4), border: Border.all(color: Tw.w(0.05))),
-            child: Text(context.t('super_admin.assign_partner_hint'), style: tw(9, color: Tw.slate500)),
+            decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(4), border: Border.all(color: Tw.lineSoft)),
+            child: Text(context.t('super_admin.assign_partner_hint'), style: tw(9, color: Tw.inkDim)),
           ),
       ]),
     );

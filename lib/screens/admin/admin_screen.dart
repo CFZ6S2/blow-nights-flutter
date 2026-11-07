@@ -197,7 +197,7 @@ class _AdminScreenState extends State<AdminScreen> {
     if (auth.loading) {
       return const Scaffold(
         backgroundColor: Color(0xFF07080D),
-        body: Center(child: CircularProgressIndicator(strokeWidth: 2, color: Tw.fuchsia500)),
+        body: Center(child: CircularProgressIndicator(strokeWidth: 2, color: Tw.party)),
       );
     }
     if (!auth.isAdmin) return const ForbiddenScreen(messageKey: 'admin.access_denied');
@@ -205,7 +205,7 @@ class _AdminScreenState extends State<AdminScreen> {
     int n(String k) => (_stats[k] as num?)?.toInt() ?? 0;
     final top = MediaQuery.of(context).padding.top;
     return Scaffold(
-      backgroundColor: Tw.slate950,
+      backgroundColor: Tw.night,
       body: ListView(
         padding: EdgeInsets.fromLTRB(16, top + 16, 16, 96 + MediaQuery.of(context).padding.bottom),
         children: [
@@ -213,10 +213,10 @@ class _AdminScreenState extends State<AdminScreen> {
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 ShaderMask(
-                  shaderCallback: (r) => const LinearGradient(colors: [Tw.fuchsia500, Tw.indigo500]).createShader(r),
+                  shaderCallback: (r) => const LinearGradient(colors: [Tw.sunset, Tw.party]).createShader(r),
                   child: Text('ADMIN DASHBOARD', style: tw(26, weight: black)),
                 ),
-                Text(context.t('admin.subtitle'), style: tw(14, color: Tw.slate400)),
+                Text(context.t('admin.subtitle'), style: tw(14, color: Tw.inkSoft)),
               ]),
             ),
           ]),
@@ -224,9 +224,9 @@ class _AdminScreenState extends State<AdminScreen> {
           const Align(alignment: Alignment.centerRight, child: AdminTopBar(showAdmin: false)),
           const SizedBox(height: 24),
           AdminGrid(gap: 16, children: [
-            _statCard(context.t('admin.users'), n('totalUsers'), Icons.people, Tw.fuchsia500),
-            _statCard(context.t('admin.online'), n('onlineUsers'), Icons.sensors, Tw.emerald500),
-            _statCard(context.t('admin.premium'), n('premiumUsers'), Icons.star, Tw.amber500),
+            _statCard(context.t('admin.users'), n('totalUsers'), Icons.people, Tw.party),
+            _statCard(context.t('admin.online'), n('onlineUsers'), Icons.sensors, Tw.live),
+            _statCard(context.t('admin.premium'), n('premiumUsers'), Icons.star, Tw.sun),
             _statCard(context.t('admin.reports'), n('pendingReports'), Icons.report_problem, const Color(0xFFF43F5E)),
           ]),
           const SizedBox(height: 32),
@@ -281,14 +281,14 @@ class _AdminScreenState extends State<AdminScreen> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
-            color: active ? Tw.fuchsia600 : Tw.w(0.05),
+            color: active ? Tw.party : Tw.panelSoft,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: active ? Tw.fuchsia600 : Tw.w(0.05)),
+            border: Border.all(color: active ? Tw.party : Tw.lineSoft),
           ),
           child: Row(children: [
-            Icon(icon, size: 18, color: active ? Tw.white : Tw.slate400),
+            Icon(icon, size: 18, color: active ? Tw.white : Tw.inkSoft),
             const SizedBox(width: 8),
-            Text(label, style: tw(14, weight: bold, color: active ? Tw.white : Tw.slate400)),
+            Text(label, style: tw(14, weight: bold, color: active ? Tw.white : Tw.inkSoft)),
           ]),
         ),
       ),
@@ -300,48 +300,48 @@ class _AdminScreenState extends State<AdminScreen> {
     int pct(int v) => total > 0 ? (v / total * 100).round() : 0;
     Widget box(int value, Color color, String label) => Container(
           padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(color: Tw.slate900.withValues(alpha: 0.5), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.05))),
+          decoration: BoxDecoration(color: Tw.panel.withValues(alpha: 0.5), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.lineSoft)),
           child: Column(children: [
             Text('$value%', style: tw(30, weight: black, color: color)),
             const SizedBox(height: 4),
-            Label(label, color: Tw.slate500, weight: FontWeight.w400, align: TextAlign.center),
+            Label(label, color: Tw.inkDim, weight: FontWeight.w400, align: TextAlign.center),
           ]),
         );
     return AdminCard(
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Row(children: [
-          const Icon(Icons.trending_up, color: Tw.fuchsia400),
+          const Icon(Icons.trending_up, color: Tw.sun),
           const SizedBox(width: 8),
           Text(context.t('admin.system_ratios'), style: tw(20, weight: bold)),
         ]),
         const SizedBox(height: 16),
         AdminGrid(gap: 16, children: [
-          box(pct(n('premiumUsers')), Tw.amber400, context.t('admin.conversion_premium')),
-          box(pct(n('onlineUsers')), Tw.emerald400, context.t('admin.users_online')),
+          box(pct(n('premiumUsers')), Tw.sun, context.t('admin.conversion_premium')),
+          box(pct(n('onlineUsers')), Tw.live, context.t('admin.users_online')),
         ]),
       ]),
     );
   }
 
   Widget _rrppTab(BuildContext context) => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        if (_rrppApps.isEmpty) Text(context.t('admin.no_rrpp'), style: tw(14, color: Tw.slate500)),
+        if (_rrppApps.isEmpty) Text(context.t('admin.no_rrpp'), style: tw(14, color: Tw.inkDim)),
         for (final app in _rrppApps)
           Container(
             margin: const EdgeInsets.only(bottom: 16),
             padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.3))),
+            decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.party.withValues(alpha: 0.3))),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text((app['nick'] as String?) ?? 'Sin nick', style: tw(18, weight: bold)),
-                    Text((app['email'] as String?) ?? '', style: tw(12, color: Tw.slate400)),
+                    Text((app['email'] as String?) ?? '', style: tw(12, color: Tw.inkSoft)),
                   ]),
                 ),
                 AdminBadge(context.t('admin.pending'), color: Tw.yellow500),
               ]),
               const SizedBox(height: 8),
-              Text('📞 ${app['phone'] ?? ''} | 📍 ${app['city'] ?? ''}', style: tw(14, color: Tw.slate300)),
+              Text('📞 ${app['phone'] ?? ''} | 📍 ${app['city'] ?? ''}', style: tw(14, color: Tw.inkSoft)),
               const SizedBox(height: 16),
               Wrap(spacing: 8, runSpacing: 8, children: [
                 AdminButton(
@@ -375,12 +375,12 @@ class _AdminScreenState extends State<AdminScreen> {
         style: tw(14),
         decoration: InputDecoration(
           hintText: context.t('admin.filter_nick'),
-          hintStyle: tw(14, color: Tw.slate500),
-          prefixIcon: const Icon(Icons.search, color: Tw.slate500),
+          hintStyle: tw(14, color: Tw.inkDim),
+          prefixIcon: const Icon(Icons.search, color: Tw.inkDim),
           filled: true,
-          fillColor: Tw.w(0.05),
-          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: Tw.w(0.1))),
-          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: Tw.fuchsia500.withValues(alpha: 0.5))),
+          fillColor: Tw.panelSoft,
+          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: Tw.line)),
+          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: Tw.party.withValues(alpha: 0.5))),
         ),
       ),
       const SizedBox(height: 16),
@@ -390,9 +390,9 @@ class _AdminScreenState extends State<AdminScreen> {
           onTap: _loadingUsers ? () {} : () => _loadMoreUsers(),
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 12),
-            decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+            decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
             child: Text(_loadingUsers ? context.t('admin.loading') : context.t('admin.load_more_users'),
-                textAlign: TextAlign.center, style: tw(12, weight: bold, color: Tw.slate300)),
+                textAlign: TextAlign.center, style: tw(12, weight: bold, color: Tw.inkSoft)),
           ),
         ),
     ]);
@@ -413,7 +413,7 @@ class _AdminScreenState extends State<AdminScreen> {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+      decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Row(children: [
           ClipOval(child: NetImage(u['fotoUrl'] as String?, width: 40, height: 40)),
@@ -421,7 +421,7 @@ class _AdminScreenState extends State<AdminScreen> {
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text((u['nick'] as String?) ?? context.t('admin.no_nick'), style: tw(14, weight: bold)),
-              Text('${id.length > 8 ? id.substring(0, 8) : id}...', style: tw(10, color: Tw.slate500).copyWith(fontFamily: 'monospace')),
+              Text('${id.length > 8 ? id.substring(0, 8) : id}...', style: tw(10, color: Tw.inkDim).copyWith(fontFamily: 'monospace')),
             ]),
           ),
         ]),
@@ -429,9 +429,9 @@ class _AdminScreenState extends State<AdminScreen> {
         Wrap(alignment: WrapAlignment.end, spacing: 8, runSpacing: 6, children: [
           pill(
             premium ? context.t('admin.is_premium') : context.t('admin.make_premium'),
-            premium ? Tw.amber500 : Tw.slate400,
-            premium ? Tw.amber500.withValues(alpha: 0.2) : Tw.w(0.05),
-            premium ? Tw.amber500.withValues(alpha: 0.3) : Tw.w(0.1),
+            premium ? Tw.sun : Tw.inkSoft,
+            premium ? Tw.sun.withValues(alpha: 0.2) : Tw.panelSoft,
+            premium ? Tw.sun.withValues(alpha: 0.3) : Tw.lineSoft,
             () => _togglePremium(u),
           ),
           pill(
@@ -452,7 +452,7 @@ class _AdminScreenState extends State<AdminScreen> {
           Container(
             margin: const EdgeInsets.only(bottom: 16),
             padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: const Color(0x1AF43F5E))),
+            decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: const Color(0x1AF43F5E))),
             child: Row(children: [
               Expanded(child: Text(((r['reason'] as String?) ?? '').toUpperCase(), style: tw(12, weight: bold, color: const Color(0xFFFB7185)))),
               if (r['status'] == 'pending')
@@ -462,42 +462,42 @@ class _AdminScreenState extends State<AdminScreen> {
                   }),
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                    decoration: BoxDecoration(color: Tw.emerald500.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(99)),
-                    child: Text(context.t('admin.resolve'), style: tw(10, weight: bold, color: Tw.emerald500)),
+                    decoration: BoxDecoration(color: Tw.live.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(99)),
+                    child: Text(context.t('admin.resolve'), style: tw(10, weight: bold, color: Tw.live)),
                   ),
                 )
               else
-                Text(context.t('admin.resolved'), style: tw(10, weight: bold, color: Tw.emerald500)),
+                Text(context.t('admin.resolved'), style: tw(10, weight: bold, color: Tw.live)),
             ]),
           ),
       ]);
 
   Widget _verificationsTab(BuildContext context) => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Row(children: [
-          const Icon(Icons.store, color: Tw.fuchsia400),
+          const Icon(Icons.store, color: Tw.sun),
           const SizedBox(width: 8),
-          Expanded(child: Label(context.t('admin.venue_requests_title'), size: 18, color: Tw.fuchsia400, tracking: 0.05)),
+          Expanded(child: Label(context.t('admin.venue_requests_title'), size: 18, color: Tw.sun, tracking: 0.05)),
         ]),
         const SizedBox(height: 16),
-        if (_applications.isEmpty) Text(context.t('admin.no_venue_requests'), style: tw(14, color: Tw.slate500)),
+        if (_applications.isEmpty) Text(context.t('admin.no_venue_requests'), style: tw(14, color: Tw.inkDim)),
         for (final app in _applications)
           Container(
             margin: const EdgeInsets.only(bottom: 16),
             padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.3))),
+            decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.party.withValues(alpha: 0.3))),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text((app['name'] as String?) ?? '', style: tw(18, weight: bold)),
-                    Text(((app['cityId'] as String?) ?? '').toUpperCase(), style: tw(12, weight: bold, color: Tw.fuchsia400)),
+                    Text(((app['cityId'] as String?) ?? '').toUpperCase(), style: tw(12, weight: bold, color: Tw.sun)),
                   ]),
                 ),
                 AdminBadge(context.t('admin.pending'), color: Tw.yellow500),
               ]),
               const SizedBox(height: 8),
-              Text('📞 ${app['phone'] ?? ''} | ✉️ ${app['email'] ?? ''}', style: tw(14, color: Tw.slate300)),
-              if (app['venueName'] != null) Text('🍸 ${app['venueName']}', style: tw(14, weight: bold, color: Tw.fuchsia300)),
+              Text('📞 ${app['phone'] ?? ''} | ✉️ ${app['email'] ?? ''}', style: tw(14, color: Tw.inkSoft)),
+              if (app['venueName'] != null) Text('🍸 ${app['venueName']}', style: tw(14, weight: bold, color: Tw.sun)),
               const SizedBox(height: 16),
               Wrap(spacing: 8, runSpacing: 8, children: [
                 AdminButton(label: context.t('admin.approve_venue_btn'), onTap: () => _venueApp(app, true)),
@@ -512,17 +512,17 @@ class _AdminScreenState extends State<AdminScreen> {
           ),
         const SizedBox(height: 32),
         Row(children: [
-          const Icon(Icons.verified_user, color: Tw.emerald400),
+          const Icon(Icons.verified_user, color: Tw.live),
           const SizedBox(width: 8),
-          Expanded(child: Label(context.t('admin.user_verifications_title'), size: 18, color: Tw.emerald400, tracking: 0.05)),
+          Expanded(child: Label(context.t('admin.user_verifications_title'), size: 18, color: Tw.live, tracking: 0.05)),
         ]),
         const SizedBox(height: 16),
-        if (_verifications.isEmpty) Text(context.t('admin.no_user_verifications'), style: tw(14, color: Tw.slate500)),
+        if (_verifications.isEmpty) Text(context.t('admin.no_user_verifications'), style: tw(14, color: Tw.inkDim)),
         for (final v in _verifications)
           Container(
             margin: const EdgeInsets.only(bottom: 16),
             padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.emerald500.withValues(alpha: 0.3))),
+            decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.live.withValues(alpha: 0.3))),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(context.t('admin.user_id_label', params: {'id': v['id']}), style: tw(18, weight: bold)),
               for (final img in asStringList(v['images']))

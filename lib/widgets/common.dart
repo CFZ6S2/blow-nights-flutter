@@ -5,6 +5,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '../theme/app_theme.dart';
 
 /// Tailwind-like text style: size in px, tracking in em (tracking-widest = 0.1).
+/// Big heavy titles use the headings font like the web's `font-party` (Bricolage Grotesque); the rest inherit the
+/// theme's text font (Figtree). [party] forces one or the other.
 TextStyle tw(
   double size, {
   FontWeight weight = FontWeight.w400,
@@ -14,6 +16,7 @@ TextStyle tw(
   bool uppercase = false,
   FontStyle? style,
   TextDecoration? decoration,
+  bool? party,
 }) =>
     TextStyle(
       fontSize: size,
@@ -24,6 +27,7 @@ TextStyle tw(
       fontStyle: style,
       decoration: decoration,
       decorationColor: color,
+      fontFamily: (party ?? (size >= 18 && weight.value >= 800)) ? AppTheme.partyFont : null,
     );
 
 const black = FontWeight.w900;
@@ -43,7 +47,7 @@ class Label extends StatelessWidget {
   const Label(this.text,
       {super.key,
       this.size = 10,
-      this.color = Tw.slate400,
+      this.color = Tw.inkSoft,
       this.weight = black,
       this.tracking = 0.1,
       this.align,
@@ -84,10 +88,10 @@ class GlassCard extends StatelessWidget {
     final box = Container(
       padding: padding,
       decoration: BoxDecoration(
-        color: gradient == null ? (color ?? Tw.w(0.05)) : null,
+        color: gradient == null ? (color ?? Tw.panelSoft) : null,
         gradient: gradient,
         borderRadius: BorderRadius.circular(radius),
-        border: Border.all(color: borderColor ?? Tw.w(0.1)),
+        border: Border.all(color: borderColor ?? Tw.line),
       ),
       child: child,
     );
@@ -163,7 +167,8 @@ class GradientButton extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: gradient,
         borderRadius: BorderRadius.circular(radius),
-        boxShadow: const [BoxShadow(color: Color(0x66000000), blurRadius: 20, offset: Offset(0, 8))],
+        // .bn-cta: 0 12px 30px -12px rgba(232, 49, 138, 0.7)
+        boxShadow: const [BoxShadow(color: Color(0xB3E8318A), blurRadius: 30, spreadRadius: -12, offset: Offset(0, 12))],
       ),
       child: Row(
         mainAxisSize: expand ? MainAxisSize.max : MainAxisSize.min,
@@ -197,7 +202,7 @@ class SquareIconButton extends StatelessWidget {
   final VoidCallback onTap;
   final double size;
   final Color color;
-  const SquareIconButton({super.key, required this.icon, required this.onTap, this.size = 40, this.color = Tw.slate400});
+  const SquareIconButton({super.key, required this.icon, required this.onTap, this.size = 40, this.color = Tw.inkSoft});
 
   @override
   Widget build(BuildContext context) => Pressable(
@@ -207,9 +212,9 @@ class SquareIconButton extends StatelessWidget {
           width: size,
           height: size,
           decoration: BoxDecoration(
-            color: Tw.w(0.05),
+            color: Tw.panelSoft,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Tw.w(0.1)),
+            border: Border.all(color: Tw.line),
           ),
           child: Icon(icon, size: 20, color: color),
         ),
@@ -246,7 +251,7 @@ class NetImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fallback = placeholder ?? Container(width: width, height: height, color: Tw.w(0.05));
+    final fallback = placeholder ?? Container(width: width, height: height, color: Tw.panelSoft);
     if (url == null || url!.isEmpty) return fallback;
     return Image.network(
       url!,
@@ -266,16 +271,16 @@ Future<bool> confirmDialog(BuildContext context,
     context: context,
     barrierColor: Colors.black.withValues(alpha: 0.7),
     builder: (ctx) => Dialog(
-      backgroundColor: Tw.slate900,
+      backgroundColor: Tw.panel,
       insetPadding: const EdgeInsets.all(24),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: BorderSide(color: Tw.w(0.1))),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: BorderSide(color: Tw.line)),
       child: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           Icon(danger ? Icons.warning_amber_rounded : Icons.help_outline,
-              size: 36, color: danger ? Tw.red400 : Tw.fuchsia400),
+              size: 36, color: danger ? Tw.red400 : Tw.sun),
           const SizedBox(height: 16),
-          Text(message, textAlign: TextAlign.center, style: tw(14, weight: medium, color: Tw.slate300, height: 1.5)),
+          Text(message, textAlign: TextAlign.center, style: tw(14, weight: medium, color: Tw.inkSoft, height: 1.5)),
           const SizedBox(height: 24),
           Row(children: [
             Expanded(
@@ -283,8 +288,8 @@ Future<bool> confirmDialog(BuildContext context,
                 onTap: () => Navigator.of(ctx).pop(false),
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 14),
-                  decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
-                  child: Label(cancelText ?? 'Cancelar', color: Tw.slate400, align: TextAlign.center),
+                  decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
+                  child: Label(cancelText ?? 'Cancelar', color: Tw.inkSoft, align: TextAlign.center),
                 ),
               ),
             ),
@@ -294,7 +299,7 @@ Future<bool> confirmDialog(BuildContext context,
                 onTap: () => Navigator.of(ctx).pop(true),
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 14),
-                  decoration: BoxDecoration(color: danger ? Tw.red500 : Tw.fuchsia600, borderRadius: BorderRadius.circular(16)),
+                  decoration: BoxDecoration(color: danger ? Tw.red500 : Tw.party, borderRadius: BorderRadius.circular(16)),
                   child: Label(confirmText ?? 'Confirmar', color: Tw.white, align: TextAlign.center),
                 ),
               ),
@@ -313,7 +318,7 @@ void showToast(BuildContext context, String message, {bool error = false}) {
     ..showSnackBar(SnackBar(
       content: Row(children: [
         Icon(error ? Icons.error_outline : Icons.check_circle_outline,
-            color: error ? Tw.red400 : Tw.emerald400, size: 18),
+            color: error ? Tw.red400 : Tw.live, size: 18),
         const SizedBox(width: 10),
         Expanded(child: Text(message)),
       ]),
@@ -324,3 +329,50 @@ void showToast(BuildContext context, String message, {bool error = false}) {
 /// the user never leaves the app and closing the tab returns to the screen that opened it.
 /// WhatsApp, mail and Google Maps links keep opening their own apps.
 Future<void> openInApp(String url) => launchUrl(Uri.parse(url), mode: LaunchMode.inAppBrowserView);
+
+/// Round call-to-action (`bn-cta w-11 h-11 rounded-full`): sunset -> party with the pink glow.
+class CtaCircle extends StatelessWidget {
+  final IconData icon;
+  final double size;
+  const CtaCircle({super.key, required this.icon, this.size = 44});
+
+  @override
+  Widget build(BuildContext context) => Container(
+    width: size,
+    height: size,
+    decoration: const BoxDecoration(
+      shape: BoxShape.circle,
+      gradient: AppTheme.ctaGradient,
+      boxShadow: [BoxShadow(color: Color(0xB3E8318A), blurRadius: 30, spreadRadius: -12, offset: Offset(0, 12))],
+    ),
+    child: Icon(icon, size: size * 0.45, color: Tw.white),
+  );
+}
+
+/// The warm glows behind the web's fiesta pages (`bg-party/15` and `bg-sunset/10` blurred blobs).
+class PartyGlow extends StatelessWidget {
+  final Widget child;
+  const PartyGlow({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, box) {
+      final w = box.maxWidth.isFinite ? box.maxWidth : 400.0;
+      return Stack(
+        children: [
+          Positioned(
+            top: -w * 0.35,
+            left: -w * 0.4,
+            child: Orb(color: Tw.party.withValues(alpha: 0.2), size: w * 1.1),
+          ),
+          Positioned(
+            top: w * 0.45,
+            right: -w * 0.5,
+            child: Orb(color: Tw.sunset.withValues(alpha: 0.12), size: w),
+          ),
+          Positioned.fill(child: child),
+        ],
+      );
+    },
+  );
+}

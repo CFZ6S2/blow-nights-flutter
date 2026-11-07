@@ -148,7 +148,7 @@ class _RequestsPanelState extends State<RequestsPanel> {
 
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       AdminGrid(children: [
-        AdminStat(centered: true, label: context.t('requests.stat_venues', fallback: 'Locales'), value: '${_venueApps.length}', icon: Icons.storefront, color: Tw.fuchsia400),
+        AdminStat(centered: true, label: context.t('requests.stat_venues', fallback: 'Locales'), value: '${_venueApps.length}', icon: Icons.storefront, color: Tw.sun),
         AdminStat(
             centered: true,
             label: context.t('requests.stat_partners', fallback: 'City Managers / Partners'),
@@ -162,8 +162,8 @@ class _RequestsPanelState extends State<RequestsPanel> {
         const SizedBox(height: 32),
         _section(
           icon: Icons.storefront,
-          color: Tw.fuchsia400,
-          border: Tw.fuchsia500,
+          color: Tw.sun,
+          border: Tw.party,
           title: context.t('requests.section_venues',
               count: _venueApps.length, fallback: 'Solicitudes de locales (${_venueApps.length})'),
           children: [
@@ -171,10 +171,10 @@ class _RequestsPanelState extends State<RequestsPanel> {
               _appCard(
                 title: (app['venueName'] ?? app['name'] ?? '') as String,
                 subtitle: app['venueAddress'] != null ? '📍 ${app['venueAddress']}' : null,
-                badge: AdminBadge(context.t('requests.type_venue', fallback: 'Local'), color: Tw.fuchsia400),
+                badge: AdminBadge(context.t('requests.type_venue', fallback: 'Local'), color: Tw.sun),
                 contact: '${app['phone'] ?? ''} | ${app['email'] ?? ''}',
                 note: app['experience'] as String?,
-                noteColor: Tw.fuchsia500,
+                noteColor: Tw.party,
                 actions: [
                   AdminButton(
                     label: context.t('requests.approve_btn'),
@@ -206,8 +206,8 @@ class _RequestsPanelState extends State<RequestsPanel> {
                 subtitle: app['cityId'] != null
                     ? (app['cityId'] == 'other' ? context.t('requests.other_city') : app['cityId'] as String).toUpperCase()
                     : null,
-                subtitleColor: Tw.emerald400,
-                badge: AdminBadge(context.t('requests.type_cm', fallback: 'City Manager'), color: Tw.emerald400),
+                subtitleColor: Tw.live,
+                badge: AdminBadge(context.t('requests.type_cm', fallback: 'City Manager'), color: Tw.live),
                 contact: '${app['phone'] ?? ''} | ${app['email'] ?? ''}',
                 note: app['experience'] as String?,
                 noteColor: Tw.orange500,
@@ -232,8 +232,8 @@ class _RequestsPanelState extends State<RequestsPanel> {
         const SizedBox(height: 32),
         _section(
           icon: Icons.badge,
-          color: Tw.fuchsia400,
-          border: Tw.fuchsia500,
+          color: Tw.sun,
+          border: Tw.party,
           title: context.t('requests.section_rrpp', count: _rrppApps.length),
           children: [
             for (final app in _rrppApps)
@@ -271,7 +271,7 @@ class _RequestsPanelState extends State<RequestsPanel> {
 
   Widget _section({required IconData icon, required Color color, required Color border, required String title, required List<Widget> children}) =>
       AdminCard(
-        color: Tw.slate900,
+        color: Tw.panel,
         borderColor: border.withValues(alpha: 0.3),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Row(children: [
@@ -287,11 +287,11 @@ class _RequestsPanelState extends State<RequestsPanel> {
   Widget _appCard({
     required String title,
     String? subtitle,
-    Color subtitleColor = Tw.slate400,
+    Color subtitleColor = Tw.inkSoft,
     Widget? badge,
     required String contact,
     String? note,
-    Color noteColor = Tw.fuchsia500,
+    Color noteColor = Tw.party,
     required List<Widget> actions,
   }) =>
       Container(
@@ -299,26 +299,26 @@ class _RequestsPanelState extends State<RequestsPanel> {
         decoration: BoxDecoration(
           color: Colors.black.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Tw.w(0.1)),
+          border: Border.all(color: Tw.line),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(title, style: tw(18, weight: bold)),
-                if (subtitle != null) Text(subtitle, style: tw(12, weight: subtitleColor == Tw.slate400 ? FontWeight.w400 : bold, color: subtitleColor)),
+                if (subtitle != null) Text(subtitle, style: tw(12, weight: subtitleColor == Tw.inkSoft ? FontWeight.w400 : bold, color: subtitleColor)),
               ]),
             ),
             ?badge,
           ]),
           const SizedBox(height: 8),
-          Text(contact, style: tw(14, color: Tw.slate300)),
+          Text(contact, style: tw(14, color: Tw.inkSoft)),
           if (note != null && note.isNotEmpty)
             Container(
               margin: const EdgeInsets.only(top: 8),
               padding: const EdgeInsets.only(left: 8),
               decoration: BoxDecoration(border: Border(left: BorderSide(color: noteColor.withValues(alpha: 0.3), width: 2))),
-              child: Text(note, style: tw(12, color: Tw.slate500, style: FontStyle.italic)),
+              child: Text(note, style: tw(12, color: Tw.inkDim, style: FontStyle.italic)),
             ),
           const SizedBox(height: 16),
           Wrap(spacing: 8, runSpacing: 8, children: actions),

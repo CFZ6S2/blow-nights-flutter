@@ -184,7 +184,7 @@ class _ProfileOverlayState extends State<ProfileOverlay> with TickerProviderStat
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 448),
             child: Container(
-              color: Tw.slate950,
+              color: Tw.night,
               child: Stack(children: [
                 // Parallax photo header
                 Positioned(
@@ -203,7 +203,7 @@ class _ProfileOverlayState extends State<ProfileOverlay> with TickerProviderStat
                           setState(() => _activePhoto = i);
                         },
                         itemBuilder: (_, i) {
-                          if (allPhotos.isEmpty) return Container(color: Tw.slate900);
+                          if (allPhotos.isEmpty) return Container(color: Tw.panel);
                           final isPrivate = i >= publicPhotos.length;
                           final locked = isPrivate && !hasAccess;
                           final blurNsfw = nsfw.contains(i) && (me?.nsfwBlur ?? true) && _nsfwRevealed[i] != true;
@@ -239,10 +239,10 @@ class _ProfileOverlayState extends State<ProfileOverlay> with TickerProviderStat
                                   height: 80,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Tw.w(0.1),
-                                    border: Border.all(color: Tw.w(0.2)),
+                                    color: Tw.lineSoft,
+                                    border: Border.all(color: Tw.line),
                                   ),
-                                  child: const Icon(Icons.lock, size: 36, color: Tw.amber500),
+                                  child: const Icon(Icons.lock, size: 36, color: Tw.sun),
                                 ),
                                 const SizedBox(height: 16),
                                 Container(
@@ -250,7 +250,7 @@ class _ProfileOverlayState extends State<ProfileOverlay> with TickerProviderStat
                                   decoration: BoxDecoration(
                                     color: Colors.black.withValues(alpha: 0.4),
                                     borderRadius: BorderRadius.circular(99),
-                                    border: Border.all(color: Tw.w(0.1)),
+                                    border: Border.all(color: Tw.line),
                                   ),
                                   child: Label(context.t('overlay.private_album'), color: Tw.white, tracking: 0.3),
                                 ),
@@ -261,7 +261,7 @@ class _ProfileOverlayState extends State<ProfileOverlay> with TickerProviderStat
                                   gradient: LinearGradient(
                                     begin: Alignment.bottomCenter,
                                     end: Alignment.topCenter,
-                                    colors: [Tw.slate950, Color(0x1A020617), Colors.transparent],
+                                    colors: [Tw.night, Color(0x1A020617), Colors.transparent],
                                   ),
                                 ),
                               ),
@@ -280,15 +280,15 @@ class _ProfileOverlayState extends State<ProfileOverlay> with TickerProviderStat
                                 height: 2,
                                 margin: const EdgeInsets.symmetric(horizontal: 2),
                                 decoration: BoxDecoration(
-                                  color: i <= _activePhoto ? Tw.white : Tw.w(0.2),
+                                  color: i <= _activePhoto ? Tw.white : Tw.line,
                                   borderRadius: BorderRadius.circular(99),
                                 ),
                               ),
                             ),
                         ]),
                       ),
-                      _burst(_likeAnim, Icons.favorite, Tw.fuchsia500, Tw.fuchsia400, 12, 150, 120),
-                      _burst(_superAnim, Icons.star, Tw.amber500, const Color(0xFFFDE047), 20, 250, 150),
+                      _burst(_likeAnim, Icons.favorite, Tw.party, Tw.sun, 12, 150, 120),
+                      _burst(_superAnim, Icons.star, Tw.sun, const Color(0xFFFDE047), 20, 250, 150),
                     ]),
                   ),
                 ),
@@ -307,14 +307,14 @@ class _ProfileOverlayState extends State<ProfileOverlay> with TickerProviderStat
                         child: Container(
                           padding: const EdgeInsets.fromLTRB(32, 16, 32, 160),
                           decoration: BoxDecoration(
-                            color: Tw.slate950.withValues(alpha: 0.8),
+                            color: Tw.night.withValues(alpha: 0.8),
                             borderRadius: const BorderRadius.vertical(top: Radius.circular(48)),
-                            border: Border(top: BorderSide(color: Tw.w(0.05))),
+                            border: Border(top: BorderSide(color: Tw.lineSoft)),
                             boxShadow: const [BoxShadow(color: Color(0x80000000), blurRadius: 40, offset: Offset(0, -20))],
                           ),
                           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                             Center(
-                              child: Container(width: 48, height: 4, decoration: BoxDecoration(color: Tw.w(0.1), borderRadius: BorderRadius.circular(99))),
+                              child: Container(width: 48, height: 4, decoration: BoxDecoration(color: Tw.lineSoft, borderRadius: BorderRadius.circular(99))),
                             ),
                             const SizedBox(height: 24),
                             Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -324,14 +324,14 @@ class _ProfileOverlayState extends State<ProfileOverlay> with TickerProviderStat
                                     Text('${p.nick}${p.edad != null ? ', ${p.edad}' : ''} ${p.mood ?? ''}',
                                         style: tw(24, weight: black, tracking: -0.025)),
                                     if (p.online)
-                                      _statusPill('Online', Tw.green400, Tw.green500)
+                                      _statusPill('Online', Tw.live, Tw.live)
                                     else if (p.data['lastSeen'] != null)
                                       _statusPill(context.t('overlay.active_at', params: {'time': formatLastSeen(p.data['lastSeen'])}),
-                                          Tw.slate500, Tw.slate500),
+                                          Tw.inkDim, Tw.inkDim),
                                   ]),
                                   const SizedBox(height: 4),
                                   Row(children: [
-                                    const Icon(Icons.near_me, size: 12, color: Tw.slate500),
+                                    const Icon(Icons.near_me, size: 12, color: Tw.inkDim),
                                     const SizedBox(width: 8),
                                     Label(context.t('overlay.distance', params: {'distance': distance})),
                                   ]),
@@ -341,8 +341,8 @@ class _ProfileOverlayState extends State<ProfileOverlay> with TickerProviderStat
                             ]),
                             const SizedBox(height: 24),
                             Wrap(spacing: 8, runSpacing: 8, children: [
-                              _chip(roleLabel(p.rol, (k, f) => context.t(k, fallback: f)), Tw.w(0.05), Tw.slate300),
-                              _chip(p.intencion, Tw.fuchsia500.withValues(alpha: 0.1), Tw.fuchsia400),
+                              _chip(roleLabel(p.rol, (k, f) => context.t(k, fallback: f)), Tw.panelSoft, Tw.inkSoft),
+                              _chip(p.intencion, Tw.party.withValues(alpha: 0.1), Tw.sun),
                             ]),
                             const SizedBox(height: 32),
                             Row(children: [
@@ -351,33 +351,33 @@ class _ProfileOverlayState extends State<ProfileOverlay> with TickerProviderStat
                               Expanded(child: _metric(context.t('overlay.weight'), p.peso, 'kg')),
                             ]),
                             const SizedBox(height: 40),
-                            Label(context.t('overlay.interests'), color: Tw.slate500, tracking: 0.2),
+                            Label(context.t('overlay.interests'), color: Tw.inkDim, tracking: 0.2),
                             const SizedBox(height: 16),
                             Wrap(spacing: 8, runSpacing: 8, children: [
                               for (final i in p.intereses)
                                 Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                                   decoration: BoxDecoration(
-                                    color: Tw.w(0.05),
+                                    color: Tw.panelSoft,
                                     borderRadius: BorderRadius.circular(99),
-                                    border: Border.all(color: Tw.w(0.1)),
+                                    border: Border.all(color: Tw.line),
                                   ),
-                                  child: Text(i, style: tw(14, weight: medium, color: Tw.slate300)),
+                                  child: Text(i, style: tw(14, weight: medium, color: Tw.inkSoft)),
                                 ),
                             ]),
                             const SizedBox(height: 32),
-                            Label(context.t('overlay.about_me'), color: Tw.slate500, tracking: 0.2),
+                            Label(context.t('overlay.about_me'), color: Tw.inkDim, tracking: 0.2),
                             const SizedBox(height: 16),
                             Container(
                               width: double.infinity,
                               padding: const EdgeInsets.all(24),
                               decoration: BoxDecoration(
-                                color: Tw.w(0.05),
+                                color: Tw.panelSoft,
                                 borderRadius: BorderRadius.circular(24),
-                                border: Border.all(color: Tw.w(0.05)),
+                                border: Border.all(color: Tw.lineSoft),
                               ),
                               child: Text(p.bio.isNotEmpty ? p.bio : context.t('overlay.no_bio'),
-                                  style: tw(18, weight: medium, color: Tw.slate300, height: 1.6)),
+                                  style: tw(18, weight: medium, color: Tw.inkSoft, height: 1.6)),
                             ),
                             if (privatePhotos.isNotEmpty && !hasAccess) ...[
                               const SizedBox(height: 32),
@@ -400,13 +400,13 @@ class _ProfileOverlayState extends State<ProfileOverlay> with TickerProviderStat
                       child: Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Tw.slate900.withValues(alpha: 0.9),
+                          color: Tw.panel.withValues(alpha: 0.9),
                           borderRadius: BorderRadius.circular(40),
-                          border: Border.all(color: Tw.w(0.1)),
+                          border: Border.all(color: Tw.line),
                           boxShadow: const [BoxShadow(color: Color(0xCC000000), blurRadius: 60, offset: Offset(0, 25))],
                         ),
                         child: Row(children: [
-                          _roundAction(child: const Icon(Icons.star, color: Tw.amber500), onTap: () => _like(isSuper: true)),
+                          _roundAction(child: const Icon(Icons.star, color: Tw.sun), onTap: () => _like(isSuper: true)),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Pressable(
@@ -416,20 +416,20 @@ class _ProfileOverlayState extends State<ProfileOverlay> with TickerProviderStat
                                 height: 48,
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
-                                  color: _hasLiked ? Tw.slate800 : null,
+                                  color: _hasLiked ? Tw.line : null,
                                   gradient: _hasLiked
                                       ? null
-                                      : const LinearGradient(colors: [Tw.fuchsia600, Tw.purple600, Tw.indigo600]),
+                                      : const LinearGradient(colors: [Tw.sunset, Tw.party]),
                                   borderRadius: BorderRadius.circular(16),
                                 ),
                                 child: Label(_hasLiked ? context.t('overlay.sent') : context.t('overlay.like'),
-                                    color: _hasLiked ? Tw.slate500 : Tw.white),
+                                    color: _hasLiked ? Tw.inkDim : Tw.white),
                               ),
                             ),
                           ),
                           const SizedBox(width: 8),
                           _roundAction(
-                            gradient: const LinearGradient(colors: [Tw.orange500, Tw.amber500]),
+                            gradient: const LinearGradient(colors: [Tw.orange500, Tw.sun]),
                             child: const Text('🍹', style: TextStyle(fontSize: 20)),
                             onTap: () => openRoute(context, AppRoute.barGift, args: {'giftNick': p.nick}),
                           ),
@@ -471,9 +471,9 @@ class _ProfileOverlayState extends State<ProfileOverlay> with TickerProviderStat
       width: 192,
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: Tw.slate900.withValues(alpha: 0.95),
+        color: Tw.panel.withValues(alpha: 0.95),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Tw.w(0.1)),
+        border: Border.all(color: Tw.line),
       ),
       child: Column(children: [
         _optionRow(Icons.flag, i18n.t('overlay.report'), Tw.orange500, () async {
@@ -485,7 +485,7 @@ class _ProfileOverlayState extends State<ProfileOverlay> with TickerProviderStat
             setState(() => _showOptions = false);
           }
         }),
-        Divider(color: Tw.w(0.05), height: 1, indent: 8, endIndent: 8),
+        Divider(color: Tw.lineSoft, height: 1, indent: 8, endIndent: 8),
         _optionRow(Icons.block, i18n.t('overlay.block'), Tw.red500, () async {
           if (uid == null) return;
           if (await confirmDialog(context, message: i18n.t('overlay.block_confirm'), confirmText: i18n.t('overlay.block'), danger: true)) {
@@ -518,7 +518,7 @@ class _ProfileOverlayState extends State<ProfileOverlay> with TickerProviderStat
           decoration: BoxDecoration(
             color: Colors.black.withValues(alpha: 0.4),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Tw.w(0.1)),
+            border: Border.all(color: Tw.line),
           ),
           child: Icon(icon, color: Tw.white),
         ),
@@ -532,7 +532,7 @@ class _ProfileOverlayState extends State<ProfileOverlay> with TickerProviderStat
           height: 48,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: gradient == null ? Tw.w(0.05) : null,
+            color: gradient == null ? Tw.panelSoft : null,
             gradient: gradient,
             borderRadius: BorderRadius.circular(16),
           ),
@@ -559,16 +559,16 @@ class _ProfileOverlayState extends State<ProfileOverlay> with TickerProviderStat
   Widget _metric(String label, int? value, String unit) => Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Tw.w(0.05),
+          color: Tw.panelSoft,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Tw.w(0.05)),
+          border: Border.all(color: Tw.lineSoft),
         ),
         child: Column(children: [
-          Label(label, size: 9, color: Tw.slate500),
+          Label(label, size: 9, color: Tw.inkDim),
           const SizedBox(height: 4),
           Text.rich(TextSpan(children: [
             TextSpan(text: '${value ?? '--'} ', style: tw(24, weight: black)),
-            TextSpan(text: unit, style: tw(10, color: Tw.slate500)),
+            TextSpan(text: unit, style: tw(10, color: Tw.inkDim)),
           ])),
         ]),
       );
@@ -576,12 +576,12 @@ class _ProfileOverlayState extends State<ProfileOverlay> with TickerProviderStat
   Widget _privateAlbumCard(BuildContext context, int count) => Container(
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
-          gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.slate900, Tw.slate950]),
+          gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.panel, Tw.night]),
           borderRadius: BorderRadius.circular(40),
-          border: Border.all(color: Tw.w(0.05)),
+          border: Border.all(color: Tw.lineSoft),
         ),
         child: Column(children: [
-          Container(height: 4, decoration: const BoxDecoration(gradient: LinearGradient(colors: [Tw.amber400, Tw.fuchsia500]))),
+          Container(height: 4, decoration: const BoxDecoration(gradient: LinearGradient(colors: [Tw.sun, Tw.party]))),
           Padding(
             padding: const EdgeInsets.all(32),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -590,22 +590,22 @@ class _ProfileOverlayState extends State<ProfileOverlay> with TickerProviderStat
                   width: 64,
                   height: 64,
                   decoration: BoxDecoration(
-                    color: Tw.amber500.withValues(alpha: 0.1),
+                    color: Tw.sun.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Tw.amber500.withValues(alpha: 0.2)),
+                    border: Border.all(color: Tw.sun.withValues(alpha: 0.2)),
                   ),
-                  child: const Icon(Icons.lock, size: 30, color: Tw.amber500),
+                  child: const Icon(Icons.lock, size: 30, color: Tw.sun),
                 ),
                 const SizedBox(width: 24),
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text(context.t('overlay.private_album'), style: tw(20, weight: black, tracking: -0.025)),
-                    Label(context.t('overlay.hidden_photos', count: count), color: Tw.slate500),
+                    Label(context.t('overlay.hidden_photos', count: count), color: Tw.inkDim),
                   ]),
                 ),
               ]),
               const SizedBox(height: 24),
-              Text(context.t('overlay.private_desc'), style: tw(14, color: Tw.slate400, height: 1.6)),
+              Text(context.t('overlay.private_desc'), style: tw(14, color: Tw.inkSoft, height: 1.6)),
               const SizedBox(height: 32),
               Pressable(
                 onTap: () {
@@ -616,7 +616,7 @@ class _ProfileOverlayState extends State<ProfileOverlay> with TickerProviderStat
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   decoration: BoxDecoration(color: Tw.white, borderRadius: BorderRadius.circular(16)),
-                  child: Label(context.t('overlay.request_access'), color: Tw.black, tracking: 0.2, align: TextAlign.center),
+                  child: Label(context.t('overlay.request_access'), color: Tw.nightDeep, tracking: 0.2, align: TextAlign.center),
                 ),
               ),
             ]),
@@ -662,9 +662,9 @@ class VipBadge extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         decoration: BoxDecoration(
-          gradient: const LinearGradient(colors: [Tw.amber400, Color(0xFFCA8A04)]),
+          gradient: const LinearGradient(colors: [Tw.sun, Color(0xFFCA8A04)]),
           borderRadius: BorderRadius.circular(99),
         ),
-        child: Text('VIP', style: tw(fontSize, weight: black, color: Tw.black)),
+        child: Text('VIP', style: tw(fontSize, weight: black, color: Tw.night)),
       );
 }

@@ -20,7 +20,7 @@ class CreatePlanScreen extends StatelessWidget {
                 child: Container(
                   width: 40,
                   height: 40,
-                  decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.w(0.05), border: Border.all(color: Tw.w(0.1))),
+                  decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.panelSoft, border: Border.all(color: Tw.line)),
                   child: const Icon(Icons.arrow_back, color: Tw.white),
                 ),
               ),
@@ -28,7 +28,7 @@ class CreatePlanScreen extends StatelessWidget {
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Text(context.t('create_plan.title', fallback: 'Crear plan'), style: tw(20, weight: black)),
-                  Text(context.t('create_plan.subtitle', fallback: 'Organiza una quedada, previa o fiesta'), style: tw(12, color: Tw.slate500)),
+                  Text(context.t('create_plan.subtitle', fallback: 'Organiza una quedada, previa o fiesta'), style: tw(12, color: Tw.inkDim)),
                 ]),
               ),
             ]),

@@ -51,7 +51,7 @@ class _VenueLocationPickerState extends State<VenueLocationPicker> {
   Widget build(BuildContext context) => Container(
         height: widget.height,
         clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
         child: Stack(children: [
           FlutterMap(
             mapController: _map,
@@ -73,7 +73,7 @@ class _VenueLocationPickerState extends State<VenueLocationPicker> {
                     width: 36,
                     height: 36,
                     alignment: Alignment.topCenter,
-                    child: const Icon(Icons.place, size: 32, color: Tw.fuchsia500, shadows: [Shadow(color: Color(0x88000000), blurRadius: 6)]),
+                    child: const Icon(Icons.place, size: 32, color: Tw.party, shadows: [Shadow(color: Color(0x88000000), blurRadius: 6)]),
                   ),
                 ]),
             ],
@@ -115,7 +115,7 @@ class StorefrontLocationPicker extends StatelessWidget {
     return Container(
       height: 280,
       clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
       child: FlutterMap(
         options: MapOptions(
           initialCenter: LatLng(loc?.latitude ?? 40.4168, loc?.longitude ?? -3.7038),
@@ -137,14 +137,14 @@ class StorefrontLocationPicker extends StatelessWidget {
                     width: 32,
                     height: 32,
                     decoration: BoxDecoration(
-                      color: Tw.fuchsia600,
+                      color: Tw.party,
                       shape: BoxShape.circle,
                       border: Border.all(color: Tw.white, width: 2),
-                      boxShadow: [BoxShadow(color: Tw.fuchsia500.withValues(alpha: 0.4), blurRadius: 12)],
+                      boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.4), blurRadius: 12)],
                     ),
                     child: const Icon(Icons.storefront, size: 14, color: Tw.white),
                   ),
-                  CustomPaint(size: const Size(12, 8), painter: _Triangle(Tw.fuchsia600)),
+                  CustomPaint(size: const Size(12, 8), painter: _Triangle(Tw.party)),
                 ]),
               ),
             ]),

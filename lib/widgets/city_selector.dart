@@ -22,16 +22,16 @@ class CitySelector extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
-            color: Tw.w(0.05),
+            color: Tw.panelSoft,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Tw.w(0.1)),
+            border: Border.all(color: Tw.line),
           ),
           child: Row(mainAxisSize: MainAxisSize.min, children: [
-            Icon(current == null ? Icons.near_me : Icons.location_city, size: 14, color: Tw.fuchsia400),
+            Icon(current == null ? Icons.near_me : Icons.location_city, size: 14, color: Tw.sun),
             const SizedBox(width: 6),
             Label(current?.name ?? context.t('city.near_you')),
             const SizedBox(width: 4),
-            const Icon(Icons.expand_more, size: 12, color: Tw.slate600),
+            const Icon(Icons.expand_more, size: 12, color: Tw.inkDim),
           ]),
         ),
       ),
@@ -62,15 +62,15 @@ class CitySelector extends StatelessWidget {
                 width: 224,
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Tw.slate900,
+                  color: Tw.panel,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Tw.w(0.1)),
+                  border: Border.all(color: Tw.line),
                   boxShadow: const [BoxShadow(color: Color(0x99000000), blurRadius: 40)],
                 ),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, mainAxisSize: MainAxisSize.min, children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    child: Label(city.detectedByGPS ? i18n.t('city.detected') : i18n.t('city.select'), size: 9, weight: bold, color: Tw.slate500),
+                    child: Label(city.detectedByGPS ? i18n.t('city.detected') : i18n.t('city.select'), size: 9, weight: bold, color: Tw.inkDim),
                   ),
                   ConstrainedBox(
                     constraints: const BoxConstraints(maxHeight: 192),
@@ -84,18 +84,18 @@ class CitySelector extends StatelessWidget {
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                           decoration: BoxDecoration(
-                            color: followsGps ? Tw.fuchsia500.withValues(alpha: 0.15) : null,
+                            color: followsGps ? Tw.party.withValues(alpha: 0.15) : null,
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Row(children: [
-                            const Icon(Icons.near_me, size: 16, color: Tw.fuchsia400),
+                            const Icon(Icons.near_me, size: 16, color: Tw.sun),
                             const SizedBox(width: 10),
                             Expanded(
                               child: Text(i18n.t('city.near_you'),
                                   overflow: TextOverflow.ellipsis,
-                                  style: tw(12, weight: bold, color: followsGps ? Tw.fuchsia300 : Tw.slate300)),
+                                  style: tw(12, weight: bold, color: followsGps ? Tw.sun : Tw.inkSoft)),
                             ),
-                            if (followsGps) const Icon(Icons.check, size: 14, color: Tw.fuchsia400),
+                            if (followsGps) const Icon(Icons.check, size: 14, color: Tw.sun),
                           ]),
                         ),
                       ),
@@ -109,7 +109,7 @@ class CitySelector extends StatelessWidget {
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                             decoration: BoxDecoration(
-                              color: city.cityId == c.id && !followsGps ? Tw.fuchsia500.withValues(alpha: 0.15) : null,
+                              color: city.cityId == c.id && !followsGps ? Tw.party.withValues(alpha: 0.15) : null,
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Row(children: [
@@ -119,11 +119,11 @@ class CitySelector extends StatelessWidget {
                                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                                   Text(c.name,
                                       overflow: TextOverflow.ellipsis,
-                                      style: tw(12, weight: bold, color: city.cityId == c.id && !followsGps ? Tw.fuchsia300 : Tw.slate300)),
-                                  if (c.country != null) Text(c.country!, style: tw(9, color: Tw.slate500)),
+                                      style: tw(12, weight: bold, color: city.cityId == c.id && !followsGps ? Tw.sun : Tw.inkSoft)),
+                                  if (c.country != null) Text(c.country!, style: tw(9, color: Tw.inkDim)),
                                 ]),
                               ),
-                              if (city.cityId == c.id && !followsGps) const Icon(Icons.check, size: 14, color: Tw.fuchsia400),
+                              if (city.cityId == c.id && !followsGps) const Icon(Icons.check, size: 14, color: Tw.sun),
                             ]),
                           ),
                         ),

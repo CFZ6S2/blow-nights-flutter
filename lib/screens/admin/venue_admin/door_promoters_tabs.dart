@@ -20,13 +20,13 @@ const _formBorder = Color(0xFF2B2F52);
 
 InputDecoration _fieldDeco(String hint) => InputDecoration(
       hintText: hint,
-      hintStyle: tw(14, color: Tw.slate500),
+      hintStyle: tw(14, color: Tw.inkDim),
       isDense: true,
       filled: true,
       fillColor: _row,
       contentPadding: const EdgeInsets.all(10),
       enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Colors.transparent)),
-      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.fuchsia500)),
+      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.party)),
     );
 
 /// Port of components/venue-admin/DoorTab.tsx: quick staff invites, per-event scanner magic links + named door accounts.
@@ -171,11 +171,11 @@ class _DoorTabState extends State<DoorTab> {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: Tw.fuchsia600.withValues(alpha: 0.2),
+                  color: Tw.party.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.3)),
+                  border: Border.all(color: Tw.party.withValues(alpha: 0.3)),
                 ),
-                child: const Icon(Icons.qr_code_scanner, color: Tw.fuchsia400),
+                child: const Icon(Icons.qr_code_scanner, color: Tw.sun),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -184,7 +184,7 @@ class _DoorTabState extends State<DoorTab> {
                   Text(
                     context.t('door_tab.scanner_links_desc',
                         fallback: 'Comparte este enlace con tu personal de puerta. No requiere usuario ni contraseña, solo el enlace seguro con su token.'),
-                    style: tw(12, color: Tw.slate400),
+                    style: tw(12, color: Tw.inkSoft),
                   ),
                 ]),
               ),
@@ -193,12 +193,12 @@ class _DoorTabState extends State<DoorTab> {
             if (_eventsLoading)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 24),
-                child: Text(context.t('door_tab.loading', fallback: 'Cargando...'), textAlign: TextAlign.center, style: tw(12, color: Tw.slate500)),
+                child: Text(context.t('door_tab.loading', fallback: 'Cargando...'), textAlign: TextAlign.center, style: tw(12, color: Tw.inkDim)),
               )
             else if (_links.isEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 24),
-                child: Text(context.t('door_tab.no_events', fallback: 'No hay eventos creados.'), textAlign: TextAlign.center, style: tw(12, color: Tw.slate500)),
+                child: Text(context.t('door_tab.no_events', fallback: 'No hay eventos creados.'), textAlign: TextAlign.center, style: tw(12, color: Tw.inkDim)),
               )
             else
               for (final ev in _links) _linkCard(context, ev),
@@ -214,7 +214,7 @@ class _DoorTabState extends State<DoorTab> {
             Text(
               context.t('door_tab.employees_section_desc',
                   fallback: 'Opcional: Crea cuentas con email y contraseña para tus empleados si prefieres auditoría nominal de accesos.'),
-              style: tw(12, color: Tw.slate400),
+              style: tw(12, color: Tw.inkSoft),
             ),
             const SizedBox(height: 16),
             Container(
@@ -237,7 +237,7 @@ class _DoorTabState extends State<DoorTab> {
             ),
             const SizedBox(height: 24),
             if (_loading)
-              Text(context.t('door_tab.loading'), style: tw(12, color: Tw.slate500))
+              Text(context.t('door_tab.loading'), style: tw(12, color: Tw.inkDim))
             else ...[
               for (final emp in _employees)
                 Container(
@@ -251,7 +251,7 @@ class _DoorTabState extends State<DoorTab> {
                           TextSpan(text: '${emp['name'] ?? ''} ', style: tw(14, weight: bold)),
                           TextSpan(
                               text: '(${emp['email'] ?? context.t('staff_invite.joined_by_invite', fallback: 'Alta por invitación')})',
-                              style: tw(12, color: Tw.slate400)),
+                              style: tw(12, color: Tw.inkSoft)),
                         ])),
                         if (emp['scopes'] is List)
                           Text(
@@ -261,16 +261,16 @@ class _DoorTabState extends State<DoorTab> {
                                     ? context.t('staff_invite.scope_door', fallback: 'Puerta (entradas)')
                                     : context.t('staff_invite.scope_bar', fallback: 'Barra (consumiciones)'),
                             ].join(' · '),
-                            style: tw(10, color: Tw.slate400),
+                            style: tw(10, color: Tw.inkSoft),
                           ),
                         const SizedBox(height: 2),
                         Label(emp['active'] == true ? context.t('door_tab.active_status') : context.t('door_tab.revoked_status'),
-                            color: emp['active'] == true ? Tw.emerald400 : Tw.red400, tracking: 0),
+                            color: emp['active'] == true ? Tw.live : Tw.red400, tracking: 0),
                       ]),
                     ),
                     AdminButton(
                       label: emp['active'] == true ? context.t('door_tab.revoke_access') : context.t('door_tab.reactivate'),
-                      color: emp['active'] == true ? Tw.red400 : Tw.emerald400,
+                      color: emp['active'] == true ? Tw.red400 : Tw.live,
                       outlined: true,
                       onTap: () => _toggle(emp['id'] as String, emp['active'] == true),
                     ),
@@ -279,7 +279,7 @@ class _DoorTabState extends State<DoorTab> {
               if (_employees.isEmpty)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: Text(context.t('door_tab.empty', fallback: 'No hay empleados registrados.'), textAlign: TextAlign.center, style: tw(14, color: Tw.slate500)),
+                  child: Text(context.t('door_tab.empty', fallback: 'No hay empleados registrados.'), textAlign: TextAlign.center, style: tw(14, color: Tw.inkDim)),
                 ),
             ],
           ]),
@@ -298,8 +298,8 @@ class _DoorTabState extends State<DoorTab> {
           if (ev.date.isNotEmpty)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-              decoration: BoxDecoration(color: Tw.w(0.1), borderRadius: BorderRadius.circular(99)),
-              child: Text(ev.date, style: tw(10, color: Tw.slate300)),
+              decoration: BoxDecoration(color: Tw.lineSoft, borderRadius: BorderRadius.circular(99)),
+              child: Text(ev.date, style: tw(10, color: Tw.inkSoft)),
             ),
         ]),
         const SizedBox(height: 4),
@@ -311,7 +311,7 @@ class _DoorTabState extends State<DoorTab> {
                   : 'Sin token configurado',
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: tw(12, color: Tw.slate400).copyWith(fontFamily: 'monospace'),
+          style: tw(12, color: Tw.inkSoft).copyWith(fontFamily: 'monospace'),
         ),
         const SizedBox(height: 12),
         Wrap(spacing: 8, runSpacing: 8, alignment: WrapAlignment.end, children: [
@@ -327,7 +327,7 @@ class _DoorTabState extends State<DoorTab> {
             AdminButton(
               icon: Icons.open_in_new,
               label: context.t('door_tab.open_scanner', fallback: 'Abrir Escáner'),
-              color: Tw.w(0.1),
+              color: Tw.lineSoft,
               onTap: () => openRoute(context, AppRoute.door, args: {'venue': widget.venueId, 'event': ev.id, 'token': token}),
             ),
           ],
@@ -466,13 +466,13 @@ class _PromotersTabState extends State<PromotersTab> {
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Text.rich(TextSpan(children: [
                         TextSpan(text: '${p['name'] ?? ''} ', style: tw(15, weight: bold)),
-                        TextSpan(text: '(${p['email'] ?? ''})', style: tw(12, color: Tw.slate400)),
+                        TextSpan(text: '(${p['email'] ?? ''})', style: tw(12, color: Tw.inkSoft)),
                       ])),
                       const SizedBox(height: 4),
                       Wrap(spacing: 16, children: [
-                        Text('${context.t('promoters_tab.commission')}: ${p['commission']}%', style: tw(12, weight: black, color: Tw.emerald400)),
-                        Text('${context.t('promoters_tab.sales')}: ${(p['stats'] as Map?)?['sales'] ?? 0}', style: tw(12, color: Tw.slate400)),
-                        Text('${context.t('promoters_tab.code')}: ${p['code'] ?? ''}', style: tw(12, weight: black, color: Tw.fuchsia400)),
+                        Text('${context.t('promoters_tab.commission')}: ${p['commission']}%', style: tw(12, weight: black, color: Tw.live)),
+                        Text('${context.t('promoters_tab.sales')}: ${(p['stats'] as Map?)?['sales'] ?? 0}', style: tw(12, color: Tw.inkSoft)),
+                        Text('${context.t('promoters_tab.code')}: ${p['code'] ?? ''}', style: tw(12, weight: black, color: Tw.sun)),
                       ]),
                     ]),
                   ),
@@ -483,7 +483,7 @@ class _PromotersTabState extends State<PromotersTab> {
                   ),
                 ]),
               ),
-            if (_promoters.isEmpty) Text(context.t('promoters_tab.empty'), style: tw(14, color: Tw.slate500)),
+            if (_promoters.isEmpty) Text(context.t('promoters_tab.empty'), style: tw(14, color: Tw.inkDim)),
           ],
         ]),
       );

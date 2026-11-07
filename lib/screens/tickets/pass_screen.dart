@@ -68,7 +68,7 @@ class _PassScreenState extends State<PassScreen> {
               const SizedBox(height: 16),
               Text(title, textAlign: TextAlign.center, style: tw(20, weight: bold)),
               const SizedBox(height: 8),
-              Text(desc, textAlign: TextAlign.center, style: tw(14, color: Tw.slate400)),
+              Text(desc, textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft)),
               const SizedBox(height: 24),
               GlassCard(
                 onTap: () => Navigator.of(context).maybePop(),
@@ -104,9 +104,9 @@ class _PassScreenState extends State<PassScreen> {
                 constraints: const BoxConstraints(maxWidth: 384),
                 clipBehavior: Clip.antiAlias,
                 decoration: BoxDecoration(
-                  color: Tw.slate900,
+                  color: Tw.panel,
                   borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: Tw.slate800),
+                  border: Border.all(color: Tw.line),
                   boxShadow: const [BoxShadow(color: Color(0x80000000), blurRadius: 50, offset: Offset(0, 25))],
                 ),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -120,13 +120,13 @@ class _PassScreenState extends State<PassScreen> {
                                 gradient: LinearGradient(
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
-                                  colors: [Color(0xFF701A75), Color(0xFF3B0764), Tw.slate950],
+                                  colors: [Color(0xFF701A75), Color(0xFF3B0764), Tw.night],
                                 ),
                               ),
                               child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                                 const Text('🪩', style: TextStyle(fontSize: 36)),
                                 const SizedBox(height: 4),
-                                Label(context.t('pass_brand_title', fallback: 'Blow Nights Pass'), color: Tw.slate500),
+                                Label(context.t('pass_brand_title', fallback: 'Blow Nights Pass'), color: Tw.inkDim),
                               ]),
                             ),
                       const DecoratedBox(
@@ -134,7 +134,7 @@ class _PassScreenState extends State<PassScreen> {
                           gradient: LinearGradient(
                             begin: Alignment.bottomCenter,
                             end: Alignment.topCenter,
-                            colors: [Tw.slate900, Colors.transparent, Color(0x4D000000)],
+                            colors: [Tw.panel, Colors.transparent, Color(0x4D000000)],
                           ),
                         ),
                       ),
@@ -143,7 +143,7 @@ class _PassScreenState extends State<PassScreen> {
                         left: 12,
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                          decoration: BoxDecoration(color: Tw.fuchsia600.withValues(alpha: 0.9), borderRadius: BorderRadius.circular(99)),
+                          decoration: BoxDecoration(color: Tw.party.withValues(alpha: 0.9), borderRadius: BorderRadius.circular(99)),
                           child: Label(context.t('pass.official_pass'), color: Tw.white, tracking: 0.05),
                         ),
                       ),
@@ -157,22 +157,22 @@ class _PassScreenState extends State<PassScreen> {
                           style: tw(20, weight: black, tracking: -0.025)),
                       const SizedBox(height: 4),
                       Row(children: [
-                        const Icon(Icons.location_on, size: 14, color: Tw.fuchsia400),
+                        const Icon(Icons.location_on, size: 14, color: Tw.sun),
                         const SizedBox(width: 4),
                         Text(safeStr(t['venueName']).isNotEmpty ? safeStr(t['venueName']) : context.t('pass.default_venue_name'),
-                            style: tw(12, weight: semibold, color: Tw.fuchsia400)),
+                            style: tw(12, weight: semibold, color: Tw.sun)),
                       ]),
                       if (safeStr(t['eventDate']).isNotEmpty) ...[
                         const SizedBox(height: 4),
                         Row(children: [
-                          const Icon(Icons.event, size: 14, color: Tw.slate400),
+                          const Icon(Icons.event, size: 14, color: Tw.inkSoft),
                           const SizedBox(width: 4),
-                          Text(safeStr(t['eventDate']), style: tw(12, weight: medium, color: Tw.slate400)),
+                          Text(safeStr(t['eventDate']), style: tw(12, weight: medium, color: Tw.inkSoft)),
                           if (safeStr(t['eventTime']).isNotEmpty) ...[
-                            Text('  •  ', style: tw(12, color: Tw.slate400)),
-                            const Icon(Icons.schedule, size: 14, color: Tw.slate400),
+                            Text('  •  ', style: tw(12, color: Tw.inkSoft)),
+                            const Icon(Icons.schedule, size: 14, color: Tw.inkSoft),
                             const SizedBox(width: 4),
-                            Text('${t['eventTime']}h', style: tw(12, weight: medium, color: Tw.slate400)),
+                            Text('${t['eventTime']}h', style: tw(12, weight: medium, color: Tw.inkSoft)),
                           ],
                         ]),
                       ],
@@ -185,23 +185,23 @@ class _PassScreenState extends State<PassScreen> {
                     decoration: BoxDecoration(
                       color: Colors.black.withValues(alpha: 0.4),
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Tw.w(0.05)),
+                      border: Border.all(color: Tw.lineSoft),
                     ),
                     child: Row(children: [
                       Expanded(
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                          Label(context.t('pass.ticket_type_label'), color: Tw.slate500, tracking: 0.05),
+                          Label(context.t('pass.ticket_type_label'), color: Tw.inkDim, tracking: 0.05),
                           Text(safeStr(t['tierName'] ?? t['ticketType']).isNotEmpty ? safeStr(t['tierName'] ?? t['ticketType']) : context.t('pass.default_tier_name'),
-                              style: tw(12, weight: bold, color: Tw.emerald400, tracking: 0.025)),
+                              style: tw(12, weight: bold, color: Tw.live, tracking: 0.025)),
                           const SizedBox(height: 2),
                           Text('${context.t('pass.guest_prefix')}${safeStr(t['client_name']).isNotEmpty ? safeStr(t['client_name']) : context.t('pass.anonymous')}',
-                              style: tw(10, weight: medium, color: Tw.slate400)),
+                              style: tw(10, weight: medium, color: Tw.inkSoft)),
                         ]),
                       ),
                       Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-                        Label('RRPP', color: Tw.slate500, tracking: 0.05),
+                        Label('RRPP', color: Tw.inkDim, tracking: 0.05),
                         Text(safeStr(t['promoter_name']).isNotEmpty ? safeStr(t['promoter_name']) : context.t('pass.official_promoter'),
-                            style: tw(12, weight: bold, color: Tw.slate300)),
+                            style: tw(12, weight: bold, color: Tw.inkSoft)),
                       ]),
                     ]),
                   ),
@@ -212,9 +212,9 @@ class _PassScreenState extends State<PassScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 24),
                           child: Column(children: [
-                            const Icon(Icons.check_circle, size: 48, color: Tw.emerald500),
+                            const Icon(Icons.check_circle, size: 48, color: Tw.live),
                             const SizedBox(height: 8),
-                            Text(context.t('wallet.ticket_used', fallback: 'Entrada usada'), style: tw(14, weight: bold, color: Tw.emerald400)),
+                            Text(context.t('wallet.ticket_used', fallback: 'Entrada usada'), style: tw(14, weight: bold, color: Tw.live)),
                           ]),
                         )
                       else if (t['secretKey'] != null)
@@ -223,14 +223,14 @@ class _PassScreenState extends State<PassScreen> {
                       else
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 24),
-                          child: Text(context.t('pass.no_qr', fallback: 'QR no disponible'), style: tw(12, color: Tw.slate500)),
+                          child: Text(context.t('pass.no_qr', fallback: 'QR no disponible'), style: tw(12, color: Tw.inkDim)),
                         ),
                       if (t['status'] == 'valid') ...[
                         const SizedBox(height: 16),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Text(context.t('pass.presentation_instruction'),
-                              textAlign: TextAlign.center, style: tw(10, weight: medium, color: Tw.slate500, height: 1.25)),
+                              textAlign: TextAlign.center, style: tw(10, weight: medium, color: Tw.inkDim, height: 1.25)),
                         ),
                       ],
                     ]),

@@ -221,25 +221,25 @@ class _VenueEventsTabState extends State<VenueEventsTab> {
         Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Tw.amber500.withValues(alpha: 0.1),
+            color: Tw.sun.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: Tw.amber500.withValues(alpha: 0.3)),
+            border: Border.all(color: Tw.sun.withValues(alpha: 0.3)),
           ),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Row(children: [
-              const Icon(Icons.account_balance, size: 16, color: Tw.amber400),
+              const Icon(Icons.account_balance, size: 16, color: Tw.sun),
               const SizedBox(width: 8),
-              Expanded(child: Text('Cobros de entradas de pago (Stripe Connect)', style: tw(14, weight: bold, color: Tw.amber400))),
+              Expanded(child: Text('Cobros de entradas de pago (Stripe Connect)', style: tw(14, weight: bold, color: Tw.sun))),
             ]),
             const SizedBox(height: 6),
             Text('Tu local no tiene vinculada una cuenta de Stripe para transferencias bancarias de entradas de pago.',
-                style: tw(12, color: Tw.slate300, height: 1.6)),
+                style: tw(12, color: Tw.inkSoft, height: 1.6)),
             const SizedBox(height: 8),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.4), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.05))),
-              child: Text.rich(TextSpan(style: tw(11, color: Tw.slate300), children: [
-                TextSpan(text: '💡 Modo pruebas (0 €): ', style: tw(11, weight: bold, color: Tw.emerald400)),
+              decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.4), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.lineSoft)),
+              child: Text.rich(TextSpan(style: tw(11, color: Tw.inkSoft), children: [
+                TextSpan(text: '💡 Modo pruebas (0 €): ', style: tw(11, weight: bold, color: Tw.live)),
                 const TextSpan(text: 'Crea tramos a '),
                 TextSpan(text: '0,00 €', style: tw(11, weight: bold)),
                 const TextSpan(text: ' para probar la compra y validación de QR sin comisiones ni cuenta bancaria.'),
@@ -249,8 +249,8 @@ class _VenueEventsTabState extends State<VenueEventsTab> {
             AdminButton(
               icon: Icons.credit_card,
               label: _connecting ? 'Conectando...' : 'Conectar Stripe',
-              color: Tw.amber500,
-              textColor: Tw.black,
+              color: Tw.sun,
+              textColor: Tw.night,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               onTap: _connecting ? null : _connectStripe,
             ),
@@ -260,16 +260,16 @@ class _VenueEventsTabState extends State<VenueEventsTab> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           decoration: BoxDecoration(
-            color: Tw.emerald500.withValues(alpha: 0.1),
+            color: Tw.live.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Tw.emerald500.withValues(alpha: 0.2)),
+            border: Border.all(color: Tw.live.withValues(alpha: 0.2)),
           ),
           child: Row(children: [
-            const Icon(Icons.verified, size: 14, color: Tw.emerald400),
+            const Icon(Icons.verified, size: 14, color: Tw.live),
             const SizedBox(width: 8),
             Expanded(
               child: Text('Cuenta de Stripe Connect vinculada para recibir transferencias bancarias de entradas de pago.',
-                  style: tw(12, weight: semibold, color: Tw.emerald400)),
+                  style: tw(12, weight: semibold, color: Tw.live)),
             ),
           ]),
         ),
@@ -286,21 +286,21 @@ class _VenueEventsTabState extends State<VenueEventsTab> {
       if (_events.isEmpty && !_creating)
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 48),
-          child: Text(context.t('events_tab.no_events'), textAlign: TextAlign.center, style: tw(14, color: Tw.slate500)),
+          child: Text(context.t('events_tab.no_events'), textAlign: TextAlign.center, style: tw(14, color: Tw.inkDim)),
         ),
       for (final e in _events) _eventCard(context, e),
     ]);
   }
 
   Widget _createForm(BuildContext context) {
-    Widget label(String t) => Padding(padding: const EdgeInsets.only(bottom: 4, top: 16), child: Text(t, style: tw(12, weight: bold, color: Tw.slate400)));
+    Widget label(String t) => Padding(padding: const EdgeInsets.only(bottom: 4, top: 16), child: Text(t, style: tw(12, weight: bold, color: Tw.inkSoft)));
     InputDecoration underline(String? hint) => InputDecoration(
           hintText: hint,
-          hintStyle: tw(14, color: Tw.slate600),
+          hintStyle: tw(14, color: Tw.inkDim),
           isDense: true,
           contentPadding: const EdgeInsets.only(bottom: 4),
-          enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Tw.w(0.1))),
-          focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Tw.fuchsia500)),
+          enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Tw.line)),
+          focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Tw.party)),
         );
 
     return AdminCard(
@@ -313,13 +313,13 @@ class _VenueEventsTabState extends State<VenueEventsTab> {
           onTap: _pickStart,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-            decoration: BoxDecoration(color: Tw.slate900, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.1))),
+            decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
             child: Row(children: [
               Expanded(
                 child: Text(_start == null ? 'dd/mm/aaaa --:--' : DateFormat('dd/MM/yyyy HH:mm').format(_start!),
-                    style: tw(14, color: _start == null ? Tw.slate500 : Tw.white)),
+                    style: tw(14, color: _start == null ? Tw.inkDim : Tw.white)),
               ),
-              const Icon(Icons.calendar_today, size: 16, color: Tw.slate400),
+              const Icon(Icons.calendar_today, size: 16, color: Tw.inkSoft),
             ]),
           ),
         ),
@@ -333,7 +333,7 @@ class _VenueEventsTabState extends State<VenueEventsTab> {
             },
           ),
           const SizedBox(width: 12),
-          Expanded(child: Text(_flyer?.name ?? '', overflow: TextOverflow.ellipsis, style: tw(12, color: Tw.slate400))),
+          Expanded(child: Text(_flyer?.name ?? '', overflow: TextOverflow.ellipsis, style: tw(12, color: Tw.inkSoft))),
         ]),
         if (_flyer != null)
           Padding(
@@ -349,16 +349,16 @@ class _VenueEventsTabState extends State<VenueEventsTab> {
             ),
           ),
         const SizedBox(height: 16),
-        Divider(height: 1, color: Tw.w(0.1)),
+        Divider(height: 1, color: Tw.line),
         const SizedBox(height: 16),
         Row(children: [
-          Expanded(child: Text(context.t('events_tab.ticket_tiers'), style: tw(15, weight: bold, color: Tw.fuchsia400))),
+          Expanded(child: Text(context.t('events_tab.ticket_tiers'), style: tw(15, weight: bold, color: Tw.sun))),
           GestureDetector(
             onTap: () => setState(() => _tiers = [..._tiers, _Tier('tier_${DateTime.now().millisecondsSinceEpoch}')]),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(99), border: Border.all(color: Tw.fuchsia400)),
-              child: Text('+ ${context.t('events_tab.add_btn')}', style: tw(12, color: Tw.fuchsia400)),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(99), border: Border.all(color: Tw.sun)),
+              child: Text('+ ${context.t('events_tab.add_btn')}', style: tw(12, color: Tw.sun)),
             ),
           ),
         ]),
@@ -367,7 +367,7 @@ class _VenueEventsTabState extends State<VenueEventsTab> {
           Container(
             margin: const EdgeInsets.only(bottom: 12),
             padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(color: Tw.slate900, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.05))),
+            decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.lineSoft)),
             child: Stack(children: [
               AdminGrid(children: [
                 for (final (key, ctrl, kb, hint) in [
@@ -377,7 +377,7 @@ class _VenueEventsTabState extends State<VenueEventsTab> {
                   ('events_tab.tier_perks', _tiers[i].perks, TextInputType.text, null),
                 ])
                   Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                    Label(context.t(key), color: Tw.slate500, weight: FontWeight.w400),
+                    Label(context.t(key), color: Tw.inkDim, weight: FontWeight.w400),
                     TextField(controller: ctrl, keyboardType: kb, style: tw(14), decoration: underline(hint)),
                   ]),
               ]),
@@ -419,30 +419,30 @@ class _VenueEventsTabState extends State<VenueEventsTab> {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.w(0.1))),
+      decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.line)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         GestureDetector(
           onTap: _uploadingFor == null ? () => _changeFlyer(id) : null,
           child: Container(
             height: 144,
             clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(color: Tw.slate900, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+            decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
             child: Stack(fit: StackFit.expand, children: [
               if (banner != null && banner.isNotEmpty)
                 NetImage(banner)
               else
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  const Icon(Icons.add_photo_alternate, size: 30, color: Tw.fuchsia400),
+                  const Icon(Icons.add_photo_alternate, size: 30, color: Tw.sun),
                   const SizedBox(height: 4),
-                  Label('Subir flyer', color: Tw.fuchsia300, weight: bold, tracking: 0.05),
+                  Label('Subir flyer', color: Tw.sun, weight: bold, tracking: 0.05),
                 ]),
               if (_uploadingFor == id)
                 Container(
                   color: Colors.black.withValues(alpha: 0.8),
                   child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2, color: Tw.fuchsia500)),
+                    const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2, color: Tw.party)),
                     const SizedBox(height: 4),
-                    Text('Subiendo...', style: tw(9, weight: bold, color: Tw.fuchsia400)),
+                    Text('Subiendo...', style: tw(9, weight: bold, color: Tw.sun)),
                   ]),
                 )
               else if (banner != null && banner.isNotEmpty)
@@ -453,9 +453,9 @@ class _VenueEventsTabState extends State<VenueEventsTab> {
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.6), borderRadius: BorderRadius.circular(8)),
                     child: Row(mainAxisSize: MainAxisSize.min, children: [
-                      const Icon(Icons.file_upload, size: 12, color: Tw.fuchsia400),
+                      const Icon(Icons.file_upload, size: 12, color: Tw.sun),
                       const SizedBox(width: 4),
-                      Label('Cambiar flyer', color: Tw.fuchsia300, weight: bold, tracking: 0.05),
+                      Label('Cambiar flyer', color: Tw.sun, weight: bold, tracking: 0.05),
                     ]),
                   ),
                 ),
@@ -467,14 +467,14 @@ class _VenueEventsTabState extends State<VenueEventsTab> {
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(title, style: tw(18, weight: black)),
-              Text(startText, style: tw(12, color: Tw.slate400)),
+              Text(startText, style: tw(12, color: Tw.inkSoft)),
             ]),
           ),
           Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-            Text('${(soldStats > soldTiers ? soldStats : soldTiers).toInt()}', style: tw(24, weight: black, color: Tw.fuchsia400)),
-            Label(context.t('admin_b2b.sold_tickets'), size: 9, color: Tw.slate500, weight: FontWeight.w400),
+            Text('${(soldStats > soldTiers ? soldStats : soldTiers).toInt()}', style: tw(24, weight: black, color: Tw.sun)),
+            Label(context.t('admin_b2b.sold_tickets'), size: 9, color: Tw.inkDim, weight: FontWeight.w400),
           ]),
-          IconButton(onPressed: () => _deleteEvent(id, title), icon: const Icon(Icons.delete_outline, color: Tw.slate500)),
+          IconButton(onPressed: () => _deleteEvent(id, title), icon: const Icon(Icons.delete_outline, color: Tw.inkDim)),
         ]),
         if (tiers.isNotEmpty) ...[
           const SizedBox(height: 8),
@@ -482,27 +482,27 @@ class _VenueEventsTabState extends State<VenueEventsTab> {
             for (final t in tiers)
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(8), border: Border.all(color: Tw.w(0.1))),
-                child: Text.rich(TextSpan(style: tw(12, weight: semibold, color: Tw.slate300), children: [
+                decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(8), border: Border.all(color: Tw.line)),
+                child: Text.rich(TextSpan(style: tw(12, weight: semibold, color: Tw.inkSoft), children: [
                   TextSpan(text: '${(t['name'] as String?)?.isNotEmpty == true ? t['name'] : 'Entrada'}: ', style: tw(12, weight: bold)),
                   TextSpan(
                     text: ((t['price'] as num?) ?? 0) == 0 ? 'GRATIS (0 €)' : '${((t['price'] as num?) ?? 0).toStringAsFixed(2)} €',
-                    style: tw(12, weight: bold, color: ((t['price'] as num?) ?? 0) == 0 ? Tw.emerald400 : Tw.fuchsia400),
+                    style: tw(12, weight: bold, color: ((t['price'] as num?) ?? 0) == 0 ? Tw.live : Tw.sun),
                   ),
-                  TextSpan(text: ' (${((t['quota'] as num?) ?? 0) - ((t['sold'] as num?) ?? 0)} disp.)', style: tw(10, color: Tw.slate500)),
+                  TextSpan(text: ' (${((t['quota'] as num?) ?? 0) - ((t['sold'] as num?) ?? 0)} disp.)', style: tw(10, color: Tw.inkDim)),
                 ])),
               ),
           ]),
         ],
         const SizedBox(height: 12),
-        Divider(height: 1, color: Tw.w(0.05)),
+        Divider(height: 1, color: Tw.lineSoft),
         const SizedBox(height: 12),
         _MagicLink(venueId: _venueId, eventId: id, onCopy: _copy),
         const SizedBox(height: 8),
         _linkRow(
           context.t('events_tab.buy_link'),
           '/buy?venue=$_venueId&event=$id',
-          Tw.green400,
+          Tw.live,
           Tw.green600,
           Icons.share,
           () => _copy('$webBase/buy?venue=$_venueId&event=$id', 'events_tab.buy_link_copied'),
@@ -525,7 +525,7 @@ Widget _linkRow(String label, String path, Color labelColor, Color buttonColor, 
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Label(label, color: labelColor, weight: bold),
             const SizedBox(height: 4),
-            Text(path, overflow: TextOverflow.ellipsis, style: tw(12, color: Tw.slate400).copyWith(fontFamily: 'monospace')),
+            Text(path, overflow: TextOverflow.ellipsis, style: tw(12, color: Tw.inkSoft).copyWith(fontFamily: 'monospace')),
           ]),
         ),
         GestureDetector(
@@ -563,12 +563,12 @@ class _MagicLinkState extends State<_MagicLink> {
   @override
   Widget build(BuildContext context) {
     final token = _token;
-    if (token == null) return Text(context.t('events_tab.loading_link'), style: tw(10, color: Tw.slate500));
+    if (token == null) return Text(context.t('events_tab.loading_link'), style: tw(10, color: Tw.inkDim));
     return _linkRow(
       context.t('events_tab.door_magic_link'),
       '/door/${widget.venueId}/${widget.eventId}?token=${token.length > 8 ? token.substring(0, 8) : token}...',
-      Tw.fuchsia400,
-      Tw.fuchsia600,
+      Tw.sun,
+      Tw.party,
       Icons.content_copy,
       () => widget.onCopy('$webBase/door?venue=${widget.venueId}&event=${widget.eventId}&token=$token', 'events_tab.link_copied'),
     );
@@ -652,17 +652,17 @@ class _EventPromotersState extends State<_EventPromoters> {
   Widget build(BuildContext context) {
     final visible = _promoters.where((p) => !(p['liquidated_by_rrpp'] == true && p['liquidated_by_venue'] == true)).toList();
     Widget status(bool done, String label, String doneText, String pendingText) => Row(children: [
-          Icon(done ? Icons.check_circle : Icons.pending, size: 10, color: done ? Tw.green400 : Tw.slate500),
+          Icon(done ? Icons.check_circle : Icons.pending, size: 10, color: done ? Tw.live : Tw.inkDim),
           const SizedBox(width: 4),
-          Text('$label: ${done ? doneText : pendingText}', style: tw(10, color: done ? Tw.green400 : Tw.slate500)),
+          Text('$label: ${done ? doneText : pendingText}', style: tw(10, color: done ? Tw.live : Tw.inkDim)),
         ]);
 
     return Padding(
       padding: const EdgeInsets.only(top: 16),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        Divider(height: 1, color: Tw.w(0.05)),
+        Divider(height: 1, color: Tw.lineSoft),
         const SizedBox(height: 16),
-        Text(context.t('events_tab.rrpp_team'), style: tw(14, weight: bold, color: Tw.fuchsia400)),
+        Text(context.t('events_tab.rrpp_team'), style: tw(14, weight: bold, color: Tw.sun)),
         const SizedBox(height: 12),
         Row(children: [
           Expanded(
@@ -680,9 +680,9 @@ class _EventPromotersState extends State<_EventPromoters> {
         ]),
         const SizedBox(height: 12),
         if (_loading)
-          Text(context.t('events_tab.loading'), style: tw(12, color: Tw.slate500))
+          Text(context.t('events_tab.loading'), style: tw(12, color: Tw.inkDim))
         else if (_promoters.isEmpty)
-          Text(context.t('events_tab.no_rrpp'), style: tw(12, color: Tw.slate500))
+          Text(context.t('events_tab.no_rrpp'), style: tw(12, color: Tw.inkDim))
         else
           for (final p in visible)
             Container(
@@ -691,7 +691,7 @@ class _EventPromotersState extends State<_EventPromoters> {
               decoration: BoxDecoration(
                 color: Colors.black.withValues(alpha: p['is_closed'] == true ? 0.4 : 0.2),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: p['is_closed'] == true ? Tw.yellow500.withValues(alpha: 0.2) : Tw.w(0.1)),
+                border: Border.all(color: p['is_closed'] == true ? Tw.yellow500.withValues(alpha: 0.2) : Tw.lineSoft),
               ),
               child: Row(children: [
                 Expanded(
@@ -716,9 +716,9 @@ class _EventPromotersState extends State<_EventPromoters> {
                           if (context.mounted) showToast(context, context.read<I18n>().t('events_tab.rrpp_link_copied'));
                         },
                         child: Row(children: [
-                          const Icon(Icons.link, size: 12, color: Tw.fuchsia400),
+                          const Icon(Icons.link, size: 12, color: Tw.sun),
                           const SizedBox(width: 4),
-                          Text(context.t('events_tab.copy_link'), style: tw(10, color: Tw.fuchsia400)),
+                          Text(context.t('events_tab.copy_link'), style: tw(10, color: Tw.sun)),
                         ]),
                       )
                     else ...[
@@ -739,7 +739,7 @@ class _EventPromotersState extends State<_EventPromoters> {
                 else
                   AdminButton(
                     label: p['liquidated_by_venue'] == true ? context.t('events_tab.cancel_payment') : context.t('events_tab.mark_paid'),
-                    color: p['liquidated_by_venue'] == true ? Tw.red400 : Tw.green400,
+                    color: p['liquidated_by_venue'] == true ? Tw.red400 : Tw.live,
                     outlined: true,
                     fontSize: 10,
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),

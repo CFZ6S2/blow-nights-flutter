@@ -121,15 +121,15 @@ class _ChillFormState extends State<ChillForm> {
   InputDecoration _dec(String hint) => InputDecoration(
         hintText: hint,
         counterText: '',
-        fillColor: Tw.black,
+        fillColor: Tw.nightDeep,
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Tw.w(0.1))),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.fuchsia500)),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Tw.line)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.party)),
       );
 
   Widget _counter(int n, int max) => Padding(
         padding: const EdgeInsets.only(top: 4),
-        child: Text('$n/$max', textAlign: TextAlign.right, style: tw(10, color: Tw.slate600)),
+        child: Text('$n/$max', textAlign: TextAlign.right, style: tw(10, color: Tw.inkDim)),
       );
 
   @override
@@ -153,14 +153,14 @@ class _ChillFormState extends State<ChillForm> {
       const SizedBox(height: 20),
       _label(
         context.t('chill_modal.address_label', fallback: 'Direccion'),
-        trailing: Text(context.t('chill_modal.address_private', fallback: '(privada)'), style: tw(10, weight: black, color: Tw.fuchsia400)),
+        trailing: Text(context.t('chill_modal.address_private', fallback: '(privada)'), style: tw(10, weight: black, color: Tw.sun)),
       ),
       TextField(controller: _address, style: tw(16), decoration: _dec(context.t('chill_modal.ph_address', fallback: 'Calle, numero, piso...'))),
       const SizedBox(height: 6),
       Row(children: [
-        const Icon(Icons.lock, size: 12, color: Tw.slate600),
+        const Icon(Icons.lock, size: 12, color: Tw.inkDim),
         const SizedBox(width: 4),
-        Expanded(child: Text(context.t('chill_modal.address_hint', fallback: 'Solo visible para aceptados'), style: tw(10, color: Tw.slate600))),
+        Expanded(child: Text(context.t('chill_modal.address_hint', fallback: 'Solo visible para aceptados'), style: tw(10, color: Tw.inkDim))),
       ]),
       if (page) ...[
         const SizedBox(height: 20),
@@ -169,29 +169,29 @@ class _ChillFormState extends State<ChillForm> {
             ? Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
-                  color: Tw.emerald500.withValues(alpha: 0.1),
+                  color: Tw.live.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Tw.emerald500.withValues(alpha: 0.2)),
+                  border: Border.all(color: Tw.live.withValues(alpha: 0.2)),
                 ),
                 child: Row(children: [
-                  const Icon(Icons.check_circle, size: 14, color: Tw.emerald400),
+                  const Icon(Icons.check_circle, size: 14, color: Tw.live),
                   const SizedBox(width: 8),
-                  Text(context.t('create_plan.gps_ok', fallback: 'Ubicacion obtenida'), style: tw(12, weight: bold, color: Tw.emerald400)),
+                  Text(context.t('create_plan.gps_ok', fallback: 'Ubicacion obtenida'), style: tw(12, weight: bold, color: Tw.live)),
                 ]),
               )
             : Pressable(
                 onTap: _gpsLoading ? () {} : _requestGps,
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.1))),
+                  decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
                   child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Icon(_gpsLoading ? Icons.hourglass_empty : Icons.my_location, size: 16, color: Tw.slate300),
+                    Icon(_gpsLoading ? Icons.hourglass_empty : Icons.my_location, size: 16, color: Tw.inkSoft),
                     const SizedBox(width: 8),
                     Text(
                       _gpsLoading
                           ? context.t('create_plan.getting_gps', fallback: 'Obteniendo...')
                           : context.t('create_plan.get_gps', fallback: 'Obtener ubicacion'),
-                      style: tw(14, color: Tw.slate300),
+                      style: tw(14, color: Tw.inkSoft),
                     ),
                   ]),
                 ),
@@ -207,11 +207,11 @@ class _ChillFormState extends State<ChillForm> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
-                  color: _capacity == n ? Tw.fuchsia500 : Tw.w(0.05),
+                  color: _capacity == n ? Tw.party : Tw.panelSoft,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: _capacity == n ? Tw.fuchsia500 : Tw.w(0.05)),
+                  border: Border.all(color: _capacity == n ? Tw.party : Tw.lineSoft),
                 ),
-                child: Text(n, textAlign: TextAlign.center, style: tw(14, weight: black, color: _capacity == n ? Tw.white : Tw.slate400)),
+                child: Text(n, textAlign: TextAlign.center, style: tw(14, weight: black, color: _capacity == n ? Tw.white : Tw.inkSoft)),
               ),
             ),
           ),
@@ -221,7 +221,7 @@ class _ChillFormState extends State<ChillForm> {
       const SizedBox(height: 20),
       _label(
         context.t('chill_modal.tags_label', fallback: 'Etiquetas'),
-        trailing: page ? Text('(max 3)', style: tw(10, weight: black, color: Tw.slate600)) : null,
+        trailing: page ? Text('(max 3)', style: tw(10, weight: black, color: Tw.inkDim)) : null,
       ),
       Wrap(spacing: 8, runSpacing: 8, children: [
         for (final tag in chillTagOptions)
@@ -236,12 +236,12 @@ class _ChillFormState extends State<ChillForm> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: _tags.contains(tag) ? Tw.fuchsia500 : Tw.w(0.05),
+                color: _tags.contains(tag) ? Tw.party : Tw.panelSoft,
                 borderRadius: BorderRadius.circular(99),
-                border: Border.all(color: _tags.contains(tag) ? Tw.fuchsia500 : Tw.w(0.05)),
+                border: Border.all(color: _tags.contains(tag) ? Tw.party : Tw.panelSoft),
               ),
               child: Text(context.t('tags.${tag.toLowerCase()}', fallback: tag),
-                  style: tw(12, weight: bold, color: _tags.contains(tag) ? Tw.white : Tw.slate400)),
+                  style: tw(12, weight: bold, color: _tags.contains(tag) ? Tw.white : Tw.inkSoft)),
             ),
           ),
       ]),
@@ -270,14 +270,14 @@ class _ChillFormState extends State<ChillForm> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 20),
           decoration: BoxDecoration(
-            color: canSubmit ? Tw.fuchsia600 : Tw.slate800,
+            color: canSubmit ? Tw.party : Tw.line,
             borderRadius: BorderRadius.circular(16),
-            boxShadow: canSubmit ? [BoxShadow(color: Tw.fuchsia600.withValues(alpha: 0.5), blurRadius: 40, spreadRadius: -10)] : null,
+            boxShadow: canSubmit ? [BoxShadow(color: Tw.party.withValues(alpha: 0.5), blurRadius: 40, spreadRadius: -10)] : null,
           ),
           child: Text(
             _submitting ? context.t('chill_modal.creating', fallback: 'Creando...') : context.t('chill_modal.btn_create', fallback: 'Crear plan'),
             textAlign: TextAlign.center,
-            style: tw(18, weight: black, color: canSubmit ? Tw.white : Tw.slate600),
+            style: tw(18, weight: black, color: canSubmit ? Tw.white : Tw.inkDim),
           ),
         ),
       ),
@@ -296,9 +296,9 @@ Future<String?> showCreateChillModal(BuildContext context) => showModalBottomShe
         child: Container(
           constraints: BoxConstraints(maxHeight: MediaQuery.of(ctx).size.height * 0.9),
           decoration: BoxDecoration(
-            color: Tw.slate900,
+            color: Tw.panel,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-            border: Border.all(color: Tw.w(0.1)),
+            border: Border.all(color: Tw.line),
           ),
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
@@ -307,7 +307,7 @@ Future<String?> showCreateChillModal(BuildContext context) => showModalBottomShe
               child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                 Row(children: [
                   Expanded(child: Text(ctx.t('chill_modal.title'), style: tw(20, weight: black))),
-                  GestureDetector(onTap: () => Navigator.of(ctx).pop(), child: const Icon(Icons.close, color: Tw.slate500)),
+                  GestureDetector(onTap: () => Navigator.of(ctx).pop(), child: const Icon(Icons.close, color: Tw.inkDim)),
                 ]),
                 const SizedBox(height: 24),
                 ChillForm(page: false, onCreated: (id) => Navigator.of(ctx).pop(id)),

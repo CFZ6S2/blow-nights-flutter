@@ -123,11 +123,11 @@ class _PremiumScreenState extends State<PremiumScreen> {
               child: Column(mainAxisSize: MainAxisSize.min, children: [
                 const Text('⭐', style: TextStyle(fontSize: 40)),
                 const SizedBox(height: 16),
-                Text(context.t('premium.unavailable_app'), textAlign: TextAlign.center, style: tw(14, color: Tw.slate300)),
+                Text(context.t('premium.unavailable_app'), textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft)),
                 const SizedBox(height: 24),
                 GestureDetector(
                   onTap: () => Navigator.of(context).maybePop(),
-                  child: Text(context.t('venueDetail.back'), style: tw(12, weight: bold, color: Tw.slate500)),
+                  child: Text(context.t('venueDetail.back'), style: tw(12, weight: bold, color: Tw.inkDim)),
                 ),
               ]),
             ),
@@ -149,7 +149,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
 
     return Scaffold(
       body: Stack(children: [
-        Positioned(top: -size.height * 0.1, left: -size.width * 0.1, child: Orb(color: Tw.fuchsia600.withValues(alpha: 0.2), size: 384)),
+        Positioned(top: -size.height * 0.1, left: -size.width * 0.1, child: Orb(color: Tw.party.withValues(alpha: 0.2), size: 384)),
         Positioned(bottom: -size.height * 0.1, right: -size.width * 0.1, child: Orb(color: Tw.indigo600.withValues(alpha: 0.2), size: 384)),
         SafeArea(
           child: ListView(padding: const EdgeInsets.fromLTRB(24, 24, 24, 96), children: [
@@ -162,14 +162,14 @@ class _PremiumScreenState extends State<PremiumScreen> {
             Center(
               child: Container(
                 padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(color: Tw.w(0.1), borderRadius: BorderRadius.circular(99), border: Border.all(color: Tw.w(0.2))),
+                decoration: BoxDecoration(color: Tw.lineSoft, borderRadius: BorderRadius.circular(99), border: Border.all(color: Tw.line)),
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
                   Pressable(
                     onTap: () => setState(() => _period = 'monthly'),
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                       decoration: BoxDecoration(color: monthly ? Tw.white : null, borderRadius: BorderRadius.circular(99)),
-                      child: Text(context.t('premium.monthly'), style: tw(14, weight: bold, color: monthly ? Tw.black : Tw.w(0.7))),
+                      child: Text(context.t('premium.monthly'), style: tw(14, weight: bold, color: monthly ? Tw.night : Tw.w(0.7))),
                     ),
                   ),
                   Pressable(
@@ -177,7 +177,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                       decoration: BoxDecoration(
-                        gradient: !monthly ? const LinearGradient(colors: [Tw.fuchsia500, Tw.indigo500]) : null,
+                        gradient: !monthly ? const LinearGradient(colors: [Tw.sunset, Tw.party]) : null,
                         borderRadius: BorderRadius.circular(99),
                       ),
                       child: Row(children: [
@@ -185,7 +185,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
                         const SizedBox(width: 8),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                          decoration: BoxDecoration(color: Tw.w(0.2), borderRadius: BorderRadius.circular(99)),
+                          decoration: BoxDecoration(color: Tw.line, borderRadius: BorderRadius.circular(99)),
                           child: Text('-25%', style: tw(12)),
                         ),
                       ]),
@@ -220,7 +220,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
                   const SizedBox(height: 8),
                   Text(context.t('premium.founder_title'), textAlign: TextAlign.center, style: tw(20, weight: black, color: const Color(0xFFEAB308))),
                   const SizedBox(height: 8),
-                  Text(context.t('premium.founder_desc'), textAlign: TextAlign.center, style: tw(14, color: Tw.slate300)),
+                  Text(context.t('premium.founder_desc'), textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft)),
                 ]),
               ),
               const SizedBox(height: 32),
@@ -228,17 +228,17 @@ class _PremiumScreenState extends State<PremiumScreen> {
             if ((isPlus || isBlack) && !promo) ...[
               Container(
                 padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(color: Tw.w(0.1), borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.w(0.2))),
+                decoration: BoxDecoration(color: Tw.lineSoft, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.line)),
                 child: Row(children: [
                   Expanded(
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Label(context.t('premium.current_plan'), size: 12, weight: bold),
                       isBlack
                           ? ShaderMask(
-                              shaderCallback: (r) => const LinearGradient(colors: [Tw.slate300, Tw.white]).createShader(r),
+                              shaderCallback: (r) => const LinearGradient(colors: [Tw.inkSoft, Tw.white]).createShader(r),
                               child: Text('BLACK', style: tw(24, weight: black)),
                             )
-                          : Text('PLUS', style: tw(24, weight: black, color: Tw.fuchsia400)),
+                          : Text('PLUS', style: tw(24, weight: black, color: Tw.sun)),
                     ]),
                   ),
                   if (_playSub != null)
@@ -246,7 +246,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
                       onTap: _manage,
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        decoration: BoxDecoration(color: Tw.w(0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.1))),
+                        decoration: BoxDecoration(color: Tw.lineSoft, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
                         child: Text(context.t('premium.manage'), style: tw(14, weight: bold)),
                       ),
                     ),
@@ -255,16 +255,16 @@ class _PremiumScreenState extends State<PremiumScreen> {
               if (fromWeb) ...[
                 const SizedBox(height: 12),
                 Text(context.t('premium.manage_elsewhere', fallback: 'Este plan no se contrató en la app, así que no se puede cambiar desde aquí.'),
-                    textAlign: TextAlign.center, style: tw(12, color: Tw.slate400)),
+                    textAlign: TextAlign.center, style: tw(12, color: Tw.inkSoft)),
               ],
               const SizedBox(height: 32),
             ],
             // FREE
             _tierCard(
-              border: tier == 'free' && !promo ? Tw.w(0.4) : Tw.w(0.1),
-              glow: tier == 'free' && !promo ? Tw.w(0.1) : null,
+              border: tier == 'free' && !promo ? Tw.w(0.4) : Tw.line,
+              glow: tier == 'free' && !promo ? Tw.lineSoft : null,
               opacity: tier == 'free' && !promo ? 1 : 0.7,
-              title: Label(context.t('premium_plan_free', fallback: 'Free'), size: 20, color: Tw.slate300),
+              title: Label(context.t('premium_plan_free', fallback: 'Free'), size: 20, color: Tw.inkSoft),
               price: '0$cur',
               per: null,
               features: [
@@ -273,7 +273,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
                 (Icons.check_circle, Tw.w(0.5), context.t('premium.feat_pings_3'), false),
                 (Icons.check_circle, Tw.w(0.5), context.t('premium.feat_venues'), false),
               ],
-              featureColor: Tw.slate400,
+              featureColor: Tw.inkSoft,
               footer: tier == 'free' && !promo
                   ? Column(children: [
                       const SizedBox(height: 32),
@@ -287,7 +287,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
                         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                           Text(context.t('premium_black_8h_title', fallback: 'Black 8h Pass'), style: tw(14, weight: black, color: Tw.indigo400)),
                           const SizedBox(height: 4),
-                          Text(context.t('premium.black8h_desc'), style: tw(10, color: Tw.slate400, height: 1.5)),
+                          Text(context.t('premium.black8h_desc'), style: tw(10, color: Tw.inkSoft, height: 1.5)),
                           const SizedBox(height: 12),
                           if (_timeLeft != null)
                             Container(
@@ -318,26 +318,26 @@ class _PremiumScreenState extends State<PremiumScreen> {
                         ]),
                       ),
                       const SizedBox(height: 16),
-                      Label(context.t('premium.current_plan'), weight: bold, color: Tw.slate500, tracking: 0),
+                      Label(context.t('premium.current_plan'), weight: bold, color: Tw.inkDim, tracking: 0),
                     ])
                   : null,
             ),
             const SizedBox(height: 24),
             // PLUS
             _tierCard(
-              border: isPlus ? Tw.fuchsia500 : Tw.w(0.1),
-              glow: isPlus ? Tw.fuchsia500.withValues(alpha: 0.2) : null,
-              title: Label(context.t('premium_plan_plus', fallback: 'Plus'), size: 20, color: Tw.fuchsia400),
+              border: isPlus ? Tw.party : Tw.line,
+              glow: isPlus ? Tw.party.withValues(alpha: 0.2) : null,
+              title: Label(context.t('premium_plan_plus', fallback: 'Plus'), size: 20, color: Tw.sun),
               price: play.price('plus', _period) ?? (monthly ? '10$cur' : '90$cur'),
               per: perLabel,
               features: [
-                (Icons.add_circle, Tw.fuchsia500, context.t('premium.all_free'), true),
-                (Icons.visibility, Tw.fuchsia500, context.t('premium.feat_visitors'), false),
-                (Icons.visibility_off, Tw.fuchsia500, context.t('premium.feat_ghost'), false),
-                (Icons.bolt, Tw.fuchsia500, context.t('premium.feat_pings_10'), false),
-                (Icons.rocket_launch, Tw.fuchsia500, context.t('premium.feat_boost'), false),
-                (Icons.tune, Tw.fuchsia500, context.t('premium.feat_filters'), false),
-                (Icons.favorite, Tw.fuchsia500, context.t('premium.feat_see_likes'), false),
+                (Icons.add_circle, Tw.party, context.t('premium.all_free'), true),
+                (Icons.visibility, Tw.party, context.t('premium.feat_visitors'), false),
+                (Icons.visibility_off, Tw.party, context.t('premium.feat_ghost'), false),
+                (Icons.bolt, Tw.party, context.t('premium.feat_pings_10'), false),
+                (Icons.rocket_launch, Tw.party, context.t('premium.feat_boost'), false),
+                (Icons.tune, Tw.party, context.t('premium.feat_filters'), false),
+                (Icons.favorite, Tw.party, context.t('premium.feat_see_likes'), false),
               ],
               footer: Padding(
                 padding: const EdgeInsets.only(top: 32),
@@ -347,18 +347,18 @@ class _PremiumScreenState extends State<PremiumScreen> {
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           decoration: BoxDecoration(color: Tw.white, borderRadius: BorderRadius.circular(16)),
-                          child: Label(context.t('premium.upgrade_plus'), color: Tw.black, align: TextAlign.center),
+                          child: Label(context.t('premium.upgrade_plus'), color: Tw.nightDeep, align: TextAlign.center),
                         ),
                       )
                     : isPlus
                         ? Container(
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             decoration: BoxDecoration(
-                              color: Tw.fuchsia500.withValues(alpha: 0.1),
+                              color: Tw.party.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(16),
-                              border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.3)),
+                              border: Border.all(color: Tw.party.withValues(alpha: 0.3)),
                             ),
-                            child: Label(context.t('premium.current_plan'), weight: bold, color: Tw.fuchsia400, tracking: 0, align: TextAlign.center),
+                            child: Label(context.t('premium.current_plan'), weight: bold, color: Tw.sun, tracking: 0, align: TextAlign.center),
                           )
                         : const SizedBox.shrink(),
               ),
@@ -366,12 +366,12 @@ class _PremiumScreenState extends State<PremiumScreen> {
             const SizedBox(height: 24),
             // BLACK
             _tierCard(
-              gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.slate900, Tw.black]),
-              border: isBlack || promo ? Tw.slate400 : Tw.slate700,
-              glow: isBlack || promo ? Tw.w(0.15) : null,
+              gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.panel, Tw.nightDeep]),
+              border: isBlack || promo ? Tw.inkSoft : Tw.line,
+              glow: isBlack || promo ? Tw.lineSoft : null,
               vipRibbon: true,
               title: ShaderMask(
-                shaderCallback: (r) => const LinearGradient(colors: [Tw.slate300, Tw.white]).createShader(r),
+                shaderCallback: (r) => const LinearGradient(colors: [Tw.inkSoft, Tw.white]).createShader(r),
                 child: Label(context.t('premium_plan_black', fallback: 'Black'), size: 20, color: Tw.white),
               ),
               price: play.price('black', _period) ?? (monthly ? '20$cur' : '180$cur'),
@@ -401,12 +401,12 @@ class _PremiumScreenState extends State<PremiumScreen> {
                             borderRadius: BorderRadius.circular(16),
                             boxShadow: [BoxShadow(color: Tw.w(0.3), blurRadius: 20)],
                           ),
-                          child: Label(context.t('premium.upgrade_black'), color: Tw.black, align: TextAlign.center),
+                          child: Label(context.t('premium.upgrade_black'), color: Tw.nightDeep, align: TextAlign.center),
                         ),
                       )
                     : Container(
                         padding: const EdgeInsets.symmetric(vertical: 16),
-                        decoration: BoxDecoration(color: Tw.w(0.1), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.3))),
+                        decoration: BoxDecoration(color: Tw.lineSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.3))),
                         child: Label(context.t('premium.current_plan'), color: Tw.white, align: TextAlign.center),
                       ),
               ),
@@ -427,7 +427,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
     required String price,
     required String? per,
     required List<(IconData, Color, String, bool)> features,
-    Color featureColor = Tw.slate300,
+    Color featureColor = Tw.inkSoft,
     int? highlightIndex,
     Widget? footer,
   }) =>
@@ -436,7 +436,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
         child: Container(
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
-            color: gradient == null ? Tw.w(0.05) : null,
+            color: gradient == null ? Tw.panelSoft : null,
             gradient: gradient,
             borderRadius: BorderRadius.circular(32),
             border: Border.all(color: border),
@@ -450,14 +450,14 @@ class _PremiumScreenState extends State<PremiumScreen> {
                 const SizedBox(height: 8),
                 Row(crossAxisAlignment: CrossAxisAlignment.baseline, textBaseline: TextBaseline.alphabetic, children: [
                   Text(price, style: tw(34, weight: black)),
-                  if (per != null) ...[const SizedBox(width: 4), Text('/$per', style: tw(12, weight: black, color: Tw.slate500))],
+                  if (per != null) ...[const SizedBox(width: 4), Text('/$per', style: tw(12, weight: black, color: Tw.inkDim))],
                 ]),
                 const SizedBox(height: 32),
                 for (var i = 0; i < features.length; i++) ...[
                   Container(
                     padding: i == highlightIndex ? const EdgeInsets.all(8) : EdgeInsets.zero,
                     decoration: i == highlightIndex
-                        ? BoxDecoration(color: Tw.w(0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.2)))
+                        ? BoxDecoration(color: Tw.lineSoft, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line))
                         : null,
                     child: Row(children: [
                       Icon(features[i].$1, size: 14, color: features[i].$2),
@@ -480,10 +480,10 @@ class _PremiumScreenState extends State<PremiumScreen> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: const BoxDecoration(
-                    gradient: LinearGradient(colors: [Tw.slate400, Tw.white]),
+                    gradient: LinearGradient(colors: [Tw.inkSoft, Tw.white]),
                     borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16)),
                   ),
-                  child: Label('VIP', color: Tw.black),
+                  child: Label('VIP', color: Tw.nightDeep),
                 ),
               ),
           ]),

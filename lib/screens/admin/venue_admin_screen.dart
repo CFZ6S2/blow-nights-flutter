@@ -205,7 +205,7 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
-    final loading = const Scaffold(backgroundColor: Tw.slate950, body: Center(child: CircularProgressIndicator(strokeWidth: 2, color: Tw.fuchsia500)));
+    final loading = const Scaffold(backgroundColor: Tw.night, body: Center(child: CircularProgressIndicator(strokeWidth: 2, color: Tw.party)));
     if (auth.loading || auth.profile == null || !_venuesLoaded) return loading;
     final canBypass = auth.isAdmin;
 
@@ -214,7 +214,7 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
         return _emptyState(Icons.handshake, Tw.indigo500, context.t('venue_admin_delegated_title'), context.t('venue_admin_delegated_desc'));
       }
       if (canBypass || auth.isCityAdmin) {
-        return _emptyState(Icons.storefront, Tw.slate500, context.t('venue_admin_no_venues_zone'), context.t('venue_admin_no_venues_zone_desc'),
+        return _emptyState(Icons.storefront, Tw.inkDim, context.t('venue_admin_no_venues_zone'), context.t('venue_admin_no_venues_zone_desc'),
             action: AdminButton(
               label: context.t('venue_admin_back_panel'),
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -228,7 +228,7 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
     final top = MediaQuery.of(context).padding.top;
     return Scaffold(
       key: _scaffold,
-      backgroundColor: Tw.slate950,
+      backgroundColor: Tw.night,
       drawer: _sidebar(context, canBypass),
       body: Stack(children: [
         ListView(
@@ -249,7 +249,7 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
             child: Container(
               width: 40,
               height: 40,
-              decoration: BoxDecoration(color: Tw.slate900, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.1))),
+              decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
               child: const Icon(Icons.menu, size: 20, color: Tw.white),
             ),
           ),
@@ -259,7 +259,7 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
   }
 
   Widget _emptyState(IconData icon, Color color, String title, String desc, {Widget? action}) => Scaffold(
-        backgroundColor: Tw.slate950,
+        backgroundColor: Tw.night,
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(24),
@@ -267,13 +267,13 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
               Container(
                 width: 80,
                 height: 80,
-                decoration: BoxDecoration(color: color == Tw.slate500 ? Tw.slate800 : color.withValues(alpha: 0.1), shape: BoxShape.circle),
+                decoration: BoxDecoration(color: color == Tw.inkDim ? Tw.line : color.withValues(alpha: 0.1), shape: BoxShape.circle),
                 child: Icon(icon, size: 36, color: color),
               ),
               const SizedBox(height: 24),
               Text(title, textAlign: TextAlign.center, style: tw(24, weight: black)),
               const SizedBox(height: 8),
-              Text(desc, textAlign: TextAlign.center, style: tw(15, color: Tw.slate400)),
+              Text(desc, textAlign: TextAlign.center, style: tw(15, color: Tw.inkSoft)),
               if (action != null) ...[const SizedBox(height: 32), action],
             ]),
           ),
@@ -300,14 +300,14 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               decoration: BoxDecoration(
-                color: active ? Tw.fuchsia600.withValues(alpha: 0.2) : Colors.transparent,
+                color: active ? Tw.party.withValues(alpha: 0.2) : Colors.transparent,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: active ? Tw.fuchsia500.withValues(alpha: 0.3) : Colors.transparent),
+                border: Border.all(color: active ? Tw.party.withValues(alpha: 0.3) : Colors.transparent),
               ),
               child: Row(children: [
-                Icon(icon, size: 18, color: color ?? (active ? Tw.fuchsia400 : Tw.slate500)),
+                Icon(icon, size: 18, color: color ?? (active ? Tw.sun : Tw.inkDim)),
                 const SizedBox(width: 12),
-                Expanded(child: Text(label, style: tw(14, weight: semibold, color: color ?? (active ? Tw.fuchsia400 : Tw.slate400)))),
+                Expanded(child: Text(label, style: tw(14, weight: semibold, color: color ?? (active ? Tw.sun : Tw.inkSoft)))),
               ]),
             ),
           ),
@@ -315,13 +315,13 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
 
     return Drawer(
       width: 256,
-      backgroundColor: Tw.slate900.withValues(alpha: 0.97),
+      backgroundColor: Tw.panel.withValues(alpha: 0.97),
       shape: const RoundedRectangleBorder(),
       child: SafeArea(
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Container(
             padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Tw.w(0.05)))),
+            decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Tw.lineSoft))),
             child: Row(children: [
               Pressable(
                 onTap: () => Navigator.of(context)
@@ -330,15 +330,15 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
                 child: Container(
                   width: 32,
                   height: 32,
-                  decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(8)),
+                  decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(8)),
                   child: const Icon(Icons.arrow_back, size: 16, color: Tw.white),
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(context.t('venue_admin_title'), style: tw(16, weight: black, color: Tw.fuchsia400)),
-                  Text((v?['name'] as String?) ?? '', maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(10, color: Tw.slate500)),
+                  Text(context.t('venue_admin_title'), style: tw(16, weight: black, color: Tw.sun)),
+                  Text((v?['name'] as String?) ?? '', maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(10, color: Tw.inkDim)),
                 ]),
               ),
             ]),
@@ -346,7 +346,7 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
           if (_venues.length > 1)
             Container(
               constraints: const BoxConstraints(maxHeight: 128),
-              decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Tw.w(0.05)))),
+              decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Tw.lineSoft))),
               child: ListView(shrinkWrap: true, padding: const EdgeInsets.all(12), children: [
                 for (final x in _venues)
                   Padding(
@@ -359,12 +359,12 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                         decoration: BoxDecoration(
-                          color: x['id'] == _selectedId ? Tw.fuchsia600.withValues(alpha: 0.2) : Colors.transparent,
+                          color: x['id'] == _selectedId ? Tw.party.withValues(alpha: 0.2) : Colors.transparent,
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: x['id'] == _selectedId ? Tw.fuchsia500.withValues(alpha: 0.3) : Colors.transparent),
+                          border: Border.all(color: x['id'] == _selectedId ? Tw.party.withValues(alpha: 0.3) : Colors.transparent),
                         ),
                         child: Text((x['name'] as String?) ?? '',
-                            style: tw(12, weight: semibold, color: x['id'] == _selectedId ? Tw.fuchsia400 : Tw.slate400)),
+                            style: tw(12, weight: semibold, color: x['id'] == _selectedId ? Tw.sun : Tw.inkSoft)),
                       ),
                     ),
                   ),
@@ -381,17 +381,17 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
           ),
           Container(
             padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(border: Border(top: BorderSide(color: Tw.w(0.05)))),
+            decoration: BoxDecoration(border: Border(top: BorderSide(color: Tw.lineSoft))),
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
               if (v?['subscriptionTier'] == 'ticketing' || canBypass)
-                item(context.t('venue_admin_scan'), Icons.qr_code_scanner, false, () => openRoute(context, AppRoute.scanner), color: Tw.fuchsia400),
+                item(context.t('venue_admin_scan'), Icons.qr_code_scanner, false, () => openRoute(context, AppRoute.scanner), color: Tw.sun),
               if (v?['id'] is String && context.watch<PlatformSettings>().flag('moduleCashless'))
                 item(context.t('venue_admin_scan_drinks', fallback: 'Escanear consumiciones'), Icons.local_bar, false,
-                    () => openRoute(context, AppRoute.barScanner, args: {'venue': v!['id'] as String}), color: Tw.emerald400),
+                    () => openRoute(context, AppRoute.barScanner, args: {'venue': v!['id'] as String}), color: Tw.live),
               const SizedBox(height: 8),
               const AdminTopBar(),
               const SizedBox(height: 8),
-              const Label('Blow Nights Venue v2', size: 9, weight: FontWeight.w400, color: Tw.slate600, align: TextAlign.center),
+              const Label('Blow Nights Venue v2', size: 9, weight: FontWeight.w400, color: Tw.inkDim, align: TextAlign.center),
             ]),
           ),
         ]),
@@ -402,7 +402,7 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
   Widget _header(BuildContext context, Map<String, dynamic> v, bool canBypass) {
     final tier = v['subscriptionTier'] as String?;
     final trial = venueTrial(v);
-    final tierColor = switch (tier) { 'ticketing' => Tw.fuchsia400, 'promo' => Tw.indigo400, 'basico' => Tw.cyan400, _ => Tw.slate400 };
+    final tierColor = switch (tier) { 'ticketing' => Tw.sun, 'promo' => Tw.indigo400, 'basico' => Tw.cyan400, _ => Tw.inkSoft };
     Widget tierBtn(String value, String label, Color active) {
       final on = value == 'none' ? tier == null : tier == value;
       return GestureDetector(
@@ -414,7 +414,7 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
             borderRadius: BorderRadius.circular(8),
             boxShadow: on && value != 'none' ? [BoxShadow(color: active.withValues(alpha: 0.5), blurRadius: 10)] : null,
           ),
-          child: Text(label, style: tw(12, weight: semibold, color: on ? Tw.white : Tw.slate400)),
+          child: Text(label, style: tw(12, weight: semibold, color: on ? Tw.white : Tw.inkSoft)),
         ),
       );
     }
@@ -428,7 +428,7 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
             decoration: BoxDecoration(
-              color: tier == null ? Tw.slate700.withValues(alpha: 0.5) : tierColor.withValues(alpha: 0.2),
+              color: tier == null ? Tw.line.withValues(alpha: 0.5) : tierColor.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(99),
               border: Border.all(color: tierColor.withValues(alpha: 0.3)),
             ),
@@ -440,37 +440,37 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               decoration: BoxDecoration(
-                color: Tw.emerald400.withValues(alpha: 0.15),
+                color: Tw.live.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(99),
-                border: Border.all(color: Tw.emerald400.withValues(alpha: 0.3)),
+                border: Border.all(color: Tw.live.withValues(alpha: 0.3)),
               ),
               child: Text(
                 context.t('venue_admin_trial_until', params: {
                   'date': DateFormat.yMMMMd(context.read<I18n>().locale.languageCode).format(trial.endsAt),
                 }),
-                style: tw(10, weight: bold, color: Tw.emerald400),
+                style: tw(10, weight: bold, color: Tw.live),
               ),
             ),
         ]),
-        Text((v['address'] as String?) ?? context.t('venue_admin_no_address'), style: tw(10, color: Tw.slate500)),
+        Text((v['address'] as String?) ?? context.t('venue_admin_no_address'), style: tw(10, color: Tw.inkDim)),
         if (canBypass) ...[
         const SizedBox(height: 12),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
-            color: Tw.slate900.withValues(alpha: 0.9),
+            color: Tw.panel.withValues(alpha: 0.9),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.3)),
+            border: Border.all(color: Tw.party.withValues(alpha: 0.3)),
           ),
           child: Wrap(spacing: 6, runSpacing: 6, crossAxisAlignment: WrapCrossAlignment.center, children: [
             Row(mainAxisSize: MainAxisSize.min, children: [
-              const Icon(Icons.science, size: 14, color: Tw.fuchsia400),
+              const Icon(Icons.science, size: 14, color: Tw.sun),
               const SizedBox(width: 4),
-              Text('Pruebas (0€):', style: tw(11, weight: bold, color: Tw.fuchsia400)),
+              Text('Pruebas (0€):', style: tw(11, weight: bold, color: Tw.sun)),
             ]),
-            tierBtn('none', 'Sin Plan', Tw.slate700),
+            tierBtn('none', 'Sin Plan', Tw.line),
             tierBtn('basico', 'Básico', const Color(0xFF0891B2)),
-            tierBtn('promo', 'Promo', Tw.fuchsia600),
+            tierBtn('promo', 'Promo', Tw.party),
             tierBtn('ticketing', 'Ticketing', Tw.indigo600),
           ]),
         ),
@@ -483,11 +483,11 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
   /// link to buy one (Google Play payments policy).
   Widget _upgrade(BuildContext context, String titleKey, String descKey) => Container(
         padding: const EdgeInsets.all(32),
-        decoration: BoxDecoration(color: Tw.slate900, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.slate800)),
+        decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
         child: Column(children: [
           Text(context.t(titleKey), textAlign: TextAlign.center, style: tw(20, weight: black)),
           const SizedBox(height: 8),
-          Text(context.t(descKey), textAlign: TextAlign.center, style: tw(15, color: Tw.slate400)),
+          Text(context.t(descKey), textAlign: TextAlign.center, style: tw(15, color: Tw.inkSoft)),
         ]),
       );
 
@@ -520,9 +520,9 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
   Widget _overviewTab(BuildContext context, Map<String, dynamic> v) {
     final now = [_checkins.length, (v['currentCount'] as num?)?.toInt() ?? 0].reduce((a, b) => a > b ? a : b);
     final stats = [
-      (context.t('venue_admin_stat_now'), '$now', Icons.people, Tw.green400),
+      (context.t('venue_admin_stat_now'), '$now', Icons.people, Tw.live),
       (context.t('venue_admin_stat_sold'), '${_tickets.length}', Icons.confirmation_number, Tw.yellow400),
-      ('Picadas en puerta', '$_used', Icons.check_circle, Tw.emerald400),
+      ('Picadas en puerta', '$_used', Icons.check_circle, Tw.live),
       (context.t('venue_admin_stat_revenue'), _revenue > 0 ? '${(_revenue / 100).toStringAsFixed(0)}€' : '0€', Icons.payments, Tw.blue400),
     ];
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -535,7 +535,7 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
               const SizedBox(height: 8),
               Text(value, style: tw(24, weight: black)),
               const SizedBox(height: 4),
-              Label(label, size: 8, color: Tw.slate500),
+              Label(label, size: 8, color: Tw.inkDim),
             ]),
           ),
       ]),
@@ -543,20 +543,20 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
         const SizedBox(height: 16),
         AdminCard(
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            Label(context.t('venue_admin_people_now'), size: 12, color: Tw.slate500),
+            Label(context.t('venue_admin_people_now'), size: 12, color: Tw.inkDim),
             const SizedBox(height: 12),
             for (final c in _checkins)
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 8),
-                decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Tw.w(0.05)))),
+                decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Tw.lineSoft))),
                 child: Row(children: [
-                  const PulseDot(color: Tw.green400),
+                  const PulseDot(color: Tw.live),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text((c['nick'] ?? c['client_name'] ?? context.t('venue_admin_anonymous')) as String, style: tw(12, weight: bold)),
                   ),
                   Label(c['visibility'] == 'ghost' ? context.t('venue_admin_ghost') : context.t('venue_admin_public'),
-                      size: 9, color: c['visibility'] == 'ghost' ? Tw.indigo400 : Tw.slate500),
+                      size: 9, color: c['visibility'] == 'ghost' ? Tw.indigo400 : Tw.inkDim),
                 ]),
               ),
           ]),
@@ -569,18 +569,18 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
     Widget kpi(String label, String value, String note, IconData icon, Color color, {bool tinted = false}) => Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: tinted ? color.withValues(alpha: 0.1) : Tw.w(0.05),
+            color: tinted ? color.withValues(alpha: 0.1) : Tw.panelSoft,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: tinted ? color.withValues(alpha: 0.2) : Tw.w(0.1)),
+            border: Border.all(color: tinted ? color.withValues(alpha: 0.2) : Tw.lineSoft),
           ),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Row(children: [
-              Expanded(child: Label(label, color: tinted ? color : Tw.slate400, tracking: 0.05, maxLines: 1)),
+              Expanded(child: Label(label, color: tinted ? color : Tw.inkSoft, tracking: 0.05, maxLines: 1)),
               Icon(icon, size: 14, color: color),
             ]),
             const SizedBox(height: 4),
-            Text(value, style: tw(24, weight: black, color: tinted || color == Tw.fuchsia400 ? color : Tw.white)),
-            Text(note, style: tw(9, weight: medium, color: tinted ? color.withValues(alpha: 0.8) : Tw.slate500)),
+            Text(value, style: tw(24, weight: black, color: tinted || color == Tw.sun ? color : Tw.white)),
+            Text(note, style: tw(9, weight: medium, color: tinted ? color.withValues(alpha: 0.8) : Tw.inkDim)),
           ]),
         );
 
@@ -603,10 +603,10 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
       AdminGrid(children: [
         kpi('Total Emitidas', '${_tickets.length}', 'De pago y gratuitas', Icons.confirmation_number, Tw.yellow400),
         kpi('Picadas en Puerta', '$_used', _tickets.isNotEmpty ? '${(_used / _tickets.length * 100).round()}% validadas' : '0%', Icons.check_circle,
-            Tw.emerald400,
+            Tw.live,
             tinted: true),
         kpi('Pendientes', '$_valid', 'Por entrar al local', Icons.schedule, Tw.blue400, tinted: true),
-        kpi('Recaudación', _revenue > 0 ? '${(_revenue / 100).toStringAsFixed(2)}€' : '0,00€', 'Stripe / Pagos', Icons.payments, Tw.fuchsia400),
+        kpi('Recaudación', _revenue > 0 ? '${(_revenue / 100).toStringAsFixed(2)}€' : '0,00€', 'Stripe / Pagos', Icons.payments, Tw.sun),
       ]),
       const SizedBox(height: 16),
       AdminChips(
@@ -618,14 +618,14 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
       if (_tickets.isEmpty)
         AdminCard(
           padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
-          borderColor: Tw.w(0.05),
+          borderColor: Tw.lineSoft,
           child: Column(children: [
-            const Icon(Icons.receipt_long, size: 48, color: Tw.slate700),
+            const Icon(Icons.receipt_long, size: 48, color: Tw.line),
             const SizedBox(height: 12),
-            Text(context.t('venue_admin_no_tickets'), style: tw(14, weight: bold, color: Tw.slate400)),
+            Text(context.t('venue_admin_no_tickets'), style: tw(14, weight: bold, color: Tw.inkSoft)),
             const SizedBox(height: 4),
             Text('Las entradas emitidas y picadas en puerta se contabilizarán aquí en tiempo real.',
-                textAlign: TextAlign.center, style: tw(12, color: Tw.slate600)),
+                textAlign: TextAlign.center, style: tw(12, color: Tw.inkDim)),
           ]),
         )
       else
@@ -642,32 +642,32 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(color: Tw.w(0.02), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+      decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         InkWell(
           onTap: () => setState(() => collapsed ? _collapsed.remove(key) : _collapsed.add(key)),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: Row(children: [
-              Icon(key == '__no_event__' ? Icons.local_activity : Icons.event, color: Tw.fuchsia400, size: 18),
+              Icon(key == '__no_event__' ? Icons.local_activity : Icons.event, color: Tw.sun, size: 18),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Text(title, maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(14, weight: black)),
-                  if (date != null && key != '__no_event__') Text(_hhmm(date), style: tw(10, weight: medium, color: Tw.slate500)),
+                  if (date != null && key != '__no_event__') Text(_hhmm(date), style: tw(10, weight: medium, color: Tw.inkDim)),
                   const SizedBox(height: 2),
                   Text.rich(TextSpan(style: tw(10, weight: bold), children: [
-                    TextSpan(text: '$used picadas', style: tw(10, weight: bold, color: Tw.emerald400)),
-                    TextSpan(text: ' | ', style: tw(10, color: Tw.slate600)),
+                    TextSpan(text: '$used picadas', style: tw(10, weight: bold, color: Tw.live)),
+                    TextSpan(text: ' | ', style: tw(10, color: Tw.inkDim)),
                     TextSpan(text: '$valid pend.', style: tw(10, weight: bold, color: Tw.blue400)),
                     if (revenue > 0) ...[
-                      TextSpan(text: ' | ', style: tw(10, color: Tw.slate600)),
-                      TextSpan(text: '${(revenue / 100).toStringAsFixed(0)}€', style: tw(10, weight: bold, color: Tw.fuchsia400)),
+                      TextSpan(text: ' | ', style: tw(10, color: Tw.inkDim)),
+                      TextSpan(text: '${(revenue / 100).toStringAsFixed(0)}€', style: tw(10, weight: bold, color: Tw.sun)),
                     ],
                   ])),
                 ]),
               ),
-              AnimatedRotation(turns: collapsed ? 0 : 0.5, duration: const Duration(milliseconds: 200), child: const Icon(Icons.expand_more, color: Tw.slate500)),
+              AnimatedRotation(turns: collapsed ? 0 : 0.5, duration: const Duration(milliseconds: 200), child: const Icon(Icons.expand_more, color: Tw.inkDim)),
             ]),
           ),
         ),
@@ -683,7 +683,7 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
   Widget _ticketRow(BuildContext context, Map<String, dynamic> tk) {
     final used = tk['status'] == 'used';
     final valid = tk['status'] == 'valid';
-    final color = used ? Tw.emerald400 : valid ? Tw.blue400 : Tw.red400;
+    final color = used ? Tw.live : valid ? Tw.blue400 : Tw.red400;
     final isTest = tk['channel'] == 'test_pass' || ((tk['tierName'] as String?)?.contains('prueba') ?? false);
     final isFree = tk['channel'] == 'free_claim' || tk['price'] == 0;
     final amount = tk['amount'] as num?;
@@ -703,9 +703,9 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
         margin: const EdgeInsets.only(top: 6),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: used ? Tw.emerald500.withValues(alpha: 0.05) : valid ? Tw.w(0.05) : Tw.red500.withValues(alpha: 0.05),
+          color: used ? Tw.live.withValues(alpha: 0.05) : valid ? Tw.panelSoft : Tw.red500.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: used ? Tw.emerald500.withValues(alpha: 0.2) : valid ? Tw.w(0.1) : Tw.red500.withValues(alpha: 0.2)),
+          border: Border.all(color: used ? Tw.live.withValues(alpha: 0.2) : valid ? Tw.lineSoft : Tw.red500.withValues(alpha: 0.2)),
         ),
         child: Row(children: [
           Container(
@@ -726,12 +726,12 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
                 else if (amount != null && amount != 0)
                   chip('${(amount / 100).toStringAsFixed(2)}€', const Color(0xFF6EE7B7)),
               ]),
-              Text((tk['tierName'] ?? tk['ticketType'] ?? 'Entrada General') as String, style: tw(12, color: Tw.slate400)),
+              Text((tk['tierName'] ?? tk['ticketType'] ?? 'Entrada General') as String, style: tw(12, color: Tw.inkSoft)),
               if (dateStr.isNotEmpty)
                 Row(children: [
-                  const Icon(Icons.schedule, size: 11, color: Tw.slate500),
+                  const Icon(Icons.schedule, size: 11, color: Tw.inkDim),
                   const SizedBox(width: 4),
-                  Text(dateStr, style: tw(10, weight: medium, color: Tw.slate500)),
+                  Text(dateStr, style: tw(10, weight: medium, color: Tw.inkDim)),
                 ]),
             ]),
           ),
@@ -743,7 +743,7 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
               border: Border.all(color: color.withValues(alpha: 0.3)),
             ),
             child: Row(mainAxisSize: MainAxisSize.min, children: [
-              if (used) const PulseDot(color: Tw.emerald400, size: 6),
+              if (used) const PulseDot(color: Tw.live, size: 6),
               if (valid) Container(width: 6, height: 6, decoration: const BoxDecoration(color: Tw.blue400, shape: BoxShape.circle)),
               if (used || valid) const SizedBox(width: 6),
               Label(used ? 'Picada' : valid ? 'Pendiente' : 'Cancelada', color: color, tracking: 0.05),
@@ -759,7 +759,7 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
           Row(children: [
             const Icon(Icons.campaign, size: 14, color: Tw.yellow500),
             const SizedBox(width: 4),
-            Label(context.t('venue_admin_new_promo'), size: 12, color: Tw.slate500),
+            Label(context.t('venue_admin_new_promo'), size: 12, color: Tw.inkDim),
           ]),
           const SizedBox(height: 16),
           TextField(
@@ -772,7 +772,7 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
           ),
           const SizedBox(height: 16),
           Row(children: [
-            Text(context.t('venue_admin_promo_radius'), style: tw(10, weight: bold, color: Tw.slate500)),
+            Text(context.t('venue_admin_promo_radius'), style: tw(10, weight: bold, color: Tw.inkDim)),
             const SizedBox(width: 12),
             AdminSelect<int>(
               dense: true,
@@ -781,7 +781,7 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
               onChanged: (v) => setState(() => _promoRadius = v ?? 5),
             ),
             const Spacer(),
-            Text('${_promo.text.length}/200', style: tw(9, color: Tw.slate600)),
+            Text('${_promo.text.length}/200', style: tw(9, color: Tw.inkDim)),
           ]),
           const SizedBox(height: 16),
           GradientButton(
@@ -804,7 +804,7 @@ class _VenueAdminScreenState extends State<VenueAdminScreen> {
                       textAlign: TextAlign.center,
                       style: tw(12,
                           weight: bold,
-                          color: _promoResult!['status'] == 'sent' && asInt(_promoResult!['delivered']) > 0 ? Tw.green400 : Tw.amber400),
+                          color: _promoResult!['status'] == 'sent' && asInt(_promoResult!['delivered']) > 0 ? Tw.live : Tw.sun),
                     ),
             ),
           ),
