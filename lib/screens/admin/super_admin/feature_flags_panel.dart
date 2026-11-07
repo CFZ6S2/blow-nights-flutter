@@ -142,23 +142,23 @@ class _FeatureFlagsPanelState extends State<FeatureFlagsPanel> {
       AdminCard(
         radius: 24,
         gradient: LinearGradient(colors: [
-          Tw.fuchsia950.withValues(alpha: 0.4),
+          Tw.nightDeep.withValues(alpha: 0.4),
           Tw.purple900.withValues(alpha: 0.3),
-          Tw.indigo950.withValues(alpha: 0.4),
+          Tw.nightDeep.withValues(alpha: 0.4),
         ]),
-        borderColor: Tw.fuchsia500.withValues(alpha: 0.3),
+        borderColor: Tw.party.withValues(alpha: 0.3),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
             decoration: BoxDecoration(
-              color: Tw.fuchsia500.withValues(alpha: 0.2),
+              color: Tw.party.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(99),
-              border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.3)),
+              border: Border.all(color: Tw.party.withValues(alpha: 0.3)),
             ),
             child: const Row(mainAxisSize: MainAxisSize.min, children: [
-              Icon(Icons.tune, size: 12, color: Tw.fuchsia300),
+              Icon(Icons.tune, size: 12, color: Tw.sun),
               SizedBox(width: 8),
-              Label('Despliegue Progresivo', color: Tw.fuchsia300),
+              Label('Despliegue Progresivo', color: Tw.sun),
             ]),
           ),
           const SizedBox(height: 12),
@@ -166,7 +166,7 @@ class _FeatureFlagsPanelState extends State<FeatureFlagsPanel> {
           const SizedBox(height: 8),
           Text(
             'Activa o apaga cada funcionalidad según la fase en la que se encuentre tu expansión. Los cambios se sincronizan en tiempo real en toda la app sin necesidad de desplegar código.',
-            style: tw(14, color: Tw.slate300, height: 1.6),
+            style: tw(14, color: Tw.inkSoft, height: 1.6),
           ),
           const SizedBox(height: 24),
           Container(
@@ -174,26 +174,26 @@ class _FeatureFlagsPanelState extends State<FeatureFlagsPanel> {
             decoration: BoxDecoration(
               color: Colors.black.withValues(alpha: 0.6),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Tw.w(0.1)),
+              border: Border.all(color: Tw.line),
             ),
             child: Row(children: [
               Container(
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: Tw.fuchsia600.withValues(alpha: 0.2),
+                  color: Tw.party.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.3)),
+                  border: Border.all(color: Tw.party.withValues(alpha: 0.3)),
                 ),
-                child: const Icon(Icons.toggle_on, size: 26, color: Tw.fuchsia400),
+                child: const Icon(Icons.toggle_on, size: 26, color: Tw.sun),
               ),
               const SizedBox(width: 20),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text.rich(TextSpan(children: [
                   TextSpan(text: '$activeCount ', style: tw(24, weight: black)),
-                  TextSpan(text: '/ ${_modules.length}', style: tw(16, color: Tw.slate500)),
+                  TextSpan(text: '/ ${_modules.length}', style: tw(16, color: Tw.inkDim)),
                 ])),
-                const Label('Módulos Activos', color: Tw.fuchsia400, tracking: 0.05),
+                const Label('Módulos Activos', color: Tw.sun, tracking: 0.05),
               ]),
             ]),
           ),
@@ -220,24 +220,24 @@ class _FeatureFlagsPanelState extends State<FeatureFlagsPanel> {
         opacity: active ? 1 : 0.75,
         child: AdminCard(
           radius: 16,
-          color: active ? Tw.slate900.withValues(alpha: 0.9) : Tw.slate950.withValues(alpha: 0.6),
-          borderColor: active ? Tw.fuchsia500.withValues(alpha: 0.3) : Tw.w(0.05),
+          color: active ? Tw.panel.withValues(alpha: 0.9) : Tw.night.withValues(alpha: 0.6),
+          borderColor: active ? Tw.party.withValues(alpha: 0.3) : Tw.panelSoft,
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Container(
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: active ? Tw.fuchsia500.withValues(alpha: 0.2) : Tw.w(0.05),
+                  color: active ? Tw.party.withValues(alpha: 0.2) : Tw.panelSoft,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: active ? Tw.fuchsia500.withValues(alpha: 0.3) : Tw.w(0.05)),
+                  border: Border.all(color: active ? Tw.party.withValues(alpha: 0.3) : Tw.panelSoft),
                 ),
-                child: Icon(m.icon, size: 20, color: active ? Tw.fuchsia400 : Tw.slate500),
+                child: Icon(m.icon, size: 20, color: active ? Tw.sun : Tw.inkDim),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Label(m.badge, size: 9, color: Tw.slate500),
+                  Label(m.badge, size: 9, color: Tw.inkDim),
                   Text(m.title, style: tw(16, weight: black, height: 1.2)),
                 ]),
               ),
@@ -245,7 +245,7 @@ class _FeatureFlagsPanelState extends State<FeatureFlagsPanel> {
               AdminToggle(value: active, busy: _updating == m.key, onTap: () => _toggle(m, active)),
             ]),
             const SizedBox(height: 12),
-            Text(m.description, style: tw(12, color: Tw.slate300, height: 1.6)),
+            Text(m.description, style: tw(12, color: Tw.inkSoft, height: 1.6)),
             const SizedBox(height: 12),
             Container(
               width: double.infinity,
@@ -253,39 +253,39 @@ class _FeatureFlagsPanelState extends State<FeatureFlagsPanel> {
               decoration: BoxDecoration(
                 color: Colors.black.withValues(alpha: 0.4),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Tw.w(0.05)),
+                border: Border.all(color: Tw.lineSoft),
               ),
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text.rich(TextSpan(style: tw(11, color: Tw.slate400), children: [
+                Text.rich(TextSpan(style: tw(11, color: Tw.inkSoft), children: [
                   TextSpan(text: 'Efecto en la app: ', style: tw(11, weight: bold, color: const Color(0xFFE2E8F0))),
                   TextSpan(text: m.impact),
                 ])),
                 if (m.warning != null) ...[
                   const SizedBox(height: 6),
-                  Divider(height: 1, color: Tw.w(0.05)),
+                  Divider(height: 1, color: Tw.lineSoft),
                   const SizedBox(height: 6),
                   Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Icon(Icons.warning_amber, size: 12, color: Tw.amber400.withValues(alpha: 0.9)),
+                    Icon(Icons.warning_amber, size: 12, color: Tw.sun.withValues(alpha: 0.9)),
                     const SizedBox(width: 6),
-                    Expanded(child: Text(m.warning!, style: tw(11, weight: medium, color: Tw.amber400.withValues(alpha: 0.9)))),
+                    Expanded(child: Text(m.warning!, style: tw(11, weight: medium, color: Tw.sun.withValues(alpha: 0.9)))),
                   ]),
                 ],
               ]),
             ),
             const SizedBox(height: 16),
-            Divider(height: 1, color: Tw.w(0.05)),
+            Divider(height: 1, color: Tw.lineSoft),
             const SizedBox(height: 12),
             Row(children: [
-              const Expanded(child: Label('Estado en producción:', color: Tw.slate500, weight: bold, tracking: 0.05)),
+              const Expanded(child: Label('Estado en producción:', color: Tw.inkDim, weight: bold, tracking: 0.05)),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: active ? Tw.emerald500.withValues(alpha: 0.2) : Tw.slate800,
+                  color: active ? Tw.live.withValues(alpha: 0.2) : Tw.line,
                   borderRadius: BorderRadius.circular(6),
-                  border: Border.all(color: active ? Tw.emerald500.withValues(alpha: 0.3) : Tw.w(0.05)),
+                  border: Border.all(color: active ? Tw.live.withValues(alpha: 0.3) : Tw.panelSoft),
                 ),
                 child: Label(active ? 'Activo & Disponible' : 'Pausado / Oculto',
-                    color: active ? Tw.emerald400 : Tw.slate400, tracking: 0.05),
+                    color: active ? Tw.live : Tw.inkSoft, tracking: 0.05),
               ),
             ]),
           ]),

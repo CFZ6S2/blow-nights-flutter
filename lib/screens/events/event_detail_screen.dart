@@ -57,7 +57,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
           child: Padding(
             padding: const EdgeInsets.all(24),
             child: Column(mainAxisSize: MainAxisSize.min, children: [
-              const Icon(Icons.event_busy, size: 48, color: Tw.slate700),
+              const Icon(Icons.event_busy, size: 48, color: Tw.line),
               const SizedBox(height: 16),
               Text(context.t('events.not_found', fallback: 'Evento no encontrado'), style: tw(20, weight: black)),
               const SizedBox(height: 16),
@@ -65,7 +65,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                 onTap: () => openRoute(context, AppRoute.events, replace: true),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  decoration: BoxDecoration(color: Tw.fuchsia600, borderRadius: BorderRadius.circular(16)),
+                  decoration: BoxDecoration(color: Tw.party, borderRadius: BorderRadius.circular(16)),
                   child: Label(context.t('events.back_to_events', fallback: 'Ver eventos'), size: 12, color: Tw.white),
                 ),
               ),
@@ -113,7 +113,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [Color(0x4D000000), Colors.transparent, Tw.slate950],
+                      colors: [Color(0x4D000000), Colors.transparent, Tw.night],
                     ),
                   ),
                 ),
@@ -126,7 +126,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
               decoration: const BoxDecoration(
                 gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Color(0x4D701A75), Color(0x4D312E81)]),
               ),
-              child: Stack(children: [backBtn(Tw.w(0.1))]),
+              child: Stack(children: [backBtn(Tw.lineSoft)]),
             ),
           Transform.translate(
             offset: const Offset(0, -32),
@@ -136,25 +136,25 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                 Text(safeStr(e['title']), style: tw(30, weight: black, height: 1.2)),
                 const SizedBox(height: 12),
                 Row(children: [
-                  const Icon(Icons.calendar_today, size: 16, color: Tw.fuchsia400),
+                  const Icon(Icons.calendar_today, size: 16, color: Tw.sun),
                   const SizedBox(width: 6),
                   Expanded(
                     child: Text(
                       start == null ? '' : '${DateFormat("EEEE, d 'de' MMMM 'de' y", 'es').format(start)} ${DateFormat('HH:mm').format(start)}',
-                      style: tw(14, color: Tw.slate400),
+                      style: tw(14, color: Tw.inkSoft),
                     ),
                   ),
                 ]),
                 if (place.isNotEmpty) ...[
                   const SizedBox(height: 12),
                   Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    const Icon(Icons.location_on, size: 16, color: Tw.fuchsia400),
+                    const Icon(Icons.location_on, size: 16, color: Tw.sun),
                     const SizedBox(width: 6),
                     Expanded(
                       child: Text.rich(TextSpan(children: [
                         TextSpan(text: place),
-                        if (safeStr(e['address']).isNotEmpty) TextSpan(text: ' ${safeStr(e['address'])}', style: tw(14, color: Tw.slate600)),
-                      ]), style: tw(14, color: Tw.slate400)),
+                        if (safeStr(e['address']).isNotEmpty) TextSpan(text: ' ${safeStr(e['address'])}', style: tw(14, color: Tw.inkDim)),
+                      ]), style: tw(14, color: Tw.inkSoft)),
                     ),
                   ]),
                 ],
@@ -163,7 +163,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                   GlassCard(
                     radius: 16,
                     padding: const EdgeInsets.all(20),
-                    child: Text(safeStr(e['description']), style: tw(14, color: Tw.slate300, height: 1.6)),
+                    child: Text(safeStr(e['description']), style: tw(14, color: Tw.inkSoft, height: 1.6)),
                   ),
                 ],
                 if (tags.isNotEmpty) ...[
@@ -172,7 +172,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                     for (final t in tags)
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                        decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(99), border: Border.all(color: Tw.w(0.1))),
+                        decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(99), border: Border.all(color: Tw.line)),
                         child: Label(t, weight: bold, tracking: 0),
                       ),
                   ]),
@@ -189,7 +189,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                     onTap: () => openInApp(ext),
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 16),
-                      decoration: BoxDecoration(color: Tw.fuchsia600, borderRadius: BorderRadius.circular(16)),
+                      decoration: BoxDecoration(color: Tw.party, borderRadius: BorderRadius.circular(16)),
                       child: Label(context.t('events.buy_tickets', fallback: 'Comprar entradas'), size: 14, color: Tw.white, align: TextAlign.center),
                     ),
                   ),
@@ -208,9 +208,9 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 decoration: BoxDecoration(
-                  color: Tw.fuchsia600,
+                  color: Tw.party,
                   borderRadius: BorderRadius.circular(16),
-                  boxShadow: [BoxShadow(color: Tw.fuchsia600.withValues(alpha: 0.3), blurRadius: 40, offset: const Offset(0, 10))],
+                  boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.3), blurRadius: 40, offset: const Offset(0, 10))],
                 ),
                 child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   const Icon(Icons.confirmation_number, color: Tw.white),
@@ -243,21 +243,21 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: soldOut ? Tw.w(0.02) : Tw.w(0.05),
+          color: soldOut ? Tw.panelSoft : Tw.panelSoft,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: soldOut ? Tw.w(0.05) : Tw.w(0.1)),
+          border: Border.all(color: soldOut ? Tw.lineSoft : Tw.line),
         ),
         child: Row(children: [
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(safeStr(tier['name']), style: tw(14, weight: bold)),
-              if (available != null) Text('${sold ?? 0}/$available ${context.t('events.sold', fallback: 'vendidas')}', style: tw(10, color: Tw.slate500)),
+              if (available != null) Text('${sold ?? 0}/$available ${context.t('events.sold', fallback: 'vendidas')}', style: tw(10, color: Tw.inkDim)),
             ]),
           ),
           Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
             price == 0
-                ? Text(context.t('events.free_label', fallback: 'Gratis'), style: tw(16, weight: black, color: Tw.emerald400))
-                : Text(formatPrice(price, (tier['currency'] as String?) ?? currency), style: tw(16, weight: black, color: Tw.fuchsia400)),
+                ? Text(context.t('events.free_label', fallback: 'Gratis'), style: tw(16, weight: black, color: Tw.live))
+                : Text(formatPrice(price, (tier['currency'] as String?) ?? currency), style: tw(16, weight: black, color: Tw.sun)),
             if (soldOut) Text(context.t('events.sold_out', fallback: 'Agotadas'), style: tw(10, weight: bold, color: Tw.red400)),
           ]),
         ]),

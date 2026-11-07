@@ -141,7 +141,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
               const SizedBox(height: 16),
               TextButton(
                 onPressed: () => Navigator.of(context).maybePop(),
-                child: Label(context.t('profileView.back'), size: 14, weight: bold, color: Tw.fuchsia500),
+                child: Label(context.t('profileView.back'), size: 14, weight: bold, color: Tw.party),
               ),
             ]),
           ),
@@ -190,7 +190,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
                   },
                   itemBuilder: (_, i) => Stack(fit: StackFit.expand, children: [
                     if (photos.isEmpty)
-                      Container(color: Tw.slate900)
+                      Container(color: Tw.panel)
                     else
                       AnimatedScale(
                         scale: _activePhoto == i ? 1.05 : 1,
@@ -204,7 +204,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
                           gradient: LinearGradient(
                             begin: Alignment.bottomCenter,
                             end: Alignment.topCenter,
-                            colors: [Tw.slate950, Color(0x33020617), Colors.transparent],
+                            colors: [Tw.night, Color(0x33020617), Colors.transparent],
                           ),
                         ),
                       ),
@@ -222,7 +222,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
                           height: 2,
                           margin: const EdgeInsets.symmetric(horizontal: 2),
                           decoration: BoxDecoration(
-                            color: i <= _activePhoto ? Tw.white : Tw.w(0.2),
+                            color: i <= _activePhoto ? Tw.white : Tw.line,
                             borderRadius: BorderRadius.circular(99),
                           ),
                         ),
@@ -246,9 +246,9 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
             Container(
               padding: const EdgeInsets.fromLTRB(32, 32, 32, 160),
               decoration: BoxDecoration(
-                color: Tw.slate950.withValues(alpha: 0.8),
+                color: Tw.night.withValues(alpha: 0.8),
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(48)),
-                border: Border(top: BorderSide(color: Tw.w(0.05))),
+                border: Border(top: BorderSide(color: Tw.lineSoft)),
                 boxShadow: const [BoxShadow(color: Color(0x80000000), blurRadius: 40, offset: Offset(0, -20))],
               ),
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -269,17 +269,17 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                             decoration: BoxDecoration(
-                              color: Tw.green500.withValues(alpha: 0.2),
+                              color: Tw.live.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(99),
-                              border: Border.all(color: Tw.green500.withValues(alpha: 0.3)),
+                              border: Border.all(color: Tw.live.withValues(alpha: 0.3)),
                             ),
-                            child: Label(context.t('profileView.online'), size: 8, color: Tw.green400),
+                            child: Label(context.t('profileView.online'), size: 8, color: Tw.live),
                           ),
                         ],
                       ]),
                       const SizedBox(height: 4),
                       Row(children: [
-                        const Icon(Icons.near_me, size: 12, color: Tw.slate500),
+                        const Icon(Icons.near_me, size: 12, color: Tw.inkDim),
                         const SizedBox(width: 8),
                         Flexible(child: Label('A ${distance ?? '0.5'} ${context.t('profileView.kmFromYou')}')),
                       ]),
@@ -289,8 +289,8 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
                 ]),
                 const SizedBox(height: 24),
                 Wrap(spacing: 8, runSpacing: 8, children: [
-                  _chip(p.rol == 'party_only' ? context.t('profileView.onlyParty') : p.rol, Tw.w(0.05), Tw.slate300),
-                  _chip(p.intencion, Tw.fuchsia500.withValues(alpha: 0.1), Tw.fuchsia400),
+                  _chip(p.rol == 'party_only' ? context.t('profileView.onlyParty') : p.rol, Tw.panelSoft, Tw.inkSoft),
+                  _chip(p.intencion, Tw.party.withValues(alpha: 0.1), Tw.sun),
                   if (complexion.isNotEmpty) _chip(complexion, Tw.indigo500.withValues(alpha: 0.1), Tw.indigo400),
                 ]),
                 const SizedBox(height: 32),
@@ -300,7 +300,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
                   Expanded(child: _metric(context.t('profileView.weight'), p.peso, 'kg')),
                 ]),
                 const SizedBox(height: 40),
-                Label(context.t('profileView.interests'), color: Tw.slate500, tracking: 0.2),
+                Label(context.t('profileView.interests'), color: Tw.inkDim, tracking: 0.2),
                 const SizedBox(height: 16),
                 Wrap(spacing: 8, runSpacing: 8, children: [
                   for (final (i, interest) in interests.indexed)
@@ -311,27 +311,27 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                         decoration: BoxDecoration(
-                          color: Tw.w(0.05),
+                          color: Tw.panelSoft,
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Tw.w(0.05)),
+                          border: Border.all(color: Tw.lineSoft),
                         ),
-                        child: Text('#$interest', style: tw(10, weight: bold, color: Tw.slate400)),
+                        child: Text('#$interest', style: tw(10, weight: bold, color: Tw.inkSoft)),
                       ),
                     ),
                 ]),
                 const SizedBox(height: 32),
-                Label(context.t('profileView.aboutMe'), color: Tw.slate500, tracking: 0.2),
+                Label(context.t('profileView.aboutMe'), color: Tw.inkDim, tracking: 0.2),
                 const SizedBox(height: 16),
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    color: Tw.w(0.05),
+                    color: Tw.panelSoft,
                     borderRadius: BorderRadius.circular(24),
-                    border: Border.all(color: Tw.w(0.05)),
+                    border: Border.all(color: Tw.lineSoft),
                   ),
                   child: Text(p.bio.isNotEmpty ? p.bio : context.t('profileView.noDescription'),
-                      style: tw(18, weight: medium, color: Tw.slate300, height: 1.6)),
+                      style: tw(18, weight: medium, color: Tw.inkSoft, height: 1.6)),
                 ),
                 if (privatePhotos.isNotEmpty) ...[
                   const SizedBox(height: 32),
@@ -339,7 +339,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
                     const Icon(Icons.lock, size: 12, color: Color(0xFFEAB308)),
                     const SizedBox(width: 8),
                     Expanded(child: Label(context.t('profileView.privateAlbum'), color: const Color(0xFFEAB308), tracking: 0.2)),
-                    if (!permitted) Label('${privatePhotos.length} ${context.t('profileView.photos')}', size: 8, color: Tw.slate500),
+                    if (!permitted) Label('${privatePhotos.length} ${context.t('profileView.photos')}', size: 8, color: Tw.inkDim),
                   ]),
                   const SizedBox(height: 16),
                   if (permitted)
@@ -354,7 +354,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
                         for (final url in privatePhotos)
                           Container(
                             clipBehavior: Clip.antiAlias,
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
                             child: NetImage(url),
                           ),
                       ],
@@ -366,7 +366,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
                         width: double.infinity,
                         padding: const EdgeInsets.all(32),
                         decoration: BoxDecoration(
-                          color: Tw.w(0.05),
+                          color: Tw.panelSoft,
                           borderRadius: BorderRadius.circular(32),
                           border: Border.all(color: const Color(0xFFEAB308).withValues(alpha: 0.2)),
                         ),
@@ -380,7 +380,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
                           const SizedBox(height: 12),
                           Text(context.t('profileView.privateContent'), style: tw(14, weight: bold)),
                           const SizedBox(height: 4),
-                          Label(context.t('profileView.requestAccess'), weight: FontWeight.w400, color: Tw.slate500),
+                          Label(context.t('profileView.requestAccess'), weight: FontWeight.w400, color: Tw.inkDim),
                         ]),
                       ),
                     ),
@@ -410,15 +410,15 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
               width: (size.width * 0.9).clamp(0.0, 384.0),
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Tw.slate900.withValues(alpha: 0.9),
+                color: Tw.panel.withValues(alpha: 0.9),
                 borderRadius: BorderRadius.circular(40),
-                border: Border.all(color: Tw.w(0.1)),
+                border: Border.all(color: Tw.line),
                 boxShadow: const [BoxShadow(color: Color(0xCC000000), blurRadius: 60, offset: Offset(0, 25))],
               ),
               child: Row(children: [
                 _dockButton(const Icon(Icons.star, color: Color(0xFFEAB308)), () => _like(isSuper: true)),
                 const SizedBox(width: 8),
-                _dockButton(const Icon(Icons.card_giftcard, color: Tw.emerald400),
+                _dockButton(const Icon(Icons.card_giftcard, color: Tw.live),
                     () => openRoute(context, AppRoute.entradas, args: {'gift': widget.userId})),
                 const SizedBox(width: 8),
                 Expanded(
@@ -429,12 +429,12 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
                       height: 48,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: _hasLiked ? Tw.slate800 : null,
-                        gradient: _hasLiked ? null : const LinearGradient(colors: [Tw.fuchsia600, Tw.purple600, Tw.indigo600]),
+                        color: _hasLiked ? Tw.line : null,
+                        gradient: _hasLiked ? null : const LinearGradient(colors: [Tw.party, Tw.purple600, Tw.indigo600]),
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Label(_hasLiked ? context.t('profileView.sent') : context.t('profileView.like'),
-                          color: _hasLiked ? Tw.slate500 : Tw.white, tracking: 0.2),
+                          color: _hasLiked ? Tw.inkDim : Tw.white, tracking: 0.2),
                     ),
                   ),
                 ),
@@ -466,7 +466,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Tw.slate900.withValues(alpha: 0.9),
+              color: Tw.panel.withValues(alpha: 0.9),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: Tw.orange500.withValues(alpha: 0.5)),
               boxShadow: const [BoxShadow(color: Color(0x80000000), blurRadius: 50, offset: Offset(0, 25))],
@@ -493,7 +493,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
                     ),
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 10),
-                      decoration: BoxDecoration(color: Tw.w(0.1), borderRadius: BorderRadius.circular(12)),
+                      decoration: BoxDecoration(color: Tw.lineSoft, borderRadius: BorderRadius.circular(12)),
                       child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                         const Icon(Icons.map, size: 14, color: Tw.white),
                         const SizedBox(width: 8),
@@ -509,9 +509,9 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       decoration: BoxDecoration(
-                        gradient: const LinearGradient(colors: [Tw.orange500, Tw.amber500]),
+                        gradient: const LinearGradient(colors: [Tw.orange500, Tw.sun]),
                         borderRadius: BorderRadius.circular(12),
-                        boxShadow: [BoxShadow(color: Tw.amber500.withValues(alpha: 0.5), blurRadius: 15)],
+                        boxShadow: [BoxShadow(color: Tw.sun.withValues(alpha: 0.5), blurRadius: 15)],
                       ),
                       child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                         const Icon(Icons.chat, size: 14, color: Tw.white),
@@ -538,7 +538,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
           decoration: BoxDecoration(
             color: Colors.black.withValues(alpha: 0.4),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Tw.w(0.1)),
+            border: Border.all(color: Tw.line),
           ),
           child: Icon(icon, color: Tw.white),
         ),
@@ -551,7 +551,7 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
           width: 48,
           height: 48,
           alignment: Alignment.center,
-          decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16)),
+          decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16)),
           child: child,
         ),
       );
@@ -565,16 +565,16 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
   Widget _metric(String label, int? value, String unit) => Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Tw.w(0.05),
+          color: Tw.panelSoft,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Tw.w(0.05)),
+          border: Border.all(color: Tw.lineSoft),
         ),
         child: Column(children: [
-          Label(label, size: 9, color: Tw.slate500),
+          Label(label, size: 9, color: Tw.inkDim),
           const SizedBox(height: 4),
           Text.rich(TextSpan(children: [
             TextSpan(text: '${value ?? '--'} ', style: tw(24, weight: black)),
-            TextSpan(text: unit, style: tw(10, color: Tw.slate500)),
+            TextSpan(text: unit, style: tw(10, color: Tw.inkDim)),
           ])),
         ]),
       );

@@ -85,14 +85,14 @@ class _DynamicQRState extends State<DynamicQR> with TickerProviderStateMixin {
       return SizedBox(
         width: widget.size,
         child: Text(context.t('dynamic_qr_unavailable', fallback: 'Abre la entrada con conexión para ver el QR.'),
-            textAlign: TextAlign.center, style: tw(13, color: Tw.slate400)),
+            textAlign: TextAlign.center, style: tw(13, color: Tw.inkSoft)),
       );
     }
     if (_value.isEmpty) {
       return Container(
         width: widget.size,
         height: widget.size,
-        decoration: BoxDecoration(color: Tw.slate800, borderRadius: BorderRadius.circular(24)),
+        decoration: BoxDecoration(color: Tw.line, borderRadius: BorderRadius.circular(24)),
       );
     }
     return Column(mainAxisSize: MainAxisSize.min, children: [
@@ -119,7 +119,7 @@ class _DynamicQRState extends State<DynamicQR> with TickerProviderStateMixin {
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [Colors.transparent, Tw.fuchsia500.withValues(alpha: 0.2), Colors.transparent],
+                      colors: [Colors.transparent, Tw.party.withValues(alpha: 0.2), Colors.transparent],
                     ),
                   ),
                 ),
@@ -138,19 +138,19 @@ class _DynamicQRState extends State<DynamicQR> with TickerProviderStateMixin {
               final remaining = 1 - _progress.value;
               return Column(children: [
                 Row(children: [
-                  Expanded(child: Label(context.t('dynamic_qr_label', fallback: 'QR Dinámico'), weight: bold, color: Tw.fuchsia400, tracking: 0.05)),
-                  Label('${(remaining * 15).ceil()}s', weight: bold, color: Tw.slate500, tracking: 0),
+                  Expanded(child: Label(context.t('dynamic_qr_label', fallback: 'QR Dinámico'), weight: bold, color: Tw.sun, tracking: 0.05)),
+                  Label('${(remaining * 15).ceil()}s', weight: bold, color: Tw.inkDim, tracking: 0),
                 ]),
                 const SizedBox(height: 4),
                 Container(
                   height: 4,
                   clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(color: Tw.slate800, borderRadius: BorderRadius.circular(99)),
+                  decoration: BoxDecoration(color: Tw.line, borderRadius: BorderRadius.circular(99)),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: FractionallySizedBox(
                       widthFactor: remaining,
-                      child: Container(decoration: const BoxDecoration(gradient: LinearGradient(colors: [Tw.fuchsia500, Tw.indigo500]))),
+                      child: Container(decoration: const BoxDecoration(gradient: LinearGradient(colors: [Tw.sunset, Tw.party]))),
                     ),
                   ),
                 ),
@@ -172,11 +172,11 @@ class NfcPassHint extends StatelessWidget {
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.only(top: 12),
         child: Row(mainAxisSize: MainAxisSize.min, children: [
-          const Icon(Icons.nfc, size: 14, color: Tw.slate400),
+          const Icon(Icons.nfc, size: 14, color: Tw.inkSoft),
           const SizedBox(width: 6),
           Flexible(
             child: Text(context.t('nfc_pass.hint', fallback: 'También puedes acercar tu móvil al del personal (NFC).'),
-                textAlign: TextAlign.center, style: tw(11, color: Tw.slate400)),
+                textAlign: TextAlign.center, style: tw(11, color: Tw.inkSoft)),
           ),
         ]),
       );

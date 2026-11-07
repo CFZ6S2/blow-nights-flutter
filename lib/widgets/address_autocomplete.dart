@@ -101,17 +101,17 @@ class _AddressAutocompleteState extends State<AddressAutocomplete> {
         TextField(
           controller: widget.controller,
           style: tw(14),
-          cursorColor: Tw.fuchsia500,
+          cursorColor: Tw.party,
           onChanged: (v) {
             _debounce?.cancel();
             _debounce = Timer(const Duration(milliseconds: 400), () => _search(v));
           },
           decoration: adminInputDecoration(widget.placeholder).copyWith(
-            prefixIcon: const Icon(Icons.location_on, size: 18, color: Tw.slate500),
+            prefixIcon: const Icon(Icons.location_on, size: 18, color: Tw.inkDim),
             suffixIcon: _loading
                 ? const Padding(
                     padding: EdgeInsets.all(14),
-                    child: SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Tw.fuchsia500)),
+                    child: SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Tw.party)),
                   )
                 : null,
           ),
@@ -119,7 +119,7 @@ class _AddressAutocompleteState extends State<AddressAutocomplete> {
         if (_results.isNotEmpty)
           Container(
             margin: const EdgeInsets.only(top: 4),
-            decoration: BoxDecoration(color: Tw.slate900, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.slate700)),
+            decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
             clipBehavior: Clip.antiAlias,
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
               for (final r in _results)
@@ -128,15 +128,15 @@ class _AddressAutocompleteState extends State<AddressAutocomplete> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      const Icon(Icons.location_on, size: 12, color: Tw.slate500),
+                      const Icon(Icons.location_on, size: 12, color: Tw.inkDim),
                       const SizedBox(width: 8),
-                      Expanded(child: Text(r.description, maxLines: 2, overflow: TextOverflow.ellipsis, style: tw(14, color: Tw.slate300))),
+                      Expanded(child: Text(r.description, maxLines: 2, overflow: TextOverflow.ellipsis, style: tw(14, color: Tw.inkSoft))),
                     ]),
                   ),
                 ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 6, 16, 6),
-                child: Text('Powered by Google', textAlign: TextAlign.end, style: tw(10, color: Tw.slate600)),
+                child: Text('Powered by Google', textAlign: TextAlign.end, style: tw(10, color: Tw.inkDim)),
               ),
             ]),
           ),

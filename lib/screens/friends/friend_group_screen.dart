@@ -210,9 +210,9 @@ class _FriendGroupScreenState extends State<FriendGroupScreen> with WidgetsBindi
             child: Padding(
               padding: const EdgeInsets.all(32),
               child: Column(mainAxisSize: MainAxisSize.min, children: [
-                const Icon(Icons.group_off, size: 48, color: Tw.slate600),
+                const Icon(Icons.group_off, size: 48, color: Tw.inkDim),
                 const SizedBox(height: 16),
-                Text(context.t('finder.not_found'), textAlign: TextAlign.center, style: tw(15, color: Tw.slate400)),
+                Text(context.t('finder.not_found'), textAlign: TextAlign.center, style: tw(15, color: Tw.inkSoft)),
                 const SizedBox(height: 24),
                 GradientButton(label: context.t('finder.title'), onTap: () => Navigator.of(context).maybePop()),
               ]),
@@ -226,7 +226,7 @@ class _FriendGroupScreenState extends State<FriendGroupScreen> with WidgetsBindi
       body: SafeArea(
         child: ListView(padding: const EdgeInsets.fromLTRB(20, 16, 20, 128), children: [
           Row(children: [
-            IconButton(padding: EdgeInsets.zero, onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.slate400)),
+            IconButton(padding: EdgeInsets.zero, onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.inkSoft)),
             const SizedBox(width: 4),
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -234,13 +234,13 @@ class _FriendGroupScreenState extends State<FriendGroupScreen> with WidgetsBindi
                 if (g.expiresAt != null)
                   Text(
                     context.t('finder.expires', params: {'date': DateFormat.MMMEd(context.i18n.dateLocale).add_Hm().format(g.expiresAt!)}),
-                    style: tw(11, color: Tw.slate500),
+                    style: tw(11, color: Tw.inkDim),
                   ),
               ]),
             ),
             PopupMenuButton<String>(
-              icon: const Icon(Icons.more_vert, color: Tw.slate400),
-              color: Tw.slate900,
+              icon: const Icon(Icons.more_vert, color: Tw.inkSoft),
+              color: Tw.panel,
               onSelected: (v) => v == 'delete' ? _delete() : _leave(),
               itemBuilder: (_) => [
                 PopupMenuItem(value: 'leave', child: Text(context.t('finder.leave'), style: tw(14))),
@@ -287,18 +287,18 @@ class _FriendGroupScreenState extends State<FriendGroupScreen> with WidgetsBindi
         Row(children: [
           _Pulse(active: running),
           const SizedBox(width: 12),
-          Expanded(child: Label(context.t('finder.radar_title'), color: running ? Tw.cyan400 : Tw.slate400, size: 11)),
+          Expanded(child: Label(context.t('finder.radar_title'), color: running ? Tw.cyan400 : Tw.inkSoft, size: 11)),
           if (running)
             TextButton(
               onPressed: _busy ? null : () => _prox.stop(),
-              child: Label(context.t('finder.radar_stop'), color: Tw.slate400),
+              child: Label(context.t('finder.radar_stop'), color: Tw.inkSoft),
             ),
         ]),
         const SizedBox(height: 10),
-        Text(running ? context.t('finder.radar_on') : context.t('finder.radar_off'), style: tw(13, color: Tw.slate300, height: 1.5)),
+        Text(running ? context.t('finder.radar_on') : context.t('finder.radar_off'), style: tw(13, color: Tw.inkSoft, height: 1.5)),
         if (warning != null) ...[
           const SizedBox(height: 8),
-          Text(warning, style: tw(12, color: Tw.amber400, height: 1.4)),
+          Text(warning, style: tw(12, color: Tw.sun, height: 1.4)),
         ],
         if (!running && canStart) ...[
           const SizedBox(height: 14),
@@ -347,29 +347,29 @@ class _FriendGroupScreenState extends State<FriendGroupScreen> with WidgetsBindi
       padding: const EdgeInsets.all(18),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
-          const Icon(Icons.place, size: 18, color: Tw.fuchsia400),
+          const Icon(Icons.place, size: 18, color: Tw.sun),
           const SizedBox(width: 8),
           Expanded(child: Label(context.t('finder.meeting_title'), size: 11)),
           TextButton(
             onPressed: _editMeetingPoint,
-            child: Label(p == null ? context.t('finder.meeting_set') : context.t('finder.meeting_change'), color: Tw.fuchsia400),
+            child: Label(p == null ? context.t('finder.meeting_set') : context.t('finder.meeting_change'), color: Tw.sun),
           ),
         ]),
         if (p == null)
-          Text(context.t('finder.meeting_empty'), style: tw(13, color: Tw.slate400, height: 1.5))
+          Text(context.t('finder.meeting_empty'), style: tw(13, color: Tw.inkSoft, height: 1.5))
         else ...[
           Text(p.label, style: tw(17, weight: black)),
           if (setBy != null && setBy.isNotEmpty)
             Padding(
               padding: const EdgeInsets.only(top: 2),
-              child: Text(context.t('finder.meeting_set_by', params: {'nick': setBy}), style: tw(11, color: Tw.slate500)),
+              child: Text(context.t('finder.meeting_set_by', params: {'nick': setBy}), style: tw(11, color: Tw.inkDim)),
             ),
           if (p.hasCoords) ...[
             const SizedBox(height: 12),
             Container(
               height: 170,
               clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
               child: FlutterMap(
                 options: MapOptions(
                   initialCenter: LatLng(p.lat!, p.lng!),
@@ -385,7 +385,7 @@ class _FriendGroupScreenState extends State<FriendGroupScreen> with WidgetsBindi
                       width: 36,
                       height: 36,
                       alignment: Alignment.topCenter,
-                      child: const Icon(Icons.place, size: 34, color: Tw.fuchsia500, shadows: [Shadow(color: Color(0x88000000), blurRadius: 6)]),
+                      child: const Icon(Icons.place, size: 34, color: Tw.party, shadows: [Shadow(color: Color(0x88000000), blurRadius: 6)]),
                     ),
                   ]),
                 ],
@@ -419,12 +419,12 @@ class _FriendGroupScreenState extends State<FriendGroupScreen> with WidgetsBindi
       padding: const EdgeInsets.all(18),
       child: Column(children: [
         Row(children: [
-          const Icon(Icons.person_add, size: 18, color: Tw.emerald400),
+          const Icon(Icons.person_add, size: 18, color: Tw.live),
           const SizedBox(width: 8),
           Expanded(child: Label(context.t('finder.invite_title'), size: 11)),
         ]),
         const SizedBox(height: 8),
-        Text(context.t('finder.invite_body'), style: tw(12, color: Tw.slate400, height: 1.5)),
+        Text(context.t('finder.invite_body'), style: tw(12, color: Tw.inkSoft, height: 1.5)),
         const SizedBox(height: 16),
         Container(
           padding: const EdgeInsets.all(14),
@@ -440,7 +440,7 @@ class _FriendGroupScreenState extends State<FriendGroupScreen> with WidgetsBindi
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(g.code, style: tw(30, weight: black, tracking: 0.25).copyWith(fontFamily: 'monospace')),
             const SizedBox(width: 8),
-            const Icon(Icons.copy, size: 16, color: Tw.slate500),
+            const Icon(Icons.copy, size: 16, color: Tw.inkDim),
           ]),
         ),
         if (st.hce && st.nfcOn) ...[
@@ -448,14 +448,14 @@ class _FriendGroupScreenState extends State<FriendGroupScreen> with WidgetsBindi
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: Tw.emerald500.withValues(alpha: 0.1),
+              color: Tw.live.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(99),
-              border: Border.all(color: Tw.emerald500.withValues(alpha: 0.3)),
+              border: Border.all(color: Tw.live.withValues(alpha: 0.3)),
             ),
             child: Row(mainAxisSize: MainAxisSize.min, children: [
-              const Icon(Icons.nfc, size: 14, color: Tw.emerald400),
+              const Icon(Icons.nfc, size: 14, color: Tw.live),
               const SizedBox(width: 6),
-              Label(context.t('finder.nfc_ready'), size: 9, color: Tw.emerald400, tracking: 0.05),
+              Label(context.t('finder.nfc_ready'), size: 9, color: Tw.live, tracking: 0.05),
             ]),
           ),
         ],
@@ -483,16 +483,16 @@ class _MemberRow extends StatelessWidget {
     final nick = member.nick.isEmpty ? '—' : member.nick;
     Widget? status;
     if (isMe) {
-      status = _Chip(context.t('finder.you'), Tw.fuchsia400);
+      status = _Chip(context.t('finder.you'), Tw.sun);
     } else if (reading != null) {
       final r = reading!;
       final (label, color) = switch (r.band) {
-        ProximityBand.veryClose => (context.t('finder.very_close'), Tw.emerald400),
-        ProximityBand.near => (context.t('finder.near'), Tw.amber400),
+        ProximityBand.veryClose => (context.t('finder.very_close'), Tw.live),
+        ProximityBand.near => (context.t('finder.near'), Tw.sun),
         ProximityBand.far => (context.t('finder.far'), Tw.orange400),
         ProximityBand.lost => (
             context.t('finder.seen_ago', params: {'min': DateTime.now().difference(r.lastSeen).inMinutes.clamp(1, 999)}),
-            Tw.slate500
+            Tw.inkDim
           ),
       };
       status = Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
@@ -501,17 +501,17 @@ class _MemberRow extends StatelessWidget {
           const SizedBox(height: 4),
           Row(mainAxisSize: MainAxisSize.min, children: [
             if (r.trend != 0) ...[
-              Icon(r.trend > 0 ? Icons.trending_up : Icons.trending_down, size: 14, color: r.trend > 0 ? Tw.emerald400 : Tw.slate500),
+              Icon(r.trend > 0 ? Icons.trending_up : Icons.trending_down, size: 14, color: r.trend > 0 ? Tw.live : Tw.inkDim),
               const SizedBox(width: 4),
-              Text(context.t(r.trend > 0 ? 'finder.closer' : 'finder.farther'), style: tw(10, color: Tw.slate500)),
+              Text(context.t(r.trend > 0 ? 'finder.closer' : 'finder.farther'), style: tw(10, color: Tw.inkDim)),
               const SizedBox(width: 6),
             ],
-            Text(context.t('finder.approx_m', params: {'m': r.approxMeters}), style: tw(11, weight: bold, color: Tw.slate300)),
+            Text(context.t('finder.approx_m', params: {'m': r.approxMeters}), style: tw(11, weight: bold, color: Tw.inkSoft)),
           ]),
         ],
       ]);
     } else if (radarOn) {
-      status = _Chip(context.t('finder.no_signal'), Tw.slate600);
+      status = _Chip(context.t('finder.no_signal'), Tw.inkDim);
     }
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -522,9 +522,9 @@ class _MemberRow extends StatelessWidget {
             height: 40,
             child: member.fotoUrl.isEmpty
                 ? Container(
-                    color: Tw.w(0.08),
+                    color: Tw.panelSoft,
                     alignment: Alignment.center,
-                    child: Text(nick.characters.first.toUpperCase(), style: tw(16, weight: black, color: Tw.slate300)),
+                    child: Text(nick.characters.first.toUpperCase(), style: tw(16, weight: black, color: Tw.inkSoft)),
                   )
                 : NetImage(member.fotoUrl, width: 40, height: 40),
           ),
@@ -574,7 +574,7 @@ class _PulseState extends State<_Pulse> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final color = widget.active ? Tw.cyan400 : Tw.slate600;
+    final color = widget.active ? Tw.cyan400 : Tw.inkDim;
     return SizedBox(
       width: 22,
       height: 22,
@@ -646,15 +646,15 @@ class _MeetingSheetState extends State<_MeetingSheet> {
       child: Container(
         padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
         decoration: BoxDecoration(
-          color: Tw.slate900,
+          color: Tw.panel,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-          border: Border.all(color: Tw.w(0.1)),
+          border: Border.all(color: Tw.line),
         ),
         child: SafeArea(
           top: false,
           child: SingleChildScrollView(
             child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-              Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Tw.w(0.2), borderRadius: BorderRadius.circular(2)))),
+              Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Tw.line, borderRadius: BorderRadius.circular(2)))),
               const SizedBox(height: 16),
               Text(context.t('finder.meeting_title'), style: tw(20, weight: black)),
               const SizedBox(height: 16),
@@ -664,7 +664,7 @@ class _MeetingSheetState extends State<_MeetingSheet> {
                 controller: _label,
                 maxLength: 60,
                 style: tw(14),
-                cursorColor: Tw.fuchsia500,
+                cursorColor: Tw.party,
                 decoration: adminInputDecoration(context.t('finder.meeting_label_hint')),
                 onChanged: (_) => setState(() {}),
               ),

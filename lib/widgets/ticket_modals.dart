@@ -54,7 +54,7 @@ class _ModalCard extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         constraints: BoxConstraints(maxWidth: 448, maxHeight: MediaQuery.of(context).size.height * 0.9),
         decoration: BoxDecoration(
-          color: Tw.slate900,
+          color: Tw.panel,
           borderRadius: BorderRadius.circular(24),
           border: Border.all(color: border),
           boxShadow: const [BoxShadow(color: Color(0x80000000), blurRadius: 50, offset: Offset(0, 25))],
@@ -68,10 +68,10 @@ class _ModalCard extends StatelessWidget {
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Text(title, style: tw(18, weight: black, tracking: -0.025, color: titleColor ?? Tw.white)),
-                  Text(subtitle, style: tw(12, color: Tw.slate400)),
+                  Text(subtitle, style: tw(12, color: Tw.inkSoft)),
                 ]),
               ),
-              GestureDetector(onTap: () => Navigator.of(context).pop(), child: const Icon(Icons.close, color: Tw.slate500, size: 20)),
+              GestureDetector(onTap: () => Navigator.of(context).pop(), child: const Icon(Icons.close, color: Tw.inkDim, size: 20)),
             ]),
             const SizedBox(height: 24),
             ...children,
@@ -91,15 +91,15 @@ Widget _iconBox(IconData icon, Color color, {Gradient? gradient}) => Container(
       child: Icon(icon, size: 20, color: gradient == null ? color : Tw.white),
     );
 
-Widget _fieldLabel(String t) => Padding(padding: const EdgeInsets.only(bottom: 8), child: Text(t, style: tw(12, weight: bold, color: Tw.slate300)));
+Widget _fieldLabel(String t) => Padding(padding: const EdgeInsets.only(bottom: 8), child: Text(t, style: tw(12, weight: bold, color: Tw.inkSoft)));
 
-InputDecoration _input(String hint, {Color focus = Tw.fuchsia500, Widget? prefix, Widget? suffix}) => InputDecoration(
+InputDecoration _input(String hint, {Color focus = Tw.party, Widget? prefix, Widget? suffix}) => InputDecoration(
       hintText: hint,
       prefixIcon: prefix,
       suffixIcon: suffix,
-      fillColor: Tw.slate950,
+      fillColor: Tw.night,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Tw.w(0.1))),
+      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Tw.line)),
       focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: focus)),
     );
 
@@ -134,8 +134,8 @@ Widget _actions(BuildContext context,
             onTap: loading ? () {} : () => Navigator.of(context).pop(),
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 12),
-              decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(12)),
-              child: Label(cancel, size: 12, weight: bold, color: Tw.slate300, tracking: 0.05, align: TextAlign.center),
+              decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(12)),
+              child: Label(cancel, size: 12, weight: bold, color: Tw.inkSoft, tracking: 0.05, align: TextAlign.center),
             ),
           ),
         ),
@@ -207,7 +207,7 @@ class _TransferTicketModalState extends State<TransferTicketModal> {
   Widget build(BuildContext context) {
     final t = widget.ticket;
     return _ModalCard(
-      icon: _iconBox(Icons.send, Tw.fuchsia400),
+      icon: _iconBox(Icons.send, Tw.sun),
       title: context.t('wallet.transfer_modal_title', fallback: 'Transferir entrada'),
       subtitle: safeStr(t['eventTitle'] ?? t['venueName']).isEmpty ? 'Entrada Blow Nights' : safeStr(t['eventTitle'] ?? t['venueName']),
       children: [
@@ -216,26 +216,26 @@ class _TransferTicketModalState extends State<TransferTicketModal> {
           controller: _recipient,
           enabled: !_loading,
           style: tw(14),
-          decoration: _input('ej: @pedro o colega@gmail.com', prefix: const Icon(Icons.alternate_email, size: 18, color: Tw.slate500)),
+          decoration: _input('ej: @pedro o colega@gmail.com', prefix: const Icon(Icons.alternate_email, size: 18, color: Tw.inkDim)),
         ),
         const SizedBox(height: 16),
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Tw.emerald500.withValues(alpha: 0.1),
+            color: Tw.live.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Tw.emerald500.withValues(alpha: 0.2)),
+            border: Border.all(color: Tw.live.withValues(alpha: 0.2)),
           ),
           child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Icon(Icons.savings, size: 16, color: Tw.emerald400),
+            const Icon(Icons.savings, size: 16, color: Tw.live),
             const SizedBox(width: 10),
             Expanded(
               child: Text.rich(
                 TextSpan(children: [
-                  TextSpan(text: '0€ comisiones:', style: tw(12, weight: bold, color: Tw.emerald400)),
+                  TextSpan(text: '0€ comisiones:', style: tw(12, weight: bold, color: Tw.live)),
                   const TextSpan(text: ' En Blow Nights no cobramos gastos de gestión ni por transferir a tus amigos.'),
                 ]),
-                style: tw(12, color: Tw.emerald400),
+                style: tw(12, color: Tw.live),
               ),
             ),
           ]),
@@ -243,23 +243,23 @@ class _TransferTicketModalState extends State<TransferTicketModal> {
         const SizedBox(height: 16),
         Container(
           padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(color: Tw.slate950, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.05))),
+          decoration: BoxDecoration(color: Tw.night, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.lineSoft)),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Row(children: [
-              const Icon(Icons.warning, size: 12, color: Tw.amber400),
+              const Icon(Icons.warning, size: 12, color: Tw.sun),
               const SizedBox(width: 6),
-              Expanded(child: Text('Tu código QR quedará invalidado de inmediato.', style: tw(11, weight: bold, color: Tw.amber400))),
+              Expanded(child: Text('Tu código QR quedará invalidado de inmediato.', style: tw(11, weight: bold, color: Tw.sun))),
             ]),
             const SizedBox(height: 6),
             Text.rich(
               TextSpan(children: [
                 const TextSpan(text: '🛡️ '),
-                TextSpan(text: 'Escudo Anti-Fraude:', style: tw(11, weight: bold, color: Tw.slate400)),
+                TextSpan(text: 'Escudo Anti-Fraude:', style: tw(11, weight: bold, color: Tw.inkSoft)),
                 const TextSpan(text: ' Si acordaste un pago con el destinatario (Bizum, etc.) y no te paga, podrás '),
-                TextSpan(text: 'recuperar tu entrada y bloquear su acceso', style: tw(11, weight: bold, color: Tw.slate400)),
+                TextSpan(text: 'recuperar tu entrada y bloquear su acceso', style: tw(11, weight: bold, color: Tw.inkSoft)),
                 const TextSpan(text: ' en cualquier momento antes de que empiece la fiesta.'),
               ]),
-              style: tw(11, color: Tw.slate400, height: 1.4),
+              style: tw(11, color: Tw.inkSoft, height: 1.4),
             ),
           ]),
         ),
@@ -268,7 +268,7 @@ class _TransferTicketModalState extends State<TransferTicketModal> {
             loading: _loading,
             enabled: _recipient.text.trim().isNotEmpty,
             onSubmit: _submit,
-            gradient: const LinearGradient(colors: [Tw.fuchsia600, Color(0xFFDB2777)]),
+            gradient: const LinearGradient(colors: [Tw.party, Color(0xFFDB2777)]),
             icon: Icons.send,
             label: 'Transferir gratis'),
       ],
@@ -342,11 +342,11 @@ class _ReportFraudModalState extends State<ReportFraudModal> {
                 TextSpan(children: [
                   const TextSpan(text: 'Vas a revocar el acceso a '),
                   TextSpan(text: safeStr(widget.ticket['client_name']).isEmpty ? 'este usuario' : safeStr(widget.ticket['client_name']),
-                      style: tw(11, weight: bold, color: Tw.slate300)),
+                      style: tw(11, weight: bold, color: Tw.inkSoft)),
                   const TextSpan(
                       text: '. Su código QR dejará de funcionar de inmediato en la puerta del garito, la entrada volverá a tu posesión con un nuevo QR y registraremos el fraude contra su cuenta.'),
                 ]),
-                style: tw(11, color: Tw.slate300, height: 1.5),
+                style: tw(11, color: Tw.inkSoft, height: 1.5),
               ),
             ]),
           ),
@@ -354,12 +354,12 @@ class _ReportFraudModalState extends State<ReportFraudModal> {
           _fieldLabel('Motivo del reporte'),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            decoration: BoxDecoration(color: Tw.slate950, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.1))),
+            decoration: BoxDecoration(color: Tw.night, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
                 value: _reason,
                 isExpanded: true,
-                dropdownColor: Tw.slate900,
+                dropdownColor: Tw.panel,
                 style: tw(12),
                 items: [for (final r in _reasons) DropdownMenuItem(value: r.$1, child: Text(r.$2))],
                 onChanged: _loading ? null : (v) => setState(() => _reason = v ?? _reason),
@@ -459,38 +459,38 @@ class _ListTicketModalState extends State<ListTicketModal> {
             child: Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: _contact == v ? c.withValues(alpha: 0.2) : Tw.w(0.05),
+                color: _contact == v ? c.withValues(alpha: 0.2) : Tw.panelSoft,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: _contact == v ? c : Tw.w(0.1)),
+                border: Border.all(color: _contact == v ? c : Tw.line),
               ),
               child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Icon(icon, size: 14, color: _contact == v ? c : Tw.slate400),
+                Icon(icon, size: 14, color: _contact == v ? c : Tw.inkSoft),
                 const SizedBox(width: 8),
-                Text(label, style: tw(12, weight: bold, color: _contact == v ? c : Tw.slate400)),
+                Text(label, style: tw(12, weight: bold, color: _contact == v ? c : Tw.inkSoft)),
               ]),
             ),
           ),
         );
     return _ModalCard(
-      icon: _iconBox(Icons.storefront, Tw.emerald500, gradient: const LinearGradient(colors: [Color(0xFF059669), Color(0xFF14B8A6)])),
+      icon: _iconBox(Icons.storefront, Tw.live, gradient: const LinearGradient(colors: [Color(0xFF059669), Color(0xFF14B8A6)])),
       title: context.t('resale.modal_title', fallback: 'Poner entrada en venta'),
       subtitle: '${safeStr(t['venueName'] ?? t['venueId'])} — ${safeStr(t['tierName'] ?? t['ticketType']).isEmpty ? 'Entrada' : safeStr(t['tierName'] ?? t['ticketType'])}',
       children: [
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Tw.emerald500.withValues(alpha: 0.1),
+            color: Tw.live.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Tw.emerald500.withValues(alpha: 0.2)),
+            border: Border.all(color: Tw.live.withValues(alpha: 0.2)),
           ),
           child: Row(children: [
-            const Icon(Icons.verified, size: 18, color: Tw.emerald400),
+            const Icon(Icons.verified, size: 18, color: Tw.live),
             const SizedBox(width: 12),
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text('0€ Gastos de gestión intermediarios', style: tw(11, weight: bold, color: const Color(0xFF6EE7B7))),
                 Text('El 100% del dinero acordado va directo a ti sin que la plataforma te reste un solo céntimo.',
-                    style: tw(10, color: Tw.emerald400.withValues(alpha: 0.8))),
+                    style: tw(10, color: Tw.live.withValues(alpha: 0.8))),
               ]),
             ),
           ]),
@@ -503,39 +503,39 @@ class _ListTicketModalState extends State<ListTicketModal> {
               padding: const EdgeInsets.only(bottom: 8),
               child: Text.rich(TextSpan(children: [
                 const TextSpan(text: 'Original: '),
-                TextSpan(text: '$_originalEuros€', style: tw(10, weight: bold, color: Tw.slate500)),
+                TextSpan(text: '$_originalEuros€', style: tw(10, weight: bold, color: Tw.inkDim)),
                 const TextSpan(text: ' (Máx permitido)'),
-              ]), style: tw(10, color: Tw.slate500)),
+              ]), style: tw(10, color: Tw.inkDim)),
             ),
         ]),
         TextField(
           controller: _price,
           enabled: !_loading,
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          style: tw(14, weight: black, color: Tw.emerald400),
-          decoration: _input('ej: 15.00', focus: Tw.emerald500, suffix: Padding(
+          style: tw(14, weight: black, color: Tw.live),
+          decoration: _input('ej: 15.00', focus: Tw.live, suffix: Padding(
             padding: const EdgeInsets.only(right: 16, top: 14),
-            child: Text('EUR', style: tw(12, weight: bold, color: Tw.slate500)),
+            child: Text('EUR', style: tw(12, weight: bold, color: Tw.inkDim)),
           )),
         ),
         const SizedBox(height: 4),
-        Text('⚖️ Por política anti-especulación, no se permite vender a un precio superior al original.', style: tw(9, color: Tw.slate500)),
+        Text('⚖️ Por política anti-especulación, no se permite vender a un precio superior al original.', style: tw(9, color: Tw.inkDim)),
         const SizedBox(height: 16),
         _fieldLabel(context.t('resale.contact_method', fallback: '¿Cómo prefieres que te contacten?')),
         Row(children: [
-          contactBtn('chat', Icons.chat, 'Chat en la app', Tw.fuchsia300),
+          contactBtn('chat', Icons.chat, 'Chat en la app', Tw.sun),
           const SizedBox(width: 8),
           contactBtn('whatsapp', Icons.phone, 'WhatsApp', const Color(0xFF6EE7B7)),
         ]),
         if (_contact != 'chat') ...[
           const SizedBox(height: 16),
-          Text('Tu número de WhatsApp (con prefijo)', style: tw(11, weight: bold, color: Tw.slate300)),
+          Text('Tu número de WhatsApp (con prefijo)', style: tw(11, weight: bold, color: Tw.inkSoft)),
           const SizedBox(height: 4),
           TextField(
             controller: _whatsapp,
             keyboardType: TextInputType.phone,
             style: tw(12),
-            decoration: _input('+34 600 000 000', focus: Tw.emerald500),
+            decoration: _input('+34 600 000 000', focus: Tw.live),
           ),
         ],
         const SizedBox(height: 16),
@@ -545,23 +545,23 @@ class _ListTicketModalState extends State<ListTicketModal> {
           maxLength: 200,
           maxLines: 2,
           style: tw(12),
-          decoration: _input('ej: Incluye 1 copa antes de la 01:30. No puedo ir por viaje.', focus: Tw.emerald500).copyWith(counterText: ''),
+          decoration: _input('ej: Incluye 1 copa antes de la 01:30. No puedo ir por viaje.', focus: Tw.live).copyWith(counterText: ''),
         ),
         const SizedBox(height: 16),
         Container(
           padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(color: Tw.slate950, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.05))),
+          decoration: BoxDecoration(color: Tw.night, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.lineSoft)),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Row(children: [
-              const Icon(Icons.shield, size: 12, color: Tw.fuchsia400),
+              const Icon(Icons.shield, size: 12, color: Tw.sun),
               const SizedBox(width: 4),
-              Text('¿Cómo funciona la venta?', style: tw(10, weight: bold, color: Tw.slate300)),
+              Text('¿Cómo funciona la venta?', style: tw(10, weight: bold, color: Tw.inkSoft)),
             ]),
             const SizedBox(height: 4),
-            Text('1. La entrada aparecerá visible en el feed público de /entradas.', style: tw(10, color: Tw.slate400)),
-            Text('2. El comprador te escribe, acordáis el pago directo (ej. Bizum) y se la transfieres a su @nick con 1 click.', style: tw(10, color: Tw.slate400)),
+            Text('1. La entrada aparecerá visible en el feed público de /entradas.', style: tw(10, color: Tw.inkSoft)),
+            Text('2. El comprador te escribe, acordáis el pago directo (ej. Bizum) y se la transfieres a su @nick con 1 click.', style: tw(10, color: Tw.inkSoft)),
             Text('3. Si el comprador no cumple con el pago, tienes el botón Reportar impago para revocar su QR y recuperar tu entrada al instante.',
-                style: tw(10, color: Tw.slate400)),
+                style: tw(10, color: Tw.inkSoft)),
           ]),
         ),
         if (_error != null) _errorBox(_error!),
@@ -639,7 +639,7 @@ class _ClaimTicketModalState extends State<ClaimTicketModal> {
         children: [
           Text(
             '¿Compraste tu entrada en la web sin registrarte? Introdúcela aquí para guardarla en tu monedero de la app, cederla gratis a un amigo o protegerte contra timos.',
-            style: tw(12, color: Tw.slate300, height: 1.6),
+            style: tw(12, color: Tw.inkSoft, height: 1.6),
           ),
           const SizedBox(height: 24),
           _fieldLabel('Localizador de entrada o enlace web'),
@@ -663,7 +663,7 @@ class _ClaimTicketModalState extends State<ClaimTicketModal> {
               loading: _loading,
               enabled: _ticket.text.trim().isNotEmpty,
               onSubmit: _submit,
-              gradient: const LinearGradient(colors: [Tw.purple600, Tw.fuchsia600]),
+              gradient: const LinearGradient(colors: [Tw.sunset, Tw.party]),
               icon: Icons.download,
               label: 'Vincular a mi app'),
         ],
@@ -742,7 +742,7 @@ class _BuybackListModalState extends State<BuybackListModal> {
           padding: const EdgeInsets.only(bottom: 12),
           child: Row(children: [
             Expanded(child: Text(l, style: tw(14, color: zinc400))),
-            Text(v, style: big ? tw(18, weight: bold, color: Tw.green400) : tw(14, weight: semibold)),
+            Text(v, style: big ? tw(18, weight: bold, color: Tw.live) : tw(14, weight: semibold)),
           ]),
         );
     return Container(
@@ -805,7 +805,7 @@ class _BuybackListModalState extends State<BuybackListModal> {
                 onTap: _loading || _loadingTier || _originalCents <= 0 ? () {} : _confirm,
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 12),
-                  decoration: BoxDecoration(color: Tw.fuchsia600, borderRadius: BorderRadius.circular(12)),
+                  decoration: BoxDecoration(color: Tw.party, borderRadius: BorderRadius.circular(12)),
                   child: Text(
                     _loading ? context.t('common.processing', fallback: 'Procesando...') : context.t('buyback.confirm', fallback: 'Solicitar recompra'),
                     textAlign: TextAlign.center,

@@ -83,7 +83,7 @@ class _VenueReviewsState extends State<VenueReviews> {
               child: Icon(
                 s <= (interactive ? value : value.round()) ? Icons.star : Icons.star_border,
                 size: interactive ? 28 : 18,
-                color: s <= value ? const Color(0xFFFACC15) : Tw.slate700,
+                color: s <= value ? const Color(0xFFFACC15) : Tw.line,
               ),
             ),
           ),
@@ -96,13 +96,13 @@ class _VenueReviewsState extends State<VenueReviews> {
     final avg = _reviews.isEmpty ? 0.0 : _reviews.map((r) => asDouble(r['rating']) ?? 0).reduce((a, b) => a + b) / _reviews.length;
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Row(children: [
-        Expanded(child: Label(context.t('reviews.title'), size: 14, color: Tw.slate500, tracking: 0.2)),
+        Expanded(child: Label(context.t('reviews.title'), size: 14, color: Tw.inkDim, tracking: 0.2)),
         if (_reviews.isNotEmpty) ...[
           _stars(avg),
           const SizedBox(width: 4),
           Text(avg.toStringAsFixed(1), style: tw(12, weight: black, color: const Color(0xFFFACC15))),
           const SizedBox(width: 8),
-          Text('(${_reviews.length})', style: tw(10, color: Tw.slate600)),
+          Text('(${_reviews.length})', style: tw(10, color: Tw.inkDim)),
         ],
       ]),
       const SizedBox(height: 16),
@@ -112,9 +112,9 @@ class _VenueReviewsState extends State<VenueReviews> {
           radius: 16,
           padding: const EdgeInsets.symmetric(vertical: 12),
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            const Icon(Icons.rate_review, size: 14, color: Tw.slate400),
+            const Icon(Icons.rate_review, size: 14, color: Tw.inkSoft),
             const SizedBox(width: 8),
-            Text(context.t('reviews.write_review'), style: tw(12, weight: bold, color: Tw.slate400)),
+            Text(context.t('reviews.write_review'), style: tw(12, weight: bold, color: Tw.inkSoft)),
           ]),
         ),
         const SizedBox(height: 16),
@@ -130,7 +130,7 @@ class _VenueReviewsState extends State<VenueReviews> {
                   padding: const EdgeInsets.all(20),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                     Text(context.t('reviews.rate_venue', params: {'name': widget.venueName}),
-                        textAlign: TextAlign.center, style: tw(12, weight: bold, color: Tw.slate400)),
+                        textAlign: TextAlign.center, style: tw(12, weight: bold, color: Tw.inkSoft)),
                     const SizedBox(height: 8),
                     Center(child: _stars(_rating, interactive: true)),
                     const SizedBox(height: 16),
@@ -152,7 +152,7 @@ class _VenueReviewsState extends State<VenueReviews> {
                           onTap: () => setState(() => _showForm = false),
                           radius: 12,
                           padding: const EdgeInsets.symmetric(vertical: 12),
-                          child: Text(context.t('reviews.cancel'), textAlign: TextAlign.center, style: tw(12, weight: bold, color: Tw.slate400)),
+                          child: Text(context.t('reviews.cancel'), textAlign: TextAlign.center, style: tw(12, weight: bold, color: Tw.inkSoft)),
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -163,7 +163,7 @@ class _VenueReviewsState extends State<VenueReviews> {
                             onTap: _submit,
                             child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 12),
-                              decoration: BoxDecoration(color: Tw.fuchsia600, borderRadius: BorderRadius.circular(12)),
+                              decoration: BoxDecoration(color: Tw.party, borderRadius: BorderRadius.circular(12)),
                               child: Label(_submitting ? context.t('reviews.sending') : context.t('reviews.submit'),
                                   size: 12, color: Tw.white, tracking: 0.05, align: TextAlign.center),
                             ),
@@ -177,14 +177,14 @@ class _VenueReviewsState extends State<VenueReviews> {
       ),
       if (_loading)
         for (var i = 0; i < 2; i++)
-          Container(height: 80, margin: const EdgeInsets.only(bottom: 12), decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16)))
+          Container(height: 80, margin: const EdgeInsets.only(bottom: 12), decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16)))
       else if (_reviews.isEmpty)
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 32),
           child: Column(children: [
-            const Icon(Icons.reviews, size: 30, color: Tw.slate700),
+            const Icon(Icons.reviews, size: 30, color: Tw.line),
             const SizedBox(height: 8),
-            Text(context.t('reviews.no_reviews'), style: tw(12, color: Tw.slate600)),
+            Text(context.t('reviews.no_reviews'), style: tw(12, color: Tw.inkDim)),
           ]),
         )
       else
@@ -192,7 +192,7 @@ class _VenueReviewsState extends State<VenueReviews> {
           Container(
             margin: const EdgeInsets.only(bottom: 12),
             padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.06))),
+            decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.lineSoft)),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Row(children: [
                 ClipOval(
@@ -202,10 +202,10 @@ class _VenueReviewsState extends State<VenueReviews> {
                     child: NetImage(
                       r['userPhoto'] as String?,
                       placeholder: Container(
-                        color: Tw.slate800,
+                        color: Tw.line,
                         alignment: Alignment.center,
                         child: Text(safeStr(r['userNick']).isEmpty ? '' : safeStr(r['userNick'])[0].toUpperCase(),
-                            style: tw(12, weight: bold, color: Tw.slate500)),
+                            style: tw(12, weight: bold, color: Tw.inkDim)),
                       ),
                     ),
                   ),
@@ -218,13 +218,13 @@ class _VenueReviewsState extends State<VenueReviews> {
                       _stars(asDouble(r['rating']) ?? 0),
                     ]),
                     if (parseDate(r['createdAt']) != null)
-                      Text(DateFormat('d/M/yyyy').format(parseDate(r['createdAt'])!), style: tw(9, color: Tw.slate600)),
+                      Text(DateFormat('d/M/yyyy').format(parseDate(r['createdAt'])!), style: tw(9, color: Tw.inkDim)),
                   ]),
                 ),
               ]),
               if (safeStr(r['comment']).isNotEmpty) ...[
                 const SizedBox(height: 8),
-                Text(safeStr(r['comment']), style: tw(12, color: Tw.slate400, height: 1.6)),
+                Text(safeStr(r['comment']), style: tw(12, color: Tw.inkSoft, height: 1.6)),
               ],
             ]),
           ),

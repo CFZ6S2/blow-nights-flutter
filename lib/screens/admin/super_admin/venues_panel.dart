@@ -229,15 +229,15 @@ class _VenuesPanelState extends State<VenuesPanel> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                color: Tw.green500.withValues(alpha: 0.1),
+                color: Tw.live.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Tw.green500.withValues(alpha: 0.3)),
+                border: Border.all(color: Tw.live.withValues(alpha: 0.3)),
               ),
               child: Row(children: [
                 Expanded(
                   child: Text.rich(TextSpan(children: [
-                    TextSpan(text: '${_selectedOwner!['nick'] ?? _selectedOwner!['email']} ', style: tw(14, weight: bold, color: Tw.green400)),
-                    TextSpan(text: (_selectedOwner!['email'] as String?) ?? '', style: tw(12, color: Tw.slate500)),
+                    TextSpan(text: '${_selectedOwner!['nick'] ?? _selectedOwner!['email']} ', style: tw(14, weight: bold, color: Tw.live)),
+                    TextSpan(text: (_selectedOwner!['email'] as String?) ?? '', style: tw(12, color: Tw.inkDim)),
                   ])),
                 ),
                 GestureDetector(
@@ -312,12 +312,12 @@ class _VenuesPanelState extends State<VenuesPanel> {
   Widget _userChoice(Map<String, dynamic> u, VoidCallback onChoose) => Container(
         margin: const EdgeInsets.only(top: 4),
         padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(8)),
+        decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(8)),
         child: Row(children: [
           Expanded(
             child: Text.rich(TextSpan(children: [
               TextSpan(text: '${u['nick'] ?? ''} ', style: tw(12, weight: bold)),
-              TextSpan(text: (u['email'] ?? u['id']) as String, style: tw(12, color: Tw.slate500)),
+              TextSpan(text: (u['email'] ?? u['id']) as String, style: tw(12, color: Tw.inkDim)),
             ])),
           ),
           AdminButton(
@@ -337,30 +337,30 @@ class _VenuesPanelState extends State<VenuesPanel> {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.05))),
+      decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.lineSoft)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text((v['name'] as String?) ?? id, style: tw(15, weight: bold)),
-              Label('${v['type'] ?? ''} | ${context.t('super_admin.city_label_short')} ${v['cityId'] ?? ''}', color: Tw.slate400, weight: FontWeight.w400),
+              Label('${v['type'] ?? ''} | ${context.t('super_admin.city_label_short')} ${v['cityId'] ?? ''}', color: Tw.inkSoft, weight: FontWeight.w400),
               if ((v['address'] as String?)?.isNotEmpty == true)
                 Padding(
                   padding: const EdgeInsets.only(top: 4),
-                  child: Text('📍 ${v['address']}', style: tw(12, color: Tw.slate300)),
+                  child: Text('📍 ${v['address']}', style: tw(12, color: Tw.inkSoft)),
                 ),
               const SizedBox(height: 6),
               if (ownerId != null && ownerId.isNotEmpty)
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                  decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(8)),
+                  decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(8)),
                   child: owner != null
                       ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                           Text('👤 ${owner['nick'] ?? owner['displayName'] ?? '—'}', style: tw(12, weight: bold)),
-                          Text('✉ ${owner['email'] ?? ''}', style: tw(10, color: Tw.slate400)),
-                          if ((owner['phone'] as String?)?.isNotEmpty == true) Text('📞 ${owner['phone']}', style: tw(10, color: Tw.slate400)),
+                          Text('✉ ${owner['email'] ?? ''}', style: tw(10, color: Tw.inkSoft)),
+                          if ((owner['phone'] as String?)?.isNotEmpty == true) Text('📞 ${owner['phone']}', style: tw(10, color: Tw.inkSoft)),
                         ])
-                      : Text('${context.t('super_admin.owner_label')} $ownerId', style: tw(10, color: Tw.slate500).copyWith(fontFamily: 'monospace')),
+                      : Text('${context.t('super_admin.owner_label')} $ownerId', style: tw(10, color: Tw.inkDim).copyWith(fontFamily: 'monospace')),
                 )
               else
                 Text(context.t('super_admin.no_owner', fallback: 'Sin dueño asignado'),
@@ -371,7 +371,7 @@ class _VenuesPanelState extends State<VenuesPanel> {
           Column(children: [
             AdminButton(
               label: context.t('super_admin.assign_btn'),
-              color: Tw.w(0.1),
+              color: Tw.lineSoft,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               onTap: () => setState(() => _assigningVenueId = _assigningVenueId == id ? null : id),
             ),
@@ -387,7 +387,7 @@ class _VenuesPanelState extends State<VenuesPanel> {
         ]),
         if (_assigningVenueId == id) ...[
           const SizedBox(height: 16),
-          Divider(height: 1, color: Tw.w(0.1)),
+          Divider(height: 1, color: Tw.line),
           const SizedBox(height: 16),
           _searchRow(_assignSearch, _searchingAssign, () async {
             if (_assignSearch.text.trim().isEmpty) return;

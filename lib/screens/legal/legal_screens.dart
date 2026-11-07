@@ -17,24 +17,24 @@ class _LegalPage extends StatelessWidget {
             GestureDetector(
               onTap: () => Navigator.of(context).maybePop(),
               child: Row(mainAxisSize: MainAxisSize.min, children: [
-                const Icon(Icons.arrow_back, size: 14, color: Tw.fuchsia500),
+                const Icon(Icons.arrow_back, size: 14, color: Tw.party),
                 const SizedBox(width: 8),
-                Label(context.t('$ns.back'), color: Tw.fuchsia500),
+                Label(context.t('$ns.back'), color: Tw.party),
               ]),
             ),
             const SizedBox(height: 16),
             ShaderMask(
-              shaderCallback: (r) => const LinearGradient(colors: [Tw.white, Tw.slate500]).createShader(r),
+              shaderCallback: (r) => const LinearGradient(colors: [Tw.white, Tw.inkDim]).createShader(r),
               child: Text(context.t('$ns.title'), style: tw(36, weight: black, tracking: -0.025, height: 1.1)),
             ),
             const SizedBox(height: 16),
-            Text(context.t('$ns.lastUpdated'), style: tw(14, color: Tw.slate500)),
+            Text(context.t('$ns.lastUpdated'), style: tw(14, color: Tw.inkDim)),
             const SizedBox(height: 48),
             ...sections(context),
             const SizedBox(height: 48),
-            Divider(color: Tw.w(0.05)),
+            Divider(color: Tw.lineSoft),
             const SizedBox(height: 48),
-            Label(context.t('$ns.footer'), color: Tw.slate500, tracking: 0.2, align: TextAlign.center),
+            Label(context.t('$ns.footer'), color: Tw.inkDim, tracking: 0.2, align: TextAlign.center),
           ]),
         ),
       );
@@ -45,7 +45,7 @@ Widget _section(BuildContext context, String title, List<Widget> body) => Paddin
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Container(
           padding: const EdgeInsets.only(bottom: 8),
-          decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Tw.w(0.05)))),
+          decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Tw.lineSoft))),
           child: Label(title, size: 20, color: Tw.white, tracking: 0.05),
         ),
         const SizedBox(height: 16),
@@ -53,13 +53,13 @@ Widget _section(BuildContext context, String title, List<Widget> body) => Paddin
       ]),
     );
 
-Widget _p(String text) => Padding(padding: const EdgeInsets.only(bottom: 16), child: Text(text, style: tw(16, color: Tw.slate300, height: 1.6)));
+Widget _p(String text) => Padding(padding: const EdgeInsets.only(bottom: 16), child: Text(text, style: tw(16, color: Tw.inkSoft, height: 1.6)));
 
 Widget _li(InlineSpan span) => Padding(
       padding: const EdgeInsets.only(left: 12, bottom: 8),
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text('•  ', style: tw(16, color: Tw.slate300, height: 1.6)),
-        Expanded(child: Text.rich(span, style: tw(16, color: Tw.slate300, height: 1.6))),
+        Text('•  ', style: tw(16, color: Tw.inkSoft, height: 1.6)),
+        Expanded(child: Text.rich(span, style: tw(16, color: Tw.inkSoft, height: 1.6))),
       ]),
     );
 
@@ -91,7 +91,7 @@ class PrivacyScreen extends StatelessWidget {
             _p(c.t('privacy.section1.p1')),
             for (final i in [1, 2, 3, 4])
               _li(TextSpan(children: [
-                TextSpan(text: c.t('privacy.section1.li$i.strong'), style: tw(16, weight: bold, color: Tw.slate300)),
+                TextSpan(text: c.t('privacy.section1.li$i.strong'), style: tw(16, weight: bold, color: Tw.inkSoft)),
                 TextSpan(text: ' ${c.t('privacy.section1.li$i.text')}'),
               ])),
           ]),
@@ -112,7 +112,7 @@ class RulesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final rules = [
       ('01', 'rules.rule1', Icons.favorite, const [Tw.pink500, Color(0xFFF43F5E)]),
-      ('02', 'rules.rule2', Icons.verified, const [Tw.fuchsia500, Tw.purple500]),
+      ('02', 'rules.rule2', Icons.verified, const [Tw.sunset, Tw.party]),
       ('03', 'rules.rule3', Icons.visibility_off, const [Tw.purple500, Tw.indigo500]),
       ('04', 'rules.rule4', Icons.security, const [Tw.indigo500, Tw.blue500]),
     ];
@@ -125,14 +125,14 @@ class RulesScreen extends StatelessWidget {
               child: Container(
                 width: 48,
                 height: 48,
-                decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+                decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
                 child: const Icon(Icons.chevron_left),
               ),
             ),
             Expanded(
               child: Center(
                 child: ShaderMask(
-                  shaderCallback: (r) => const LinearGradient(colors: [Tw.fuchsia500, Tw.indigo500]).createShader(r),
+                  shaderCallback: (r) => const LinearGradient(colors: [Tw.sunset, Tw.party]).createShader(r),
                   child: Label(context.t('rules.title'), size: 18, color: Tw.white, tracking: 0.3),
                 ),
               ),
@@ -143,18 +143,18 @@ class RulesScreen extends StatelessWidget {
           Text.rich(
             TextSpan(children: [
               TextSpan(text: '${context.t('rules.header1')}\n'),
-              TextSpan(text: context.t('rules.header2'), style: tw(46, weight: black, color: Tw.slate500, tracking: -0.05, height: 1)),
+              TextSpan(text: context.t('rules.header2'), style: tw(46, weight: black, color: Tw.inkDim, tracking: -0.05, height: 1)),
             ]),
             textAlign: TextAlign.center,
             style: tw(46, weight: black, tracking: -0.05, height: 1),
           ),
           const SizedBox(height: 24),
-          Text(context.t('rules.subtitle'), textAlign: TextAlign.center, style: tw(16, weight: medium, color: Tw.slate400)),
+          Text(context.t('rules.subtitle'), textAlign: TextAlign.center, style: tw(16, weight: medium, color: Tw.inkSoft)),
           const SizedBox(height: 64),
           for (final r in rules) ...[
             Container(
               clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(48), border: Border.all(color: Tw.w(0.1))),
+              decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(48), border: Border.all(color: Tw.line)),
               child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                 Container(height: 4, decoration: BoxDecoration(gradient: LinearGradient(colors: r.$4))),
                 Padding(
@@ -171,12 +171,12 @@ class RulesScreen extends StatelessWidget {
                         child: Icon(r.$3, size: 30, color: Tw.white),
                       ),
                       const Spacer(),
-                      Text(r.$1, style: tw(36, weight: black, color: Tw.w(0.05), tracking: -0.05)),
+                      Text(r.$1, style: tw(36, weight: black, color: Tw.panelSoft, tracking: -0.05)),
                     ]),
                     const SizedBox(height: 32),
                     Label(context.t('${r.$2}.title'), size: 24, color: Tw.white, tracking: -0.025),
                     const SizedBox(height: 16),
-                    Text(context.t('${r.$2}.desc'), style: tw(14, weight: medium, color: Tw.slate400, height: 1.6)),
+                    Text(context.t('${r.$2}.desc'), style: tw(14, weight: medium, color: Tw.inkSoft, height: 1.6)),
                   ]),
                 ),
               ]),
@@ -189,28 +189,28 @@ class RulesScreen extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Tw.fuchsia600.withValues(alpha: 0.2), Tw.indigo600.withValues(alpha: 0.2)],
+                colors: [Tw.party.withValues(alpha: 0.2), Tw.indigo600.withValues(alpha: 0.2)],
               ),
               borderRadius: BorderRadius.circular(32),
-              border: Border.all(color: Tw.w(0.1)),
+              border: Border.all(color: Tw.line),
             ),
             child: Column(children: [
               Text(context.t('rules.report_title'), textAlign: TextAlign.center, style: tw(30, weight: black, tracking: -0.025)),
               const SizedBox(height: 24),
-              Text(context.t('rules.report_desc'), textAlign: TextAlign.center, style: tw(16, weight: medium, color: Tw.slate300)),
+              Text(context.t('rules.report_desc'), textAlign: TextAlign.center, style: tw(16, weight: medium, color: Tw.inkSoft)),
               const SizedBox(height: 32),
               Pressable(
                 onTap: () => Navigator.of(context).popUntil((r) => r.isFirst),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                   decoration: BoxDecoration(color: Tw.white, borderRadius: BorderRadius.circular(99)),
-                  child: Label(context.t('rules.accept_btn'), size: 12, color: Tw.black, tracking: 0.3),
+                  child: Label(context.t('rules.accept_btn'), size: 12, color: Tw.nightDeep, tracking: 0.3),
                 ),
               ),
             ]),
           ),
           const SizedBox(height: 64),
-          Label(context.t('rules.footer'), weight: medium, color: Tw.slate700, tracking: 0.2, align: TextAlign.center),
+          Label(context.t('rules.footer'), weight: medium, color: Tw.line, tracking: 0.2, align: TextAlign.center),
           const SizedBox(height: 40),
         ]),
       ),

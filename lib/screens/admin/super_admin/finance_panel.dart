@@ -235,22 +235,22 @@ class _FinancePanelState extends State<FinancePanel> {
               TextSpan(text: '€', style: tw(18, color: color)),
             ])),
             const SizedBox(height: 8),
-            Text(note, style: tw(11, color: Tw.slate400)),
+            Text(note, style: tw(11, color: Tw.inkSoft)),
           ]),
         );
 
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      kpi('Revenue Global App', Tw.fuchsia400, fmt.format(_globalRevenue), 'MRR de suscripciones activas de locales, a precio de tarifa (sin pruebas)',
-          gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.fuchsia900.withValues(alpha: 0.4), Tw.black]),
-          border: Tw.fuchsia500.withValues(alpha: 0.3)),
+      kpi('Revenue Global App', Tw.sun, fmt.format(_globalRevenue), 'MRR de suscripciones activas de locales, a precio de tarifa (sin pruebas)',
+          gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.panel.withValues(alpha: 0.4), Tw.nightDeep]),
+          border: Tw.party.withValues(alpha: 0.3)),
       const SizedBox(height: 16),
       kpi('Gastos de $_month', Tw.red400, fmt.format(monthTotal), 'Infraestructura, marketing y demás gastos de la plataforma',
           bg: Tw.red900.withValues(alpha: 0.1), border: Tw.red500.withValues(alpha: 0.3)),
       const SizedBox(height: 16),
-      kpi('MRR en ciudades con partner', Tw.green400, fmt.format(_partnerRevenue), 'Se reparte al cerrar cada mes: 50% del beneficio neto, tras descontar gastos'),
+      kpi('MRR en ciudades con partner', Tw.live, fmt.format(_partnerRevenue), 'Se reparte al cerrar cada mes: 50% del beneficio neto, tras descontar gastos'),
       const SizedBox(height: 32),
       Row(children: [
-        Label('Mes', size: 12, weight: bold, color: Tw.slate400),
+        Label('Mes', size: 12, weight: bold, color: Tw.inkSoft),
         const SizedBox(width: 12),
         Expanded(
           child: AdminSelect<String>(
@@ -282,10 +282,10 @@ class _FinancePanelState extends State<FinancePanel> {
           AdminSectionTitle('Gastos de la plataforma · $_month', color: Tw.red400),
           const SizedBox(height: 8),
           Text('Se descuentan antes del 50/50. Un gasto de una ciudad cuenta entero para ella; uno general se reparte según lo que factura cada ciudad.',
-              style: tw(12, color: Tw.slate500)),
+              style: tw(12, color: Tw.inkDim)),
           const SizedBox(height: 16),
           if (_monthLocked)
-            Text('Mes liquidado: sus gastos ya no se pueden cambiar.', style: tw(12, color: Tw.amber400))
+            Text('Mes liquidado: sus gastos ya no se pueden cambiar.', style: tw(12, color: Tw.sun))
           else ...[
             AdminInput(controller: _desc, hint: 'Concepto (Ej: Servidores Google Cloud)'),
             const SizedBox(height: 12),
@@ -316,27 +316,27 @@ class _FinancePanelState extends State<FinancePanel> {
           ],
           const SizedBox(height: 16),
           if (_expenses.isEmpty)
-            Text('Sin gastos en $_month.', style: tw(12, color: Tw.slate500))
+            Text('Sin gastos en $_month.', style: tw(12, color: Tw.inkDim))
           else
             for (final e in _expenses)
               Container(
                 margin: const EdgeInsets.only(bottom: 8),
                 padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(8), border: Border.all(color: Tw.w(0.05))),
+                decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(8), border: Border.all(color: Tw.lineSoft)),
                 child: Row(children: [
                   Expanded(
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Text((e['description'] as String?) ?? '', style: tw(14, color: Tw.slate300)),
+                      Text((e['description'] as String?) ?? '', style: tw(14, color: Tw.inkSoft)),
                       Text(
                         '${_categories.firstWhere((c) => c.$1 == e['category'], orElse: () => ('otros', 'Otros')).$2} · ${_cityName(e['cityId'])}'.toUpperCase(),
-                        style: tw(10, color: Tw.slate500, tracking: 0.1),
+                        style: tw(10, color: Tw.inkDim, tracking: 0.1),
                       ),
                     ]),
                   ),
                   Text('${e['amount']} €', style: tw(14, weight: bold, color: Tw.red400).copyWith(fontFamily: 'monospace')),
                   if (!_monthLocked)
                     IconButton(
-                      icon: const Icon(Icons.close, size: 16, color: Tw.slate500),
+                      icon: const Icon(Icons.close, size: 16, color: Tw.inkDim),
                       tooltip: 'Borrar',
                       onPressed: () => _deleteExpense(e['id'] as String),
                     ),
@@ -351,24 +351,24 @@ class _FinancePanelState extends State<FinancePanel> {
     final closed = s?['closed'] == true;
     final canClose = s != null && !closed && s['ended'] == true && s['openBefore'] == null && _int(s, 'missingFees') == 0;
     final retry = closed && cities.any((c) => c['transferStatus'] == 'failed' || c['transferStatus'] == 'no_account');
-    Widget warn(String text) => Padding(padding: const EdgeInsets.only(bottom: 8), child: Text(text, style: tw(12, color: Tw.amber400)));
+    Widget warn(String text) => Padding(padding: const EdgeInsets.only(bottom: 8), child: Text(text, style: tw(12, color: Tw.sun)));
 
     return AdminCard(
-      color: Tw.green500.withValues(alpha: 0.03),
-      borderColor: Tw.green500.withValues(alpha: 0.2),
+      color: Tw.live.withValues(alpha: 0.03),
+      borderColor: Tw.live.withValues(alpha: 0.2),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        AdminSectionTitle('Liquidación de partners · $_month', color: Tw.green400),
+        AdminSectionTitle('Liquidación de partners · $_month', color: Tw.live),
         const SizedBox(height: 8),
         Text(
           'Cada partner recibe el 50% del beneficio neto de su ciudad: lo facturado menos las comisiones de pago, los gastos de su ciudad, '
           'su parte de los generales y la pérdida de meses anteriores. Si sale negativo, no cobra y la pérdida pasa al mes siguiente.',
-          style: tw(12, color: Tw.slate500),
+          style: tw(12, color: Tw.inkDim),
         ),
         const SizedBox(height: 16),
         Wrap(spacing: 12, runSpacing: 12, children: [
-          AdminButton(label: _busy ? 'Calculando…' : 'Calcular', color: Tw.w(0.1), loading: _busy, onTap: _busy ? null : () => _runSettlement()),
+          AdminButton(label: _busy ? 'Calculando…' : 'Calcular', color: Tw.lineSoft, loading: _busy, onTap: _busy ? null : () => _runSettlement()),
           if (canClose) AdminButton(label: 'Cerrar mes y transferir', color: Tw.green600, onTap: _busy ? null : _confirmClose),
-          if (retry) AdminButton(label: 'Reintentar transferencias', color: Tw.amber500, onTap: _busy ? null : () => _runSettlement(close: true)),
+          if (retry) AdminButton(label: 'Reintentar transferencias', color: Tw.sun, onTap: _busy ? null : () => _runSettlement(close: true)),
         ]),
         const SizedBox(height: 16),
         if (_settlementError != null) Padding(padding: const EdgeInsets.only(bottom: 8), child: Text(_settlementError!, style: tw(12, color: Tw.red400))),
@@ -376,14 +376,14 @@ class _FinancePanelState extends State<FinancePanel> {
           Text(
             '${closed ? 'Mes liquidado. ' : s['ended'] == true ? 'Mes sin cerrar. ' : 'El mes aún no ha terminado. '}'
             'Facturado en la plataforma: ${_eur(_int(s, 'platformRevenueCents'))} € · gastos generales: ${_eur(_int(s, 'generalExpensesCents'))} €',
-            style: tw(12, color: Tw.slate400),
+            style: tw(12, color: Tw.inkSoft),
           ),
           const SizedBox(height: 8),
           if (s['openBefore'] != null) warn('Cierra antes ${s['openBefore']}: los meses se liquidan en orden.'),
           if (_int(s, 'missingFees') > 0) warn('No se encontró la comisión de Stripe de ${_int(s, 'missingFees')} cobro(s). Vuelve a calcular en unos minutos.'),
           if (_int(s, 'otherCurrencyEntries') > 0) warn('${_int(s, 'otherCurrencyEntries')} cobro(s) en otra moneda quedan fuera: se liquidan a mano.'),
           if (cities.isEmpty)
-            Text('Ninguna ciudad con partner tiene cobros ni gastos este mes.', style: tw(12, color: Tw.slate500))
+            Text('Ninguna ciudad con partner tiene cobros ni gastos este mes.', style: tw(12, color: Tw.inkDim))
           else
             for (final c in cities) _settlementRow(c),
         ],
@@ -392,10 +392,10 @@ class _FinancePanelState extends State<FinancePanel> {
   }
 
   Widget _settlementRow(Map<String, dynamic> c) {
-    Widget line(String label, int cents, {Color color = Tw.slate300, bool strong = false}) => Padding(
+    Widget line(String label, int cents, {Color color = Tw.inkSoft, bool strong = false}) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 2),
           child: Row(children: [
-            Expanded(child: Text(label, style: tw(12, color: Tw.slate500))),
+            Expanded(child: Text(label, style: tw(12, color: Tw.inkDim))),
             Text('${_eur(cents)} €', style: tw(12, weight: strong ? bold : medium, color: color).copyWith(fontFamily: 'monospace')),
           ]),
         );
@@ -404,13 +404,13 @@ class _FinancePanelState extends State<FinancePanel> {
     return Container(
       margin: const EdgeInsets.only(top: 12),
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.05))),
+      decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.lineSoft)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Row(children: [
           Expanded(child: Text('${c['cityName']} · ${_int(c, 'entryCount')} cobros', style: tw(14, weight: bold))),
           Text(
             (status != null ? _transferLabels[status] ?? status : c['hasAccount'] == true ? 'Pendiente de cierre' : 'Sin cuenta Stripe').toUpperCase(),
-            style: tw(10, color: Tw.slate400, tracking: 0.1),
+            style: tw(10, color: Tw.inkSoft, tracking: 0.1),
           ),
         ]),
         const SizedBox(height: 12),
@@ -421,17 +421,17 @@ class _FinancePanelState extends State<FinancePanel> {
         line('Pérdida de meses anteriores', -_int(c, 'previousLossCents')),
         line('Total descontado', -settlementCostsCents(c)),
         line('Beneficio neto', net, color: net < 0 ? Tw.red400 : Tw.white),
-        line('Partner (50%)', _int(c, 'partnerCents'), color: Tw.green400, strong: true),
+        line('Partner (50%)', _int(c, 'partnerCents'), color: Tw.live, strong: true),
         line('Se queda la plataforma', _int(c, 'platformCents')),
-        if (_int(c, 'carryForwardLossCents') > 0) line('Pérdida que pasa al mes siguiente', _int(c, 'carryForwardLossCents'), color: Tw.amber400),
+        if (_int(c, 'carryForwardLossCents') > 0) line('Pérdida que pasa al mes siguiente', _int(c, 'carryForwardLossCents'), color: Tw.sun),
       ]),
     );
   }
 
   Widget _breakdownRow(_CityRevenue item, NumberFormat fmt) {
     final maxMrr = _breakdown.fold(1, (a, b) => b.mrr > a ? b.mrr : a);
-    final color = item.partner ? Tw.green400 : Tw.fuchsia400;
-    final bar = item.partner ? Tw.green500 : Tw.fuchsia500;
+    final color = item.partner ? Tw.live : Tw.sun;
+    final bar = item.partner ? Tw.live : Tw.party;
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Expanded(child: Text('${item.city} (${item.partner ? 'Partner' : 'Operación Propia'})', style: tw(12, weight: bold))),

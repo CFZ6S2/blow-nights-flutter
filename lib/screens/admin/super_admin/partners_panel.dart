@@ -229,14 +229,14 @@ class _PartnersPanelState extends State<PartnersPanel> {
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Text(context.t('super_admin.partners_title', fallback: 'Master Partners'), style: tw(20, weight: black)),
       Text(context.t('super_admin.partners_subtitle', fallback: 'Provisioning y gestión de responsables territoriales'),
-          style: tw(14, color: Tw.slate400)),
+          style: tw(14, color: Tw.inkSoft)),
       const SizedBox(height: 16),
       Wrap(spacing: 8, runSpacing: 8, children: [
         if (_partners.any((mp) => mp['claimSyncStatus'] != 'synced'))
           AdminButton(
             icon: _batchSyncing ? Icons.hourglass_top : Icons.sync,
             label: _batchSyncing ? context.t('super_admin.syncing', fallback: 'Sincronizando...') : context.t('super_admin.batch_sync', fallback: 'Sync Pendientes'),
-            color: Tw.amber400,
+            color: Tw.sun,
             outlined: true,
             onTap: _batchSyncing ? null : _batchSync,
           ),
@@ -254,14 +254,14 @@ class _PartnersPanelState extends State<PartnersPanel> {
       else if (_partners.isEmpty)
         AdminCard(
           padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 24),
-          borderColor: Tw.w(0.05),
+          borderColor: Tw.lineSoft,
           child: Column(children: [
-            const Icon(Icons.handshake, size: 40, color: Tw.slate600),
+            const Icon(Icons.handshake, size: 40, color: Tw.inkDim),
             const SizedBox(height: 12),
             Text(context.t('super_admin.no_partners', fallback: 'Sin Master Partners'), style: tw(18, weight: bold)),
             const SizedBox(height: 8),
             Text(context.t('super_admin.no_partners_desc', fallback: 'Crea el primer responsable territorial para comenzar la expansión comercial.'),
-                textAlign: TextAlign.center, style: tw(14, color: Tw.slate500)),
+                textAlign: TextAlign.center, style: tw(14, color: Tw.inkDim)),
           ]),
         )
       else
@@ -283,13 +283,13 @@ class _PartnersPanelState extends State<PartnersPanel> {
 
     return AdminCard(
       radius: 16,
-      borderColor: Tw.fuchsia500.withValues(alpha: 0.2),
+      borderColor: Tw.party.withValues(alpha: 0.2),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Label(isCm ? context.t('super_admin.new_cm_form', fallback: 'Nuevo City Manager') : context.t('super_admin.new_mp_form', fallback: 'Nuevo Master Partner'),
-            size: 13, color: Tw.fuchsia400),
+            size: 13, color: Tw.sun),
         const SizedBox(height: 12),
         Row(children: [
-          _typeButton('masterPartner', 'Master Partner', Tw.fuchsia600),
+          _typeButton('masterPartner', 'Master Partner', Tw.party),
           const SizedBox(width: 8),
           _typeButton('cityManager', 'City Manager', const Color(0xFF0891B2)),
         ]),
@@ -309,7 +309,7 @@ class _PartnersPanelState extends State<PartnersPanel> {
         _label(context.t('super_admin.mp_notes', fallback: 'Notas')),
         AdminInput(controller: _notes, hint: 'Notas internas...'),
         const SizedBox(height: 16),
-        Divider(height: 1, color: Tw.w(0.1)),
+        Divider(height: 1, color: Tw.line),
         const SizedBox(height: 16),
         Row(children: [
           const Expanded(child: Label('Configuración Territorial', color: Tw.cyan400)),
@@ -319,9 +319,9 @@ class _PartnersPanelState extends State<PartnersPanel> {
               _loadVenueMarkers();
             },
             child: Row(children: [
-              const Icon(Icons.map, size: 14, color: Tw.fuchsia400),
+              const Icon(Icons.map, size: 14, color: Tw.sun),
               const SizedBox(width: 4),
-              Text(_showPreview ? 'Ocultar mapa' : 'Ver en mapa', style: tw(10, color: Tw.fuchsia400)),
+              Text(_showPreview ? 'Ocultar mapa' : 'Ver en mapa', style: tw(10, color: Tw.sun)),
             ]),
           ),
         ]),
@@ -335,21 +335,21 @@ class _PartnersPanelState extends State<PartnersPanel> {
         const SizedBox(height: 4),
         Text(
           'Nombres de región/provincia/localidad que Google Geocoding devuelve. El venue se asigna a este territorio si coincide alguno.',
-          style: tw(10, color: Tw.slate600),
+          style: tw(10, color: Tw.inkDim),
         ),
         _label('Match Countries (comma-sep)'),
         AdminInput(controller: _matchCountries, hint: 'España', focus: Tw.cyan400),
         const SizedBox(height: 4),
-        Text('Filtro de país para evitar colisiones internacionales (ej: Valencia España vs Venezuela).', style: tw(10, color: Tw.slate600)),
+        Text('Filtro de país para evitar colisiones internacionales (ej: Valencia España vs Venezuela).', style: tw(10, color: Tw.inkDim)),
         const SizedBox(height: 16),
         Container(
           padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.05))),
+          decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.lineSoft)),
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             const Row(children: [
-              Icon(Icons.science, size: 14, color: Tw.amber400),
+              Icon(Icons.science, size: 14, color: Tw.sun),
               SizedBox(width: 6),
-              Label('Test de Resolución Territorial', color: Tw.amber400, weight: bold),
+              Label('Test de Resolución Territorial', color: Tw.sun, weight: bold),
             ]),
             const SizedBox(height: 12),
             Row(children: [
@@ -357,7 +357,7 @@ class _PartnersPanelState extends State<PartnersPanel> {
                 child: AdminInput(
                   controller: _testAddress,
                   hint: 'Calle Mayor 5, Mérida, España',
-                  focus: Tw.amber500,
+                  focus: Tw.sun,
                   onSubmitted: (_) => _testResolution(),
                 ),
               ),
@@ -374,14 +374,14 @@ class _PartnersPanelState extends State<PartnersPanel> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: (resolved != null ? Tw.green500 : Tw.red500).withValues(alpha: 0.1),
+                  color: (resolved != null ? Tw.live : Tw.red500).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: (resolved != null ? Tw.green500 : Tw.red500).withValues(alpha: 0.2)),
+                  border: Border.all(color: (resolved != null ? Tw.live : Tw.red500).withValues(alpha: 0.2)),
                 ),
                 child: r['success'] == true
                     ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                         Row(children: [
-                          Icon(resolved != null ? Icons.check_circle : Icons.error, size: 14, color: resolved != null ? Tw.green400 : Tw.red400),
+                          Icon(resolved != null ? Icons.check_circle : Icons.error, size: 14, color: resolved != null ? Tw.live : Tw.red400),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
@@ -390,7 +390,7 @@ class _PartnersPanelState extends State<PartnersPanel> {
                                   : resolved != null
                                       ? 'Territorio: ${resolved.toUpperCase()}'
                                       : 'Sin territorio asignado',
-                              style: tw(14, weight: bold, color: resolved != null ? Tw.green400 : Tw.red400),
+                              style: tw(14, weight: bold, color: resolved != null ? Tw.live : Tw.red400),
                             ),
                           ),
                         ]),
@@ -402,7 +402,7 @@ class _PartnersPanelState extends State<PartnersPanel> {
                           ('province', 'Provincia'),
                           ('locality', 'Localidad'),
                         ])
-                          Text.rich(TextSpan(style: tw(12, color: Tw.slate400).copyWith(fontFamily: 'monospace'), children: [
+                          Text.rich(TextSpan(style: tw(12, color: Tw.inkSoft).copyWith(fontFamily: 'monospace'), children: [
                             TextSpan(text: '$label: '),
                             TextSpan(text: '${geo?[k] ?? ''}', style: tw(12).copyWith(fontFamily: 'monospace')),
                           ])),
@@ -417,7 +417,7 @@ class _PartnersPanelState extends State<PartnersPanel> {
           Text(
             '${_venueMarkers.length} venues ${_cityIdsArray.isNotEmpty ? 'en ${_cityIdsArray.join(', ').toUpperCase()}' : ''}'
             '${r?['success'] == true && geo != null ? ' · Pin amarillo = dirección de test' : ''}',
-            style: tw(10, color: Tw.slate500),
+            style: tw(10, color: Tw.inkDim),
           ),
           const SizedBox(height: 8),
           TerritoryPreviewMap(
@@ -435,7 +435,7 @@ class _PartnersPanelState extends State<PartnersPanel> {
         Row(mainAxisAlignment: MainAxisAlignment.end, children: [
           TextButton(
             onPressed: () => setState(() => _showCreate = false),
-            child: Text(context.t('super_admin.cancel', fallback: 'Cancelar'), style: tw(14, color: Tw.slate400)),
+            child: Text(context.t('super_admin.cancel', fallback: 'Cancelar'), style: tw(14, color: Tw.inkSoft)),
           ),
           const SizedBox(width: 8),
           Flexible(
@@ -463,9 +463,9 @@ class _PartnersPanelState extends State<PartnersPanel> {
         decoration: BoxDecoration(
           color: active ? color : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: active ? color : Tw.w(0.1)),
+          border: Border.all(color: active ? color : Tw.line),
         ),
-        child: Text(label, style: tw(12, weight: bold, color: active ? Tw.white : Tw.slate400)),
+        child: Text(label, style: tw(12, weight: bold, color: active ? Tw.white : Tw.inkSoft)),
       ),
     );
   }
@@ -476,10 +476,10 @@ class _PartnersPanelState extends State<PartnersPanel> {
     final isCm = mp['type'] == 'cityManager';
     final sync = (mp['claimSyncStatus'] as String?) ?? 'unknown';
     final syncColor = switch (sync) {
-      'synced' => Tw.green400,
-      'pending' => Tw.amber400,
+      'synced' => Tw.live,
+      'pending' => Tw.sun,
       'failed' => Tw.red400,
-      _ => Tw.slate500,
+      _ => Tw.inkDim,
     };
     final uid = (mp['userId'] as String?) ?? '';
     final cities = asStringList(mp['cityIds']).map((c) => c.toUpperCase()).join(', ');
@@ -491,39 +491,39 @@ class _PartnersPanelState extends State<PartnersPanel> {
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Tw.w(0.05),
+          color: Tw.panelSoft,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: active ? Tw.w(0.1) : Tw.red500.withValues(alpha: 0.2)),
+          border: Border.all(color: active ? Tw.line : Tw.red500.withValues(alpha: 0.2)),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Wrap(spacing: 8, runSpacing: 6, crossAxisAlignment: WrapCrossAlignment.center, children: [
             Text((mp['displayName'] as String?) ?? '', style: tw(16, weight: black)),
-            _pill(isCm ? 'CM' : 'MP', isCm ? Tw.cyan400 : Tw.fuchsia400),
-            _pill((mp['status'] as String?) ?? '', active ? Tw.green400 : mp['status'] == 'suspended' ? Tw.red400 : Tw.slate400),
+            _pill(isCm ? 'CM' : 'MP', isCm ? Tw.cyan400 : Tw.sun),
+            _pill((mp['status'] as String?) ?? '', active ? Tw.live : mp['status'] == 'suspended' ? Tw.red400 : Tw.inkSoft),
             Text(sync == 'synced' ? '● sync' : sync == 'failed' ? '● fail' : '● $sync', style: tw(10, color: syncColor).copyWith(fontFamily: 'monospace')),
             if (sync != 'synced')
               GestureDetector(
                 onTap: _retrying == id ? null : () => _retrySync(id),
-                child: Text(_retrying == id ? '...' : 'retry', style: tw(10, color: Tw.amber400, decoration: TextDecoration.underline)),
+                child: Text(_retrying == id ? '...' : 'retry', style: tw(10, color: Tw.sun, decoration: TextDecoration.underline)),
               ),
           ]),
           const SizedBox(height: 6),
-          Text.rich(TextSpan(style: tw(12, color: Tw.slate500), children: [
+          Text.rich(TextSpan(style: tw(12, color: Tw.inkDim), children: [
             const TextSpan(text: 'UID: '),
-            TextSpan(text: '${uid.length > 12 ? uid.substring(0, 12) : uid}...', style: tw(12, color: Tw.slate300).copyWith(fontFamily: 'monospace')),
+            TextSpan(text: '${uid.length > 12 ? uid.substring(0, 12) : uid}...', style: tw(12, color: Tw.inkSoft).copyWith(fontFamily: 'monospace')),
             TextSpan(text: ' · $cities · Split: '),
-            TextSpan(text: '${mp['splitPct']}%', style: tw(12, color: Tw.fuchsia300).copyWith(fontFamily: 'monospace')),
+            TextSpan(text: '${mp['splitPct']}%', style: tw(12, color: Tw.sun).copyWith(fontFamily: 'monospace')),
             if (created != null) TextSpan(text: ' · ${created.day}/${created.month}/${created.year}'),
           ])),
           if ((mp['notes'] as String?)?.isNotEmpty == true)
             Padding(
               padding: const EdgeInsets.only(top: 4),
-              child: Text(mp['notes'] as String, style: tw(12, color: Tw.slate600, style: FontStyle.italic)),
+              child: Text(mp['notes'] as String, style: tw(12, color: Tw.inkDim, style: FontStyle.italic)),
             ),
           const SizedBox(height: 12),
           active
               ? AdminButton(label: context.t('super_admin.suspend', fallback: 'Suspender'), color: Tw.red400, outlined: true, onTap: () => _suspend(id))
-              : AdminButton(label: context.t('super_admin.reactivate', fallback: 'Reactivar'), color: Tw.green400, outlined: true, onTap: () => _reactivate(id)),
+              : AdminButton(label: context.t('super_admin.reactivate', fallback: 'Reactivar'), color: Tw.live, outlined: true, onTap: () => _reactivate(id)),
         ]),
       ),
     );
@@ -575,19 +575,19 @@ class _SuspendDialogState extends State<_SuspendDialog> {
 
   @override
   Widget build(BuildContext context) => Dialog(
-        backgroundColor: Tw.slate900,
+        backgroundColor: Tw.panel,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: Tw.red500.withValues(alpha: 0.3))),
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             Text(widget.title, style: tw(18, weight: black, color: Tw.red400)),
             const SizedBox(height: 12),
-            Text(widget.desc, style: tw(14, color: Tw.slate400)),
+            Text(widget.desc, style: tw(14, color: Tw.inkSoft)),
             const SizedBox(height: 16),
             TextField(controller: _reason, maxLines: 4, style: tw(14), decoration: adminInputDecoration(widget.placeholder, focus: Tw.red500)),
             const SizedBox(height: 16),
             Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(widget.cancel, style: tw(14, color: Tw.slate400))),
+              TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(widget.cancel, style: tw(14, color: Tw.inkSoft))),
               const SizedBox(width: 8),
               Flexible(
                 child: AdminButton(

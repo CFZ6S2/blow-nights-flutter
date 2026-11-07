@@ -35,7 +35,7 @@ class _PartnersLandingScreenState extends State<PartnersLandingScreen> {
   Widget build(BuildContext context) {
     final top = MediaQuery.of(context).padding.top;
     return Scaffold(
-      backgroundColor: Tw.slate950,
+      backgroundColor: Tw.night,
       body: Stack(children: [
         SingleChildScrollView(
           padding: EdgeInsets.only(top: top + 80),
@@ -48,22 +48,22 @@ class _PartnersLandingScreenState extends State<PartnersLandingScreen> {
             _launch(context),
             Container(
               padding: const EdgeInsets.all(48),
-              decoration: BoxDecoration(border: Border(top: BorderSide(color: Tw.w(0.1)))),
+              decoration: BoxDecoration(border: Border(top: BorderSide(color: Tw.line))),
               child: Column(children: [
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Container(
                     width: 24,
                     height: 24,
                     alignment: Alignment.center,
-                    decoration: BoxDecoration(gradient: const LinearGradient(colors: [Tw.slate700, Tw.slate900]), borderRadius: BorderRadius.circular(4)),
+                    decoration: BoxDecoration(gradient: const LinearGradient(colors: [Tw.line, Tw.panel]), borderRadius: BorderRadius.circular(4)),
                     child: Text('B', style: tw(12, weight: bold)),
                   ),
                   const SizedBox(width: 8),
-                  Text('Blow Nights Network', style: tw(14, weight: semibold, color: Tw.slate400)),
+                  Text('Blow Nights Network', style: tw(14, weight: semibold, color: Tw.inkSoft)),
                 ]),
                 const SizedBox(height: 12),
                 Text('© ${DateTime.now().year} Blow Nights. ${context.t('partners_all_rights', fallback: 'Todos los derechos reservados.')}',
-                    textAlign: TextAlign.center, style: tw(14, color: Tw.slate500)),
+                    textAlign: TextAlign.center, style: tw(14, color: Tw.inkDim)),
               ]),
             ),
           ]),
@@ -74,9 +74,9 @@ class _PartnersLandingScreenState extends State<PartnersLandingScreen> {
           right: 0,
           child: Container(
             padding: EdgeInsets.fromLTRB(8, top + 12, 16, 12),
-            decoration: BoxDecoration(color: Tw.slate950.withValues(alpha: 0.8), border: Border(bottom: BorderSide(color: Tw.w(0.1)))),
+            decoration: BoxDecoration(color: Tw.night.withValues(alpha: 0.8), border: Border(bottom: BorderSide(color: Tw.line))),
             child: Row(children: [
-              IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.slate400)),
+              IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.inkSoft)),
               Container(
                 width: 32,
                 height: 32,
@@ -91,7 +91,7 @@ class _PartnersLandingScreenState extends State<PartnersLandingScreen> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                   decoration: BoxDecoration(color: Tw.white, borderRadius: BorderRadius.circular(99)),
-                  child: Text(context.t('request_territory'), style: tw(13, weight: semibold, color: Tw.black)),
+                  child: Text(context.t('request_territory'), style: tw(13, weight: semibold, color: Tw.night)),
                 ),
               ),
             ]),
@@ -134,7 +134,7 @@ class _PartnersLandingScreenState extends State<PartnersLandingScreen> {
                 fallback:
                     'Las apps de citas y las ticketeras genéricas son obsoletas. Únete a la plataforma definitiva que unifica radar social, venta de entradas, RRPPs y afters privados. Operamos la tecnología, tú lideras tu ciudad.'),
             textAlign: TextAlign.center,
-            style: tw(18, color: Tw.slate400, height: 1.6),
+            style: tw(18, color: Tw.inkSoft, height: 1.6),
           ),
           const SizedBox(height: 40),
           CtaButton(label: context.t('contact_team'), gradient: const [Tw.purple600, Tw.pink500], onTap: mailPartners),
@@ -146,7 +146,7 @@ class _PartnersLandingScreenState extends State<PartnersLandingScreen> {
             },
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 16),
-              decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(99), border: Border.all(color: Tw.w(0.1))),
+              decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(99), border: Border.all(color: Tw.line)),
               child: Text(context.t('view_business_model'), textAlign: TextAlign.center, style: tw(17, weight: semibold)),
             ),
           ),
@@ -156,7 +156,7 @@ class _PartnersLandingScreenState extends State<PartnersLandingScreen> {
   Widget _hotCities(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
         decoration: BoxDecoration(
-          color: Tw.slate900,
+          color: Tw.panel,
           border: Border.symmetric(horizontal: BorderSide(color: Tw.purple500.withValues(alpha: 0.2))),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -178,34 +178,34 @@ class _PartnersLandingScreenState extends State<PartnersLandingScreen> {
             context.t('partners_hot_cities_desc',
                 fallback: 'Estos territorios ya tienen locales usando la plataforma y pagando su cuota. Reclama la plaza hoy y empieza a cobrar su margen mañana.'),
             textAlign: TextAlign.center,
-            style: tw(14, color: Tw.slate400),
+            style: tw(14, color: Tw.inkSoft),
           ),
           const SizedBox(height: 32),
           for (final c in _hot)
             Container(
               margin: const EdgeInsets.only(bottom: 16),
               padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.5), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+              decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.5), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
               child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                 Row(children: [
                   Expanded(
                     child: Text(_cap((c['name'] ?? c['slug'] ?? c['id']) as String), style: tw(24, weight: black)),
                   ),
-                  Icon(Icons.map_outlined, size: 32, color: Tw.w(0.1)),
+                  Icon(Icons.map_outlined, size: 32, color: Tw.lineSoft),
                 ]),
                 const SizedBox(height: 4),
                 Row(children: [
-                  const PulseDot(color: Tw.green500),
+                  const PulseDot(color: Tw.live),
                   const SizedBox(width: 8),
                   Text(context.t('partners_active_venues', fallback: '{{count}} locales activos', params: {'count': c['activeVenuesCount'] ?? 2}),
-                      style: tw(14, weight: bold, color: Tw.green400)),
+                      style: tw(14, weight: bold, color: Tw.live)),
                 ]),
                 const SizedBox(height: 24),
                 Pressable(
                   onTap: () => mailPartners('Solicitud Franquicia ${c['slug']}'),
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 12),
-                    decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.1))),
+                    decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
                     child: Text(context.t('request_exclusivity'), textAlign: TextAlign.center, style: tw(15, weight: bold)),
                   ),
                 ),
@@ -218,7 +218,7 @@ class _PartnersLandingScreenState extends State<PartnersLandingScreen> {
     Widget engine(IconData icon, Color color, String tk, String tf, String dk, String df, List<(String, String)> feats) => Container(
           margin: const EdgeInsets.only(bottom: 24),
           padding: const EdgeInsets.all(32),
-          decoration: BoxDecoration(color: Tw.slate900, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.w(0.05))),
+          decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.lineSoft)),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Container(
               width: 64,
@@ -229,7 +229,7 @@ class _PartnersLandingScreenState extends State<PartnersLandingScreen> {
             const SizedBox(height: 24),
             Text(context.t(tk, fallback: tf), style: tw(22, weight: bold)),
             const SizedBox(height: 12),
-            Text(context.t(dk, fallback: df), style: tw(15, color: Tw.slate400, height: 1.5)),
+            Text(context.t(dk, fallback: df), style: tw(15, color: Tw.inkSoft, height: 1.5)),
             const SizedBox(height: 16),
             for (final (k, f) in feats)
               Padding(
@@ -237,14 +237,14 @@ class _PartnersLandingScreenState extends State<PartnersLandingScreen> {
                 child: Row(children: [
                   Container(width: 6, height: 6, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
                   const SizedBox(width: 8),
-                  Expanded(child: Text(context.t(k, fallback: f), style: tw(14, color: Tw.slate500))),
+                  Expanded(child: Text(context.t(k, fallback: f), style: tw(14, color: Tw.inkDim))),
                 ]),
               ),
           ]),
         );
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 72, 24, 48),
-      decoration: BoxDecoration(color: Tw.slate950, border: Border(top: BorderSide(color: Tw.w(0.1)))),
+      decoration: BoxDecoration(color: Tw.night, border: Border(top: BorderSide(color: Tw.line))),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         SectionHeader(context.t('four_engines_title'),
             subtitle: context.t('partners_engines_desc', fallback: 'Infraestructura probada y lista para desplegar en tu ciudad en 48 horas.')),
@@ -264,7 +264,7 @@ class _PartnersLandingScreenState extends State<PartnersLandingScreen> {
           ('partners_engine3_feat1', 'Autodestrucción a las 8h (TTL)'),
           ('partners_engine3_feat2', 'Ingreso altísimo por suscripciones'),
         ]),
-        engine(Icons.map_outlined, Tw.green400, 'partners_engine4_title', '4. Radar Social en Vivo', 'partners_engine4_desc',
+        engine(Icons.map_outlined, Tw.live, 'partners_engine4_title', '4. Radar Social en Vivo', 'partners_engine4_desc',
             'Directorio interactivo de discotecas, bares de copas y saunas. Aforos en tiempo real y check-in presencial para ver quién está en cada local.', const [
           ('partners_engine4_feat1', 'Interacción sin fricción'),
           ('partners_engine4_feat2', 'Retención brutal de usuarios'),
@@ -280,7 +280,7 @@ class _PartnersLandingScreenState extends State<PartnersLandingScreen> {
         ),
         child: Container(
           padding: const EdgeInsets.all(32),
-          decoration: BoxDecoration(color: Tw.slate900.withValues(alpha: 0.5), borderRadius: BorderRadius.circular(40), border: Border.all(color: Tw.w(0.1))),
+          decoration: BoxDecoration(color: Tw.panel.withValues(alpha: 0.5), borderRadius: BorderRadius.circular(40), border: Border.all(color: Tw.line)),
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             Text(context.t('launch_48h'), textAlign: TextAlign.center, style: tw(28, weight: bold)),
             const SizedBox(height: 24),
@@ -289,17 +289,17 @@ class _PartnersLandingScreenState extends State<PartnersLandingScreen> {
                   fallback:
                       'Te entregamos la plataforma operativa en tu ciudad ([ciudad].blownights.com), vinculada a tu cuenta de Stripe. Arranca ofreciendo un "Piloto sin Fricción" a los garitos 100% gratis la primera sesión para demostrar el valor.'),
               textAlign: TextAlign.center,
-              style: tw(17, color: Tw.slate400, height: 1.6),
+              style: tw(17, color: Tw.inkSoft, height: 1.6),
             ),
             const SizedBox(height: 32),
             Container(
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.4), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.05))),
+              decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.4), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.lineSoft)),
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(context.t('partners_cm_exclusive', fallback: 'City Manager (Exclusivo)'), style: tw(14, color: Tw.slate500)),
+                Text(context.t('partners_cm_exclusive', fallback: 'City Manager (Exclusivo)'), style: tw(14, color: Tw.inkDim)),
                 Text.rich(TextSpan(children: [
                   TextSpan(text: '5.000 € ', style: tw(24, weight: bold)),
-                  TextSpan(text: '/ año', style: tw(14, color: Tw.slate500)),
+                  TextSpan(text: '/ año', style: tw(14, color: Tw.inkDim)),
                 ])),
               ]),
             ),
@@ -309,19 +309,19 @@ class _PartnersLandingScreenState extends State<PartnersLandingScreen> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 decoration: BoxDecoration(color: Tw.white, borderRadius: BorderRadius.circular(16)),
-                child: Text(context.t('request_interview'), textAlign: TextAlign.center, style: tw(18, weight: bold, color: Tw.black)),
+                child: Text(context.t('request_interview'), textAlign: TextAlign.center, style: tw(18, weight: bold, color: Tw.night)),
               ),
             ),
             const SizedBox(height: 24),
-            Text(context.t('partners_one_license', fallback: 'Solo 1 licencia exclusiva por área metropolitana.'), textAlign: TextAlign.center, style: tw(14, color: Tw.slate500)),
+            Text(context.t('partners_one_license', fallback: 'Solo 1 licencia exclusiva por área metropolitana.'), textAlign: TextAlign.center, style: tw(14, color: Tw.inkDim)),
             const SizedBox(height: 40),
-            Divider(color: Tw.w(0.1)),
+            Divider(color: Tw.line),
             const SizedBox(height: 40),
             Row(children: [
-              const Icon(Icons.star, color: Tw.amber500),
+              const Icon(Icons.star, color: Tw.sun),
               const SizedBox(width: 8),
               Expanded(
-                child: Text(context.t('partners_macro_city_q', fallback: '¿Vives en una macro-ciudad (Madrid/Barcelona)?'), style: tw(20, weight: bold, color: Tw.amber500)),
+                child: Text(context.t('partners_macro_city_q', fallback: '¿Vives en una macro-ciudad (Madrid/Barcelona)?'), style: tw(20, weight: bold, color: Tw.sun)),
               ),
             ]),
             const SizedBox(height: 12),
@@ -329,12 +329,12 @@ class _PartnersLandingScreenState extends State<PartnersLandingScreen> {
               context.t('partners_associated_desc',
                   fallback:
                       'Aplica a la figura de Partner Asociado. Sin exclusividad territorial y sin canon de entrada (0€). Cobra comisión (2% + 0,10€) por cada entrada de los locales que afilies a la red. Tus locales tendrán visibilidad plus (anclados arriba y destacados en oro en el mapa).'),
-              style: tw(14, color: Tw.slate400, height: 1.5),
+              style: tw(14, color: Tw.inkSoft, height: 1.5),
             ),
             const SizedBox(height: 16),
             GestureDetector(
               onTap: () => mailPartners('Partner Asociado'),
-              child: Text('${context.t('partners_apply_associated', fallback: 'Aplicar como Partner Asociado')} →', style: tw(14, weight: bold, color: Tw.amber400)),
+              child: Text('${context.t('partners_apply_associated', fallback: 'Aplicar como Partner Asociado')} →', style: tw(14, weight: bold, color: Tw.sun)),
             ),
           ]),
         ),

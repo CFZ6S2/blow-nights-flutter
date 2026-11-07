@@ -103,23 +103,23 @@ class _SetupWizardState extends State<SetupWizard> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        backgroundColor: Tw.slate950,
+        backgroundColor: Tw.night,
         body: SafeArea(
           child: Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(24),
               child: Container(
                 padding: const EdgeInsets.all(28),
-                decoration: BoxDecoration(color: Tw.slate900, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.slate800)),
+                decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.line)),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                   Center(
                     child: Container(
                       width: 64,
                       height: 64,
                       decoration: BoxDecoration(
-                        gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.fuchsia600, Tw.indigo600]),
+                        gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.sunset, Tw.party]),
                         borderRadius: BorderRadius.circular(16),
-                        boxShadow: [BoxShadow(color: Tw.fuchsia500.withValues(alpha: 0.2), blurRadius: 16)],
+                        boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.2), blurRadius: 16)],
                       ),
                       child: const Icon(Icons.business, size: 32, color: Tw.white),
                     ),
@@ -127,14 +127,14 @@ class _SetupWizardState extends State<SetupWizard> {
                   const SizedBox(height: 16),
                   Text(context.t('setup_wizard.welcome'), textAlign: TextAlign.center, style: tw(28, weight: black)),
                   const SizedBox(height: 8),
-                  Text(context.t('setup_wizard.welcome_desc'), textAlign: TextAlign.center, style: tw(15, color: Tw.slate400)),
+                  Text(context.t('setup_wizard.welcome_desc'), textAlign: TextAlign.center, style: tw(15, color: Tw.inkSoft)),
                   const SizedBox(height: 32),
                   switch (_step) {
                     'form' => _form(context),
                     'delegated' => _result(context, Icons.check_circle, Tw.indigo500, 'setup_wizard.delegated_title', 'setup_wizard.delegated_desc',
-                        'setup_wizard.reload_panel', Tw.slate800),
-                    'done' => _result(context, Icons.check_circle, Tw.green500, 'setup_wizard.done_title', 'setup_wizard.done_desc', 'setup_wizard.enter_panel',
-                        Tw.fuchsia600),
+                        'setup_wizard.reload_panel', Tw.line),
+                    'done' => _result(context, Icons.check_circle, Tw.live, 'setup_wizard.done_title', 'setup_wizard.done_desc', 'setup_wizard.enter_panel',
+                        Tw.party),
                     _ => _choice(context),
                   },
                 ]),
@@ -150,13 +150,13 @@ class _SetupWizardState extends State<SetupWizard> {
           onTap: onTap ?? () {},
           child: Container(
             padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(color: Tw.slate950, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.slate800)),
+            decoration: BoxDecoration(color: Tw.night, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
             child: Column(children: [
-              Icon(icon, size: 40, color: Tw.slate500),
+              Icon(icon, size: 40, color: Tw.inkDim),
               const SizedBox(height: 16),
               Text(title, textAlign: TextAlign.center, style: tw(18, weight: bold)),
               const SizedBox(height: 8),
-              Text(desc, textAlign: TextAlign.center, style: tw(12, color: Tw.slate400)),
+              Text(desc, textAlign: TextAlign.center, style: tw(12, color: Tw.inkSoft)),
               const SizedBox(height: 16),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Label(cta, size: 12, weight: bold, color: hover, tracking: 0.05),
@@ -168,7 +168,7 @@ class _SetupWizardState extends State<SetupWizard> {
       );
 
   Widget _choice(BuildContext context) => Column(children: [
-        _option(Icons.business, Tw.fuchsia500, context.t('setup_wizard.option_setup'), context.t('setup_wizard.option_setup_desc'),
+        _option(Icons.business, Tw.party, context.t('setup_wizard.option_setup'), context.t('setup_wizard.option_setup_desc'),
             context.t('setup_wizard.start'), () => setState(() => _step = 'form')),
         const SizedBox(height: 16),
         _option(Icons.handshake, Tw.indigo500, context.t('setup_wizard.option_delegate'), context.t('setup_wizard.option_delegate_desc'),
@@ -213,7 +213,7 @@ class _SetupWizardState extends State<SetupWizard> {
         Row(children: [
           AdminButton(
             label: context.t('setup_wizard.back'),
-            color: Tw.slate800,
+            color: Tw.line,
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
             onTap: () => setState(() => _step = 'choice'),
           ),
@@ -239,7 +239,7 @@ class _SetupWizardState extends State<SetupWizard> {
         const SizedBox(height: 24),
         Text(context.t(title), textAlign: TextAlign.center, style: tw(24, weight: black)),
         const SizedBox(height: 8),
-        Text(context.t(desc), textAlign: TextAlign.center, style: tw(15, color: Tw.slate400)),
+        Text(context.t(desc), textAlign: TextAlign.center, style: tw(15, color: Tw.inkSoft)),
         const SizedBox(height: 32),
         AdminButton(label: context.t(cta), color: ctaColor, padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14), onTap: widget.onReload),
       ]);

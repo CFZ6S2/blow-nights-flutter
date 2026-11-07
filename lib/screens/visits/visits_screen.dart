@@ -72,13 +72,13 @@ class _VisitsScreenState extends State<VisitsScreen> {
         body: SafeArea(
           child: ListView(padding: const EdgeInsets.all(32), children: [
             Row(children: [
-              Container(width: 48, height: 48, decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16))),
+              Container(width: 48, height: 48, decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16))),
               const SizedBox(width: 24),
-              Container(width: 160, height: 32, decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(12))),
+              Container(width: 160, height: 32, decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(12))),
             ]),
             const SizedBox(height: 32),
             for (var i = 0; i < 5; i++)
-              Container(height: 88, margin: const EdgeInsets.only(bottom: 24), decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(24))),
+              Container(height: 88, margin: const EdgeInsets.only(bottom: 24), decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(24))),
           ]),
         ),
       );
@@ -92,7 +92,7 @@ class _VisitsScreenState extends State<VisitsScreen> {
             filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
             child: Container(
               padding: EdgeInsets.fromLTRB(32, MediaQuery.of(context).padding.top + 24, 32, 24),
-              decoration: BoxDecoration(color: Tw.slate950.withValues(alpha: 0.6), border: Border(bottom: BorderSide(color: Tw.w(0.05)))),
+              decoration: BoxDecoration(color: Tw.night.withValues(alpha: 0.6), border: Border(bottom: BorderSide(color: Tw.lineSoft))),
               child: Row(children: [
                 Pressable(
                   onTap: () => Navigator.of(context).maybePop(),
@@ -100,7 +100,7 @@ class _VisitsScreenState extends State<VisitsScreen> {
                   child: Container(
                     width: 48,
                     height: 48,
-                    decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.05))),
+                    decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.lineSoft)),
                     child: const Icon(Icons.chevron_left, color: Tw.white),
                   ),
                 ),
@@ -109,20 +109,20 @@ class _VisitsScreenState extends State<VisitsScreen> {
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text(context.t('visits.title'), style: tw(30, weight: black, tracking: -0.05, height: 1)),
                     const SizedBox(height: 4),
-                    Label(context.t('visits.subtitle'), color: Tw.slate500, tracking: 0.3, maxLines: 1),
+                    Label(context.t('visits.subtitle'), color: Tw.inkDim, tracking: 0.3, maxLines: 1),
                   ]),
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
-                    color: Tw.fuchsia500.withValues(alpha: 0.1),
+                    color: Tw.party.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.2)),
+                    border: Border.all(color: Tw.party.withValues(alpha: 0.2)),
                   ),
                   child: Row(children: [
-                    Text('${_visits.length}', style: tw(12, weight: black, color: Tw.fuchsia400)),
+                    Text('${_visits.length}', style: tw(12, weight: black, color: Tw.sun)),
                     const SizedBox(width: 8),
-                    const Icon(Icons.visibility, size: 14, color: Tw.fuchsia500),
+                    const Icon(Icons.visibility, size: 14, color: Tw.party),
                   ]),
                 ),
               ]),
@@ -138,15 +138,15 @@ class _VisitsScreenState extends State<VisitsScreen> {
                   Container(
                     width: 96,
                     height: 96,
-                    decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.w(0.05)),
-                    child: const Icon(Icons.visibility_off, size: 48, color: Tw.slate700),
+                    decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.panelSoft),
+                    child: const Icon(Icons.visibility_off, size: 48, color: Tw.line),
                   ),
                   const SizedBox(height: 32),
-                  Text(context.t('visits.empty_title'), style: tw(20, weight: black, color: Tw.slate400)),
+                  Text(context.t('visits.empty_title'), style: tw(20, weight: black, color: Tw.inkSoft)),
                   const SizedBox(height: 8),
                   SizedBox(
                     width: 200,
-                    child: Text(context.t('visits.empty_subtitle'), textAlign: TextAlign.center, style: tw(14, color: Tw.slate600)),
+                    child: Text(context.t('visits.empty_subtitle'), textAlign: TextAlign.center, style: tw(14, color: Tw.inkDim)),
                   ),
                 ]),
               )
@@ -179,7 +179,7 @@ class _VisitsScreenState extends State<VisitsScreen> {
         scale: premium ? 0.98 : 1,
         child: Container(
           clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(40), border: Border.all(color: Tw.w(0.05))),
+          decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(40), border: Border.all(color: Tw.lineSoft)),
           child: Stack(children: [
             Padding(
               padding: const EdgeInsets.all(20),
@@ -189,13 +189,13 @@ class _VisitsScreenState extends State<VisitsScreen> {
                   height: 80,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(29),
-                    border: Border.all(color: premium ? Tw.fuchsia500.withValues(alpha: 0.3) : Tw.slate800, width: 2),
+                    border: Border.all(color: premium ? Tw.party.withValues(alpha: 0.3) : Tw.line, width: 2),
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(27),
                     child: ImageFiltered(
                       imageFilter: ImageFilter.blur(sigmaX: locked ? 20 : 0, sigmaY: locked ? 20 : 0),
-                      child: NetImage(v['visitorFoto'] as String?, placeholder: Container(color: Tw.slate800)),
+                      child: NetImage(v['visitorFoto'] as String?, placeholder: Container(color: Tw.line)),
                     ),
                   ),
                 ),
@@ -208,17 +208,17 @@ class _VisitsScreenState extends State<VisitsScreen> {
                     ),
                     const SizedBox(height: 4),
                     Row(children: [
-                      const Icon(Icons.schedule, size: 10, color: Tw.slate500),
+                      const Icon(Icons.schedule, size: 10, color: Tw.inkDim),
                       const SizedBox(width: 8),
-                      Label(_when(context, parseDate(v['timestamp'])), weight: bold, color: Tw.slate500),
+                      Label(_when(context, parseDate(v['timestamp'])), weight: bold, color: Tw.inkDim),
                     ]),
                   ]),
                 ),
                 Container(
                   width: 40,
                   height: 40,
-                  decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(12)),
-                  child: Icon(premium ? Icons.chevron_right : Icons.star, size: 14, color: Tw.slate600),
+                  decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(12)),
+                  child: Icon(premium ? Icons.chevron_right : Icons.star, size: 14, color: Tw.inkDim),
                 ),
               ]),
             ),
@@ -228,7 +228,7 @@ class _VisitsScreenState extends State<VisitsScreen> {
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
                     child: Container(
-                      color: Tw.slate950.withValues(alpha: 0.4),
+                      color: Tw.night.withValues(alpha: 0.4),
                       alignment: Alignment.center,
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -256,7 +256,7 @@ class _VisitsScreenState extends State<VisitsScreen> {
   Widget _upsell(BuildContext context) => Container(
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
-          gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.slate900, Tw.slate950]),
+          gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.panel, Tw.night]),
           borderRadius: BorderRadius.circular(48),
           border: Border.all(color: const Color(0xFFEAB308).withValues(alpha: 0.2)),
         ),
@@ -288,7 +288,7 @@ class _VisitsScreenState extends State<VisitsScreen> {
                   TextSpan(text: ' ${context.t('visits.fans_promo_text')}'),
                 ]),
                 textAlign: TextAlign.center,
-                style: tw(14, color: Tw.slate400, height: 1.6),
+                style: tw(14, color: Tw.inkSoft, height: 1.6),
               ),
               const SizedBox(height: 32),
               Pressable(
@@ -305,7 +305,7 @@ class _VisitsScreenState extends State<VisitsScreen> {
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [BoxShadow(color: const Color(0xFFEAB308).withValues(alpha: 0.3), blurRadius: 40, offset: const Offset(0, 15))],
                   ),
-                  child: Label(context.t('visits.unlock_now'), size: 12, color: Tw.black, tracking: 0.3, align: TextAlign.center),
+                  child: Label(context.t('visits.unlock_now'), size: 12, color: Tw.nightDeep, tracking: 0.3, align: TextAlign.center),
                 ),
               ),
             ]),

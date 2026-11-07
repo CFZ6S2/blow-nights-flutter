@@ -266,13 +266,13 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                   height: 6,
                   margin: EdgeInsets.only(right: i < _totalSteps - 1 ? 8 : 0),
                   clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(99)),
+                  decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(99)),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: AnimatedFractionallySizedBox(
                       duration: const Duration(milliseconds: 300),
                       widthFactor: _step > i ? 1 : 0,
-                      child: Container(decoration: const BoxDecoration(gradient: LinearGradient(colors: [Tw.fuchsia500, Tw.indigo500]))),
+                      child: Container(decoration: const BoxDecoration(gradient: LinearGradient(colors: [Tw.sunset, Tw.party]))),
                     ),
                   ),
                 ),
@@ -282,9 +282,9 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
           Container(
             padding: const EdgeInsets.all(28),
             decoration: BoxDecoration(
-              color: Tw.w(0.05),
+              color: Tw.panelSoft,
               borderRadius: BorderRadius.circular(40),
-              border: Border.all(color: Tw.w(0.1)),
+              border: Border.all(color: Tw.line),
               boxShadow: const [BoxShadow(color: Color(0x40000000), blurRadius: 50, offset: Offset(0, 25))],
             ),
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -292,7 +292,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(begin: Alignment.bottomLeft, end: Alignment.topRight, colors: [Tw.fuchsia500, Tw.indigo500]),
+                    gradient: const LinearGradient(begin: Alignment.bottomLeft, end: Alignment.topRight, colors: [Tw.sunset, Tw.party]),
                     borderRadius: BorderRadius.circular(24),
                   ),
                   child: Icon(icons[_step - 1], color: Tw.white, size: 30),
@@ -302,7 +302,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
               Text(titles[_step - 1], textAlign: TextAlign.center, style: tw(26, weight: black, tracking: -0.05)),
               const SizedBox(height: 8),
               Label('${context.t('setup.step_prefix')}$_step${context.t('setup.step_infix')}$_totalSteps',
-                  size: 12, color: Tw.slate500, tracking: 0.2, align: TextAlign.center),
+                  size: 12, color: Tw.inkDim, tracking: 0.2, align: TextAlign.center),
               const SizedBox(height: 32),
               if (_error != null) ...[
                 Container(
@@ -339,7 +339,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                       onTap: _prev,
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 24),
-                        decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(32), border: Border.all(color: Tw.w(0.1))),
+                        decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(32), border: Border.all(color: Tw.line)),
                         child: Label(context.t('setupProfile.skip'), size: 12, color: Tw.white, align: TextAlign.center),
                       ),
                     ),
@@ -355,7 +355,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                           child: Container(
                             padding: const EdgeInsets.symmetric(vertical: 24),
                             decoration: BoxDecoration(color: Tw.white, borderRadius: BorderRadius.circular(32)),
-                            child: Label(context.t('setupProfile.continue'), size: 12, color: Tw.black, tracking: 0.3, align: TextAlign.center),
+                            child: Label(context.t('setupProfile.continue'), size: 12, color: Tw.nightDeep, tracking: 0.3, align: TextAlign.center),
                           ),
                         )
                       : Opacity(
@@ -368,7 +368,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                               decoration: BoxDecoration(
                                 gradient: AppTheme.ctaGradient,
                                 borderRadius: BorderRadius.circular(32),
-                                boxShadow: [BoxShadow(color: Tw.fuchsia600.withValues(alpha: 0.3), blurRadius: 50, offset: const Offset(0, 20))],
+                                boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.3), blurRadius: 50, offset: const Offset(0, 20))],
                               ),
                               child: Label(
                                 _submitting ? context.t('setup_saving', fallback: 'Guardando...') : context.t('setupProfile.continue'),
@@ -393,20 +393,20 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                 child: GestureDetector(
                   onTap: () => openRoute(context, AppRoute.rules),
                   child: Text(context.t('setup_community_rules', fallback: 'Normas de la Comunidad').toUpperCase(),
-                      style: tw(9, color: Tw.slate500, tracking: 0.2, decoration: TextDecoration.underline)),
+                      style: tw(9, color: Tw.inkDim, tracking: 0.2, decoration: TextDecoration.underline)),
                 ),
               ),
               const TextSpan(text: '.'),
             ]),
             textAlign: TextAlign.center,
-            style: tw(9, color: Tw.slate600, tracking: 0.2, height: 1.6),
+            style: tw(9, color: Tw.inkDim, tracking: 0.2, height: 1.6),
           ),
           if (!widget.editing) ...[
             const SizedBox(height: 24),
             Center(
               child: TextButton(
                 onPressed: () => context.read<AuthProvider>().logout(),
-                child: Label(context.t('profile.logout'), color: Tw.slate600),
+                child: Label(context.t('profile.logout'), color: Tw.inkDim),
               ),
             ),
           ],
@@ -415,16 +415,16 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
     );
   }
 
-  Widget _selectable({required bool selected, required Widget child, required VoidCallback onTap, Color color = Tw.fuchsia500, EdgeInsets padding = const EdgeInsets.all(16)}) =>
+  Widget _selectable({required bool selected, required Widget child, required VoidCallback onTap, Color color = Tw.party, EdgeInsets padding = const EdgeInsets.all(16)}) =>
       Pressable(
         onTap: onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           padding: padding,
           decoration: BoxDecoration(
-            color: selected ? color.withValues(alpha: 0.2) : Tw.w(0.05),
+            color: selected ? color.withValues(alpha: 0.2) : Tw.panelSoft,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: selected ? color : Tw.w(0.1), width: 2),
+            border: Border.all(color: selected ? color : Tw.line, width: 2),
             boxShadow: selected ? [BoxShadow(color: color.withValues(alpha: 0.2), blurRadius: 15)] : null,
           ),
           child: child,
@@ -433,7 +433,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
 
   Widget _stepCity(BuildContext context) => Column(children: [
         Text(context.t('setup_city_description', fallback: 'Elige la ciudad donde sales de fiesta.'),
-            textAlign: TextAlign.center, style: tw(14, color: Tw.slate400, height: 1.5)),
+            textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft, height: 1.5)),
         const SizedBox(height: 24),
         GridView.count(
           crossAxisCount: 2,
@@ -448,7 +448,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                 selected: _city == id,
                 onTap: () => setState(() => _city = id),
                 child: Center(
-                  child: Label(name, size: 14, color: _city == id ? Tw.white : Tw.slate400, tracking: 0.05),
+                  child: Label(name, size: 14, color: _city == id ? Tw.white : Tw.inkSoft, tracking: 0.05),
                 ),
               ),
           ],
@@ -460,13 +460,13 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 18),
             child: Center(
-              child: Label(context.t('setup_city_not_listed'), size: 14, color: _city == _noCity ? Tw.white : Tw.slate400, tracking: 0.05),
+              child: Label(context.t('setup_city_not_listed'), size: 14, color: _city == _noCity ? Tw.white : Tw.inkSoft, tracking: 0.05),
             ),
           ),
         ),
         if (_city == _noCity) ...[
           const SizedBox(height: 12),
-          Text(context.t('setup_city_not_listed_hint'), textAlign: TextAlign.center, style: tw(12, color: Tw.slate500)),
+          Text(context.t('setup_city_not_listed_hint'), textAlign: TextAlign.center, style: tw(12, color: Tw.inkDim)),
         ],
       ]);
 
@@ -481,10 +481,10 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
   }
 
   Widget _stepMode(BuildContext context) => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        Text(context.t('setup_mode_question', fallback: '¿Cómo quieres usar Blow Nights?'), textAlign: TextAlign.center, style: tw(14, color: Tw.slate400)),
+        Text(context.t('setup_mode_question', fallback: '¿Cómo quieres usar Blow Nights?'), textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft)),
         const SizedBox(height: 4),
         Text(context.t('setup_mode_subtitle', fallback: 'Puedes cambiarlo en cualquier momento desde tu perfil'),
-            textAlign: TextAlign.center, style: tw(11, color: Tw.slate500)),
+            textAlign: TextAlign.center, style: tw(11, color: Tw.inkDim)),
         const SizedBox(height: 24),
         for (final m in _appModes) ...[
           _selectable(
@@ -502,7 +502,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
               const SizedBox(height: 4),
               Label(context.t(m.$3, fallback: m.$4), size: 12, color: Tw.white, tracking: 0.05),
               const SizedBox(height: 4),
-              Text(context.t(m.$5, fallback: m.$6), textAlign: TextAlign.center, style: tw(10, color: Tw.slate400, height: 1.2)),
+              Text(context.t(m.$5, fallback: m.$6), textAlign: TextAlign.center, style: tw(10, color: Tw.inkSoft, height: 1.2)),
             ]),
           ),
           const SizedBox(height: 12),
@@ -510,12 +510,12 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
         if (!_partyOnly) ...[
           const SizedBox(height: 8),
           Row(children: [
-            Expanded(child: Divider(color: Tw.w(0.1))),
+            Expanded(child: Divider(color: Tw.line)),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Label(context.t('setup_role_select', fallback: 'Tu rol o vibe'), size: 9, color: Tw.slate500),
+              child: Label(context.t('setup_role_select', fallback: 'Tu rol o vibe'), size: 9, color: Tw.inkDim),
             ),
-            Expanded(child: Divider(color: Tw.w(0.1))),
+            Expanded(child: Divider(color: Tw.line)),
           ]),
           const SizedBox(height: 16),
           GridView.count(
@@ -535,7 +535,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                     const SizedBox(height: 4),
                     Label(context.t(r.labelKey, fallback: r.fallbackLabel), size: 12, color: Tw.white, tracking: 0.05),
                     const SizedBox(height: 4),
-                    Text(context.t(r.descKey, fallback: r.fallbackDesc), textAlign: TextAlign.center, style: tw(9, color: Tw.slate400, height: 1)),
+                    Text(context.t(r.descKey, fallback: r.fallbackDesc), textAlign: TextAlign.center, style: tw(9, color: Tw.inkSoft, height: 1)),
                   ]),
                 ),
             ],
@@ -544,7 +544,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
             const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.only(left: 8),
-              child: Label(context.t('setup_intention', fallback: 'Intención'), color: Tw.slate500, tracking: 0.2),
+              child: Label(context.t('setup_intention', fallback: 'Intención'), color: Tw.inkDim, tracking: 0.2),
             ),
             const SizedBox(height: 8),
             Row(children: [
@@ -561,7 +561,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
                     child: Column(children: [
                       Text(i.$2, style: tw(12, weight: bold)),
                       const SizedBox(height: 2),
-                      Text(i.$3, textAlign: TextAlign.center, style: tw(9, color: Tw.slate400)),
+                      Text(i.$3, textAlign: TextAlign.center, style: tw(9, color: Tw.inkSoft)),
                     ]),
                   ),
                 ),
@@ -572,7 +572,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
         ],
       ]);
 
-  Widget _fieldLabel(String t, {Color color = Tw.slate500, IconData? icon}) => Padding(
+  Widget _fieldLabel(String t, {Color color = Tw.inkDim, IconData? icon}) => Padding(
         padding: const EdgeInsets.only(left: 8, bottom: 12),
         child: Row(children: [
           if (icon != null) ...[Icon(icon, size: 12, color: color), const SizedBox(width: 8)],
@@ -583,8 +583,8 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
   InputDecoration _dec(String? hint, {double radius = 16}) => InputDecoration(
         hintText: hint,
         contentPadding: const EdgeInsets.all(20),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(radius), borderSide: BorderSide(color: Tw.w(0.1))),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(radius), borderSide: BorderSide(color: Tw.w(0.2))),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(radius), borderSide: BorderSide(color: Tw.line)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(radius), borderSide: BorderSide(color: Tw.line)),
       );
 
   Widget _stepProfile(BuildContext context) {
@@ -623,13 +623,13 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
             Container(
               width: 160,
               height: 160,
-              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Tw.w(0.05), width: 4)),
+              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Tw.lineSoft, width: 4)),
               child: ClipOval(
                 child: _imageFile != null
                     ? Image.file(_imageFile!, fit: BoxFit.cover)
                     : _imagePreview != null
                         ? NetImage(_imagePreview)
-                        : Container(color: Tw.slate900, child: const Icon(Icons.add_a_photo, size: 48, color: Tw.slate700)),
+                        : Container(color: Tw.panel, child: const Icon(Icons.add_a_photo, size: 48, color: Tw.line)),
               ),
             ),
             Positioned(
@@ -638,14 +638,14 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
               child: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(color: Tw.white, borderRadius: BorderRadius.circular(16)),
-                child: const Icon(Icons.edit, size: 14, color: Tw.black),
+                child: const Icon(Icons.edit, size: 14, color: Tw.nightDeep),
               ),
             ),
           ]),
         ),
       ),
       const SizedBox(height: 16),
-      Label(context.t('setupProfile.upload'), size: 9, color: Tw.slate500, align: TextAlign.center),
+      Label(context.t('setupProfile.upload'), size: 9, color: Tw.inkDim, align: TextAlign.center),
       const SizedBox(height: 32),
       _fieldLabel(context.t('setupProfile.name')),
       TextField(controller: _nick, style: tw(14, weight: bold), decoration: _dec(context.t('setupProfile.namePlaceholder'))),
@@ -659,7 +659,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
             firstDate: DateTime(1920),
             lastDate: maxBirth,
             builder: (c, child) => Theme(
-              data: Theme.of(c).copyWith(colorScheme: const ColorScheme.dark(primary: Tw.fuchsia500, surface: Tw.slate900)),
+              data: Theme.of(c).copyWith(colorScheme: const ColorScheme.dark(primary: Tw.party, surface: Tw.panel)),
               child: child!,
             ),
           );
@@ -667,13 +667,13 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
         },
         child: Container(
           padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+          decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
           child: Row(children: [
             Expanded(
               child: Text(birth != null ? DateFormat('dd/MM/yyyy').format(birth) : 'dd/mm/aaaa',
-                  style: tw(14, weight: bold, color: birth != null ? Tw.white : Tw.slate500)),
+                  style: tw(14, weight: bold, color: birth != null ? Tw.white : Tw.inkDim)),
             ),
-            const Icon(Icons.calendar_today, size: 16, color: Tw.slate400),
+            const Icon(Icons.calendar_today, size: 16, color: Tw.inkSoft),
           ]),
         ),
       ),
@@ -692,9 +692,9 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
               onTap: () => setState(() => _mood = m.$1),
               child: Container(
                 decoration: BoxDecoration(
-                  color: _mood == m.$1 ? Tw.fuchsia600 : Tw.w(0.05),
+                  color: _mood == m.$1 ? Tw.party : Tw.panelSoft,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: _mood == m.$1 ? Tw.fuchsia500 : Tw.w(0.1)),
+                  border: Border.all(color: _mood == m.$1 ? Tw.party : Tw.line),
                 ),
                 child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Text(m.$1, style: const TextStyle(fontSize: 20)),
@@ -720,18 +720,18 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                color: _intereses.contains(tag) ? Tw.fuchsia600 : Tw.w(0.05),
+                color: _intereses.contains(tag) ? Tw.party : Tw.panelSoft,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: _intereses.contains(tag) ? Tw.fuchsia500 : Tw.w(0.1)),
+                border: Border.all(color: _intereses.contains(tag) ? Tw.party : Tw.lineSoft),
               ),
-              child: Label(tag, weight: bold, color: _intereses.contains(tag) ? Tw.white : Tw.slate400, tracking: 0.05),
+              child: Label(tag, weight: bold, color: _intereses.contains(tag) ? Tw.white : Tw.inkSoft, tracking: 0.05),
             ),
           ),
       ]),
       const SizedBox(height: 8),
       Padding(
         padding: const EdgeInsets.only(left: 8),
-        child: Label(context.t('setup_tags_limit', fallback: 'Elige hasta 5 tags'), size: 8, weight: FontWeight.w400, color: Tw.slate600),
+        child: Label(context.t('setup_tags_limit', fallback: 'Elige hasta 5 tags'), size: 8, weight: FontWeight.w400, color: Tw.inkDim),
       ),
       const SizedBox(height: 32),
       _fieldLabel(context.t('setupProfile.bio')),
@@ -775,12 +775,12 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
               _fieldLabel(context.t('setup_body', fallback: 'Cuerpo')),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
-                decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+                decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String?>(
                     value: _complexion,
                     isExpanded: true,
-                    dropdownColor: Tw.slate900,
+                    dropdownColor: Tw.panel,
                     style: tw(12, weight: bold),
                     items: [
                       const DropdownMenuItem(value: null, child: Text('--')),
@@ -798,7 +798,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
       ],
       const SizedBox(height: 32),
       _fieldLabel(context.t('setup_gallery_public', fallback: 'Galería Pública')),
-      _gallery(_extraExisting, _extraFiles, Tw.w(0.1), Icons.add, () => _pickMany(_extraFiles, _extraExisting.length)),
+      _gallery(_extraExisting, _extraFiles, Tw.lineSoft, Icons.add, () => _pickMany(_extraFiles, _extraExisting.length)),
       const SizedBox(height: 32),
       _fieldLabel(context.t('setup_gallery_private', fallback: 'Álbum Privado'), color: const Color(0xFFEAB308), icon: Icons.lock),
       _gallery(_privateExisting, _privateFiles, const Color(0x33EAB308), Icons.lock_outline, () => _pickMany(_privateFiles, _privateExisting.length)),
@@ -809,7 +809,7 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
     final count = existing.length + files.length;
     Widget tile(Widget img) => Container(
           clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.w(0.05))),
+          decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.lineSoft)),
           child: img,
         );
     return GridView.count(
@@ -825,8 +825,8 @@ class _SetupProfileScreenState extends State<SetupProfileScreen> {
           Pressable(
             onTap: onAdd,
             child: Container(
-              decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(24), border: Border.all(color: dashed, width: 2)),
-              child: Icon(addIcon, color: Tw.slate600),
+              decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(24), border: Border.all(color: dashed, width: 2)),
+              child: Icon(addIcon, color: Tw.inkDim),
             ),
           ),
       ],

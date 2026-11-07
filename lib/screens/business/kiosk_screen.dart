@@ -101,19 +101,19 @@ class _KioskScreenState extends State<KioskScreen> {
   Widget build(BuildContext context) {
     final top = MediaQuery.of(context).padding.top;
     return Scaffold(
-      backgroundColor: Tw.slate950,
+      backgroundColor: Tw.night,
       body: Stack(children: [
         Column(children: [
           Container(
             padding: EdgeInsets.fromLTRB(12, top + 12, 16, 12),
-            decoration: const BoxDecoration(color: Tw.slate900, border: Border(bottom: BorderSide(color: Tw.slate800))),
+            decoration: const BoxDecoration(color: Tw.panel, border: Border(bottom: BorderSide(color: Tw.line))),
             child: Row(children: [
-              IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.slate400)),
+              IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.inkSoft)),
               Container(
                 width: 44,
                 height: 44,
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(begin: Alignment.bottomLeft, end: Alignment.topRight, colors: [Tw.fuchsia600, Color(0xFFDB2777), Tw.amber400]),
+                  gradient: const LinearGradient(begin: Alignment.bottomLeft, end: Alignment.topRight, colors: [Tw.party, Color(0xFFDB2777), Tw.sun]),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: const Icon(Icons.wine_bar, color: Tw.white),
@@ -126,23 +126,23 @@ class _KioskScreenState extends State<KioskScreen> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                       decoration: BoxDecoration(
-                        color: Tw.emerald500.withValues(alpha: 0.2),
+                        color: Tw.live.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(99),
-                        border: Border.all(color: Tw.emerald500.withValues(alpha: 0.3)),
+                        border: Border.all(color: Tw.live.withValues(alpha: 0.3)),
                       ),
-                      child: Text(context.t('kiosk_badge', fallback: 'TOTEM TACTICO'), style: tw(10, color: Tw.emerald400)),
+                      child: Text(context.t('kiosk_badge', fallback: 'TOTEM TACTICO'), style: tw(10, color: Tw.live)),
                     ),
                   ]),
                   Text(context.t('kiosk_subtitle', fallback: 'Pide en pantalla • Paga con Contactless • Recoge en barra'),
-                      maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(11, color: Tw.slate400)),
+                      maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(11, color: Tw.inkSoft)),
                 ]),
               ),
               Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
                 Label(context.t('kiosk_total_order', fallback: 'Total Orden'), weight: bold, tracking: 0),
-                Text('${_total.toStringAsFixed(2)} €', style: tw(18, weight: black, color: Tw.amber400)),
+                Text('${_total.toStringAsFixed(2)} €', style: tw(18, weight: black, color: Tw.sun)),
               ]),
               const SizedBox(width: 8),
-              IconButton(onPressed: _reset, icon: const Icon(Icons.refresh, color: Tw.slate300)),
+              IconButton(onPressed: _reset, icon: const Icon(Icons.refresh, color: Tw.inkSoft)),
             ]),
           ),
           Expanded(child: _step == 'success' ? _success(context) : _browse(context)),
@@ -154,13 +154,13 @@ class _KioskScreenState extends State<KioskScreen> {
             padding: const EdgeInsets.all(24),
             child: Container(
               padding: const EdgeInsets.all(40),
-              decoration: BoxDecoration(color: Tw.slate900, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.slate800)),
+              decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.line)),
               child: Column(mainAxisSize: MainAxisSize.min, children: [
-                const SizedBox(width: 72, height: 72, child: CircularProgressIndicator(strokeWidth: 4, color: Tw.emerald400)),
+                const SizedBox(width: 72, height: 72, child: CircularProgressIndicator(strokeWidth: 4, color: Tw.live)),
                 const SizedBox(height: 20),
                 Text(context.t('kiosk_processing', fallback: 'PROCESANDO COBRO'), style: tw(22, weight: black)),
                 const SizedBox(height: 4),
-                Text(context.t('kiosk_processing_hint', fallback: 'Acerque tarjeta o telefono al terminal contactless...'), textAlign: TextAlign.center, style: tw(14, color: Tw.slate400)),
+                Text(context.t('kiosk_processing_hint', fallback: 'Acerque tarjeta o telefono al terminal contactless...'), textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft)),
               ]),
             ),
           ),
@@ -182,9 +182,9 @@ class _KioskScreenState extends State<KioskScreen> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   alignment: Alignment.center,
-                  decoration: BoxDecoration(color: _cat == c ? Tw.fuchsia600 : Tw.slate800.withValues(alpha: 0.4), borderRadius: BorderRadius.circular(12)),
+                  decoration: BoxDecoration(color: _cat == c ? Tw.party : Tw.line.withValues(alpha: 0.4), borderRadius: BorderRadius.circular(12)),
                   child: Text(c == 'all' ? context.t('kiosk_category_all', fallback: '✨ Todos') : c[0].toUpperCase() + c.substring(1),
-                      style: tw(14, weight: bold, color: _cat == c ? Tw.white : Tw.slate300)),
+                      style: tw(14, weight: bold, color: _cat == c ? Tw.white : Tw.inkSoft)),
                 ),
               ),
             ),
@@ -200,7 +200,7 @@ class _KioskScreenState extends State<KioskScreen> {
   Widget _drinkCard(BuildContext context, _Drink d) => Container(
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(color: Tw.slate900.withValues(alpha: 0.8), borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.slate800)),
+        decoration: BoxDecoration(color: Tw.panel.withValues(alpha: 0.8), borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.line)),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Expanded(child: Text(d.name, style: tw(18, weight: black))),
@@ -208,9 +208,9 @@ class _KioskScreenState extends State<KioskScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
-                  color: Tw.amber500.withValues(alpha: 0.2),
+                  color: Tw.sun.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(99),
-                  border: Border.all(color: Tw.amber500.withValues(alpha: 0.3)),
+                  border: Border.all(color: Tw.sun.withValues(alpha: 0.3)),
                 ),
                 child: Label(context.t('kiosk_top_sales', fallback: 'Top Ventas'), color: const Color(0xFFFCD34D), tracking: 0),
               ),
@@ -221,18 +221,18 @@ class _KioskScreenState extends State<KioskScreen> {
               for (final m in d.mixers!)
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                  decoration: BoxDecoration(color: Tw.slate800, borderRadius: BorderRadius.circular(4)),
-                  child: Text(m, style: tw(10, color: Tw.slate400)),
+                  decoration: BoxDecoration(color: Tw.line, borderRadius: BorderRadius.circular(4)),
+                  child: Text(m, style: tw(10, color: Tw.inkSoft)),
                 ),
             ]),
           ],
           const SizedBox(height: 16),
-          Divider(height: 1, color: Tw.slate800),
+          Divider(height: 1, color: Tw.line),
           const SizedBox(height: 12),
           Row(children: [
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(context.t('kiosk_price', fallback: 'Precio'), style: tw(12, color: Tw.slate400)),
+                Text(context.t('kiosk_price', fallback: 'Precio'), style: tw(12, color: Tw.inkSoft)),
                 Text('${d.price.toStringAsFixed(2)} €', style: tw(22, weight: black)),
               ]),
             ),
@@ -241,7 +241,7 @@ class _KioskScreenState extends State<KioskScreen> {
               fontSize: 13,
               radius: 16,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              gradient: const LinearGradient(colors: [Tw.fuchsia600, Color(0xFFDB2777)]),
+              gradient: const LinearGradient(colors: [Tw.party, Color(0xFFDB2777)]),
               onTap: () => _add(d),
             ),
           ]),
@@ -250,10 +250,10 @@ class _KioskScreenState extends State<KioskScreen> {
 
   Widget _cartPanel(BuildContext context) => Container(
         padding: EdgeInsets.fromLTRB(16, 12, 16, 12 + MediaQuery.of(context).padding.bottom),
-        decoration: const BoxDecoration(color: Tw.slate900, border: Border(top: BorderSide(color: Tw.slate800))),
+        decoration: const BoxDecoration(color: Tw.panel, border: Border(top: BorderSide(color: Tw.line))),
         child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Row(children: [
-            const Icon(Icons.shopping_bag, size: 18, color: Tw.fuchsia500),
+            const Icon(Icons.shopping_bag, size: 18, color: Tw.party),
             const SizedBox(width: 8),
             Expanded(child: Text('${context.t('kiosk_your_order', fallback: 'Tu Pedido')} (${_cart.length})', style: tw(16, weight: black))),
             if (_cart.isNotEmpty)
@@ -267,7 +267,7 @@ class _KioskScreenState extends State<KioskScreen> {
                   Container(
                     margin: const EdgeInsets.only(bottom: 6),
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    decoration: BoxDecoration(color: Tw.slate800.withValues(alpha: 0.8), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.slate700.withValues(alpha: 0.6))),
+                    decoration: BoxDecoration(color: Tw.line.withValues(alpha: 0.8), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line.withValues(alpha: 0.6))),
                     child: Row(children: [
                       Expanded(
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -277,19 +277,19 @@ class _KioskScreenState extends State<KioskScreen> {
                               const SizedBox(width: 6),
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
-                                decoration: BoxDecoration(color: Tw.amber500.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(4)),
+                                decoration: BoxDecoration(color: Tw.sun.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(4)),
                                 child: Text('PREMIUM', style: tw(9, weight: black, color: const Color(0xFFFCD34D))),
                               ),
                             ],
                           ]),
-                          if (c.mixer != null) Text('+ ${c.mixer}', style: tw(11, color: Tw.slate400)),
+                          if (c.mixer != null) Text('+ ${c.mixer}', style: tw(11, color: Tw.inkSoft)),
                         ]),
                       ),
-                      Text('${c.price.toStringAsFixed(2)} €', style: tw(13, weight: black, color: Tw.amber400)),
+                      Text('${c.price.toStringAsFixed(2)} €', style: tw(13, weight: black, color: Tw.sun)),
                       IconButton(
                         visualDensity: VisualDensity.compact,
                         onPressed: () => setState(() => _cart = _cart.where((x) => x.cartId != c.cartId).toList()),
-                        icon: const Icon(Icons.close, size: 16, color: Tw.slate500),
+                        icon: const Icon(Icons.close, size: 16, color: Tw.inkDim),
                       ),
                     ]),
                   ),
@@ -297,7 +297,7 @@ class _KioskScreenState extends State<KioskScreen> {
             ),
           const SizedBox(height: 8),
           Row(children: [
-            Text(context.t('kiosk_total_to_pay', fallback: 'Total a Pagar'), style: tw(14, color: Tw.slate400)),
+            Text(context.t('kiosk_total_to_pay', fallback: 'Total a Pagar'), style: tw(14, color: Tw.inkSoft)),
             const Spacer(),
             Text('${_total.toStringAsFixed(2)} €', style: tw(26, weight: black)),
           ]),
@@ -310,12 +310,12 @@ class _KioskScreenState extends State<KioskScreen> {
               expand: true,
               fontSize: 15,
               padding: const EdgeInsets.symmetric(vertical: 16),
-              gradient: const LinearGradient(colors: [Tw.emerald500, Tw.teal500, Tw.cyan500]),
+              gradient: const LinearGradient(colors: [Tw.live, Tw.teal500, Tw.cyan500]),
               onTap: _cart.isEmpty ? null : _pay,
             ),
           ),
           const SizedBox(height: 6),
-          Text(context.t('kiosk_pay_hint', fallback: 'Acerca tu Tarjeta, Movil o Apple Pay al datafono inferior'), textAlign: TextAlign.center, style: tw(11, color: Tw.slate400)),
+          Text(context.t('kiosk_pay_hint', fallback: 'Acerca tu Tarjeta, Movil o Apple Pay al datafono inferior'), textAlign: TextAlign.center, style: tw(11, color: Tw.inkSoft)),
         ]),
       );
 
@@ -324,21 +324,21 @@ class _KioskScreenState extends State<KioskScreen> {
           child: Container(
             width: 64,
             height: 64,
-            decoration: BoxDecoration(color: Tw.emerald500.withValues(alpha: 0.2), shape: BoxShape.circle, border: Border.all(color: Tw.emerald500.withValues(alpha: 0.4))),
-            child: const Icon(Icons.check_circle, size: 36, color: Tw.emerald400),
+            decoration: BoxDecoration(color: Tw.live.withValues(alpha: 0.2), shape: BoxShape.circle, border: Border.all(color: Tw.live.withValues(alpha: 0.4))),
+            child: const Icon(Icons.check_circle, size: 36, color: Tw.live),
           ),
         ),
         const SizedBox(height: 16),
         Text(context.t('kiosk_payment_complete', fallback: 'PAGO COMPLETADO'), textAlign: TextAlign.center, style: tw(28, weight: black)),
         const SizedBox(height: 8),
         Text(context.t('kiosk_payment_hint', fallback: 'Muestra los codigos QR en barra para retirar tus consumiciones al instante.'),
-            textAlign: TextAlign.center, style: tw(14, color: Tw.slate400)),
+            textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft)),
         const SizedBox(height: 32),
         for (final t in _tokens)
           Container(
             margin: const EdgeInsets.only(bottom: 16),
             padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(color: Tw.slate900, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.slate700, width: 2)),
+            decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.line, width: 2)),
             child: Column(children: [
               Container(
                 padding: const EdgeInsets.all(16),
@@ -348,17 +348,17 @@ class _KioskScreenState extends State<KioskScreen> {
               const SizedBox(height: 12),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                decoration: BoxDecoration(color: Tw.slate800, borderRadius: BorderRadius.circular(99)),
-                child: Text(t.tokenId, style: tw(12, weight: bold, color: Tw.amber400).copyWith(fontFamily: 'monospace')),
+                decoration: BoxDecoration(color: Tw.line, borderRadius: BorderRadius.circular(99)),
+                child: Text(t.tokenId, style: tw(12, weight: bold, color: Tw.sun).copyWith(fontFamily: 'monospace')),
               ),
               const SizedBox(height: 8),
               Text(t.name, style: tw(18, weight: black)),
-              if (t.mixer != null) Text('Con ${t.mixer}', style: tw(12, color: Tw.slate400)),
+              if (t.mixer != null) Text('Con ${t.mixer}', style: tw(12, color: Tw.inkSoft)),
               const SizedBox(height: 12),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                decoration: BoxDecoration(color: Tw.emerald500.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4)),
-                child: Text(context.t('kiosk_ready_for_bar', fallback: 'Listo para barra'), style: tw(10, weight: bold, color: Tw.emerald400)),
+                decoration: BoxDecoration(color: Tw.live.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4)),
+                child: Text(context.t('kiosk_ready_for_bar', fallback: 'Listo para barra'), style: tw(10, weight: bold, color: Tw.live)),
               ),
             ]),
           ),
@@ -369,9 +369,9 @@ class _KioskScreenState extends State<KioskScreen> {
             padding: const EdgeInsets.symmetric(vertical: 16),
             decoration: BoxDecoration(color: Tw.white, borderRadius: BorderRadius.circular(16)),
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Flexible(child: Text(context.t('kiosk_finish', fallback: 'FINALIZAR Y LIBERAR TOTEM'), textAlign: TextAlign.center, style: tw(15, weight: black, color: Tw.slate950))),
+              Flexible(child: Text(context.t('kiosk_finish', fallback: 'FINALIZAR Y LIBERAR TOTEM'), textAlign: TextAlign.center, style: tw(15, weight: black, color: Tw.night))),
               const SizedBox(width: 8),
-              const Icon(Icons.arrow_forward, color: Tw.slate950),
+              const Icon(Icons.arrow_forward, color: Tw.night),
             ]),
           ),
         ),
@@ -386,8 +386,8 @@ class _UpsellDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final up = drink.upsell!;
     return Dialog(
-      backgroundColor: Tw.slate900,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: BorderSide(color: Tw.amber500.withValues(alpha: 0.4), width: 2)),
+      backgroundColor: Tw.panel,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: BorderSide(color: Tw.sun.withValues(alpha: 0.4), width: 2)),
       child: Padding(
         padding: const EdgeInsets.all(28),
         child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -397,33 +397,33 @@ class _UpsellDialog extends StatelessWidget {
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: Tw.amber500.withValues(alpha: 0.2),
+                color: Tw.sun.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Tw.amber500.withValues(alpha: 0.3)),
+                border: Border.all(color: Tw.sun.withValues(alpha: 0.3)),
               ),
-              child: const Icon(Icons.auto_awesome, color: Tw.amber400),
+              child: const Icon(Icons.auto_awesome, color: Tw.sun),
             ),
           ),
           const SizedBox(height: 16),
-          Label(context.t('kiosk_upsell_title', fallback: 'MEJORA TU EXPERIENCIA'), size: 12, color: Tw.amber400, tracking: 0.05),
+          Label(context.t('kiosk_upsell_title', fallback: 'MEJORA TU EXPERIENCIA'), size: 12, color: Tw.sun, tracking: 0.05),
           const SizedBox(height: 4),
           Text(up.title, style: tw(20, weight: black, height: 1.2)),
           const SizedBox(height: 8),
-          Text(up.description, style: tw(12, color: Tw.slate300)),
+          Text(up.description, style: tw(12, color: Tw.inkSoft)),
           const SizedBox(height: 24),
           Container(
             padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(color: Tw.slate800, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.slate700)),
+            decoration: BoxDecoration(color: Tw.line, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
             child: Row(children: [
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(context.t('kiosk_supplement', fallback: 'Suplemento'), style: tw(12, color: Tw.slate400)),
-                  Text('+${up.addonPrice.toStringAsFixed(2)} €', style: tw(20, weight: black, color: Tw.amber400)),
+                  Text(context.t('kiosk_supplement', fallback: 'Suplemento'), style: tw(12, color: Tw.inkSoft)),
+                  Text('+${up.addonPrice.toStringAsFixed(2)} €', style: tw(20, weight: black, color: Tw.sun)),
                 ]),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(color: Tw.slate700, borderRadius: BorderRadius.circular(8)),
+                decoration: BoxDecoration(color: Tw.line, borderRadius: BorderRadius.circular(8)),
                 child: Text('Total: ${(drink.price + up.addonPrice).toStringAsFixed(2)} €', style: tw(12, weight: bold)),
               ),
             ]),
@@ -434,7 +434,7 @@ class _UpsellDialog extends StatelessWidget {
             fontSize: 13,
             radius: 12,
             padding: const EdgeInsets.symmetric(vertical: 14),
-            gradient: const LinearGradient(colors: [Tw.amber400, Tw.yellow500]),
+            gradient: const LinearGradient(colors: [Tw.sun, Tw.yellow500]),
             onTap: () => Navigator.of(context).pop(true),
           ),
           const SizedBox(height: 10),
@@ -442,9 +442,9 @@ class _UpsellDialog extends StatelessWidget {
             onTap: () => Navigator.of(context).pop(false),
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
-              decoration: BoxDecoration(color: Tw.slate800, borderRadius: BorderRadius.circular(12)),
+              decoration: BoxDecoration(color: Tw.line, borderRadius: BorderRadius.circular(12)),
               child: Text('${context.t('kiosk_upsell_decline', fallback: 'Mantener estandar')} (${drink.price.toStringAsFixed(2)} €)',
-                  textAlign: TextAlign.center, style: tw(12, weight: bold, color: Tw.slate400)),
+                  textAlign: TextAlign.center, style: tw(12, weight: bold, color: Tw.inkSoft)),
             ),
           ),
         ]),

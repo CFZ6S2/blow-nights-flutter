@@ -92,25 +92,25 @@ class _TenantsPanelState extends State<TenantsPanel> {
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       AdminCard(
-        color: Tw.slate900.withValues(alpha: 0.6),
-        borderColor: Tw.w(0.05),
+        color: Tw.panel.withValues(alpha: 0.6),
+        borderColor: Tw.lineSoft,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Wrap(spacing: 12, runSpacing: 8, crossAxisAlignment: WrapCrossAlignment.center, children: [
-            const Icon(Icons.branding_watermark, color: Tw.fuchsia400, size: 24),
+            const Icon(Icons.branding_watermark, color: Tw.sun, size: 24),
             Text('Marcas Blancas (White-Label)', style: tw(20, weight: black)),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               decoration: BoxDecoration(
-                color: Tw.fuchsia500.withValues(alpha: 0.2),
+                color: Tw.party.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(99),
-                border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.3)),
+                border: Border.all(color: Tw.party.withValues(alpha: 0.3)),
               ),
-              child: Label('${_tenants.length} ${_tenants.length == 1 ? 'tenant' : 'tenants'}', color: Tw.fuchsia300, tracking: 0.05),
+              child: Label('${_tenants.length} ${_tenants.length == 1 ? 'tenant' : 'tenants'}', color: Tw.sun, tracking: 0.05),
             ),
           ]),
           const SizedBox(height: 8),
           Text('Gestiona la identidad visual, subdominios y dominios personalizados para locales, promotores y Master Partners.',
-              style: tw(12, color: Tw.slate400)),
+              style: tw(12, color: Tw.inkSoft)),
           const SizedBox(height: 16),
           GradientButton(
             label: 'Nueva Marca Blanca',
@@ -118,7 +118,7 @@ class _TenantsPanelState extends State<TenantsPanel> {
             expand: true,
             fontSize: 12,
             padding: const EdgeInsets.symmetric(vertical: 14),
-            gradient: const LinearGradient(colors: [Tw.fuchsia600, Tw.indigo600]),
+            gradient: const LinearGradient(colors: [Tw.sunset, Tw.party]),
             onTap: () => _openForm(),
           ),
         ]),
@@ -129,20 +129,20 @@ class _TenantsPanelState extends State<TenantsPanel> {
       else if (_tenants.isEmpty)
         AdminCard(
           padding: const EdgeInsets.all(48),
-          color: Tw.slate900.withValues(alpha: 0.4),
-          borderColor: Tw.w(0.05),
+          color: Tw.panel.withValues(alpha: 0.4),
+          borderColor: Tw.lineSoft,
           child: Column(children: [
-            const Icon(Icons.palette, size: 48, color: Tw.slate600),
+            const Icon(Icons.palette, size: 48, color: Tw.inkDim),
             const SizedBox(height: 16),
             Text('No hay marcas blancas configuradas', style: tw(16, weight: bold)),
             const SizedBox(height: 4),
             Text('Crea tu primer tenant white-label o usa el botón de prueba para instanciar el tenant test.',
-                textAlign: TextAlign.center, style: tw(12, color: Tw.slate400)),
+                textAlign: TextAlign.center, style: tw(12, color: Tw.inkSoft)),
             const SizedBox(height: 16),
             AdminButton(
               icon: Icons.auto_fix_high,
               label: 'Crear Tenant de Prueba ("test")',
-              color: Tw.w(0.1),
+              color: Tw.lineSoft,
               onTap: () => _openForm(demo: true),
             ),
           ]),
@@ -160,22 +160,22 @@ class _TenantsPanelState extends State<TenantsPanel> {
     final enabled = t['enabled'] != false;
     final logo = theme['logoUrl'] as String?;
     final domains = asStringList(t['allowedDomains']);
-    final primary = hexColor(colors['primary'] as String?) ?? Tw.fuchsia500;
+    final primary = hexColor(colors['primary'] as String?) ?? Tw.party;
 
     Widget swatch(String key) => Container(
           width: 20,
           height: 20,
           margin: const EdgeInsets.only(right: 6),
           decoration: BoxDecoration(
-            color: hexColor(colors[key] as String?) ?? Tw.slate800,
+            color: hexColor(colors[key] as String?) ?? Tw.line,
             shape: BoxShape.circle,
-            border: Border.all(color: Tw.w(0.2)),
+            border: Border.all(color: Tw.line),
           ),
         );
 
     return AdminCard(
       padding: const EdgeInsets.all(20),
-      color: Tw.slate900.withValues(alpha: 0.8),
+      color: Tw.panel.withValues(alpha: 0.8),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Expanded(
@@ -183,10 +183,10 @@ class _TenantsPanelState extends State<TenantsPanel> {
               Row(children: [
                 Flexible(child: Text(name, overflow: TextOverflow.ellipsis, style: tw(16, weight: black))),
                 const SizedBox(width: 8),
-                AdminBadge(enabled ? 'Activo' : 'Inactivo', color: enabled ? Tw.emerald400 : Tw.red400),
+                AdminBadge(enabled ? 'Activo' : 'Inactivo', color: enabled ? Tw.live : Tw.red400),
               ]),
               const SizedBox(height: 4),
-              Text('ID: $id', style: tw(11, color: Tw.fuchsia400.withValues(alpha: 0.8)).copyWith(fontFamily: 'monospace')),
+              Text('ID: $id', style: tw(11, color: Tw.sun.withValues(alpha: 0.8)).copyWith(fontFamily: 'monospace')),
             ]),
           ),
           const SizedBox(width: 12),
@@ -195,7 +195,7 @@ class _TenantsPanelState extends State<TenantsPanel> {
               width: 40,
               height: 40,
               padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.4), borderRadius: BorderRadius.circular(8), border: Border.all(color: Tw.w(0.1))),
+              decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.4), borderRadius: BorderRadius.circular(8), border: Border.all(color: Tw.line)),
               child: NetImage(logo, fit: BoxFit.contain),
             )
           else
@@ -203,41 +203,41 @@ class _TenantsPanelState extends State<TenantsPanel> {
               width: 40,
               height: 40,
               alignment: Alignment.center,
-              decoration: BoxDecoration(color: primary, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.2))),
+              decoration: BoxDecoration(color: primary, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
               child: Text(name.length >= 2 ? name.substring(0, 2).toUpperCase() : 'WL', style: tw(14, weight: black)),
             ),
         ]),
         const SizedBox(height: 16),
         Row(children: [
-          const Icon(Icons.language, size: 12, color: Tw.slate500),
+          const Icon(Icons.language, size: 12, color: Tw.inkDim),
           const SizedBox(width: 6),
           Expanded(
             child: Text((t['hostname'] as String?)?.isNotEmpty == true ? t['hostname'] as String : 'Sin hostname',
-                overflow: TextOverflow.ellipsis, style: tw(12, color: Tw.slate300)),
+                overflow: TextOverflow.ellipsis, style: tw(12, color: Tw.inkSoft)),
           ),
         ]),
         if (domains.isNotEmpty)
           Row(children: [
-            const Icon(Icons.dns, size: 12, color: Tw.slate600),
+            const Icon(Icons.dns, size: 12, color: Tw.inkDim),
             const SizedBox(width: 6),
-            Expanded(child: Text(domains.join(', '), overflow: TextOverflow.ellipsis, style: tw(11, color: Tw.slate400))),
+            Expanded(child: Text(domains.join(', '), overflow: TextOverflow.ellipsis, style: tw(11, color: Tw.inkSoft))),
           ]),
         const SizedBox(height: 12),
-        Divider(height: 1, color: Tw.w(0.05)),
+        Divider(height: 1, color: Tw.lineSoft),
         const SizedBox(height: 12),
         Row(children: [
-          const Label('Paleta:', color: Tw.slate500, weight: bold, tracking: 0.05),
+          const Label('Paleta:', color: Tw.inkDim, weight: bold, tracking: 0.05),
           const SizedBox(width: 8),
           for (final k in const ['primary', 'accent', 'bgDark', 'text']) swatch(k),
         ]),
         const SizedBox(height: 12),
-        Divider(height: 1, color: Tw.w(0.05)),
+        Divider(height: 1, color: Tw.lineSoft),
         const SizedBox(height: 12),
         Row(children: [
           AdminButton(
             icon: Icons.visibility,
             label: 'Ver',
-            color: Tw.w(0.05),
+            color: Tw.panelSoft,
             fontSize: 11,
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             onTap: () => openInApp('$webBase/?tenant=$id'),
@@ -245,15 +245,15 @@ class _TenantsPanelState extends State<TenantsPanel> {
           const SizedBox(width: 4),
           AdminButton(
             label: enabled ? 'Desactivar' : 'Activar',
-            color: enabled ? Tw.amber400 : Tw.emerald400,
+            color: enabled ? Tw.sun : Tw.live,
             outlined: true,
             fontSize: 11,
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             onTap: () => _toggle(t),
           ),
           const Spacer(),
-          IconButton(onPressed: () => _openForm(tenant: t), icon: const Icon(Icons.edit, size: 18, color: Tw.slate400)),
-          IconButton(onPressed: () => _delete(id, name), icon: const Icon(Icons.delete, size: 18, color: Tw.slate400)),
+          IconButton(onPressed: () => _openForm(tenant: t), icon: const Icon(Icons.edit, size: 18, color: Tw.inkSoft)),
+          IconButton(onPressed: () => _delete(id, name), icon: const Icon(Icons.delete, size: 18, color: Tw.inkSoft)),
         ]),
       ]),
     );
@@ -378,7 +378,7 @@ class _TenantFormState extends State<_TenantForm> {
           enabled: enabled,
           maxLines: lines,
           onChanged: onChanged,
-          style: tw(14, color: enabled ? Tw.white : Tw.slate500),
+          style: tw(14, color: enabled ? Tw.white : Tw.inkDim),
           decoration: adminInputDecoration(hint),
         ),
       ]);
@@ -391,9 +391,9 @@ class _TenantFormState extends State<_TenantForm> {
         Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: Tw.fuchsia950.withValues(alpha: 0.4),
+            color: Tw.nightDeep.withValues(alpha: 0.4),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.2)),
+            border: Border.all(color: Tw.party.withValues(alpha: 0.2)),
           ),
           child: Row(children: [
             Expanded(
@@ -420,13 +420,13 @@ class _TenantFormState extends State<_TenantForm> {
       AdminGrid(children: [
         for (final k in colorLabels.keys)
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(colorLabels[k]!, style: tw(10, color: Tw.slate500)),
+            Text(colorLabels[k]!, style: tw(10, color: Tw.inkDim)),
             const SizedBox(height: 4),
             GestureDetector(
               onTap: () => _pickColor(k),
               child: Container(
                 padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.4), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.1))),
+                decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.4), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
                 child: Row(children: [
                   Container(
                     width: 28,
@@ -445,11 +445,11 @@ class _TenantFormState extends State<_TenantForm> {
       _field('Título SEO (Pestaña del Navegador)', _seoTitle, hint: 'ej: Garito Amigo VIP - Noches Exclusivas'),
       _field('Descripción SEO', _seoDesc, hint: 'Breve descripción para buscadores...', lines: 2),
       const SizedBox(height: 20),
-      Divider(height: 1, color: Tw.w(0.1)),
+      Divider(height: 1, color: Tw.line),
       const SizedBox(height: 16),
       Row(children: [
         Expanded(
-          child: AdminButton(label: 'Cancelar', color: Tw.w(0.05), textColor: Tw.slate300, expand: true, onTap: () => Navigator.of(context).pop()),
+          child: AdminButton(label: 'Cancelar', color: Tw.panelSoft, textColor: Tw.inkSoft, expand: true, onTap: () => Navigator.of(context).pop()),
         ),
         const SizedBox(width: 12),
         Expanded(
@@ -458,7 +458,7 @@ class _TenantFormState extends State<_TenantForm> {
             loading: _saving,
             fontSize: 11,
             padding: const EdgeInsets.symmetric(vertical: 12),
-            gradient: const LinearGradient(colors: [Tw.fuchsia600, Tw.indigo600]),
+            gradient: const LinearGradient(colors: [Tw.sunset, Tw.party]),
             onTap: _saving ? null : _save,
           ),
         ),
@@ -480,18 +480,18 @@ class _HsvPickerState extends State<_HsvPicker> {
   late HSVColor _hsv = HSVColor.fromColor(widget.initial);
 
   Widget _slider(String label, double value, double max, ValueChanged<double> onChanged) => Row(children: [
-        SizedBox(width: 24, child: Text(label, style: tw(12, weight: bold, color: Tw.slate400))),
+        SizedBox(width: 24, child: Text(label, style: tw(12, weight: bold, color: Tw.inkSoft))),
         Expanded(child: Slider(value: value, max: max, activeColor: _hsv.toColor(), onChanged: onChanged)),
       ]);
 
   @override
   Widget build(BuildContext context) => Dialog(
-        backgroundColor: Tw.slate900,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: Tw.w(0.1))),
+        backgroundColor: Tw.panel,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: Tw.line)),
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(mainAxisSize: MainAxisSize.min, children: [
-            Container(height: 56, decoration: BoxDecoration(color: _hsv.toColor(), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.2)))),
+            Container(height: 56, decoration: BoxDecoration(color: _hsv.toColor(), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line))),
             const SizedBox(height: 8),
             Text(colorHex(_hsv.toColor()), style: tw(14, weight: bold).copyWith(fontFamily: 'monospace')),
             const SizedBox(height: 8),
@@ -500,7 +500,7 @@ class _HsvPickerState extends State<_HsvPicker> {
             _slider('V', _hsv.value, 1, (v) => setState(() => _hsv = _hsv.withValue(v))),
             const SizedBox(height: 8),
             Row(children: [
-              Expanded(child: AdminButton(label: 'Cancelar', color: Tw.w(0.05), expand: true, onTap: () => Navigator.of(context).pop())),
+              Expanded(child: AdminButton(label: 'Cancelar', color: Tw.panelSoft, expand: true, onTap: () => Navigator.of(context).pop())),
               const SizedBox(width: 12),
               Expanded(child: AdminButton(label: 'OK', expand: true, onTap: () => Navigator.of(context).pop(_hsv.toColor()))),
             ]),

@@ -202,7 +202,7 @@ class _EventsScreenState extends State<EventsScreen> {
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(color: Tw.slate900.withValues(alpha: 0.6), border: Border(bottom: BorderSide(color: Tw.w(0.05)))),
+            decoration: BoxDecoration(color: Tw.panel.withValues(alpha: 0.6), border: Border(bottom: BorderSide(color: Tw.lineSoft))),
             child: Text(context.t('events.title', fallback: 'Eventos y Planes'), textAlign: TextAlign.center, style: tw(20, weight: black)),
           ),
           Expanded(
@@ -212,11 +212,11 @@ class _EventsScreenState extends State<EventsScreen> {
                 style: tw(14),
                 decoration: InputDecoration(
                   hintText: context.t('events.searchPlaceholder', fallback: 'Buscar evento...'),
-                  prefixIcon: const Icon(Icons.search, size: 18, color: Tw.slate500),
-                  fillColor: Tw.slate900,
+                  prefixIcon: const Icon(Icons.search, size: 18, color: Tw.inkDim),
+                  fillColor: Tw.panel,
                   contentPadding: const EdgeInsets.symmetric(vertical: 10),
-                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.slate700)),
-                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.fuchsia500)),
+                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.line)),
+                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.party)),
                 ),
               ),
               const SizedBox(height: 24),
@@ -236,11 +236,11 @@ class _EventsScreenState extends State<EventsScreen> {
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           decoration: BoxDecoration(
-                            color: _filter == f.$1 ? Tw.fuchsia600 : Tw.w(0.05),
+                            color: _filter == f.$1 ? Tw.party : Tw.panelSoft,
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: _filter == f.$1 ? Tw.fuchsia500 : Tw.w(0.1)),
+                            border: Border.all(color: _filter == f.$1 ? Tw.party : Tw.line),
                           ),
-                          child: Label(f.$2, size: 12, weight: bold, color: _filter == f.$1 ? Tw.white : Tw.slate400, tracking: 0.05),
+                          child: Label(f.$2, size: 12, weight: bold, color: _filter == f.$1 ? Tw.white : Tw.inkSoft, tracking: 0.05),
                         ),
                       ),
                     ),
@@ -253,14 +253,14 @@ class _EventsScreenState extends State<EventsScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 64),
                   child: Column(children: [
-                    Icon(q.isNotEmpty ? Icons.search_off : Icons.event_busy, size: 48, color: Tw.slate700),
+                    Icon(q.isNotEmpty ? Icons.search_off : Icons.event_busy, size: 48, color: Tw.line),
                     const SizedBox(height: 12),
                     Text(
                       q.isNotEmpty
                           ? context.t('events.noSearchResults', fallback: 'No se encontraron eventos')
                           : context.t('events.no_events', fallback: 'No hay eventos para estos filtros'),
                       textAlign: TextAlign.center,
-                      style: tw(16, color: Tw.slate500),
+                      style: tw(16, color: Tw.inkDim),
                     ),
                     if (q.isNotEmpty || _filter != null) ...[
                       const SizedBox(height: 12),
@@ -270,7 +270,7 @@ class _EventsScreenState extends State<EventsScreen> {
                           _filter = null;
                         }),
                         child: Text(context.t('events.clearFilters', fallback: 'Ver todos'),
-                            style: tw(12, weight: bold, color: Tw.fuchsia400, decoration: TextDecoration.underline)),
+                            style: tw(12, weight: bold, color: Tw.sun, decoration: TextDecoration.underline)),
                       ),
                     ],
                   ]),
@@ -290,9 +290,9 @@ class _EventsScreenState extends State<EventsScreen> {
 
   Widget _card(BuildContext context, _PublicEvent e, String currency) {
     final (label, color) = switch (e.source) {
-      'chill' => ('Plan', Tw.amber400),
-      'independent' => (context.t('events.source_event', fallback: 'Evento'), Tw.fuchsia400),
-      _ => ('Local', Tw.emerald400),
+      'chill' => ('Plan', Tw.sun),
+      'independent' => (context.t('events.source_event', fallback: 'Evento'), Tw.sun),
+      _ => ('Local', Tw.live),
     };
     void open() {
       if (e.source == 'chill') {
@@ -311,9 +311,9 @@ class _EventsScreenState extends State<EventsScreen> {
       if (remaining <= 0) {
         capacity = _pill(context.t('events.sold_out', fallback: 'Agotado'), Tw.red400);
       } else if (e.taken / max >= 0.8) {
-        capacity = _pill(context.t('events.spots_left', count: remaining, fallback: 'Quedan $remaining plazas'), Tw.amber400);
+        capacity = _pill(context.t('events.spots_left', count: remaining, fallback: 'Quedan $remaining plazas'), Tw.sun);
       } else {
-        capacity = Text('${e.taken}/$max', style: tw(10, color: Tw.slate500));
+        capacity = Text('${e.taken}/$max', style: tw(10, color: Tw.inkDim));
       }
     }
 
@@ -330,8 +330,8 @@ class _EventsScreenState extends State<EventsScreen> {
             placeholder: Container(
               width: 96,
               height: 96,
-              color: Tw.slate800,
-              child: Icon(e.source == 'chill' ? Icons.local_fire_department : Icons.event, size: 30, color: Tw.slate600),
+              color: Tw.line,
+              child: Icon(e.source == 'chill' ? Icons.local_fire_department : Icons.event, size: 30, color: Tw.inkDim),
             ),
           ),
         ),
@@ -352,21 +352,21 @@ class _EventsScreenState extends State<EventsScreen> {
               ),
             ]),
             const SizedBox(height: 6),
-            Text(_formatDate(context, e.date), style: tw(12, color: Tw.slate400)),
+            Text(_formatDate(context, e.date), style: tw(12, color: Tw.inkSoft)),
             if (e.venueName != null && e.venueName!.isNotEmpty) ...[
               const SizedBox(height: 6),
-              Text(e.venueName!, style: tw(12, color: Tw.slate500)),
+              Text(e.venueName!, style: tw(12, color: Tw.inkDim)),
             ],
             if (e.hostNick != null && e.hostNick!.isNotEmpty) ...[
               const SizedBox(height: 6),
-              Text('por ${e.hostNick}', style: tw(12, color: Tw.slate500)),
+              Text('por ${e.hostNick}', style: tw(12, color: Tw.inkDim)),
             ],
             const SizedBox(height: 8),
             Wrap(spacing: 12, runSpacing: 4, crossAxisAlignment: WrapCrossAlignment.center, children: [
               (e.priceFrom ?? 0) > 0
                   ? Text('${context.t('events.from', fallback: 'Desde')} ${formatPrice(e.priceFrom!, currency)}',
-                      style: tw(12, weight: bold, color: Tw.fuchsia400))
-                  : Text(context.t('events.free_label', fallback: 'Gratis'), style: tw(12, weight: bold, color: Tw.emerald400)),
+                      style: tw(12, weight: bold, color: Tw.sun))
+                  : Text(context.t('events.free_label', fallback: 'Gratis'), style: tw(12, weight: bold, color: Tw.live)),
               ?capacity,
             ]),
           ]),
@@ -384,17 +384,17 @@ class _EventsScreenState extends State<EventsScreen> {
   Widget _skeletonRow() => Container(
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+        decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
         child: Row(children: [
-          Container(width: 96, height: 96, decoration: BoxDecoration(color: Tw.slate800, borderRadius: BorderRadius.circular(12))),
+          Container(width: 96, height: 96, decoration: BoxDecoration(color: Tw.line, borderRadius: BorderRadius.circular(12))),
           const SizedBox(width: 16),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              FractionallySizedBox(widthFactor: 0.75, child: Container(height: 16, color: Tw.slate800)),
+              FractionallySizedBox(widthFactor: 0.75, child: Container(height: 16, color: Tw.line)),
               const SizedBox(height: 8),
-              FractionallySizedBox(widthFactor: 0.5, child: Container(height: 12, color: Tw.slate800)),
+              FractionallySizedBox(widthFactor: 0.5, child: Container(height: 12, color: Tw.line)),
               const SizedBox(height: 8),
-              FractionallySizedBox(widthFactor: 0.33, child: Container(height: 12, color: Tw.slate800)),
+              FractionallySizedBox(widthFactor: 0.33, child: Container(height: 12, color: Tw.line)),
             ]),
           ),
         ]),

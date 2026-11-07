@@ -98,7 +98,7 @@ class _ClaimVenueSheetState extends State<_ClaimVenueSheet> {
 
   Widget _label(String key) => Padding(
         padding: const EdgeInsets.only(bottom: 6, top: 12),
-        child: Label(context.t(key), size: 10, color: Tw.slate500, tracking: 0.1),
+        child: Label(context.t(key), size: 10, color: Tw.inkDim, tracking: 0.1),
       );
 
   @override
@@ -111,7 +111,7 @@ class _ClaimVenueSheetState extends State<_ClaimVenueSheet> {
           margin: const EdgeInsets.all(12),
           constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9),
           decoration: BoxDecoration(
-            color: Tw.slate900,
+            color: Tw.panel,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: Tw.purple500.withValues(alpha: 0.4)),
           ),
@@ -124,16 +124,16 @@ class _ClaimVenueSheetState extends State<_ClaimVenueSheet> {
                 ),
                 GestureDetector(
                   onTap: _sending ? null : () => Navigator.of(context).pop(),
-                  child: const Icon(Icons.close, size: 20, color: Tw.slate500),
+                  child: const Icon(Icons.close, size: 20, color: Tw.inkDim),
                 ),
               ]),
               const SizedBox(height: 12),
               if (!loggedIn) ...[
-                Text(context.t('venue_claim.login_first'), style: tw(12, color: Tw.slate300)),
+                Text(context.t('venue_claim.login_first'), style: tw(12, color: Tw.inkSoft)),
                 const SizedBox(height: 16),
                 _button(context.t('venue_claim.login_button'), Tw.purple600, () => Navigator.of(context).pop(ClaimSheetResult.login)),
               ] else ...[
-                Text(context.t('venue_claim.intro'), style: tw(12, color: Tw.slate400, height: 1.5)),
+                Text(context.t('venue_claim.intro'), style: tw(12, color: Tw.inkSoft, height: 1.5)),
                 _label('venue_claim.name'),
                 AdminInput(controller: _name, focus: Tw.purple500),
                 _label('venue_claim.phone'),
@@ -152,32 +152,32 @@ class _ClaimVenueSheetState extends State<_ClaimVenueSheet> {
                     decoration: BoxDecoration(
                       color: Colors.black.withValues(alpha: 0.3),
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: _file != null ? Tw.emerald500.withValues(alpha: 0.5) : Tw.w(0.1)),
+                      border: Border.all(color: _file != null ? Tw.live.withValues(alpha: 0.5) : Tw.lineSoft),
                     ),
                     child: Row(children: [
                       Icon(_file != null ? Icons.check_circle : Icons.add_photo_alternate, size: 18,
-                          color: _file != null ? Tw.emerald400 : Tw.slate400),
+                          color: _file != null ? Tw.live : Tw.inkSoft),
                       const SizedBox(width: 10),
                       Expanded(
                         child: Text(_file?.name ?? context.t('venue_claim.document'),
-                            maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(13, color: Tw.slate300)),
+                            maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(13, color: Tw.inkSoft)),
                       ),
                       if (_file != null)
                         GestureDetector(
                           onTap: _sending ? null : () => setState(() => _file = null),
-                          child: const Icon(Icons.close, size: 16, color: Tw.slate500),
+                          child: const Icon(Icons.close, size: 16, color: Tw.inkDim),
                         ),
                     ]),
                   ),
                 ),
                 const SizedBox(height: 6),
-                Text(context.t('venue_claim.document_hint_photo'), style: tw(10, color: Tw.slate500, height: 1.4)),
+                Text(context.t('venue_claim.document_hint_photo'), style: tw(10, color: Tw.inkDim, height: 1.4)),
                 const SizedBox(height: 12),
-                Text(context.t('venue_claim.trial_note'), style: tw(10, color: Tw.slate500, height: 1.4)),
+                Text(context.t('venue_claim.trial_note'), style: tw(10, color: Tw.inkDim, height: 1.4)),
                 const SizedBox(height: 16),
                 Row(children: [
-                  Expanded(child: _button(context.t('venue_claim.cancel'), Tw.slate800, _sending ? null : () => Navigator.of(context).pop(),
-                      fg: Tw.slate300)),
+                  Expanded(child: _button(context.t('venue_claim.cancel'), Tw.line, _sending ? null : () => Navigator.of(context).pop(),
+                      fg: Tw.inkSoft)),
                   const SizedBox(width: 8),
                   Expanded(
                     child: _button(_sending ? context.t('venue_claim.sending') : context.t('venue_claim.send'), Tw.purple600,

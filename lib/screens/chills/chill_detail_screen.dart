@@ -140,26 +140,26 @@ class _ChillDetailScreenState extends State<ChillDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
-    if (_loading) return const Scaffold(backgroundColor: Tw.black, body: Center(child: CircularProgressIndicator(strokeWidth: 2)));
+    if (_loading) return const Scaffold(backgroundColor: Tw.nightDeep, body: Center(child: CircularProgressIndicator(strokeWidth: 2)));
     final c = _chill;
     if (c == null) {
       return Scaffold(
-        backgroundColor: Tw.black,
+        backgroundColor: Tw.nightDeep,
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(24),
             child: Column(mainAxisSize: MainAxisSize.min, children: [
-              const Icon(Icons.explore_off, size: 60, color: Tw.slate700),
+              const Icon(Icons.explore_off, size: 60, color: Tw.line),
               const SizedBox(height: 16),
               Text(context.t('chill.not_found'), style: tw(20, weight: black)),
               const SizedBox(height: 8),
-              Text(context.t('chill.expired_or_deleted'), textAlign: TextAlign.center, style: tw(14, color: Tw.slate500)),
+              Text(context.t('chill.expired_or_deleted'), textAlign: TextAlign.center, style: tw(14, color: Tw.inkDim)),
               const SizedBox(height: 24),
               Pressable(
                 onTap: () => openRoute(context, AppRoute.chills, replace: true),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  decoration: BoxDecoration(color: Tw.fuchsia600, borderRadius: BorderRadius.circular(12)),
+                  decoration: BoxDecoration(color: Tw.party, borderRadius: BorderRadius.circular(12)),
                   child: Text(context.t('chill.back_to_radar'), style: tw(14, weight: bold)),
                 ),
               ),
@@ -180,7 +180,7 @@ class _ChillDetailScreenState extends State<ChillDetailScreen> {
     final tabs = ['info', if (isHost) 'requests', if (canChat) 'chat'];
 
     return Scaffold(
-      backgroundColor: Tw.black,
+      backgroundColor: Tw.nightDeep,
       body: SafeArea(
         child: Column(children: [
           Expanded(
@@ -190,9 +190,9 @@ class _ChillDetailScreenState extends State<ChillDetailScreen> {
                 child: GestureDetector(
                   onTap: () => Navigator.of(context).maybePop(),
                   child: Row(mainAxisSize: MainAxisSize.min, children: [
-                    const Icon(Icons.arrow_back, size: 14, color: Tw.slate500),
+                    const Icon(Icons.arrow_back, size: 14, color: Tw.inkDim),
                     const SizedBox(width: 4),
-                    Text(context.t('chill.back'), style: tw(12, weight: bold, color: Tw.slate500)),
+                    Text(context.t('chill.back'), style: tw(12, weight: bold, color: Tw.inkDim)),
                   ]),
                 ),
               ),
@@ -200,9 +200,9 @@ class _ChillDetailScreenState extends State<ChillDetailScreen> {
               Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  color: Tw.slate900.withValues(alpha: 0.8),
+                  color: Tw.panel.withValues(alpha: 0.8),
                   borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: Tw.w(0.05)),
+                  border: Border.all(color: Tw.lineSoft),
                 ),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                   Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -211,11 +211,11 @@ class _ChillDetailScreenState extends State<ChillDetailScreen> {
                       child: Container(
                         width: 56,
                         height: 56,
-                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.4), width: 2)),
+                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Tw.party.withValues(alpha: 0.4), width: 2)),
                         child: ClipOval(
                           child: NetImage(
                             c['host_foto'] as String?,
-                            placeholder: Container(color: const Color(0x66701A75), child: const Icon(Icons.person, color: Tw.fuchsia400)),
+                            placeholder: Container(color: const Color(0x66701A75), child: const Icon(Icons.person, color: Tw.sun)),
                           ),
                         ),
                       ),
@@ -227,29 +227,29 @@ class _ChillDetailScreenState extends State<ChillDetailScreen> {
                         const SizedBox(height: 4),
                         Text.rich(TextSpan(children: [
                           TextSpan(text: '${context.t('chill.organized_by')} '),
-                          TextSpan(text: safeStr(c['host_nick']), style: tw(12, weight: bold, color: Tw.fuchsia400)),
-                        ]), style: tw(12, weight: bold, color: Tw.slate500)),
+                          TextSpan(text: safeStr(c['host_nick']), style: tw(12, weight: bold, color: Tw.sun)),
+                        ]), style: tw(12, weight: bold, color: Tw.inkDim)),
                       ]),
                     ),
                     Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                         decoration: BoxDecoration(
-                          color: status == 'ended' ? Tw.slate700 : (spots <= 0 ? Tw.red500 : Tw.green500).withValues(alpha: 0.2),
+                          color: status == 'ended' ? Tw.line : (spots <= 0 ? Tw.red500 : Tw.live).withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(99),
                         ),
                         child: Text(
                           status == 'ended' ? context.t('chill.status_closed') : spots <= 0 ? context.t('chill.status_full') : '$spots ${context.t('chill.spots')}',
-                          style: tw(10, weight: black, color: status == 'ended' ? Tw.slate400 : spots <= 0 ? Tw.red400 : Tw.green400),
+                          style: tw(10, weight: black, color: status == 'ended' ? Tw.inkSoft : spots <= 0 ? Tw.red400 : Tw.live),
                         ),
                       ),
                       const SizedBox(height: 4),
-                      Text('$acceptedCount/$max', style: tw(10, weight: bold, color: Tw.slate500)),
+                      Text('$acceptedCount/$max', style: tw(10, weight: bold, color: Tw.inkDim)),
                     ]),
                   ]),
                   if (safeStr(c['description']).isNotEmpty) ...[
                     const SizedBox(height: 16),
-                    Text(safeStr(c['description']), style: tw(14, color: Tw.slate300)),
+                    Text(safeStr(c['description']), style: tw(14, color: Tw.inkSoft)),
                   ],
                   if (tags.isNotEmpty) ...[
                     const SizedBox(height: 16),
@@ -257,21 +257,21 @@ class _ChillDetailScreenState extends State<ChillDetailScreen> {
                       for (final t in tags)
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                          decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(99)),
-                          child: Text(t, style: tw(10, weight: bold, color: Tw.slate400)),
+                          decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(99)),
+                          child: Text(t, style: tw(10, weight: bold, color: Tw.inkSoft)),
                         ),
                     ]),
                   ],
                   const SizedBox(height: 16),
                   _canSee
-                      ? _infoBox(Icons.location_on, Tw.green400, Tw.green500, context.t('chill.address'), _exactAddress ?? context.t('chill.loading'), bold: true)
-                      : _infoBox(Icons.lock, Tw.slate600, Tw.slate800, context.t('chill.location'), context.t('chill.location_hidden')),
+                      ? _infoBox(Icons.location_on, Tw.live, Tw.live, context.t('chill.address'), _exactAddress ?? context.t('chill.loading'), bold: true)
+                      : _infoBox(Icons.lock, Tw.inkDim, Tw.line, context.t('chill.location'), context.t('chill.location_hidden')),
                 ]),
               ),
               const SizedBox(height: 16),
               if (status != 'ended' && !isHost) ...[
                 if (accepted)
-                  _statusCard(Icons.check_circle, Tw.green400, Tw.green500, context.t('chill.has_pass'))
+                  _statusCard(Icons.check_circle, Tw.live, Tw.live, context.t('chill.has_pass'))
                 else if (denied)
                   _statusCard(Icons.block, Tw.red400, Tw.red500, context.t('chill.request_denied'))
                 else if (pending)
@@ -313,13 +313,13 @@ class _ChillDetailScreenState extends State<ChillDetailScreen> {
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           decoration: BoxDecoration(
-                            color: _tab == t ? Tw.fuchsia500 : Tw.w(0.05),
+                            color: _tab == t ? Tw.party : Tw.panelSoft,
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: _tab == t ? Tw.fuchsia500 : Tw.w(0.05)),
+                            border: Border.all(color: _tab == t ? Tw.party : Tw.lineSoft),
                           ),
                           child: Label(
                             context.t(t == 'info' ? 'chill.tab_info' : t == 'requests' ? 'chill.tab_requests' : 'chill.tab_chat'),
-                            color: _tab == t ? Tw.white : Tw.slate500,
+                            color: _tab == t ? Tw.white : Tw.inkDim,
                           ),
                         ),
                       ),
@@ -356,16 +356,16 @@ class _ChillDetailScreenState extends State<ChillDetailScreen> {
         decoration: BoxDecoration(
           color: bg.withValues(alpha: bold ? 0.1 : 0.5),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: bold ? bg.withValues(alpha: 0.2) : Tw.w(0.05)),
+          border: Border.all(color: bold ? bg.withValues(alpha: 0.2) : Tw.panelSoft),
         ),
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Icon(icon, color: fg),
           const SizedBox(width: 12),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Label(title, size: 12, weight: FontWeight.w700, color: bold ? fg : Tw.slate500),
+              Label(title, size: 12, weight: FontWeight.w700, color: bold ? fg : Tw.inkDim),
               const SizedBox(height: 4),
-              Text(body, style: bold ? tw(14, weight: FontWeight.w700) : tw(12, color: Tw.slate500)),
+              Text(body, style: bold ? tw(14, weight: FontWeight.w700) : tw(12, color: Tw.inkDim)),
             ]),
           ),
         ]),
@@ -401,16 +401,16 @@ class _ChillDetailScreenState extends State<ChillDetailScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 20),
         decoration: BoxDecoration(
-          color: disabled ? Tw.slate800 : Tw.fuchsia600,
+          color: disabled ? Tw.line : Tw.party,
           borderRadius: BorderRadius.circular(16),
-          boxShadow: disabled ? null : [BoxShadow(color: Tw.fuchsia600.withValues(alpha: 0.5), blurRadius: 40, spreadRadius: -10)],
+          boxShadow: disabled ? null : [BoxShadow(color: Tw.party.withValues(alpha: 0.5), blurRadius: 40, spreadRadius: -10)],
         ),
         child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Icon(_requesting ? Icons.sync : hasAccess ? Icons.vpn_key : Icons.lock, color: disabled ? Tw.slate600 : Tw.white),
+          Icon(_requesting ? Icons.sync : hasAccess ? Icons.vpn_key : Icons.lock, color: disabled ? Tw.inkDim : Tw.white),
           const SizedBox(width: 8),
           Text(
             _requesting ? context.t('chill.requesting') : hasAccess ? context.t('chill.request_pass') : context.t('chill.unlock_access'),
-            style: tw(18, weight: black, color: disabled ? Tw.slate600 : Tw.white),
+            style: tw(18, weight: black, color: disabled ? Tw.inkDim : Tw.white),
           ),
         ]),
       ),
@@ -423,9 +423,9 @@ class _ChillDetailScreenState extends State<ChillDetailScreen> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 32),
           child: Column(children: [
-            const Icon(Icons.inbox, size: 36, color: Tw.slate700),
+            const Icon(Icons.inbox, size: 36, color: Tw.line),
             const SizedBox(height: 8),
-            Text(context.t('chill.no_requests'), style: tw(14, weight: bold, color: Tw.slate500)),
+            Text(context.t('chill.no_requests'), style: tw(14, weight: bold, color: Tw.inkDim)),
           ]),
         ),
       ];
@@ -436,9 +436,9 @@ class _ChillDetailScreenState extends State<ChillDetailScreen> {
           margin: const EdgeInsets.only(bottom: 12),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Tw.slate900.withValues(alpha: 0.8),
+            color: Tw.panel.withValues(alpha: 0.8),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Tw.w(0.05)),
+            border: Border.all(color: Tw.lineSoft),
           ),
           child: Column(children: [
             Row(children: [
@@ -447,9 +447,9 @@ class _ChillDetailScreenState extends State<ChillDetailScreen> {
                 child: Container(
                   width: 48,
                   height: 48,
-                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Tw.w(0.1), width: 2)),
+                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Tw.line, width: 2)),
                   child: ClipOval(
-                    child: NetImage(r['user_foto'] as String?, placeholder: Container(color: Tw.slate800, child: const Icon(Icons.person, color: Tw.slate600))),
+                    child: NetImage(r['user_foto'] as String?, placeholder: Container(color: Tw.line, child: const Icon(Icons.person, color: Tw.inkDim))),
                   ),
                 ),
               ),
@@ -457,9 +457,9 @@ class _ChillDetailScreenState extends State<ChillDetailScreen> {
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Text(safeStr(r['user_nick']), style: tw(14, weight: black)),
-                  if (r['user_edad'] != null) Text('${r['user_edad']} ${context.t('chill.years_old')}', style: tw(10, weight: bold, color: Tw.slate500)),
+                  if (r['user_edad'] != null) Text('${r['user_edad']} ${context.t('chill.years_old')}', style: tw(10, weight: bold, color: Tw.inkDim)),
                   if (safeStr(r['user_bio']).isNotEmpty)
-                    Text(safeStr(r['user_bio']), maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(12, color: Tw.slate400)),
+                    Text(safeStr(r['user_bio']), maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(12, color: Tw.inkSoft)),
                 ]),
               ),
             ]),
@@ -502,10 +502,10 @@ class _ChillDetailScreenState extends State<ChillDetailScreen> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 32),
           child: Column(children: [
-            const Icon(Icons.forum, size: 36, color: Tw.slate700),
+            const Icon(Icons.forum, size: 36, color: Tw.line),
             const SizedBox(height: 8),
-            Text(context.t('chill.no_messages'), style: tw(14, weight: bold, color: Tw.slate500)),
-            Text(context.t('chill.start_conversation'), style: tw(12, color: Tw.slate600)),
+            Text(context.t('chill.no_messages'), style: tw(14, weight: bold, color: Tw.inkDim)),
+            Text(context.t('chill.start_conversation'), style: tw(12, color: Tw.inkDim)),
           ]),
         ),
       ];
@@ -527,9 +527,9 @@ class _ChillDetailScreenState extends State<ChillDetailScreen> {
                     child: Container(
                       width: 28,
                       height: 28,
-                      decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Tw.w(0.1))),
+                      decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Tw.line)),
                       child: ClipOval(
-                        child: NetImage(m['foto'] as String?, placeholder: Container(color: Tw.slate800, child: const Icon(Icons.person, size: 12, color: Tw.slate600))),
+                        child: NetImage(m['foto'] as String?, placeholder: Container(color: Tw.line, child: const Icon(Icons.person, size: 12, color: Tw.inkDim))),
                       ),
                     ),
                   ),
@@ -541,12 +541,12 @@ class _ChillDetailScreenState extends State<ChillDetailScreen> {
                     if (!me)
                       Padding(
                         padding: const EdgeInsets.only(left: 4, bottom: 2),
-                        child: Text(safeStr(m['nick']), style: tw(10, weight: bold, color: Tw.fuchsia400)),
+                        child: Text(safeStr(m['nick']), style: tw(10, weight: bold, color: Tw.sun)),
                       ),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       decoration: BoxDecoration(
-                        color: me ? Tw.fuchsia600 : Tw.slate800,
+                        color: me ? Tw.party : Tw.line,
                         borderRadius: BorderRadius.only(
                           topLeft: const Radius.circular(16),
                           topRight: const Radius.circular(16),
@@ -559,7 +559,7 @@ class _ChillDetailScreenState extends State<ChillDetailScreen> {
                     if (time != null)
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                        child: Text(DateFormat('HH:mm').format(time), style: tw(9, color: Tw.slate600)),
+                        child: Text(DateFormat('HH:mm').format(time), style: tw(9, color: Tw.inkDim)),
                       ),
                   ]),
                 ),
@@ -580,10 +580,10 @@ class _ChillDetailScreenState extends State<ChillDetailScreen> {
               onSubmitted: (_) => _send(),
               decoration: InputDecoration(
                 hintText: context.t('chill.write_message'),
-                fillColor: Tw.slate900,
+                fillColor: Tw.panel,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Tw.w(0.1))),
-                focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.fuchsia500)),
+                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Tw.line)),
+                focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.party)),
               ),
             ),
           ),
@@ -593,7 +593,7 @@ class _ChillDetailScreenState extends State<ChillDetailScreen> {
             child: Container(
               width: 48,
               height: 48,
-              decoration: BoxDecoration(color: _msg.text.trim().isEmpty ? Tw.slate800 : Tw.fuchsia600, borderRadius: BorderRadius.circular(12)),
+              decoration: BoxDecoration(color: _msg.text.trim().isEmpty ? Tw.line : Tw.party, borderRadius: BorderRadius.circular(12)),
               child: const Icon(Icons.send, color: Tw.white),
             ),
           ),

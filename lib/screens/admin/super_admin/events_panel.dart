@@ -65,7 +65,7 @@ class _EventsPanelState extends State<EventsPanel> {
       if (_events.isEmpty)
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 32),
-          child: Text('No hay eventos.', textAlign: TextAlign.center, style: tw(14, color: Tw.slate500)),
+          child: Text('No hay eventos.', textAlign: TextAlign.center, style: tw(14, color: Tw.inkDim)),
         ),
       for (final e in _events) ...[_card(e), const SizedBox(height: 12)],
     ]);
@@ -77,25 +77,25 @@ class _EventsPanelState extends State<EventsPanel> {
     final start = e['start_date'];
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: Tw.slate900, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.slate800)),
+      decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Expanded(child: Text((e['title'] as String?) ?? '', style: tw(14, weight: bold))),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             decoration: BoxDecoration(
-              color: status == 'active' ? Tw.green500.withValues(alpha: 0.1) : Tw.slate800,
+              color: status == 'active' ? Tw.live.withValues(alpha: 0.1) : Tw.line,
               borderRadius: BorderRadius.circular(99),
             ),
-            child: Text(status.toUpperCase(), style: tw(10, weight: bold, color: status == 'active' ? Tw.green400 : Tw.slate400)),
+            child: Text(status.toUpperCase(), style: tw(10, weight: bold, color: status == 'active' ? Tw.live : Tw.inkSoft)),
           ),
         ]),
         const SizedBox(height: 8),
-        Text((owner?['email'] ?? e['organizerId'] ?? '') as String, maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(12, color: Tw.slate400)),
+        Text((owner?['email'] ?? e['organizerId'] ?? '') as String, maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(12, color: Tw.inkSoft)),
         const SizedBox(height: 8),
         Row(children: [
-          Expanded(child: Text(start is String ? start : shortDate(start), style: tw(12, color: Tw.slate500))),
-          Text('${_sold(e)} tickets', style: tw(12, color: Tw.slate400)),
+          Expanded(child: Text(start is String ? start : shortDate(start), style: tw(12, color: Tw.inkDim))),
+          Text('${_sold(e)} tickets', style: tw(12, color: Tw.inkSoft)),
         ]),
         const SizedBox(height: 4),
         GestureDetector(

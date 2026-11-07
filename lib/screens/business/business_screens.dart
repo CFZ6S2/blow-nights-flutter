@@ -59,12 +59,12 @@ class _ClaimVenueScreenState extends State<ClaimVenueScreen> {
   @override
   Widget build(BuildContext context) {
     final venue = widget.venue?.isNotEmpty == true ? widget.venue! : context.t('business.claim.default_venue');
-    InputDecoration deco(String hint) => adminInputDecoration(hint, focus: Tw.amber500).copyWith(fillColor: Tw.black);
+    InputDecoration deco(String hint) => adminInputDecoration(hint, focus: Tw.sun).copyWith(fillColor: Tw.nightDeep);
     Widget benefit(String key) => Padding(
           padding: const EdgeInsets.only(bottom: 12),
           child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text('✓ ', style: tw(14, color: Tw.amber500)),
-            Expanded(child: Text(context.t(key), style: tw(14, color: Tw.slate300))),
+            Text('✓ ', style: tw(14, color: Tw.sun)),
+            Expanded(child: Text(context.t(key), style: tw(14, color: Tw.inkSoft))),
           ]),
         );
     return Scaffold(
@@ -75,9 +75,9 @@ class _ClaimVenueScreenState extends State<ClaimVenueScreen> {
             padding: const EdgeInsets.all(24),
             child: Container(
               clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(color: Tw.slate900, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.w(0.1))),
+              decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.line)),
               child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                Container(height: 4, decoration: const BoxDecoration(gradient: LinearGradient(colors: [Tw.amber400, Color(0xFFCA8A04)]))),
+                Container(height: 4, decoration: const BoxDecoration(gradient: LinearGradient(colors: [Tw.sun, Color(0xFFCA8A04)]))),
                 Padding(
                   padding: const EdgeInsets.all(32),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -88,17 +88,17 @@ class _ClaimVenueScreenState extends State<ClaimVenueScreen> {
                       TextSpan(text: venue, style: tw(24, weight: black, color: const Color(0xFFFCD34D), height: 1.2)),
                     ])),
                     const SizedBox(height: 16),
-                    Text.rich(transSpan(context.t('business.claim.description'), tw(14, color: Tw.slate400, height: 1.6), tw(14, weight: bold, color: Tw.white, height: 1.6))),
+                    Text.rich(transSpan(context.t('business.claim.description'), tw(14, color: Tw.inkSoft, height: 1.6), tw(14, weight: bold, color: Tw.white, height: 1.6))),
                     const SizedBox(height: 24),
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color: const Color(0xFF78350F).withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Tw.amber500.withValues(alpha: 0.2)),
+                        border: Border.all(color: Tw.sun.withValues(alpha: 0.2)),
                       ),
                       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        Label(context.t('business.claim.benefits_title'), size: 12, weight: bold, color: Tw.amber500),
+                        Label(context.t('business.claim.benefits_title'), size: 12, weight: bold, color: Tw.sun),
                         const SizedBox(height: 8),
                         benefit('business.claim.benefits_1'),
                         benefit('business.claim.benefits_2'),
@@ -119,11 +119,11 @@ class _ClaimVenueScreenState extends State<ClaimVenueScreen> {
                       expand: true,
                       fontSize: 13,
                       padding: const EdgeInsets.symmetric(vertical: 16),
-                      gradient: const LinearGradient(colors: [Tw.amber500, Color(0xFFCA8A04)]),
+                      gradient: const LinearGradient(colors: [Tw.sun, Color(0xFFCA8A04)]),
                       onTap: _claim,
                     ),
                     const SizedBox(height: 24),
-                    Text(context.t('business.claim.footer_note'), textAlign: TextAlign.center, style: tw(10, color: Tw.slate500)),
+                    Text(context.t('business.claim.footer_note'), textAlign: TextAlign.center, style: tw(10, color: Tw.inkDim)),
                   ]),
                 ),
               ]),
@@ -220,26 +220,26 @@ class _BusinessStripeScreenState extends State<BusinessStripeScreen> {
           child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Container(
               padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: Tw.fuchsia500.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(8)),
-              child: Text(n, style: tw(14, color: Tw.fuchsia400)),
+              decoration: BoxDecoration(color: Tw.party.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(8)),
+              child: Text(n, style: tw(14, color: Tw.sun)),
             ),
             const SizedBox(width: 16),
-            Expanded(child: Text(context.t(key), style: tw(14, color: Tw.slate300))),
+            Expanded(child: Text(context.t(key), style: tw(14, color: Tw.inkSoft))),
           ]),
         );
     return Scaffold(
       backgroundColor: const Color(0xFF0B0C10),
       body: SafeArea(
         child: ListView(padding: const EdgeInsets.all(24), children: [
-          Align(alignment: Alignment.centerLeft, child: IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.slate400))),
+          Align(alignment: Alignment.centerLeft, child: IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.inkSoft))),
           const SizedBox(height: 16),
-          Text(context.t('business.stripe.title').toUpperCase(), textAlign: TextAlign.center, style: tw(28, weight: black, color: Tw.fuchsia400, tracking: 0.1)),
+          Text(context.t('business.stripe.title').toUpperCase(), textAlign: TextAlign.center, style: tw(28, weight: black, color: Tw.sun, tracking: 0.1)),
           const SizedBox(height: 8),
-          Text(context.t('business.stripe.subtitle'), textAlign: TextAlign.center, style: tw(14, color: Tw.slate400)),
+          Text(context.t('business.stripe.subtitle'), textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft)),
           const SizedBox(height: 40),
           if (_error.isNotEmpty) notice(_error, Tw.red400),
           if (widget.refresh) notice(context.t('business.stripe.message.cancelled'), Tw.yellow400),
-          if (widget.returned) notice(context.t('business.stripe.message.success'), Tw.green400),
+          if (widget.returned) notice(context.t('business.stripe.message.success'), Tw.live),
           if (v != null)
             Container(
               clipBehavior: Clip.antiAlias,
@@ -254,23 +254,23 @@ class _BusinessStripeScreenState extends State<BusinessStripeScreen> {
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: Tw.green400.withValues(alpha: 0.1),
+                          color: Tw.live.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Tw.green400.withValues(alpha: 0.2)),
+                          border: Border.all(color: Tw.live.withValues(alpha: 0.2)),
                         ),
                         child: Row(children: [
-                          const Icon(Icons.check_circle, color: Tw.green400),
+                          const Icon(Icons.check_circle, color: Tw.live),
                           const SizedBox(width: 12),
                           Expanded(
                             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                              Text(context.t('business.stripe.account_linked'), style: tw(14, weight: bold, color: Tw.green400)),
-                              Text('ID: ${v['stripeAccountId']}', style: tw(12, color: Tw.green400.withValues(alpha: 0.7))),
+                              Text(context.t('business.stripe.account_linked'), style: tw(14, weight: bold, color: Tw.live)),
+                              Text('ID: ${v['stripeAccountId']}', style: tw(12, color: Tw.live.withValues(alpha: 0.7))),
                             ]),
                           ),
                         ]),
                       ),
                       const SizedBox(height: 16),
-                      Text(context.t('business.stripe.description_linked'), style: tw(14, color: Tw.slate400)),
+                      Text(context.t('business.stripe.description_linked'), style: tw(14, color: Tw.inkSoft)),
                       const SizedBox(height: 16),
                       AdminButton(
                         icon: Icons.open_in_new,
@@ -285,7 +285,7 @@ class _BusinessStripeScreenState extends State<BusinessStripeScreen> {
                       AdminButton(
                         label: _linking ? context.t('common.loading') : context.t('business.stripe.update_bank_details'),
                         color: const Color(0xFF1C1F38),
-                        textColor: Tw.slate300,
+                        textColor: Tw.inkSoft,
                         expand: true,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         onTap: _linking ? null : _connect,
@@ -305,7 +305,7 @@ class _BusinessStripeScreenState extends State<BusinessStripeScreen> {
                         onTap: _linking ? null : _connect,
                       ),
                       const SizedBox(height: 8),
-                      Text(context.t('business.stripe.footer_note'), textAlign: TextAlign.center, style: tw(12, color: Tw.slate500)),
+                      Text(context.t('business.stripe.footer_note'), textAlign: TextAlign.center, style: tw(12, color: Tw.inkDim)),
                     ],
                   ]),
                 ),
@@ -344,19 +344,19 @@ class _SetupStripeScreenState extends State<SetupStripeScreen> {
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
-    Widget center(String t) => Scaffold(backgroundColor: Tw.black, body: Center(child: Text(t, style: tw(15))));
+    Widget center(String t) => Scaffold(backgroundColor: Tw.nightDeep, body: Center(child: Text(t, style: tw(15))));
     if (auth.user == null) return center(context.t('setup_stripe_login_required', fallback: 'Login required'));
     if (auth.role != 'superadmin') return center(context.t('setup_stripe_access_denied', fallback: 'Acceso denegado'));
     final r = _result;
     final envText = r == null ? '' : r.entries.map((e) => '${e.key}=${e.value}').join('\n');
     return Scaffold(
-      backgroundColor: Tw.black,
+      backgroundColor: Tw.nightDeep,
       body: SafeArea(
         child: ListView(padding: const EdgeInsets.all(32), children: [
-          Align(alignment: Alignment.centerLeft, child: IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.slate400))),
+          Align(alignment: Alignment.centerLeft, child: IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.inkSoft))),
           Text(context.t('setup_stripe_title', fallback: 'Setup Stripe Products'), style: tw(24, weight: bold)),
           const SizedBox(height: 16),
-          Text(context.t('setup_stripe_description', fallback: 'Crea los productos y precios en Stripe. Solo ejecutar una vez.'), style: tw(15, color: Tw.slate400)),
+          Text(context.t('setup_stripe_description', fallback: 'Crea los productos y precios en Stripe. Solo ejecutar una vez.'), style: tw(15, color: Tw.inkSoft)),
           const SizedBox(height: 24),
           Align(
             alignment: Alignment.centerLeft,
@@ -389,11 +389,11 @@ class _SetupStripeScreenState extends State<SetupStripeScreen> {
               child: Text(_error, style: tw(14, color: Tw.red400)),
             ),
           const SizedBox(height: 32),
-          Divider(color: Tw.w(0.1)),
+          Divider(color: Tw.line),
           const SizedBox(height: 32),
           Text(context.t('setup_stripe_promo_title', fallback: 'Promo Code de Test'), style: tw(20, weight: bold)),
           const SizedBox(height: 8),
-          Text(context.t('setup_stripe_promo_desc', fallback: 'Crea un código TEST100 con 100% descuento para testing.'), style: tw(15, color: Tw.slate400)),
+          Text(context.t('setup_stripe_promo_desc', fallback: 'Crea un código TEST100 con 100% descuento para testing.'), style: tw(15, color: Tw.inkSoft)),
           const SizedBox(height: 16),
           Align(
             alignment: Alignment.centerLeft,
@@ -420,8 +420,8 @@ class _SetupStripeScreenState extends State<SetupStripeScreen> {
             Container(
               margin: const EdgeInsets.only(top: 16),
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(color: Tw.green500.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.green500)),
-              child: Text.rich(TextSpan(style: tw(14, color: Tw.green400), children: [
+              decoration: BoxDecoration(color: Tw.live.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.live)),
+              child: Text.rich(TextSpan(style: tw(14, color: Tw.live), children: [
                 TextSpan(text: '${context.t('setup_stripe_promo_created', fallback: 'Código creado:')} '),
                 TextSpan(text: 'TEST100', style: tw(14, weight: bold).copyWith(fontFamily: 'monospace')),
                 TextSpan(text: ' ${context.t('setup_stripe_promo_details', fallback: '(100% off, max 50 usos)')}'),
@@ -429,13 +429,13 @@ class _SetupStripeScreenState extends State<SetupStripeScreen> {
             ),
           if (r != null) ...[
             const SizedBox(height: 24),
-            Text(context.t('setup_stripe_result_title', fallback: 'Products created. Copy this for functions/.env:'), style: tw(18, weight: bold, color: Tw.green400)),
+            Text(context.t('setup_stripe_result_title', fallback: 'Products created. Copy this for functions/.env:'), style: tw(18, weight: bold, color: Tw.live)),
             const SizedBox(height: 8),
             GestureDetector(
               onLongPress: () => Clipboard.setData(ClipboardData(text: envText)),
               child: Container(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(color: Tw.slate900, borderRadius: BorderRadius.circular(12)),
+                decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(12)),
                 child: SelectableText(envText, style: tw(14).copyWith(fontFamily: 'monospace')),
               ),
             ),

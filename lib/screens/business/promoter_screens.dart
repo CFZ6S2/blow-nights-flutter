@@ -78,22 +78,22 @@ class _PromoterScreenState extends State<PromoterScreen> {
     final auth = context.watch<AuthProvider>();
     if (context.watch<PlatformSettings>().flags['moduleRrppLibres'] == false) {
       return _centered(Column(mainAxisSize: MainAxisSize.min, children: [
-        const Icon(Icons.pause_circle, size: 48, color: Tw.amber400),
+        const Icon(Icons.pause_circle, size: 48, color: Tw.sun),
         const SizedBox(height: 16),
         Text(context.t('pr_module_paused', fallback: 'Módulo en pausa'), style: tw(20, weight: black)),
         const SizedBox(height: 8),
         Text(context.t('pr_module_paused_desc', fallback: 'El sistema de RRPPs y generación de entradas no está disponible en este momento.'),
-            textAlign: TextAlign.center, style: tw(14, color: Tw.slate400)),
+            textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft)),
       ]));
     }
     if (_tokenMode) return _tokenView(context);
-    if (auth.loading) return const Scaffold(backgroundColor: Tw.black);
+    if (auth.loading) return const Scaffold(backgroundColor: Tw.nightDeep);
     if (auth.user != null && auth.role == 'rrpp') return RRPPPanel(success: widget.success);
     return _centered(Column(mainAxisSize: MainAxisSize.min, children: [
       Container(
         width: 64,
         height: 64,
-        decoration: BoxDecoration(gradient: const LinearGradient(colors: [Tw.emerald500, Tw.teal600]), borderRadius: BorderRadius.circular(16)),
+        decoration: BoxDecoration(gradient: const LinearGradient(colors: [Tw.live, Tw.teal600]), borderRadius: BorderRadius.circular(16)),
         child: const Icon(Icons.confirmation_number, size: 30, color: Tw.white),
       ),
       const SizedBox(height: 24),
@@ -104,13 +104,13 @@ class _PromoterScreenState extends State<PromoterScreen> {
             ? context.t('rrpp_not_rrpp_desc', fallback: 'Esta cuenta aún no es de RRPP. Date de alta en un minuto para comprar QR y emitir pases para tus eventos.')
             : context.t('rrpp_login_desc', fallback: 'Entra con tu cuenta de RRPP o date de alta para comprar QR y emitir pases para tus eventos.'),
         textAlign: TextAlign.center,
-        style: tw(14, color: Tw.slate400),
+        style: tw(14, color: Tw.inkSoft),
       ),
       const SizedBox(height: 24),
       AdminButton(
         label: context.t('rrpp_signup_cta', fallback: 'Darme de alta como RRPP'),
-        color: Tw.emerald500,
-        textColor: Tw.slate950,
+        color: Tw.live,
+        textColor: Tw.night,
         expand: true,
         padding: const EdgeInsets.symmetric(vertical: 14),
         onTap: () => openRoute(context, AppRoute.business, args: {'type': 'rrpp'}),
@@ -119,7 +119,7 @@ class _PromoterScreenState extends State<PromoterScreen> {
         const SizedBox(height: 12),
         AdminButton(
           label: context.t('login.login_button', fallback: 'Iniciar sesión'),
-          color: Tw.w(0.05),
+          color: Tw.panelSoft,
           expand: true,
           padding: const EdgeInsets.symmetric(vertical: 12),
           onTap: () => openRoute(context, AppRoute.login),
@@ -129,7 +129,7 @@ class _PromoterScreenState extends State<PromoterScreen> {
   }
 
   Widget _centered(Widget child) => Scaffold(
-        backgroundColor: Tw.black,
+        backgroundColor: Tw.nightDeep,
         body: SafeArea(child: Center(child: Padding(padding: const EdgeInsets.all(24), child: child))),
       );
 
@@ -144,21 +144,21 @@ class _PromoterScreenState extends State<PromoterScreen> {
       );
 
   Widget _tokenView(BuildContext context) => Scaffold(
-        backgroundColor: Tw.black,
+        backgroundColor: Tw.nightDeep,
         body: SafeArea(
           child: ListView(padding: const EdgeInsets.all(24), children: [
             const SizedBox(height: 16),
-            GradientText(context.t('pr_title', fallback: 'Generador de Entradas'), style: tw(24, weight: black), colors: const [Tw.fuchsia400, Tw.pink400]),
+            GradientText(context.t('pr_title', fallback: 'Generador de Entradas'), style: tw(24, weight: black), colors: const [Tw.sun, Tw.pink400]),
             const SizedBox(height: 4),
-            Text(context.t('pr_subtitle', fallback: 'RRPP · Blow Nights'), textAlign: TextAlign.center, style: tw(14, color: Tw.slate400)),
+            Text(context.t('pr_subtitle', fallback: 'RRPP · Blow Nights'), textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft)),
             if (_count > 0)
               Center(
                 child: Container(
                   margin: const EdgeInsets.only(top: 12),
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                  decoration: BoxDecoration(color: Tw.fuchsia500.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(99)),
+                  decoration: BoxDecoration(color: Tw.party.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(99)),
                   child: Text('$_count ${_count == 1 ? context.t('pr_ticket_generated', fallback: 'entrada generada') : context.t('pr_tickets_generated', fallback: 'entradas generadas')}',
-                      style: tw(12, weight: bold, color: Tw.fuchsia300)),
+                      style: tw(12, weight: bold, color: Tw.sun)),
                 ),
               ),
             const SizedBox(height: 24),
@@ -166,14 +166,14 @@ class _PromoterScreenState extends State<PromoterScreen> {
               Container(
                 margin: const EdgeInsets.only(bottom: 16),
                 padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(color: Tw.green500.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.green500.withValues(alpha: 0.3))),
+                decoration: BoxDecoration(color: Tw.live.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.live.withValues(alpha: 0.3))),
                 child: Column(children: [
-                  const Icon(Icons.check_circle, size: 36, color: Tw.green400),
+                  const Icon(Icons.check_circle, size: 36, color: Tw.live),
                   const SizedBox(height: 8),
                   Text(context.t('pr_ticket_generated', fallback: 'Entrada generada'), style: tw(15, weight: bold, color: const Color(0xFF86EFAC))),
-                  Text(_result!.clientName, style: tw(14, color: Tw.slate300)),
+                  Text(_result!.clientName, style: tw(14, color: Tw.inkSoft)),
                   Text('ID: ${_result!.ticketId.length > 12 ? _result!.ticketId.substring(0, 12) : _result!.ticketId}...',
-                      style: tw(12, color: Tw.slate500).copyWith(fontFamily: 'monospace')),
+                      style: tw(12, color: Tw.inkDim).copyWith(fontFamily: 'monospace')),
                 ]),
               ),
             if (_error.isNotEmpty) _banner(_error, Tw.red400, icon: Icons.warning),
@@ -216,13 +216,13 @@ class PrJoinScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final wa = 'Hola, quiero solicitar acceso como RRPP en Blow Nights.';
     final benefits = [
-      (Icons.link, Tw.emerald400, 'pr_join_benefit1_title', 'Tu enlace personal de venta', 'pr_join_benefit1_desc',
+      (Icons.link, Tw.live, 'pr_join_benefit1_title', 'Tu enlace personal de venta', 'pr_join_benefit1_desc',
           'Un link único que puedes compartir por Instagram, WhatsApp o donde quieras. Cada entrada vendida se te atribuye automáticamente.'),
       (Icons.bar_chart, Tw.teal400, 'pr_join_benefit2_title', 'Tracking en tiempo real', 'pr_join_benefit2_desc',
           'Ve cuántas entradas has generado, cuántas se validaron en puerta y tu ranking frente a otros RRPPs — todo en directo.'),
       (Icons.account_balance_wallet, Tw.cyan400, 'pr_join_benefit3_title', 'Comisiones transparentes', 'pr_join_benefit3_desc',
           'Liquidación automática por cada entrada validada. Sin papeleos, sin negociaciones turbias. Ves lo que ganas al céntimo.'),
-      (Icons.language, Tw.emerald400, 'pr_join_benefit4_title', 'Libertad entre locales', 'pr_join_benefit4_desc',
+      (Icons.language, Tw.live, 'pr_join_benefit4_title', 'Libertad entre locales', 'pr_join_benefit4_desc',
           'No estás atado a una sala. Trabaja con el local que quieras cada noche, o con varios a la vez. Tú eliges.'),
       (Icons.qr_code_2, Tw.teal400, 'pr_join_benefit5_title', 'QR anticopia con tu nombre', 'pr_join_benefit5_desc',
           'Cada entrada lleva QR dinámico verificable en puerta. Tu invitado entra sin problemas y tú te llevas la comisión.'),
@@ -230,21 +230,21 @@ class PrJoinScreen extends StatelessWidget {
           'Sin apps raras ni software de escritorio. Tu generador de entradas funciona desde el navegador del móvil, en cualquier momento.'),
     ];
     final steps = [
-      ('01', 'pr_join_step1_title', '1. Regístrate gratis', 'pr_join_step1_desc', 'Crea tu cuenta con Google o email. Sin papeleo, sin cuotas, sin permanencias.', Tw.emerald400),
+      ('01', 'pr_join_step1_title', '1. Regístrate gratis', 'pr_join_step1_desc', 'Crea tu cuenta con Google o email. Sin papeleo, sin cuotas, sin permanencias.', Tw.live),
       ('02', 'pr_join_step2_title', '2. Recibe tu enlace', 'pr_join_step2_desc',
           'Te asignamos un link personal de venta para cada evento o local disponible. Compártelo donde quieras.', Tw.teal400),
       ('03', 'pr_join_step3_title', '3. Genera y cobra', 'pr_join_step3_desc', 'Cada invitado que entre con tu enlace se te atribuye. Comisiones liquidadas automáticamente.', Tw.cyan400),
     ];
     final top = MediaQuery.of(context).padding.top;
     return Scaffold(
-      backgroundColor: Tw.slate950,
+      backgroundColor: Tw.night,
       body: Stack(children: [
-        AmbientGlow(colors: [Tw.emerald600.withValues(alpha: 0.08), Tw.fuchsia600.withValues(alpha: 0.08), Tw.indigo600.withValues(alpha: 0.08)]),
+        AmbientGlow(colors: [Tw.emerald600.withValues(alpha: 0.08), Tw.party.withValues(alpha: 0.08), Tw.indigo600.withValues(alpha: 0.08)]),
         ListView(padding: EdgeInsets.fromLTRB(24, top + 88, 24, 40), children: [
-          Center(child: PillBadge(icon: Icons.auto_awesome, text: context.t('pr_join_hero_badge', fallback: 'RRPP Independiente · Sin ataduras'), color: Tw.emerald400)),
+          Center(child: PillBadge(icon: Icons.auto_awesome, text: context.t('pr_join_hero_badge', fallback: 'RRPP Independiente · Sin ataduras'), color: Tw.live)),
           const SizedBox(height: 24),
           GradientText(context.t('pr_join_hero_title', fallback: 'Tú Decides Dónde, Cuándo y Con Quién.'),
-              style: tw(36, weight: black, height: 1.08, tracking: -0.02), colors: const [Tw.emerald400, Tw.teal400, Tw.cyan400]),
+              style: tw(36, weight: black, height: 1.08, tracking: -0.02), colors: const [Tw.live, Tw.teal400, Tw.cyan400]),
           const SizedBox(height: 12),
           Text(context.t('pr_join_hero_lead', fallback: 'Genera entradas, mueve listas y cobra comisiones sin depender de ningún local.'),
               textAlign: TextAlign.center, style: tw(22, weight: FontWeight.w800, color: const Color(0xFFF1F5F9), height: 1.2)),
@@ -254,7 +254,7 @@ class PrJoinScreen extends StatelessWidget {
                 fallback:
                     'Blow Nights te da tu propio espacio como RRPP libre. Enlace personal de venta, tracking en tiempo real, liquidaciones automáticas y libertad total para moverte entre locales y eventos.'),
             textAlign: TextAlign.center,
-            style: tw(16, color: Tw.slate400, height: 1.6),
+            style: tw(16, color: Tw.inkSoft, height: 1.6),
           ),
           const SizedBox(height: 24),
           CtaButton(
@@ -267,23 +267,23 @@ class PrJoinScreen extends StatelessWidget {
           CtaButton(
             label: context.t('pr_join_hero_whatsapp', fallback: 'Preguntar por WhatsApp'),
             leadingIcon: Icons.chat,
-            tint: Tw.emerald400,
+            tint: Tw.live,
             onTap: () => openWhatsApp(wa),
           ),
           const SizedBox(height: 24),
           for (final (key, fb, c) in [
-            ('pr_join_stat_free', 'Gratis, sin cuotas mensuales', Tw.emerald400),
+            ('pr_join_stat_free', 'Gratis, sin cuotas mensuales', Tw.live),
             ('pr_join_stat_independent', '100% independiente de locales', Tw.teal400),
             ('pr_join_stat_instant', 'Empieza esta noche', Tw.cyan400),
           ])
             Container(
               margin: const EdgeInsets.only(bottom: 8),
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-              decoration: BoxDecoration(color: Tw.w(0.03), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.05))),
+              decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.lineSoft)),
               child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Icon(Icons.check_circle, size: 16, color: c),
                 const SizedBox(width: 8),
-                Text(context.t(key, fallback: fb), style: tw(12, weight: semibold, color: Tw.slate400)),
+                Text(context.t(key, fallback: fb), style: tw(12, weight: semibold, color: Tw.inkSoft)),
               ]),
             ),
           const SizedBox(height: 56),
@@ -300,22 +300,22 @@ class PrJoinScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(28),
             decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [const Color(0xFF022C22).withValues(alpha: 0.4), const Color(0xFF042F2E).withValues(alpha: 0.4), Tw.slate900]),
+              gradient: LinearGradient(colors: [const Color(0xFF022C22).withValues(alpha: 0.4), const Color(0xFF042F2E).withValues(alpha: 0.4), Tw.panel]),
               borderRadius: BorderRadius.circular(24),
-              border: Border.all(color: Tw.w(0.1)),
+              border: Border.all(color: Tw.line),
             ),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                decoration: BoxDecoration(color: Tw.w(0.1), borderRadius: BorderRadius.circular(99)),
+                decoration: BoxDecoration(color: Tw.lineSoft, borderRadius: BorderRadius.circular(99)),
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  const Icon(Icons.shield, size: 14, color: Tw.emerald400),
+                  const Icon(Icons.shield, size: 14, color: Tw.live),
                   const SizedBox(width: 8),
                   Label(context.t('pr_join_diff_badge', fallback: 'RRPP Libre vs Promotor de Local'), color: Tw.white),
                 ]),
               ),
               const SizedBox(height: 20),
-              Text(context.t('pr_join_diff_free_title', fallback: 'RRPP Independiente (tú)'), style: tw(18, weight: bold, color: Tw.emerald400)),
+              Text(context.t('pr_join_diff_free_title', fallback: 'RRPP Independiente (tú)'), style: tw(18, weight: bold, color: Tw.live)),
               const SizedBox(height: 12),
               for (final (k, f) in const [
                 ('pr_join_diff_free1', 'Vas por libre: eliges local y evento cada noche'),
@@ -325,7 +325,7 @@ class PrJoinScreen extends StatelessWidget {
               ])
                 CheckItem(context.t(k, fallback: f)),
               const SizedBox(height: 20),
-              Text(context.t('pr_join_diff_venue_title', fallback: 'Promotor de Local (staff)'), style: tw(18, weight: bold, color: Tw.slate400)),
+              Text(context.t('pr_join_diff_venue_title', fallback: 'Promotor de Local (staff)'), style: tw(18, weight: bold, color: Tw.inkSoft)),
               const SizedBox(height: 12),
               for (final (k, f) in const [
                 ('pr_join_diff_venue1', 'Contratado por una sala concreta'),
@@ -336,9 +336,9 @@ class PrJoinScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Container(width: 16, height: 16, margin: const EdgeInsets.only(top: 2), decoration: const BoxDecoration(color: Tw.slate700, shape: BoxShape.circle)),
+                    Container(width: 16, height: 16, margin: const EdgeInsets.only(top: 2), decoration: const BoxDecoration(color: Tw.line, shape: BoxShape.circle)),
                     const SizedBox(width: 8),
-                    Expanded(child: Text(context.t(k, fallback: f), style: tw(14, color: Tw.slate500))),
+                    Expanded(child: Text(context.t(k, fallback: f), style: tw(14, color: Tw.inkDim))),
                   ]),
                 ),
             ]),
@@ -355,16 +355,16 @@ class PrJoinScreen extends StatelessWidget {
             onTap: () => openRoute(context, AppRoute.business, args: const {'type': 'rrpp'}),
           ),
           const SizedBox(height: 12),
-          CtaButton(label: context.t('pr_join_cta_whatsapp', fallback: 'Hablar con el Equipo'), leadingIcon: Icons.chat, tint: Tw.emerald400, onTap: () => openWhatsApp(wa)),
+          CtaButton(label: context.t('pr_join_cta_whatsapp', fallback: 'Hablar con el Equipo'), leadingIcon: Icons.chat, tint: Tw.live, onTap: () => openWhatsApp(wa)),
           const SizedBox(height: 48),
-          Divider(color: Tw.w(0.1)),
+          Divider(color: Tw.line),
           const SizedBox(height: 24),
           Text('© ${DateTime.now().year} ${context.t('pr_join_footer', fallback: 'Blow Nights. Todos los derechos reservados.')}',
-              textAlign: TextAlign.center, style: tw(12, color: Tw.slate500)),
+              textAlign: TextAlign.center, style: tw(12, color: Tw.inkDim)),
           const SizedBox(height: 12),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            TextButton(onPressed: () => openRoute(context, AppRoute.privacy), child: Text(context.t('pr_join_privacy', fallback: 'Privacidad'), style: tw(12, color: Tw.slate400))),
-            TextButton(onPressed: () => openRoute(context, AppRoute.terms), child: Text(context.t('pr_join_terms', fallback: 'Términos'), style: tw(12, color: Tw.slate400))),
+            TextButton(onPressed: () => openRoute(context, AppRoute.privacy), child: Text(context.t('pr_join_privacy', fallback: 'Privacidad'), style: tw(12, color: Tw.inkSoft))),
+            TextButton(onPressed: () => openRoute(context, AppRoute.terms), child: Text(context.t('pr_join_terms', fallback: 'Términos'), style: tw(12, color: Tw.inkSoft))),
           ]),
         ]),
         MarketingNav(
@@ -372,7 +372,7 @@ class PrJoinScreen extends StatelessWidget {
           icon: Icons.group,
           gradient: const [Tw.emerald600, Tw.teal600],
           brand: 'RRPP',
-          brandColors: const [Tw.emerald400, Tw.teal400],
+          brandColors: const [Tw.live, Tw.teal400],
           cta: context.t('pr_join_nav_cta', fallback: 'Unirme'),
           onCta: () => openRoute(context, AppRoute.business, args: const {'type': 'rrpp'}),
         ),

@@ -184,7 +184,7 @@ class _VenuesScreenState extends State<VenuesScreen> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(children: [
-        Positioned(top: -size.height * 0.1, left: -size.width * 0.2, child: Orb(color: Tw.fuchsia600.withValues(alpha: 0.1), size: size.width * 0.8)),
+        Positioned(top: -size.height * 0.1, left: -size.width * 0.2, child: Orb(color: Tw.party.withValues(alpha: 0.1), size: size.width * 0.8)),
         Positioned(top: size.height * 0.2, right: -size.width * 0.2, child: Orb(color: Tw.indigo600.withValues(alpha: 0.1), size: size.width * 0.7)),
         SafeArea(
           bottom: false,
@@ -196,7 +196,7 @@ class _VenuesScreenState extends State<VenuesScreen> {
                 const CitySelector(),
               ]),
               const SizedBox(height: 12),
-              Text(context.t('venuesPage.selectVenue'), style: tw(12, color: Tw.slate500)),
+              Text(context.t('venuesPage.selectVenue'), style: tw(12, color: Tw.inkDim)),
               const SizedBox(height: 24),
               if (active != null) ...[_checkinBanner(context, active), const SizedBox(height: 24)],
               _visibilityRow(context),
@@ -221,11 +221,11 @@ class _VenuesScreenState extends State<VenuesScreen> {
                 style: tw(14),
                 decoration: InputDecoration(
                   hintText: context.t('venuesPage.searchPlaceholder', fallback: 'Buscar local...'),
-                  prefixIcon: const Icon(Icons.search, size: 18, color: Tw.slate500),
-                  fillColor: Tw.slate900,
+                  prefixIcon: const Icon(Icons.search, size: 18, color: Tw.inkDim),
+                  fillColor: Tw.panel,
                   contentPadding: const EdgeInsets.symmetric(vertical: 10),
-                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.slate700)),
-                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.fuchsia500)),
+                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.line)),
+                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.party)),
                 ),
               ),
               const SizedBox(height: 24),
@@ -237,27 +237,27 @@ class _VenuesScreenState extends State<VenuesScreen> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
                     decoration: BoxDecoration(
-                      color: _openNow ? Tw.green500.withValues(alpha: 0.2) : Tw.slate900,
+                      color: _openNow ? Tw.live.withValues(alpha: 0.2) : Tw.panel,
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: _openNow ? Tw.green500.withValues(alpha: 0.3) : Tw.slate700),
+                      border: Border.all(color: _openNow ? Tw.live.withValues(alpha: 0.3) : Tw.line),
                     ),
                     child: Row(children: [
-                      Icon(Icons.schedule, size: 14, color: _openNow ? Tw.green400 : Tw.slate400),
+                      Icon(Icons.schedule, size: 14, color: _openNow ? Tw.live : Tw.inkSoft),
                       const SizedBox(width: 4),
                       Label(context.t('venuesPage.open_now', fallback: 'Abierto'), size: 12,
-                          color: _openNow ? Tw.green400 : Tw.slate400, tracking: 0.05),
+                          color: _openNow ? Tw.live : Tw.inkSoft, tracking: 0.05),
                     ]),
                   ),
                 ),
               ]),
               if (_category != 'all') ...[
                 const SizedBox(height: 24),
-                Label(venueTypes[_category]?.hours ?? '', color: Tw.slate600),
+                Label(venueTypes[_category]?.hours ?? '', color: Tw.inkDim),
               ],
               if (shown.isNotEmpty && (q.isNotEmpty || _openNow || _category != 'all')) ...[
                 const SizedBox(height: 24),
                 Label('${shown.length} ${shown.length == 1 ? context.t('venuesPage.result', fallback: 'resultado') : context.t('venuesPage.results', fallback: 'resultados')}',
-                    color: Tw.slate500, weight: bold),
+                    color: Tw.inkDim, weight: bold),
               ],
               const SizedBox(height: 24),
               if (shown.isEmpty)
@@ -288,16 +288,16 @@ class _VenuesScreenState extends State<VenuesScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [Tw.green500.withValues(alpha: 0.1), Tw.emerald500.withValues(alpha: 0.1)]),
+        gradient: LinearGradient(colors: [Tw.live.withValues(alpha: 0.1), Tw.live.withValues(alpha: 0.1)]),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Tw.green500.withValues(alpha: 0.2)),
+        border: Border.all(color: Tw.live.withValues(alpha: 0.2)),
       ),
       child: Row(children: [
         Container(
           width: 40,
           height: 40,
-          decoration: BoxDecoration(color: Tw.green500.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(16)),
-          child: const Icon(Icons.location_on, color: Tw.green400),
+          decoration: BoxDecoration(color: Tw.live.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(16)),
+          child: const Icon(Icons.location_on, color: Tw.live),
         ),
         const SizedBox(width: 12),
         Expanded(
@@ -309,7 +309,7 @@ class _VenuesScreenState extends State<VenuesScreen> {
                   : vis == 'ghost'
                       ? context.t('venuesPage.ghostMode')
                       : context.t('venuesPage.visibleAll'),
-              style: tw(10, color: Tw.slate500),
+              style: tw(10, color: Tw.inkDim),
             ),
           ]),
         ),
@@ -317,7 +317,7 @@ class _VenuesScreenState extends State<VenuesScreen> {
           onTap: _checkout,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.1))),
+            decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
             child: Text(context.t('venuesPage.exit'), style: tw(12, weight: bold)),
           ),
         ),
@@ -334,14 +334,14 @@ class _VenuesScreenState extends State<VenuesScreen> {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 12),
             decoration: BoxDecoration(
-              color: on ? color.withValues(alpha: 0.2) : Tw.w(0.05),
+              color: on ? color.withValues(alpha: 0.2) : Tw.panelSoft,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: on ? color.withValues(alpha: 0.3) : Tw.w(0.1)),
+              border: Border.all(color: on ? color.withValues(alpha: 0.3) : Tw.lineSoft),
             ),
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Icon(icon, size: 14, color: on ? _light(color) : Tw.slate500),
+              Icon(icon, size: 14, color: on ? _light(color) : Tw.inkDim),
               const SizedBox(width: 4),
-              Flexible(child: Label(label, color: on ? _light(color) : Tw.slate500, maxLines: 1)),
+              Flexible(child: Label(label, color: on ? _light(color) : Tw.inkDim, maxLines: 1)),
             ]),
           ),
         ),
@@ -349,7 +349,7 @@ class _VenuesScreenState extends State<VenuesScreen> {
     }
 
     return Row(children: [
-      btn('public', Icons.visibility, context.t('venuesPage.public'), Tw.fuchsia500),
+      btn('public', Icons.visibility, context.t('venuesPage.public'), Tw.party),
       const SizedBox(width: 8),
       btn('ghost', Icons.visibility_off, context.t('venuesPage.ghost'), Tw.indigo500),
       const SizedBox(width: 8),
@@ -357,7 +357,7 @@ class _VenuesScreenState extends State<VenuesScreen> {
     ]);
   }
 
-  Color _light(Color c) => c == Tw.fuchsia500 ? Tw.fuchsia400 : c == Tw.indigo500 ? Tw.indigo400 : Tw.red400;
+  Color _light(Color c) => c == Tw.party ? Tw.sun : c == Tw.indigo500 ? Tw.indigo400 : Tw.red400;
 
   Widget _categorySelect(BuildContext context) {
     final i18n = context.watch<I18n>();
@@ -381,21 +381,21 @@ class _VenuesScreenState extends State<VenuesScreen> {
         final picked = await showDialog<String>(
           context: context,
           builder: (ctx) => SimpleDialog(
-            backgroundColor: Tw.slate900,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: Tw.w(0.1))),
+            backgroundColor: Tw.panel,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: Tw.line)),
             children: [
               for (final g in groups) ...[
                 if (g.$1 != null)
                   Padding(
                     padding: const EdgeInsets.fromLTRB(24, 12, 24, 4),
-                    child: Text(g.$1!, style: tw(12, weight: bold, color: Tw.slate500)),
+                    child: Text(g.$1!, style: tw(12, weight: bold, color: Tw.inkDim)),
                   ),
                 for (final o in g.$2)
                   SimpleDialogOption(
                     onPressed: () => Navigator.of(ctx).pop(o.$1),
                     child: Row(children: [
-                      Expanded(child: Text(o.$2, style: tw(14, weight: medium, color: _category == o.$1 ? Tw.fuchsia400 : Tw.slate300))),
-                      if (_category == o.$1) const Icon(Icons.check, size: 16, color: Tw.fuchsia400),
+                      Expanded(child: Text(o.$2, style: tw(14, weight: medium, color: _category == o.$1 ? Tw.sun : Tw.inkSoft))),
+                      if (_category == o.$1) const Icon(Icons.check, size: 16, color: Tw.sun),
                     ]),
                   ),
               ],
@@ -406,10 +406,10 @@ class _VenuesScreenState extends State<VenuesScreen> {
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
-        decoration: BoxDecoration(color: Tw.slate900, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.slate700)),
+        decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
         child: Row(children: [
           Expanded(child: Text(label, overflow: TextOverflow.ellipsis, style: tw(14, weight: medium, color: const Color(0xFFE2E8F0)))),
-          const Text('▼', style: TextStyle(fontSize: 10, color: Tw.slate400)),
+          const Text('▼', style: TextStyle(fontSize: 10, color: Tw.inkSoft)),
         ]),
       ),
     );
@@ -418,7 +418,7 @@ class _VenuesScreenState extends State<VenuesScreen> {
   Widget _empty(BuildContext context, bool searching) => Padding(
         padding: const EdgeInsets.symmetric(vertical: 64),
         child: Column(children: [
-          Icon(searching ? Icons.search_off : _openNow ? Icons.schedule : Icons.nightlife, size: 48, color: Tw.slate700),
+          Icon(searching ? Icons.search_off : _openNow ? Icons.schedule : Icons.nightlife, size: 48, color: Tw.line),
           const SizedBox(height: 16),
           Text(
             searching
@@ -427,7 +427,7 @@ class _VenuesScreenState extends State<VenuesScreen> {
                     ? context.t('venuesPage.noOpenVenues', fallback: 'No hay locales abiertos ahora mismo')
                     : context.t('venuesPage.noVenues'),
             textAlign: TextAlign.center,
-            style: tw(14, color: Tw.slate500),
+            style: tw(14, color: Tw.inkDim),
           ),
           const SizedBox(height: 8),
           Text(
@@ -437,7 +437,7 @@ class _VenuesScreenState extends State<VenuesScreen> {
                     ? context.t('venuesPage.tryLater', fallback: 'Prueba más tarde o quita el filtro')
                     : context.t('venuesPage.venuesWillBeAdded'),
             textAlign: TextAlign.center,
-            style: tw(10, color: Tw.slate600),
+            style: tw(10, color: Tw.inkDim),
           ),
           if (_openNow || searching) ...[
             const SizedBox(height: 16),
@@ -447,7 +447,7 @@ class _VenuesScreenState extends State<VenuesScreen> {
                 _search.clear();
               }),
               child: Text(context.t('venuesPage.showAll', fallback: 'Ver todos'),
-                  style: tw(12, weight: bold, color: Tw.fuchsia400, decoration: TextDecoration.underline)),
+                  style: tw(12, weight: bold, color: Tw.sun, decoration: TextDecoration.underline)),
             ),
           ],
         ]),
@@ -491,9 +491,9 @@ class _VenueCard extends StatelessWidget {
     return Container(
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: isHere ? Tw.green500.withValues(alpha: 0.05) : Tw.w(0.05),
+        color: isHere ? Tw.live.withValues(alpha: 0.05) : Tw.panelSoft,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: isHere ? Tw.green500.withValues(alpha: 0.3) : Tw.w(0.1)),
+        border: Border.all(color: isHere ? Tw.live.withValues(alpha: 0.3) : Tw.lineSoft),
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         if (v.bannerUrl != null && v.bannerUrl!.isNotEmpty) GestureDetector(onTap: open, child: NetImage(v.bannerUrl, height: 128)),
@@ -509,8 +509,8 @@ class _VenueCard extends StatelessWidget {
                     Container(
                       width: 48,
                       height: 48,
-                      decoration: BoxDecoration(color: Tw.w(0.1), borderRadius: BorderRadius.circular(16)),
-                      child: Icon(v.meta?.icon ?? Icons.place, color: Tw.fuchsia400),
+                      decoration: BoxDecoration(color: Tw.lineSoft, borderRadius: BorderRadius.circular(16)),
+                      child: Icon(v.meta?.icon ?? Icons.place, color: Tw.sun),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
@@ -519,38 +519,38 @@ class _VenueCard extends StatelessWidget {
                           Text(v.name, style: tw(14, weight: black)),
                           if (_cruising.contains(v.type)) _tag('18+', Tw.red500.withValues(alpha: 0.2), Tw.red400),
                           if (v.isUnclaimedReference)
-                            _tag(context.t('reference_venue.badge'), Tw.slate700.withValues(alpha: 0.6), Tw.slate300)
+                            _tag(context.t('reference_venue.badge'), Tw.line.withValues(alpha: 0.6), Tw.inkSoft)
                           else if (v.data['ownerId'] == 'community')
-                            _tag(context.t('venuesPage.addedByCommunity'), Tw.slate700.withValues(alpha: 0.5), Tw.slate300)
+                            _tag(context.t('venuesPage.addedByCommunity'), Tw.line.withValues(alpha: 0.5), Tw.inkSoft)
                           else
-                            _tag(context.t('venuesPage.verifiedVenue'), Tw.green500.withValues(alpha: 0.2), Tw.green400),
+                            _tag(context.t('venuesPage.verifiedVenue'), Tw.live.withValues(alpha: 0.2), Tw.live),
                           if (isOpen && live > 0)
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                              decoration: BoxDecoration(color: Tw.fuchsia500.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(99)),
-                              child: Text('$live ${context.t('venuesPage.people', count: live)}', style: tw(10, weight: black, color: Tw.fuchsia400)),
+                              decoration: BoxDecoration(color: Tw.party.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(99)),
+                              child: Text('$live ${context.t('venuesPage.people', count: live)}', style: tw(10, weight: black, color: Tw.sun)),
                             ),
                           if (v.openingDays.isNotEmpty)
                             isOpen
-                                ? _tag(context.t('venuesPage.open_now', fallback: 'Abierto'), Tw.green500.withValues(alpha: 0.2), Tw.green400)
-                                : _tag(_nextOpening(context, v), Tw.slate700.withValues(alpha: 0.5), Tw.slate400),
+                                ? _tag(context.t('venuesPage.open_now', fallback: 'Abierto'), Tw.live.withValues(alpha: 0.2), Tw.live)
+                                : _tag(_nextOpening(context, v), Tw.line.withValues(alpha: 0.5), Tw.inkSoft),
                         ]),
                         if (v.address.isNotEmpty || distLabel != null)
                           Text(
                             [if (v.address.isNotEmpty) v.address, ?distLabel].join(' · '),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: tw(10, color: Tw.slate500),
+                            style: tw(10, color: Tw.inkDim),
                           ),
-                        if (sched != null) Text('${context.t('venuesPage.today_hours', fallback: 'Hoy')}: $sched', style: tw(10, color: Tw.slate500)),
+                        if (sched != null) Text('${context.t('venuesPage.today_hours', fallback: 'Hoy')}: $sched', style: tw(10, color: Tw.inkDim)),
                         if (promo is Map && promo['active'] == true)
                           Container(
                             margin: const EdgeInsets.only(top: 8),
                             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                             decoration: BoxDecoration(
-                              gradient: LinearGradient(colors: [Tw.amber500.withValues(alpha: 0.2), Tw.purple500.withValues(alpha: 0.2)]),
+                              gradient: LinearGradient(colors: [Tw.sun.withValues(alpha: 0.2), Tw.purple500.withValues(alpha: 0.2)]),
                               borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: Tw.amber500.withValues(alpha: 0.4)),
+                              border: Border.all(color: Tw.sun.withValues(alpha: 0.4)),
                             ),
                             child: Row(children: [
                               const Text('🔥'),
@@ -569,9 +569,9 @@ class _VenueCard extends StatelessWidget {
               const SizedBox(width: 12),
               if (isHere)
                 Row(children: [
-                  Label(context.t('venuesPage.here'), color: Tw.green400),
+                  Label(context.t('venuesPage.here'), color: Tw.live),
                   const SizedBox(width: 8),
-                  Container(width: 8, height: 8, decoration: const BoxDecoration(shape: BoxShape.circle, color: Tw.green400)),
+                  Container(width: 8, height: 8, decoration: const BoxDecoration(shape: BoxShape.circle, color: Tw.live)),
                 ])
               else if (isClosed)
                 Pressable(
@@ -580,8 +580,8 @@ class _VenueCard extends StatelessWidget {
                     opacity: 0.6,
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                      decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
-                      child: Label(context.t('venuesPage.closed_now', fallback: 'Cerrado'), color: Tw.slate500),
+                      decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
+                      child: Label(context.t('venuesPage.closed_now', fallback: 'Cerrado'), color: Tw.inkDim),
                     ),
                   ),
                 )
@@ -593,7 +593,7 @@ class _VenueCard extends StatelessWidget {
                     scale: 0.95,
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                      decoration: BoxDecoration(color: Tw.fuchsia600, borderRadius: BorderRadius.circular(16)),
+                      decoration: BoxDecoration(color: Tw.party, borderRadius: BorderRadius.circular(16)),
                       child: Label(checkingIn ? '...' : context.t('venuesPage.go'), color: Tw.white),
                     ),
                   ),
@@ -601,7 +601,7 @@ class _VenueCard extends StatelessWidget {
             ]),
             if (pricing.isNotEmpty || tiers.isNotEmpty) ...[
               const SizedBox(height: 12),
-              Divider(color: Tw.w(0.05), height: 1),
+              Divider(color: Tw.lineSoft, height: 1),
               const SizedBox(height: 12),
               Row(children: [
                 Expanded(
@@ -637,8 +637,8 @@ class _VenueCard extends StatelessWidget {
 
   Widget _price(String text) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(8)),
-        child: Text(text, style: tw(9, color: Tw.slate400)),
+        decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(8)),
+        child: Text(text, style: tw(9, color: Tw.inkSoft)),
       );
 }
 
@@ -648,7 +648,7 @@ class _VenuesSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget box(double h, {double? w, double r = 12}) =>
-        Container(height: h, width: w, decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(r)));
+        Container(height: h, width: w, decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(r)));
     return Scaffold(
       body: SafeArea(
         child: ListView(padding: const EdgeInsets.fromLTRB(24, 32, 24, 24), children: [
@@ -669,17 +669,17 @@ class _VenuesSkeleton extends StatelessWidget {
           for (var i = 0; i < 4; i++) ...[
             Container(
               padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.w(0.1))),
+              decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.line)),
               child: Row(children: [
-                Container(width: 64, height: 64, decoration: BoxDecoration(color: Tw.slate800, borderRadius: BorderRadius.circular(16))),
+                Container(width: 64, height: 64, decoration: BoxDecoration(color: Tw.line, borderRadius: BorderRadius.circular(16))),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    FractionallySizedBox(widthFactor: 0.66, child: Container(height: 16, color: Tw.slate800)),
+                    FractionallySizedBox(widthFactor: 0.66, child: Container(height: 16, color: Tw.line)),
                     const SizedBox(height: 8),
-                    FractionallySizedBox(widthFactor: 0.5, child: Container(height: 12, color: Tw.slate800)),
+                    FractionallySizedBox(widthFactor: 0.5, child: Container(height: 12, color: Tw.line)),
                     const SizedBox(height: 8),
-                    FractionallySizedBox(widthFactor: 0.33, child: Container(height: 12, color: Tw.slate800)),
+                    FractionallySizedBox(widthFactor: 0.33, child: Container(height: 12, color: Tw.line)),
                   ]),
                 ),
               ]),

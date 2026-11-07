@@ -162,7 +162,7 @@ class _BarScannerScreenState extends State<BarScannerScreen> {
   Widget build(BuildContext context) {
     if (widget.venueId.isEmpty) {
       return Scaffold(
-        backgroundColor: Tw.slate950,
+        backgroundColor: Tw.night,
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(24),
@@ -171,7 +171,7 @@ class _BarScannerScreenState extends State<BarScannerScreen> {
               const SizedBox(height: 16),
               Text('Falta el local', style: tw(20, weight: black)),
               const SizedBox(height: 8),
-              Text('Accede al escáner desde el panel de tu local con el parámetro ?venue=ID', textAlign: TextAlign.center, style: tw(14, color: Tw.slate400)),
+              Text('Accede al escáner desde el panel de tu local con el parámetro ?venue=ID', textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft)),
             ]),
           ),
         ),
@@ -180,22 +180,22 @@ class _BarScannerScreenState extends State<BarScannerScreen> {
     final r = _result;
     final top = MediaQuery.of(context).padding.top;
     return Scaffold(
-      backgroundColor: Tw.slate950,
+      backgroundColor: Tw.night,
       body: Column(children: [
         Container(
           padding: EdgeInsets.fromLTRB(12, top + 12, 16, 12),
-          decoration: const BoxDecoration(color: Tw.slate900, border: Border(bottom: BorderSide(color: Tw.slate800))),
+          decoration: const BoxDecoration(color: Tw.panel, border: Border(bottom: BorderSide(color: Tw.line))),
           child: Row(children: [
-            IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.slate400)),
+            IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.inkSoft)),
             Container(
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: Tw.emerald500.withValues(alpha: 0.2),
+                color: Tw.live.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Tw.emerald500.withValues(alpha: 0.3)),
+                border: Border.all(color: Tw.live.withValues(alpha: 0.3)),
               ),
-              child: const Icon(Icons.qr_code_scanner, color: Tw.emerald400),
+              child: const Icon(Icons.qr_code_scanner, color: Tw.live),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -210,15 +210,15 @@ class _BarScannerScreenState extends State<BarScannerScreen> {
                     onChanged: (v) => setState(() => _point = v ?? _point),
                   ),
                 ]),
-                Text('Canje de consumiciones', style: tw(11, weight: medium, color: Tw.slate400)),
+                Text('Canje de consumiciones', style: tw(11, weight: medium, color: Tw.inkSoft)),
               ]),
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(color: Tw.slate800.withValues(alpha: 0.8), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.slate700)),
+              decoration: BoxDecoration(color: Tw.line.withValues(alpha: 0.8), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
               child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
                 Label('Servidas', weight: bold, tracking: 0),
-                Text('$_served', style: tw(18, weight: black, color: Tw.emerald400, height: 1)),
+                Text('$_served', style: tw(18, weight: black, color: Tw.live, height: 1)),
               ]),
             ),
             const SizedBox(width: 12),
@@ -227,7 +227,7 @@ class _BarScannerScreenState extends State<BarScannerScreen> {
               child: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: _camera ? Tw.red500.withValues(alpha: 0.2) : Tw.fuchsia600,
+                  color: _camera ? Tw.red500.withValues(alpha: 0.2) : Tw.party,
                   borderRadius: BorderRadius.circular(12),
                   border: _camera ? Border.all(color: Tw.red500.withValues(alpha: 0.4)) : null,
                 ),
@@ -243,17 +243,17 @@ class _BarScannerScreenState extends State<BarScannerScreen> {
                 height: 192,
                 margin: const EdgeInsets.only(bottom: 16),
                 clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(color: Tw.black, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.slate800)),
+                decoration: BoxDecoration(color: Tw.nightDeep, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
                 child: QrCamera(frameSize: 150, paused: _scanning, onCode: _scan),
               ),
             if (_scanning)
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 64),
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.3), width: 2)),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.party.withValues(alpha: 0.3), width: 2)),
                 child: Column(children: [
-                  const SizedBox(width: 32, height: 32, child: CircularProgressIndicator(strokeWidth: 3, color: Tw.fuchsia400)),
+                  const SizedBox(width: 32, height: 32, child: CircularProgressIndicator(strokeWidth: 3, color: Tw.sun)),
                   const SizedBox(height: 12),
-                  Text('Validando...', style: tw(14, weight: bold, color: Tw.fuchsia400)),
+                  Text('Validando...', style: tw(14, weight: bold, color: Tw.sun)),
                 ]),
               )
             else if (r != null)
@@ -261,9 +261,9 @@ class _BarScannerScreenState extends State<BarScannerScreen> {
             else
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 64, horizontal: 24),
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.slate800, width: 2)),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.line, width: 2)),
                 child: Column(children: [
-                  const Icon(Icons.qr_code, size: 40, color: Tw.slate500),
+                  const Icon(Icons.qr_code, size: 40, color: Tw.inkDim),
                   const SizedBox(height: 16),
                   Text('LISTO PARA ESCANEAR', style: tw(18, weight: black)),
                   const SizedBox(height: 4),
@@ -272,7 +272,7 @@ class _BarScannerScreenState extends State<BarScannerScreen> {
                           ? 'Acerca el móvil del cliente a este (NFC) o usa la pistola en su QR dinámico'
                           : 'Acerca la pistola al QR dinámico del móvil del cliente',
                       textAlign: TextAlign.center,
-                      style: tw(12, color: Tw.slate500)),
+                      style: tw(12, color: Tw.inkDim)),
                 ]),
               ),
             const SizedBox(height: 24),
@@ -287,13 +287,13 @@ class _BarScannerScreenState extends State<BarScannerScreen> {
                     }
                   },
                   style: tw(14).copyWith(fontFamily: 'monospace'),
-                  decoration: adminInputDecoration('Código leído por la pistola', focus: Tw.emerald500).copyWith(fillColor: Tw.slate900),
+                  decoration: adminInputDecoration('Código leído por la pistola', focus: Tw.live).copyWith(fillColor: Tw.panel),
                 ),
               ),
               const SizedBox(width: 8),
               AdminButton(
                 label: 'Validar',
-                color: Tw.slate800,
+                color: Tw.line,
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                 onTap: _scanning
                     ? null
@@ -313,14 +313,14 @@ class _BarScannerScreenState extends State<BarScannerScreen> {
 
   Widget _resultCard(({String status, String? productName, num? price, String message, String timestamp}) r) {
     final ok = r.status == 'success';
-    final color = ok ? Tw.emerald400 : Tw.red400;
+    final color = ok ? Tw.live : Tw.red400;
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: (ok ? const Color(0xFF022C22) : const Color(0xFF450A0A)).withValues(alpha: 0.4),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: ok ? Tw.emerald500 : Tw.red500, width: 2),
-        boxShadow: [BoxShadow(color: (ok ? Tw.emerald500 : Tw.red500).withValues(alpha: 0.2), blurRadius: 30)],
+        border: Border.all(color: ok ? Tw.live : Tw.red500, width: 2),
+        boxShadow: [BoxShadow(color: (ok ? Tw.live : Tw.red500).withValues(alpha: 0.2), blurRadius: 30)],
       ),
       child: Column(children: [
         Container(
@@ -342,7 +342,7 @@ class _BarScannerScreenState extends State<BarScannerScreen> {
         ] else
           Text(r.message, textAlign: TextAlign.center, style: tw(18, weight: black)),
         const SizedBox(height: 16),
-        Text(r.timestamp, style: tw(10, color: Tw.slate500)),
+        Text(r.timestamp, style: tw(10, color: Tw.inkDim)),
       ]),
     );
   }

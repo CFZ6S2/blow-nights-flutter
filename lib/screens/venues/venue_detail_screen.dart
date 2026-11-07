@@ -129,7 +129,7 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
 
   /// Port of the web venue page's "Copas" section.
   Widget _drinksSection(BuildContext context, String currency) => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        Label(context.t('venueDetail.drinks_title', fallback: 'Copas'), size: 14, color: Tw.slate500, tracking: 0.2),
+        Label(context.t('venueDetail.drinks_title', fallback: 'Copas'), size: 14, color: Tw.inkDim, tracking: 0.2),
         const SizedBox(height: 16),
         GlassCard(
           padding: const EdgeInsets.all(24),
@@ -140,15 +140,15 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                 child: Row(children: [
                   Expanded(child: Text(drink.name, overflow: TextOverflow.ellipsis, style: tw(14, weight: bold))),
                   const SizedBox(width: 12),
-                  Text(formatPrice(drink.price, currency), style: tw(14, weight: black, color: Tw.fuchsia400)),
+                  Text(formatPrice(drink.price, currency), style: tw(14, weight: black, color: Tw.sun)),
                 ]),
               ),
             if (_drinks.length > 4)
               Text(context.t('venueDetail.drinks_more', fallback: 'Y {{count}} más en la carta', params: {'count': _drinks.length - 4}),
-                  style: tw(10, color: Tw.slate500)),
+                  style: tw(10, color: Tw.inkDim)),
             const SizedBox(height: 8),
             Text(context.t('venueDetail.drinks_desc', fallback: 'Pídelas desde el móvil cuando estés en el local y canjéalas en la barra con tu QR.'),
-                style: tw(12, color: Tw.slate400)),
+                style: tw(12, color: Tw.inkSoft)),
             const SizedBox(height: 16),
             GradientButton(
               label: context.t('venueDetail.buy_drinks', fallback: 'Comprar copas'),
@@ -189,12 +189,12 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
     final photos = [if (v.bannerUrl != null && v.bannerUrl!.isNotEmpty) v.bannerUrl!, ...asStringList(d['photoUrls'])];
     final loc = v.location;
     final iconData = v.type == 'chill' ? Icons.local_fire_department : v.type == 'cruising' ? Icons.park : Icons.nightlife;
-    final iconColor = v.type == 'chill' ? Tw.red500 : v.type == 'cruising' ? Tw.green500 : Tw.fuchsia400;
+    final iconColor = v.type == 'chill' ? Tw.red500 : v.type == 'cruising' ? Tw.live : Tw.sun;
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
       body: Stack(children: [
-        Positioned(top: -size.height * 0.1, left: -size.width * 0.2, child: Orb(color: Tw.fuchsia600.withValues(alpha: 0.1), size: size.width * 0.8)),
+        Positioned(top: -size.height * 0.1, left: -size.width * 0.2, child: Orb(color: Tw.party.withValues(alpha: 0.1), size: size.width * 0.8)),
         SafeArea(
           child: ListView(padding: const EdgeInsets.fromLTRB(24, 24, 24, 128), children: [
             Align(
@@ -202,9 +202,9 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
               child: GestureDetector(
                 onTap: () => Navigator.of(context).maybePop(),
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  const Icon(Icons.arrow_back, size: 14, color: Tw.slate500),
+                  const Icon(Icons.arrow_back, size: 14, color: Tw.inkDim),
                   const SizedBox(width: 8),
-                  Text(context.t('venueDetail.back'), style: tw(12, weight: bold, color: Tw.slate500)),
+                  Text(context.t('venueDetail.back'), style: tw(12, weight: bold, color: Tw.inkDim)),
                 ]),
               ),
             ),
@@ -214,9 +214,9 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                 width: 64,
                 height: 64,
                 decoration: BoxDecoration(
-                  color: Tw.w(0.1),
+                  color: Tw.lineSoft,
                   borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: community ? (v.type == 'chill' ? Tw.red500 : Tw.green500) : Colors.transparent, width: 2),
+                  border: Border.all(color: community ? (v.type == 'chill' ? Tw.red500 : Tw.live) : Colors.transparent, width: 2),
                 ),
                 child: Icon(iconData, size: 30, color: iconColor),
               ),
@@ -225,15 +225,15 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   if (reference) ...[const ReferenceBadge(), const SizedBox(height: 4)],
                   Text(title, style: tw(24, weight: black, tracking: -0.025)),
-                  if (v.address.isNotEmpty) Text(v.address, style: tw(12, color: Tw.slate500)),
+                  if (v.address.isNotEmpty) Text(v.address, style: tw(12, color: Tw.inkDim)),
                   if (v.openingDays.isNotEmpty) ...[
                     const SizedBox(height: 4),
                     Row(children: [
                       Label(isVenueOpenNow(v.openingDays, v.openingHours).isOpen
                               ? context.t('venuesPage.open_now', fallback: 'Abierto')
                               : _nextOpeningLabel(context, v),
-                          color: isVenueOpenNow(v.openingDays, v.openingHours).isOpen ? Tw.green400 : Tw.slate500, tracking: 0.05),
-                      if (sched != null) ...[const SizedBox(width: 8), Text(sched, style: tw(10, color: Tw.slate500))],
+                          color: isVenueOpenNow(v.openingDays, v.openingHours).isOpen ? Tw.live : Tw.inkDim, tracking: 0.05),
+                      if (sched != null) ...[const SizedBox(width: 8), Text(sched, style: tw(10, color: Tw.inkDim))],
                     ]),
                   ],
                 ]),
@@ -242,11 +242,11 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
             const SizedBox(height: 16),
             Wrap(spacing: 12, runSpacing: 8, children: [
               isOpen
-                  ? _chip('$_checkins ${context.t('venueDetail.peopleGo', count: _checkins)}', Tw.fuchsia500.withValues(alpha: 0.1),
-                      Tw.fuchsia500.withValues(alpha: 0.2), Tw.fuchsia400)
-                  : _chip(_nextOpeningLabel(context, v), Tw.slate800.withValues(alpha: 0.6), Tw.w(0.1), Tw.slate400),
+                  ? _chip('$_checkins ${context.t('venueDetail.peopleGo', count: _checkins)}', Tw.party.withValues(alpha: 0.1),
+                      Tw.party.withValues(alpha: 0.2), Tw.sun)
+                  : _chip(_nextOpeningLabel(context, v), Tw.line.withValues(alpha: 0.6), Tw.lineSoft, Tw.inkSoft),
               if (v.capacity != null)
-                _chip('${context.t('venueDetail.capacity')} ${v.capacity}', Tw.w(0.05), Tw.w(0.1), Tw.slate500),
+                _chip('${context.t('venueDetail.capacity')} ${v.capacity}', Tw.panelSoft, Tw.lineSoft, Tw.inkDim),
             ]),
             if (photos.isNotEmpty) ...[
               const SizedBox(height: 24),
@@ -311,7 +311,7 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
               const SizedBox(height: 24),
               GlassCard(
                 padding: const EdgeInsets.all(24),
-                child: Text(v.description, style: tw(14, color: Tw.slate300, height: 1.6)),
+                child: Text(v.description, style: tw(14, color: Tw.inkSoft, height: 1.6)),
               ),
             ],
             if (v.openingDays.isNotEmpty && v.openingHours.isNotEmpty) ...[
@@ -325,9 +325,9 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                 const SizedBox(height: 8),
                 Row(children: [
                   const SizedBox(width: 4),
-                  const Icon(Icons.location_on, size: 12, color: Tw.slate500),
+                  const Icon(Icons.location_on, size: 12, color: Tw.inkDim),
                   const SizedBox(width: 6),
-                  Expanded(child: Text(v.address, style: tw(11, color: Tw.slate500))),
+                  Expanded(child: Text(v.address, style: tw(11, color: Tw.inkDim))),
                 ]),
               ],
             ],
@@ -353,21 +353,21 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                Text(context.t('venueDetail.redirectTaquilla'), textAlign: TextAlign.center, style: tw(10, color: Tw.slate500)),
+                Text(context.t('venueDetail.redirectTaquilla'), textAlign: TextAlign.center, style: tw(10, color: Tw.inkDim)),
               ])
             else if (!ticketingOn)
               GlassCard(
                 padding: const EdgeInsets.all(24),
                 child: Column(children: [
-                  const Icon(Icons.confirmation_number, size: 30, color: Tw.slate500),
+                  const Icon(Icons.confirmation_number, size: 30, color: Tw.inkDim),
                   const SizedBox(height: 8),
-                  Label(context.t('venue_detail_online_unavailable', fallback: 'Venta online no disponible'), size: 14, color: Tw.slate300, tracking: 0.05),
+                  Label(context.t('venue_detail_online_unavailable', fallback: 'Venta online no disponible'), size: 14, color: Tw.inkSoft, tracking: 0.05),
                   const SizedBox(height: 8),
                   Text(
                     context.t('venue_detail_online_paused',
                         fallback: 'La venta anticipada de entradas para este local está temporalmente pausada o solo disponible en taquilla física.'),
                     textAlign: TextAlign.center,
-                    style: tw(12, color: Tw.slate400),
+                    style: tw(12, color: Tw.inkSoft),
                   ),
                 ]),
               )
@@ -377,11 +377,11 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
               GlassCard(
                 padding: const EdgeInsets.all(32),
                 child: Column(children: [
-                  const Icon(Icons.local_activity, size: 36, color: Tw.slate700),
+                  const Icon(Icons.local_activity, size: 36, color: Tw.line),
                   const SizedBox(height: 12),
-                  Text(context.t('venueDetail.noTickets'), textAlign: TextAlign.center, style: tw(14, color: Tw.slate500)),
+                  Text(context.t('venueDetail.noTickets'), textAlign: TextAlign.center, style: tw(14, color: Tw.inkDim)),
                   const SizedBox(height: 8),
-                  Text(context.t('venueDetail.checkInFromVenues'), textAlign: TextAlign.center, style: tw(10, color: Tw.slate600)),
+                  Text(context.t('venueDetail.checkInFromVenues'), textAlign: TextAlign.center, style: tw(10, color: Tw.inkDim)),
                 ]),
               ),
             // Copas: the bar must be taking orders (same checks as the bar order screen) and have something on the menu.
@@ -424,9 +424,9 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
         radius: 16,
         padding: const EdgeInsets.symmetric(vertical: 12),
         child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Icon(icon, size: 16, color: Tw.fuchsia400),
+          Icon(icon, size: 16, color: Tw.sun),
           const SizedBox(width: 8),
-          Text(label, style: tw(12, weight: bold, color: Tw.slate300)),
+          Text(label, style: tw(12, weight: bold, color: Tw.inkSoft)),
         ]),
       );
 
@@ -434,7 +434,7 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
         padding: const EdgeInsets.all(20),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
-            const Icon(Icons.schedule, size: 14, color: Tw.slate400),
+            const Icon(Icons.schedule, size: 14, color: Tw.inkSoft),
             const SizedBox(width: 8),
             Label(context.t('venueDetail.schedule', fallback: 'Horario'), size: 12),
           ]),
@@ -454,16 +454,16 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     decoration: BoxDecoration(
-                      color: v.openingDays.contains(day) ? Tw.w(0.05) : null,
+                      color: v.openingDays.contains(day) ? Tw.panelSoft : null,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(children: [
-                      Expanded(child: Text(context.t('venue_config.day_$day'), overflow: TextOverflow.ellipsis, style: tw(11, weight: bold, color: Tw.slate300))),
+                      Expanded(child: Text(context.t('venue_config.day_$day'), overflow: TextOverflow.ellipsis, style: tw(11, weight: bold, color: Tw.inkSoft))),
                       Text(
                         v.openingDays.contains(day) && v.openingHours[day] != null
                             ? '${v.openingHours[day]!.open} – ${v.openingHours[day]!.close}'
                             : '—',
-                        style: tw(11, color: Tw.slate400),
+                        style: tw(11, color: Tw.inkSoft),
                       ),
                     ]),
                   ),
@@ -476,7 +476,7 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
   Widget _miniMap(double lat, double lng, String name) => Container(
         height: 192,
         clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
         child: FlutterMap(
           options: MapOptions(
             initialCenter: LatLng(lat, lng),
@@ -496,7 +496,7 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                   Container(
                     constraints: const BoxConstraints(maxWidth: 120),
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                    decoration: BoxDecoration(color: Tw.fuchsia500, borderRadius: BorderRadius.circular(99)),
+                    decoration: BoxDecoration(color: Tw.party, borderRadius: BorderRadius.circular(99)),
                     child: Text(name, maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(9, weight: black)),
                   ),
                   const SizedBox(height: 4),
@@ -505,9 +505,9 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                     height: 24,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Tw.fuchsia500,
+                      color: Tw.party,
                       border: Border.all(color: Tw.white, width: 2),
-                      boxShadow: [BoxShadow(color: Tw.fuchsia500.withValues(alpha: 0.6), blurRadius: 12)],
+                      boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.6), blurRadius: 12)],
                     ),
                     child: Center(child: Container(width: 8, height: 8, decoration: const BoxDecoration(shape: BoxShape.circle, color: Tw.white))),
                   ),
@@ -523,11 +523,11 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
     return GlassCard(
       padding: const EdgeInsets.all(32),
       child: Column(children: [
-        const Icon(Icons.forum, size: 36, color: Tw.slate700),
+        const Icon(Icons.forum, size: 36, color: Tw.line),
         const SizedBox(height: 12),
-        Text(context.t('venueDetail.communitySpot'), textAlign: TextAlign.center, style: tw(14, color: Tw.slate400)),
+        Text(context.t('venueDetail.communitySpot'), textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft)),
         const SizedBox(height: 8),
-        Text(context.t('venueDetail.joinChat'), textAlign: TextAlign.center, style: tw(10, color: Tw.slate500)),
+        Text(context.t('venueDetail.joinChat'), textAlign: TextAlign.center, style: tw(10, color: Tw.inkDim)),
         if (v.data['createdBy'] == auth.user?.uid && auth.user != null) ...[
           const SizedBox(height: 24),
           Pressable(
@@ -583,12 +583,12 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Text(name, style: tw(14, weight: black)),
-                  if (sub != null && sub.isNotEmpty) ...[const SizedBox(height: 4), Text(sub, style: tw(10, color: Tw.slate500))],
+                  if (sub != null && sub.isNotEmpty) ...[const SizedBox(height: 4), Text(sub, style: tw(10, color: Tw.inkDim))],
                   const SizedBox(height: 8),
-                  Text(price, style: tw(18, weight: black, color: Tw.fuchsia400)),
+                  Text(price, style: tw(18, weight: black, color: Tw.sun)),
                   if (quota != null) ...[
                     const SizedBox(height: 4),
-                    Text('${context.t('venueDetail.limitedSpots')} $quota', style: tw(9, color: Tw.slate600)),
+                    Text('${context.t('venueDetail.limitedSpots')} $quota', style: tw(9, color: Tw.inkDim)),
                   ],
                 ]),
               ),
@@ -600,13 +600,13 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       if (_events.isNotEmpty) ...[
         Row(children: [
-          const Icon(Icons.event, size: 16, color: Tw.fuchsia400),
+          const Icon(Icons.event, size: 16, color: Tw.sun),
           const SizedBox(width: 8),
-          Expanded(child: Label(context.t('venueDetail.events', fallback: 'Próximos Eventos & Fiestas'), size: 14, color: Tw.fuchsia400, tracking: 0.2)),
+          Expanded(child: Label(context.t('venueDetail.events', fallback: 'Próximos Eventos & Fiestas'), size: 14, color: Tw.sun, tracking: 0.2)),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(99), border: Border.all(color: Tw.w(0.1))),
-            child: Text('${_events.length} ${_events.length == 1 ? 'evento' : 'eventos'}', style: tw(10, weight: bold, color: Tw.slate500)),
+            decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(99), border: Border.all(color: Tw.line)),
+            child: Text('${_events.length} ${_events.length == 1 ? 'evento' : 'eventos'}', style: tw(10, weight: bold, color: Tw.inkDim)),
           ),
         ]),
         const SizedBox(height: 16),
@@ -625,11 +625,11 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                       width: 80,
                       height: 80,
                       decoration: BoxDecoration(
-                        color: Tw.fuchsia600.withValues(alpha: 0.2),
-                        border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.3)),
+                        color: Tw.party.withValues(alpha: 0.2),
+                        border: Border.all(color: Tw.party.withValues(alpha: 0.3)),
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      child: const Icon(Icons.event, size: 30, color: Tw.fuchsia400),
+                      child: const Icon(Icons.event, size: 30, color: Tw.sun),
                     ),
                   ),
                 ),
@@ -638,22 +638,22 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                      decoration: BoxDecoration(color: Tw.emerald500.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(6)),
-                      child: Label(context.t('events.source_venue', fallback: 'Local'), size: 8, color: Tw.emerald400, tracking: 0.05),
+                      decoration: BoxDecoration(color: Tw.live.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(6)),
+                      child: Label(context.t('events.source_venue', fallback: 'Local'), size: 8, color: Tw.live, tracking: 0.05),
                     ),
                     const SizedBox(height: 4),
                     Text(safeStr(evt['title']), maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(16, weight: black)),
                     if (parseDate(evt['start_date'] ?? evt['date']) != null)
                       Text(
                         '${DateFormat('EEE, d MMM', 'es').format(parseDate(evt['start_date'] ?? evt['date'])!)} · ${DateFormat('HH:mm').format(parseDate(evt['start_date'] ?? evt['date'])!)}',
-                        style: tw(12, color: Tw.slate400),
+                        style: tw(12, color: Tw.inkSoft),
                       ),
                   ]),
                 ),
               ]),
               if (evt['ticket_tiers'] is List && (evt['ticket_tiers'] as List).isNotEmpty) ...[
                 const SizedBox(height: 16),
-                Divider(color: Tw.w(0.05), height: 1),
+                Divider(color: Tw.lineSoft, height: 1),
                 const SizedBox(height: 12),
                 Label('Entradas disponibles'),
                 const SizedBox(height: 8),
@@ -664,19 +664,19 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                     decoration: BoxDecoration(
                       color: Colors.black.withValues(alpha: 0.4),
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Tw.w(0.05)),
+                      border: Border.all(color: Tw.lineSoft),
                     ),
                     child: Row(children: [
                       Expanded(
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                           Text(safeStr(tier['name']), style: tw(12, weight: black)),
-                          if (safeStr(tier['perks']).isNotEmpty) Text(safeStr(tier['perks']), style: tw(10, color: Tw.slate400)),
+                          if (safeStr(tier['perks']).isNotEmpty) Text(safeStr(tier['perks']), style: tw(10, color: Tw.inkSoft)),
                           const SizedBox(height: 4),
                           Text(
                             (asDouble(tier['price']) ?? 0) == 0
                                 ? context.t('events.free_label', fallback: 'Gratis')
                                 : formatPrice(asDouble(tier['price']) ?? 0, currency),
-                            style: tw(14, weight: black, color: Tw.fuchsia400),
+                            style: tw(14, weight: black, color: Tw.sun),
                           ),
                         ]),
                       ),
@@ -708,7 +708,7 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
       ],
       if (pricing.isNotEmpty || tiers.isNotEmpty) ...[
         const SizedBox(height: 8),
-        Label(context.t('venueDetail.availableTickets'), size: 14, color: Tw.slate500, tracking: 0.2),
+        Label(context.t('venueDetail.availableTickets'), size: 14, color: Tw.inkDim, tracking: 0.2),
         const SizedBox(height: 16),
         for (final e in pricing.entries)
           tierCard(
@@ -731,7 +731,7 @@ class _DetailSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget box(double h, {double? w, double r = 12, Color? c}) =>
-        Container(height: h, width: w, decoration: BoxDecoration(color: c ?? Tw.w(0.05), borderRadius: BorderRadius.circular(r)));
+        Container(height: h, width: w, decoration: BoxDecoration(color: c ?? Tw.panelSoft, borderRadius: BorderRadius.circular(r)));
     return Scaffold(
       body: ListView(padding: EdgeInsets.zero, children: [
         box(256, r: 0),
@@ -742,11 +742,11 @@ class _DetailSkeleton extends StatelessWidget {
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Container(
                 padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(color: Tw.slate900.withValues(alpha: 0.8), borderRadius: BorderRadius.circular(24)),
+                decoration: BoxDecoration(color: Tw.panel.withValues(alpha: 0.8), borderRadius: BorderRadius.circular(24)),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   box(28, w: 192),
                   const SizedBox(height: 12),
-                  box(16, w: 128, c: Tw.fuchsia500.withValues(alpha: 0.1)),
+                  box(16, w: 128, c: Tw.party.withValues(alpha: 0.1)),
                   const SizedBox(height: 12),
                   box(12),
                 ]),

@@ -106,13 +106,13 @@ class _ChillsScreenState extends State<ChillsScreen> {
           onTap: _create,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            decoration: BoxDecoration(color: Tw.fuchsia600, borderRadius: BorderRadius.circular(12)),
+            decoration: BoxDecoration(color: Tw.party, borderRadius: BorderRadius.circular(12)),
             child: Text(context.t('chills.create_chill'), style: tw(14, weight: black)),
           ),
         );
 
     return Scaffold(
-      backgroundColor: Tw.black,
+      backgroundColor: Tw.nightDeep,
       body: SafeArea(
         child: ListView(padding: const EdgeInsets.fromLTRB(16, 24, 16, 112), children: [
           Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -121,7 +121,7 @@ class _ChillsScreenState extends State<ChillsScreen> {
                 Row(children: [
                   Text('Chills', style: tw(24, weight: black)),
                   const SizedBox(width: 8),
-                  const Icon(Icons.local_fire_department, color: Tw.fuchsia400, size: 20),
+                  const Icon(Icons.local_fire_department, color: Tw.sun, size: 20),
                 ]),
                 const SizedBox(height: 4),
                 const CitySelector(),
@@ -134,9 +134,9 @@ class _ChillsScreenState extends State<ChillsScreen> {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: Tw.fuchsia600,
+                  color: Tw.party,
                   borderRadius: BorderRadius.circular(16),
-                  boxShadow: [BoxShadow(color: Tw.fuchsia500.withValues(alpha: 0.2), blurRadius: 15)],
+                  boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.2), blurRadius: 15)],
                 ),
                 child: const Icon(Icons.add, color: Tw.white),
               ),
@@ -150,12 +150,12 @@ class _ChillsScreenState extends State<ChillsScreen> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
-                    color: _tab == t ? Tw.fuchsia500 : Tw.w(0.05),
+                    color: _tab == t ? Tw.party : Tw.panelSoft,
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: _tab == t ? Tw.fuchsia500 : Tw.w(0.05)),
+                    border: Border.all(color: _tab == t ? Tw.party : Tw.lineSoft),
                   ),
                   child: Label(t == 'feed' ? context.t('chills.tab_radar') : context.t('chills.tab_mine'),
-                      color: _tab == t ? Tw.white : Tw.slate500),
+                      color: _tab == t ? Tw.white : Tw.inkDim),
                 ),
               ),
               const SizedBox(width: 8),
@@ -166,18 +166,18 @@ class _ChillsScreenState extends State<ChillsScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 64),
               child: Column(children: [
-                Icon(_tab == 'feed' ? Icons.nightlife : Icons.home, size: 48, color: Tw.slate700),
+                Icon(_tab == 'feed' ? Icons.nightlife : Icons.home, size: 48, color: Tw.line),
                 const SizedBox(height: 16),
                 Text(
                   _tab == 'feed'
                       ? '${context.t('chills.no_active')}${cityName ?? context.t('chills.your_city')}'
                       : context.t('chills.no_mine'),
                   textAlign: TextAlign.center,
-                  style: tw(14, weight: bold, color: Tw.slate500),
+                  style: tw(14, weight: bold, color: Tw.inkDim),
                 ),
                 if (_tab == 'feed') ...[
                   const SizedBox(height: 4),
-                  Text(context.t('chills.be_first'), style: tw(12, color: Tw.slate600)),
+                  Text(context.t('chills.be_first'), style: tw(12, color: Tw.inkDim)),
                 ],
                 const SizedBox(height: 24),
                 createBtn(),
@@ -224,20 +224,20 @@ class ChillCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Tw.slate900.withValues(alpha: 0.8),
+          color: Tw.panel.withValues(alpha: 0.8),
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: Tw.w(0.05)),
+          border: Border.all(color: Tw.lineSoft),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Container(
               width: 44,
               height: 44,
-              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.4), width: 2)),
+              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Tw.party.withValues(alpha: 0.4), width: 2)),
               child: ClipOval(
                 child: NetImage(
                   c['host_foto'] as String?,
-                  placeholder: Container(color: const Color(0x66701A75), child: const Icon(Icons.person, size: 18, color: Tw.fuchsia400)),
+                  placeholder: Container(color: const Color(0x66701A75), child: const Icon(Icons.person, size: 18, color: Tw.sun)),
                 ),
               ),
             ),
@@ -246,25 +246,25 @@ class ChillCard extends StatelessWidget {
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(safeStr(c['title']), style: tw(14, weight: black, height: 1.2)),
                 const SizedBox(height: 2),
-                Text('${safeStr(c['host_nick'])}${dist != null && dist > 0 ? '  $dist km' : ''}', style: tw(10, weight: bold, color: Tw.slate500)),
+                Text('${safeStr(c['host_nick'])}${dist != null && dist > 0 ? '  $dist km' : ''}', style: tw(10, weight: bold, color: Tw.inkDim)),
               ]),
             ),
             Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: (full ? Tw.red500 : Tw.green500).withValues(alpha: 0.2),
+                  color: (full ? Tw.red500 : Tw.live).withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(99),
                 ),
-                child: Text(full ? 'LLENO' : '$spots plazas', style: tw(10, weight: black, color: full ? Tw.red400 : Tw.green400)),
+                child: Text(full ? 'LLENO' : '$spots plazas', style: tw(10, weight: black, color: full ? Tw.red400 : Tw.live)),
               ),
               const SizedBox(height: 4),
-              Text(chillTimeLeft(c['expires_at']), style: tw(10, color: Tw.slate600).copyWith(fontFamily: 'monospace')),
+              Text(chillTimeLeft(c['expires_at']), style: tw(10, color: Tw.inkDim).copyWith(fontFamily: 'monospace')),
             ]),
           ]),
           if (safeStr(c['description']).isNotEmpty) ...[
             const SizedBox(height: 12),
-            Text(safeStr(c['description']), maxLines: 2, overflow: TextOverflow.ellipsis, style: tw(12, color: Tw.slate400)),
+            Text(safeStr(c['description']), maxLines: 2, overflow: TextOverflow.ellipsis, style: tw(12, color: Tw.inkSoft)),
           ],
           const SizedBox(height: 12),
           Row(children: [
@@ -273,14 +273,14 @@ class ChillCard extends StatelessWidget {
                 for (final t in tags)
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                    decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(99)),
-                    child: Text(t, style: tw(10, weight: bold, color: Tw.slate400)),
+                    decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(99)),
+                    child: Text(t, style: tw(10, weight: bold, color: Tw.inkSoft)),
                   ),
               ]),
             ),
-            Icon(Icons.group, size: 12, color: Tw.fuchsia500.withValues(alpha: 0.6)),
+            Icon(Icons.group, size: 12, color: Tw.party.withValues(alpha: 0.6)),
             const SizedBox(width: 4),
-            Text('$accepted/$max', style: tw(10, weight: bold, color: Tw.slate500)),
+            Text('$accepted/$max', style: tw(10, weight: bold, color: Tw.inkDim)),
           ]),
         ]),
       ),
@@ -294,23 +294,23 @@ class _ChillsSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget box(double h, {double? w, double r = 8, Color? c}) =>
-        Container(height: h, width: w, decoration: BoxDecoration(color: c ?? Tw.w(0.05), borderRadius: BorderRadius.circular(r)));
+        Container(height: h, width: w, decoration: BoxDecoration(color: c ?? Tw.panelSoft, borderRadius: BorderRadius.circular(r)));
     return Scaffold(
-      backgroundColor: Tw.black,
+      backgroundColor: Tw.nightDeep,
       body: SafeArea(
         child: ListView(padding: const EdgeInsets.fromLTRB(16, 24, 16, 24), children: [
           Row(children: [
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [box(28, w: 96), const SizedBox(height: 8), box(16, w: 128)])),
-            box(48, w: 48, r: 16, c: Tw.fuchsia500.withValues(alpha: 0.1)),
+            box(48, w: 48, r: 16, c: Tw.party.withValues(alpha: 0.1)),
           ]),
           const SizedBox(height: 24),
-          Row(children: [box(36, w: 96, r: 12, c: Tw.fuchsia500.withValues(alpha: 0.1)), const SizedBox(width: 8), box(36, w: 80, r: 12)]),
+          Row(children: [box(36, w: 96, r: 12, c: Tw.party.withValues(alpha: 0.1)), const SizedBox(width: 8), box(36, w: 80, r: 12)]),
           const SizedBox(height: 24),
           for (var i = 0; i < 4; i++)
             Container(
               height: 132,
               margin: const EdgeInsets.only(bottom: 12),
-              decoration: BoxDecoration(color: Tw.slate900.withValues(alpha: 0.8), borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.w(0.05))),
+              decoration: BoxDecoration(color: Tw.panel.withValues(alpha: 0.8), borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.lineSoft)),
             ),
         ]),
       ),

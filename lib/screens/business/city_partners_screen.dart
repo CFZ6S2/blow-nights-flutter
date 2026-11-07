@@ -120,12 +120,12 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_dict == null) return const Scaffold(backgroundColor: Tw.slate950);
+    if (_dict == null) return const Scaffold(backgroundColor: Tw.night);
     final top = MediaQuery.of(context).padding.top;
     final city = _slug.toUpperCase();
     final cityDisplay = context.watch<CityProvider>().currentCity?.name ?? _slug;
     return Scaffold(
-      backgroundColor: Tw.slate950,
+      backgroundColor: Tw.night,
       body: Stack(children: [
         SingleChildScrollView(
           padding: EdgeInsets.only(top: top + 64),
@@ -152,9 +152,9 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
               filter: ui.ImageFilter.blur(sigmaX: 20, sigmaY: 20),
               child: Container(
                 padding: EdgeInsets.fromLTRB(8, top + 8, 16, 8),
-                decoration: BoxDecoration(color: Tw.slate950.withValues(alpha: 0.8), border: Border(bottom: BorderSide(color: Tw.w(0.05)))),
+                decoration: BoxDecoration(color: Tw.night.withValues(alpha: 0.8), border: Border(bottom: BorderSide(color: Tw.lineSoft))),
                 child: Row(children: [
-                  IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.slate400)),
+                  IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.inkSoft)),
                   Container(
                     width: 28,
                     height: 28,
@@ -169,7 +169,7 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       decoration: BoxDecoration(color: Tw.white, borderRadius: BorderRadius.circular(99)),
-                      child: Text(t('contact'), style: tw(12, weight: semibold, color: Tw.black)),
+                      child: Text(t('contact'), style: tw(12, weight: semibold, color: Tw.night)),
                     ),
                   ),
                 ]),
@@ -183,7 +183,7 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
 
   Widget _section({required Widget child, bool tinted = false}) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 72),
-        decoration: BoxDecoration(color: tinted ? Tw.slate900.withValues(alpha: 0.4) : null, border: Border(top: BorderSide(color: Tw.w(0.05)))),
+        decoration: BoxDecoration(color: tinted ? Tw.panel.withValues(alpha: 0.4) : null, border: Border(top: BorderSide(color: Tw.lineSoft))),
         child: child,
       );
 
@@ -194,7 +194,7 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
 
   Widget _h2(String text, {String? sub}) => Column(children: [
         Text(text, textAlign: TextAlign.center, style: tw(30, weight: black, height: 1.1, tracking: -0.02)),
-        if (sub != null) ...[const SizedBox(height: 12), Text(sub, textAlign: TextAlign.center, style: tw(14, color: Tw.slate500))],
+        if (sub != null) ...[const SizedBox(height: 12), Text(sub, textAlign: TextAlign.center, style: tw(14, color: Tw.inkDim))],
         const SizedBox(height: 48),
       ]);
 
@@ -205,9 +205,9 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
           padding: const EdgeInsets.symmetric(vertical: 14),
           decoration: BoxDecoration(
             gradient: gradient != null ? LinearGradient(colors: gradient) : null,
-            color: gradient == null ? Tw.w(0.05) : null,
+            color: gradient == null ? Tw.panelSoft : null,
             borderRadius: BorderRadius.circular(99),
-            border: gradient == null ? Border.all(color: Tw.w(0.1)) : null,
+            border: gradient == null ? Border.all(color: Tw.line) : null,
           ),
           child: Text(label, textAlign: TextAlign.center, style: tw(14, weight: gradient != null ? bold : semibold)),
         ),
@@ -241,7 +241,7 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 24),
-          Text(t('hero_subtitle'), textAlign: TextAlign.center, style: tw(16, color: Tw.slate400, height: 1.6)),
+          Text(t('hero_subtitle'), textAlign: TextAlign.center, style: tw(16, color: Tw.inkSoft, height: 1.6)),
           const SizedBox(height: 40),
           _pillButton(t('cta_participate'), () => _scrollTo(_formKey), gradient: const [Tw.purple600, Tw.pink500]),
           const SizedBox(height: 12),
@@ -254,7 +254,7 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
   Widget _card(IconData icon, Color color, String title, String desc, {bool center = false}) => Container(
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(color: Tw.slate900.withValues(alpha: 0.8), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.05))),
+        decoration: BoxDecoration(color: Tw.panel.withValues(alpha: 0.8), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.lineSoft)),
         child: Column(crossAxisAlignment: center ? CrossAxisAlignment.center : CrossAxisAlignment.start, children: [
           Container(
             width: 44,
@@ -265,7 +265,7 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
           const SizedBox(height: 16),
           Text(title, textAlign: center ? TextAlign.center : TextAlign.start, style: tw(13, weight: black, tracking: 0.05)),
           const SizedBox(height: 8),
-          Text(desc, textAlign: center ? TextAlign.center : TextAlign.start, style: tw(12, color: Tw.slate500, height: 1.6)),
+          Text(desc, textAlign: center ? TextAlign.center : TextAlign.start, style: tw(12, color: Tw.inkDim, height: 1.6)),
         ]),
       );
 
@@ -274,7 +274,7 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
         _card(Icons.groups_outlined, Tw.purple400, t('card_users'), t('card_users_d')),
         _card(Icons.apartment, Tw.pink400, t('card_venues'), t('card_venues_d')),
         _card(Icons.campaign_outlined, Tw.blue400, t('card_promoters'), t('card_promoters_d')),
-        _card(Icons.favorite_border, Tw.green400, t('card_orgs'), t('card_orgs_d')),
+        _card(Icons.favorite_border, Tw.live, t('card_orgs'), t('card_orgs_d')),
       ]);
 
   Widget _flow() => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -306,11 +306,11 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
                     height: 48,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: i == 6 ? Tw.purple500.withValues(alpha: 0.2) : Tw.slate800,
+                      color: i == 6 ? Tw.purple500.withValues(alpha: 0.2) : Tw.line,
                       shape: BoxShape.circle,
-                      border: Border.all(color: i == 6 ? Tw.purple500.withValues(alpha: 0.5) : Tw.w(0.1)),
+                      border: Border.all(color: i == 6 ? Tw.purple500.withValues(alpha: 0.5) : Tw.lineSoft),
                     ),
-                    child: Text('0$i', style: tw(12, weight: black, color: i == 6 ? Tw.purple400 : Tw.slate500)),
+                    child: Text('0$i', style: tw(12, weight: black, color: i == 6 ? Tw.purple400 : Tw.inkDim)),
                   ),
                   const SizedBox(width: 20),
                   Expanded(
@@ -319,7 +319,7 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
                       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                         Text(t('flow_$i'), style: tw(13, weight: black, tracking: 0.05)),
                         const SizedBox(height: 4),
-                        Text(t('flow_${i}d'), style: tw(12, color: Tw.slate500, height: 1.6)),
+                        Text(t('flow_${i}d'), style: tw(12, color: Tw.inkDim, height: 1.6)),
                       ]),
                     ),
                   ),
@@ -340,21 +340,21 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
   Widget _radar() => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          decoration: BoxDecoration(color: Tw.green500.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(99), border: Border.all(color: Tw.green500.withValues(alpha: 0.2))),
-          child: Label(t('radar_badge'), color: Tw.green400),
+          decoration: BoxDecoration(color: Tw.live.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(99), border: Border.all(color: Tw.live.withValues(alpha: 0.2))),
+          child: Label(t('radar_badge'), color: Tw.live),
         ),
         const SizedBox(height: 16),
         Text(t('radar_h2'), style: tw(30, weight: black, height: 1.1)),
         const SizedBox(height: 16),
-        Text(t('radar_desc'), style: tw(14, color: Tw.slate400, height: 1.6)),
+        Text(t('radar_desc'), style: tw(14, color: Tw.inkSoft, height: 1.6)),
         const SizedBox(height: 24),
         for (final k in const ['radar_f1', 'radar_f2', 'radar_f3', 'radar_f4'])
           Padding(
             padding: const EdgeInsets.only(bottom: 12),
             child: Row(children: [
-              Container(width: 6, height: 6, decoration: const BoxDecoration(color: Tw.green500, shape: BoxShape.circle)),
+              Container(width: 6, height: 6, decoration: const BoxDecoration(color: Tw.live, shape: BoxShape.circle)),
               const SizedBox(width: 8),
-              Expanded(child: Text(t(k), style: tw(14, color: Tw.slate500))),
+              Expanded(child: Text(t(k), style: tw(14, color: Tw.inkDim))),
             ]),
           ),
         const SizedBox(height: 24),
@@ -362,7 +362,7 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
           aspectRatio: 3 / 4,
           child: Container(
             clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(color: Tw.slate900, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.w(0.1))),
+            decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.line)),
             child: Stack(fit: StackFit.expand, children: [
               CustomPaint(painter: _GridPainter()),
               DecoratedBox(
@@ -382,7 +382,7 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
                 ),
                 const SizedBox(height: 16),
                 Text('RADAR', style: tw(18, weight: black)),
-                Label(t('radar_mock'), color: Tw.slate500, weight: FontWeight.w400),
+                Label(t('radar_mock'), color: Tw.inkDim, weight: FontWeight.w400),
                 const SizedBox(height: 24),
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   for (var i = 0; i < 5; i++) ...[
@@ -408,11 +408,11 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
       ]);
 
   Widget _associations() => Column(children: [
-        _eyebrow(t('assoc_label'), Tw.green400),
+        _eyebrow(t('assoc_label'), Tw.live),
         _h2(t('assoc_h2'), sub: t('assoc_sub')),
-        _card(Icons.favorite_border, Tw.green400, t('a_col'), t('a_col_d'), center: true),
-        _card(Icons.public, Tw.green400, t('a_dif'), t('a_dif_d'), center: true),
-        _card(Icons.groups_outlined, Tw.green400, t('a_eco'), t('a_eco_d'), center: true),
+        _card(Icons.favorite_border, Tw.live, t('a_col'), t('a_col_d'), center: true),
+        _card(Icons.public, Tw.live, t('a_dif'), t('a_dif_d'), center: true),
+        _card(Icons.groups_outlined, Tw.live, t('a_eco'), t('a_eco_d'), center: true),
         const SizedBox(height: 24),
         _pillButton(t('a_cta'), () => _scrollTo(_formKey)),
       ]);
@@ -422,11 +422,11 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
         _h2('${t('cm_h2_1')}\n${t('cm_h2_2')}', sub: t('cm_sub')),
         Container(
           padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(color: Tw.slate800.withValues(alpha: 0.8), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.purple500.withValues(alpha: 0.2))),
+          decoration: BoxDecoration(color: Tw.line.withValues(alpha: 0.8), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.purple500.withValues(alpha: 0.2))),
           child: Column(children: [
             Label(t('cm_plat'), weight: bold, color: Tw.purple400, align: TextAlign.center),
             const SizedBox(height: 4),
-            Text(t('cm_plat_d'), textAlign: TextAlign.center, style: tw(12, color: Tw.slate500)),
+            Text(t('cm_plat_d'), textAlign: TextAlign.center, style: tw(12, color: Tw.inkDim)),
           ]),
         ),
         const SizedBox(height: 24),
@@ -446,17 +446,17 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
             margin: const EdgeInsets.only(bottom: 12),
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: active ? Tw.purple500.withValues(alpha: 0.1) : Tw.slate900.withValues(alpha: 0.8),
+              color: active ? Tw.purple500.withValues(alpha: 0.1) : Tw.panel.withValues(alpha: 0.8),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: active ? Tw.purple500.withValues(alpha: 0.3) : Tw.w(0.05)),
+              border: Border.all(color: active ? Tw.purple500.withValues(alpha: 0.3) : Tw.panelSoft),
             ),
             child: Column(children: [
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                if (active) ...[const PulseDot(color: Tw.green500), const SizedBox(width: 8)],
-                Text(name, style: tw(14, weight: black, color: active ? Tw.white : Tw.slate600)),
+                if (active) ...[const PulseDot(color: Tw.live), const SizedBox(width: 8)],
+                Text(name, style: tw(14, weight: black, color: active ? Tw.white : Tw.inkDim)),
               ]),
               const SizedBox(height: 4),
-              Text(t(key), style: tw(10, color: active ? Tw.purple400 : Tw.slate600)),
+              Text(t(key), style: tw(10, color: active ? Tw.purple400 : Tw.inkDim)),
             ]),
           ),
       ]);
@@ -470,7 +470,7 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
           Expanded(child: _Counter(value: _stats.chills, label: t('nodes_chills'))),
         ]),
         const SizedBox(height: 32),
-        Label(t('nodes_foot'), color: Tw.slate600, weight: FontWeight.w400, align: TextAlign.center),
+        Label(t('nodes_foot'), color: Tw.inkDim, weight: FontWeight.w400, align: TextAlign.center),
       ]);
 
   Widget _early() => Column(children: [
@@ -480,12 +480,12 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
         _card(Icons.verified_user_outlined, Tw.purple400, t('e_pos'), t('e_pos_d'), center: true),
       ]);
 
-  InputDecoration _deco(String hint) => adminInputDecoration(hint, focus: Tw.purple500).copyWith(fillColor: Tw.slate950, hintStyle: tw(14, color: Tw.slate700));
+  InputDecoration _deco(String hint) => adminInputDecoration(hint, focus: Tw.purple500).copyWith(fillColor: Tw.night, hintStyle: tw(14, color: Tw.line));
 
   Widget _field(String label, String key, String hint, {TextInputType? kb, int lines = 1}) => Padding(
         padding: const EdgeInsets.only(bottom: 16),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          Padding(padding: const EdgeInsets.only(bottom: 6), child: Label(label, weight: bold, color: Tw.slate500)),
+          Padding(padding: const EdgeInsets.only(bottom: 6), child: Label(label, weight: bold, color: Tw.inkDim)),
           TextField(controller: _form[key], keyboardType: kb, maxLines: lines, style: tw(14), decoration: _deco(hint)),
         ]),
       );
@@ -497,18 +497,18 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
       if (_success)
         Container(
           padding: const EdgeInsets.all(40),
-          decoration: BoxDecoration(color: Tw.slate900, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.green500.withValues(alpha: 0.2))),
+          decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.live.withValues(alpha: 0.2))),
           child: Column(children: [
             Container(
               width: 64,
               height: 64,
-              decoration: BoxDecoration(color: Tw.green500.withValues(alpha: 0.1), shape: BoxShape.circle),
-              child: const Icon(Icons.check_circle_outline, size: 40, color: Tw.green500),
+              decoration: BoxDecoration(color: Tw.live.withValues(alpha: 0.1), shape: BoxShape.circle),
+              child: const Icon(Icons.check_circle_outline, size: 40, color: Tw.live),
             ),
             const SizedBox(height: 16),
             Text(t('form_ok_h'), style: tw(20, weight: black)),
             const SizedBox(height: 8),
-            Text('${t('form_ok_p_pre')}$cityDisplay.', textAlign: TextAlign.center, style: tw(14, color: Tw.slate500)),
+            Text('${t('form_ok_p_pre')}$cityDisplay.', textAlign: TextAlign.center, style: tw(14, color: Tw.inkDim)),
             const SizedBox(height: 24),
             GestureDetector(onTap: () => setState(() => _success = false), child: Label(t('form_ok_btn'), size: 12, color: Tw.purple400)),
           ]),
@@ -516,12 +516,12 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
       else
         Container(
           padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(color: Tw.slate900.withValues(alpha: 0.8), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.05))),
+          decoration: BoxDecoration(color: Tw.panel.withValues(alpha: 0.8), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.lineSoft)),
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             _field('${t('form_name')} *', 'name', t('form_name')),
             _field('${t('form_email')} *', 'email', 'tu@email.com', kb: TextInputType.emailAddress),
             _field(t('form_phone'), 'phone', '+34 600 000 000', kb: TextInputType.phone),
-            Padding(padding: const EdgeInsets.only(bottom: 6), child: Label('${t('form_type')} *', weight: bold, color: Tw.slate500)),
+            Padding(padding: const EdgeInsets.only(bottom: 6), child: Label('${t('form_type')} *', weight: bold, color: Tw.inkDim)),
             AdminSelect<String>(
               value: _type.isEmpty ? null : _type,
               hint: t('form_type_ph'),
@@ -548,7 +548,7 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            Text(t('form_foot'), textAlign: TextAlign.center, style: tw(10, color: Tw.slate600)),
+            Text(t('form_foot'), textAlign: TextAlign.center, style: tw(10, color: Tw.inkDim)),
           ]),
         ),
     ]);
@@ -557,17 +557,17 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
   Widget _footer() {
     Widget link(String label, VoidCallback onTap) => Padding(
           padding: const EdgeInsets.only(bottom: 8),
-          child: GestureDetector(onTap: onTap, child: Text(label, style: tw(12, color: Tw.slate500))),
+          child: GestureDetector(onTap: onTap, child: Text(label, style: tw(12, color: Tw.inkDim))),
         );
     Widget col(String title, List<Widget> links) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Label(title, weight: bold, color: Tw.slate600),
+          Label(title, weight: bold, color: Tw.inkDim),
           const SizedBox(height: 16),
           ...links,
         ]);
     void openCity(String slug) => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => CityPartnersScreen(citySlug: slug)));
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 64, 20, 48),
-      decoration: BoxDecoration(border: Border(top: BorderSide(color: Tw.w(0.05)))),
+      decoration: BoxDecoration(border: Border(top: BorderSide(color: Tw.lineSoft))),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Expanded(
@@ -609,21 +609,21 @@ class _CityPartnersScreenState extends State<CityPartnersScreen> {
           ),
         ]),
         const SizedBox(height: 32),
-        Divider(color: Tw.w(0.05)),
+        Divider(color: Tw.lineSoft),
         const SizedBox(height: 24),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Container(
             width: 20,
             height: 20,
             alignment: Alignment.center,
-            decoration: BoxDecoration(gradient: const LinearGradient(colors: [Tw.slate700, Tw.slate900]), borderRadius: BorderRadius.circular(4)),
+            decoration: BoxDecoration(gradient: const LinearGradient(colors: [Tw.line, Tw.panel]), borderRadius: BorderRadius.circular(4)),
             child: Text('B', style: tw(9, weight: bold)),
           ),
           const SizedBox(width: 8),
-          Text('Blow Nights Network', style: tw(12, weight: semibold, color: Tw.slate600)),
+          Text('Blow Nights Network', style: tw(12, weight: semibold, color: Tw.inkDim)),
         ]),
         const SizedBox(height: 12),
-        Text('© ${DateTime.now().year} Blow Nights. ${t('foot_copy')}', textAlign: TextAlign.center, style: tw(10, color: Tw.slate700)),
+        Text('© ${DateTime.now().year} Blow Nights. ${t('foot_copy')}', textAlign: TextAlign.center, style: tw(10, color: Tw.line)),
       ]),
     );
   }
@@ -644,7 +644,7 @@ class _Counter extends StatelessWidget {
           builder: (_, v, _) => GradientText('${v.round()}', style: tw(40, weight: black), colors: const [Tw.purple400, Tw.pink500]),
         ),
         const SizedBox(height: 4),
-        Label(label, weight: semibold, color: Tw.slate500, align: TextAlign.center),
+        Label(label, weight: semibold, color: Tw.inkDim, align: TextAlign.center),
       ]);
 }
 

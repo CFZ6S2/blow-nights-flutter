@@ -65,7 +65,7 @@ class CityHomeScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Label(greeting, size: 12, weight: bold, color: Tw.fuchsia400),
+                    Label(greeting, size: 12, weight: bold, color: Tw.sun),
                     const SizedBox(height: 4),
                     Text(city.currentCity?.name ?? context.t('city.near_you'), style: tw(24, weight: black)),
                   ]),
@@ -103,7 +103,7 @@ class CityHomeScreen extends StatelessWidget {
                 Expanded(child: Label(context.t('events.title', fallback: 'Eventos y Planes'), size: 14, tracking: 0.05)),
                 GestureDetector(
                   onTap: () => openRoute(context, AppRoute.events),
-                  child: Label(context.t('city.see_more', fallback: 'Ver más'), color: Tw.fuchsia500),
+                  child: Label(context.t('city.see_more', fallback: 'Ver más'), color: Tw.party),
                 ),
               ]),
               const SizedBox(height: 12),
@@ -121,17 +121,17 @@ class CityHomeScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 64),
                 child: Column(children: [
-                  const Icon(Icons.explore, size: 48, color: Tw.slate700),
+                  const Icon(Icons.explore, size: 48, color: Tw.line),
                   const SizedBox(height: 16),
                   Text(context.t('home.empty', fallback: 'Todavia no hay actividad en tu ciudad'),
-                      textAlign: TextAlign.center, style: tw(14, color: Tw.slate500)),
+                      textAlign: TextAlign.center, style: tw(14, color: Tw.inkDim)),
                   if (user != null) ...[
                     const SizedBox(height: 16),
                     Pressable(
                       onTap: () => openRoute(context, AppRoute.venues),
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                        decoration: BoxDecoration(color: Tw.fuchsia600, borderRadius: BorderRadius.circular(16)),
+                        decoration: BoxDecoration(color: Tw.party, borderRadius: BorderRadius.circular(16)),
                         child: Label(context.t('home.explore', fallback: 'Explorar locales'), size: 12, color: Tw.white),
                       ),
                     ),
@@ -143,7 +143,7 @@ class CityHomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 24),
                 child: Column(children: [
                   Text(context.t('home.register_cta', fallback: 'Regístrate para acceder a todas las funciones'),
-                      textAlign: TextAlign.center, style: tw(14, color: Tw.slate400)),
+                      textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft)),
                   const SizedBox(height: 12),
                   GradientButton(
                     label: context.t('home.register_btn', fallback: 'Crear Cuenta'),
@@ -169,9 +169,9 @@ class _RadarCard extends StatelessWidget {
         onTap: onTap,
         padding: const EdgeInsets.all(24),
         radius: 24,
-        borderColor: Tw.fuchsia500.withValues(alpha: 0.3),
+        borderColor: Tw.party.withValues(alpha: 0.3),
         gradient: LinearGradient(colors: [
-          Tw.fuchsia600.withValues(alpha: 0.2),
+          Tw.party.withValues(alpha: 0.2),
           Tw.indigo600.withValues(alpha: 0.2),
         ]),
         child: Row(children: [
@@ -179,10 +179,10 @@ class _RadarCard extends StatelessWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: Tw.fuchsia500.withValues(alpha: 0.2),
+              color: Tw.party.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(16),
             ),
-            child: const Icon(Icons.radar, color: Tw.fuchsia400, size: 24),
+            child: const Icon(Icons.radar, color: Tw.sun, size: 24),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -192,7 +192,7 @@ class _RadarCard extends StatelessWidget {
               Label(context.t('radar.view_map', fallback: 'Ver mapa en tiempo real'), weight: bold),
             ]),
           ),
-          const Icon(Icons.arrow_forward, color: Tw.slate500),
+          const Icon(Icons.arrow_forward, color: Tw.inkDim),
         ]),
       );
 }
@@ -223,7 +223,7 @@ class _QuickLinks extends StatelessWidget {
       const SizedBox(width: 12),
       tile(Icons.visibility, Tw.purple400, context.t('profile.my_visits', fallback: 'Visitas'), AppRoute.visits),
       const SizedBox(width: 12),
-      tile(Icons.confirmation_number, Tw.fuchsia400, context.t('profile.tickets', fallback: 'Entradas'), AppRoute.tickets),
+      tile(Icons.confirmation_number, Tw.sun, context.t('profile.tickets', fallback: 'Entradas'), AppRoute.tickets),
     ]);
   }
 }
@@ -240,11 +240,11 @@ class _VenueStatusCard extends StatelessWidget {
     final status = venue.openStatus;
     var icon = '🟢';
     var label = context.t('radar.status_quiet', fallback: 'Abierto • Ambiente tranquilo');
-    var color = Tw.emerald400;
+    var color = Tw.live;
     if (status == VenueOpenStatus.closed) {
       icon = '🌙';
       label = context.t('venuesPage.closed_now', fallback: 'Cerrado');
-      color = Tw.slate500;
+      color = Tw.inkDim;
     } else if (checks >= CityHomeScreen._busy) {
       icon = '🔥';
       label = context.t('radar.status_busy', fallback: 'Mucho ambiente');
@@ -252,10 +252,10 @@ class _VenueStatusCard extends StatelessWidget {
     } else if (checks >= CityHomeScreen._rising) {
       icon = '📈';
       label = context.t('radar.status_rising', fallback: 'Subiendo');
-      color = Tw.amber400;
+      color = Tw.sun;
     } else if (checks >= CityHomeScreen._active) {
       label = '$checks ${checks == 1 ? 'persona en directo' : 'personas en directo'}';
-      color = Tw.fuchsia400;
+      color = Tw.sun;
     } else if (hasEventToday) {
       icon = '📅';
       label = context.t('radar.status_event', fallback: 'Evento esta noche');
@@ -263,7 +263,7 @@ class _VenueStatusCard extends StatelessWidget {
     } else if (status == VenueOpenStatus.unknown) {
       icon = '🕓';
       label = context.t('radar.status_no_hours', fallback: 'Horario no disponible');
-      color = Tw.slate400;
+      color = Tw.inkSoft;
     }
 
     return GlassCard(
@@ -285,16 +285,16 @@ class _VenueStatusCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     decoration: BoxDecoration(
-                      color: Tw.fuchsia500.withValues(alpha: 0.2),
+                      color: Tw.party.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(99),
                     ),
                     child: Text('$checks ${checks == 1 ? 'persona' : 'personas'}',
-                        style: tw(10, weight: black, color: Tw.fuchsia400)),
+                        style: tw(10, weight: black, color: Tw.sun)),
                   ),
               ]),
               if (venue.address.isNotEmpty) ...[
                 const SizedBox(height: 2),
-                Text('📍 ${venue.address}', style: tw(12, color: Tw.slate500)),
+                Text('📍 ${venue.address}', style: tw(12, color: Tw.inkDim)),
               ],
               if (checks > 0 || status == VenueOpenStatus.open) ...[
                 const SizedBox(height: 2),
@@ -302,12 +302,12 @@ class _VenueStatusCard extends StatelessWidget {
                   checks > 0
                       ? '$checks ${checks == 1 ? 'persona ahora' : 'personas ahora'}'
                       : context.t('radar.no_queue', fallback: 'Sin cola'),
-                  style: tw(12, color: Tw.slate500),
+                  style: tw(12, color: Tw.inkDim),
                 ),
               ],
             ]),
           ),
-          if (loggedIn) const Icon(Icons.chevron_right, color: Tw.slate600),
+          if (loggedIn) const Icon(Icons.chevron_right, color: Tw.inkDim),
         ]),
       ]),
     );
@@ -340,9 +340,9 @@ class _EventMiniCard extends StatelessWidget {
         width: 200,
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
-          color: Tw.w(0.05),
+          color: Tw.panelSoft,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Tw.w(0.1)),
+          border: Border.all(color: Tw.line),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           NetImage(
@@ -356,10 +356,10 @@ class _EventMiniCard extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [Tw.fuchsia600.withValues(alpha: 0.2), Tw.indigo600.withValues(alpha: 0.2)],
+                  colors: [Tw.party.withValues(alpha: 0.2), Tw.indigo600.withValues(alpha: 0.2)],
                 ),
               ),
-              child: const Icon(Icons.event, size: 30, color: Tw.slate600),
+              child: const Icon(Icons.event, size: 30, color: Tw.inkDim),
             ),
           ),
           Padding(
@@ -367,7 +367,7 @@ class _EventMiniCard extends StatelessWidget {
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(event.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(12, weight: black)),
               const SizedBox(height: 4),
-              Text('$timeLabel${timeStr.isNotEmpty ? ' · $timeStr' : ''}', style: tw(10, color: Tw.slate500)),
+              Text('$timeLabel${timeStr.isNotEmpty ? ' · $timeStr' : ''}', style: tw(10, color: Tw.inkDim)),
             ]),
           ),
         ]),
@@ -399,14 +399,14 @@ class _HomeSkeleton extends StatelessWidget {
     Widget box(double h, {double? w, double r = 24, Color? c}) => Container(
           height: h,
           width: w,
-          decoration: BoxDecoration(color: c ?? Tw.w(0.05), borderRadius: BorderRadius.circular(r)),
+          decoration: BoxDecoration(color: c ?? Tw.panelSoft, borderRadius: BorderRadius.circular(r)),
         );
     return Scaffold(
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            box(12, w: 96, r: 4, c: Tw.fuchsia500.withValues(alpha: 0.2)),
+            box(12, w: 96, r: 4, c: Tw.party.withValues(alpha: 0.2)),
             const SizedBox(height: 8),
             box(28, w: 160, r: 12),
             const SizedBox(height: 24),

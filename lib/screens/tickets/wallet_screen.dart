@@ -114,7 +114,7 @@ class _WalletScreenState extends State<WalletScreen> {
     return Scaffold(
       body: Stack(children: [
         Positioned(top: -size.height * 0.1, left: -size.width * 0.2, child: Orb(color: const Color(0xFFCA8A04).withValues(alpha: 0.1), size: size.width * 0.8)),
-        Positioned(top: size.height * 0.2, right: -size.width * 0.2, child: Orb(color: Tw.fuchsia600.withValues(alpha: 0.1), size: size.width * 0.7)),
+        Positioned(top: size.height * 0.2, right: -size.width * 0.2, child: Orb(color: Tw.party.withValues(alpha: 0.1), size: size.width * 0.7)),
         SafeArea(
           child: ListView(padding: const EdgeInsets.fromLTRB(24, 16, 24, 128), children: [
             Align(
@@ -122,7 +122,7 @@ class _WalletScreenState extends State<WalletScreen> {
               child: IconButton(
                 padding: EdgeInsets.zero,
                 onPressed: () => Navigator.of(context).maybePop(),
-                icon: const Icon(Icons.arrow_back, color: Tw.slate400),
+                icon: const Icon(Icons.arrow_back, color: Tw.inkSoft),
               ),
             ),
             Row(children: [
@@ -131,17 +131,17 @@ class _WalletScreenState extends State<WalletScreen> {
               Text(context.t('wallet.title', fallback: 'Mis entradas'), style: tw(24, weight: black, tracking: -0.025)),
             ]),
             const SizedBox(height: 8),
-            Text(context.t('wallet.subtitle', fallback: 'Tus entradas compradas y transferencias'), style: tw(12, color: Tw.slate500)),
+            Text(context.t('wallet.subtitle', fallback: 'Tus entradas compradas y transferencias'), style: tw(12, color: Tw.inkDim)),
             const SizedBox(height: 24),
             _banner(
-              gradient: LinearGradient(colors: [const Color(0x804A044E), const Color(0x663B0764), Tw.slate900.withValues(alpha: 0.8)]),
-              border: Tw.fuchsia500.withValues(alpha: 0.3),
+              gradient: LinearGradient(colors: [const Color(0x804A044E), const Color(0x663B0764), Tw.panel.withValues(alpha: 0.8)]),
+              border: Tw.party.withValues(alpha: 0.3),
               leading: const Text('🍹', style: TextStyle(fontSize: 20)),
               title: context.t('wallet.bar_drinks_title', fallback: '¿Tienes consumiciones o copas?'),
               sub: context.t('wallet.bar_drinks_desc', fallback: 'Sin recargas de saldo: muestra tu QR en la barra'),
               button: _pillButton(
                 context.t('wallet.bar_drinks_btn', fallback: 'Mis Copas →'),
-                const LinearGradient(colors: [Tw.fuchsia600, Tw.amber500]),
+                const LinearGradient(colors: [Tw.party, Tw.sun]),
                 () => openRoute(context, AppRoute.consumption),
               ),
             ),
@@ -149,18 +149,18 @@ class _WalletScreenState extends State<WalletScreen> {
             _banner(
               gradient: LinearGradient(colors: [const Color(0x4D581C87), const Color(0x33701A75)]),
               border: Tw.purple500.withValues(alpha: 0.2),
-              leading: const Icon(Icons.mark_email_read, size: 18, color: Tw.fuchsia400),
+              leading: const Icon(Icons.mark_email_read, size: 18, color: Tw.sun),
               title: context.t('wallet.guest_prompt', fallback: '¿Compraste como invitado en la web?'),
               sub: context.t('wallet.guest_prompt_sub', fallback: 'Reclámala para cederla gratis o revenderla a 0€ comisión'),
-              button: _pillButton('${context.t('wallet.claim_action', fallback: 'Reclamar')} →', null, _openClaim, color: Tw.fuchsia600),
+              button: _pillButton('${context.t('wallet.claim_action', fallback: 'Reclamar')} →', null, _openClaim, color: Tw.party),
             ),
             const SizedBox(height: 24),
             Row(children: [
-              _tabBtn('valid', '${context.t('wallet.tab_active', fallback: 'Activas')} (${_valid.length})', Tw.green500, Tw.green400),
+              _tabBtn('valid', '${context.t('wallet.tab_active', fallback: 'Activas')} (${_valid.length})', Tw.live, Tw.live),
               const SizedBox(width: 8),
-              _tabBtn('used', '${context.t('wallet.tab_used', fallback: 'Usadas')} (${_used.length})', Tw.slate500, Tw.slate400),
+              _tabBtn('used', '${context.t('wallet.tab_used', fallback: 'Usadas')} (${_used.length})', Tw.inkDim, Tw.inkSoft),
               const SizedBox(width: 8),
-              _tabBtn('transferred', '${context.t('wallet.tab_transferred', fallback: 'Cedidas')} (${_transferred.length})', Tw.fuchsia500, Tw.fuchsia400),
+              _tabBtn('transferred', '${context.t('wallet.tab_transferred', fallback: 'Cedidas')} (${_transferred.length})', Tw.party, Tw.sun),
             ]),
             const SizedBox(height: 24),
             if (_loading)
@@ -168,7 +168,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 Container(
                   height: 112,
                   margin: const EdgeInsets.only(bottom: 12),
-                  decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(24)),
+                  decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(24)),
                 )
             else if (display.isEmpty)
               _empty(context)
@@ -201,7 +201,7 @@ class _WalletScreenState extends State<WalletScreen> {
               decoration: BoxDecoration(
                 color: const Color(0xFF059669),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Tw.emerald400.withValues(alpha: 0.3)),
+                border: Border.all(color: Tw.live.withValues(alpha: 0.3)),
                 boxShadow: const [BoxShadow(color: Color(0x66000000), blurRadius: 25)],
               ),
               child: Row(children: [
@@ -225,7 +225,7 @@ class _WalletScreenState extends State<WalletScreen> {
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(title, maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(12, weight: bold)),
-              Text(sub, maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(10, color: Tw.slate400)),
+              Text(sub, maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(10, color: Tw.inkSoft)),
             ]),
           ),
           const SizedBox(width: 12),
@@ -251,11 +251,11 @@ class _WalletScreenState extends State<WalletScreen> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
-            color: on ? bg.withValues(alpha: 0.2) : Tw.w(0.05),
+            color: on ? bg.withValues(alpha: 0.2) : Tw.panelSoft,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: on ? bg.withValues(alpha: 0.3) : Tw.w(0.1)),
+            border: Border.all(color: on ? bg.withValues(alpha: 0.3) : Tw.lineSoft),
           ),
-          child: Label(label, color: on ? fg : Tw.slate500, align: TextAlign.center, maxLines: 1, tracking: 0.05),
+          child: Label(label, color: on ? fg : Tw.inkDim, align: TextAlign.center, maxLines: 1, tracking: 0.05),
         ),
       ),
     );
@@ -264,7 +264,7 @@ class _WalletScreenState extends State<WalletScreen> {
   Widget _empty(BuildContext context) => Padding(
         padding: const EdgeInsets.symmetric(vertical: 64),
         child: Column(children: [
-          Icon(_tab == 'valid' ? Icons.confirmation_number : _tab == 'used' ? Icons.history : Icons.send, size: 48, color: Tw.slate700),
+          Icon(_tab == 'valid' ? Icons.confirmation_number : _tab == 'used' ? Icons.history : Icons.send, size: 48, color: Tw.line),
           const SizedBox(height: 16),
           Text(
             _tab == 'valid'
@@ -272,7 +272,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 : _tab == 'used'
                     ? context.t('wallet.empty_used', fallback: 'No tienes entradas usadas')
                     : context.t('wallet.empty_transferred', fallback: 'No has cedido ninguna entrada'),
-            style: tw(14, color: Tw.slate500),
+            style: tw(14, color: Tw.inkDim),
           ),
           if (_tab == 'valid') ...[
             const SizedBox(height: 24),
@@ -280,7 +280,7 @@ class _WalletScreenState extends State<WalletScreen> {
               onTap: () => openRoute(context, AppRoute.events),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                decoration: BoxDecoration(color: Tw.fuchsia600, borderRadius: BorderRadius.circular(16)),
+                decoration: BoxDecoration(color: Tw.party, borderRadius: BorderRadius.circular(16)),
                 child: Label(context.t('events.explore', fallback: 'Explorar eventos'), size: 12, color: Tw.white),
               ),
             ),
@@ -289,9 +289,9 @@ class _WalletScreenState extends State<WalletScreen> {
               onTap: _openClaim,
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+                decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  const Icon(Icons.download, size: 14, color: Tw.fuchsia400),
+                  const Icon(Icons.download, size: 14, color: Tw.sun),
                   const SizedBox(width: 8),
                   Label(context.t('wallet.claim_button', fallback: 'Reclamar entrada web'), size: 12, color: Tw.white),
                 ]),
@@ -417,9 +417,9 @@ class _TicketDetailState extends State<_TicketDetail> {
               constraints: BoxConstraints(maxWidth: 384, maxHeight: MediaQuery.of(context).size.height * 0.92),
               clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(
-                color: Tw.slate900,
+                color: Tw.panel,
                 borderRadius: BorderRadius.circular(48),
-                border: Border.all(color: Tw.w(0.1)),
+                border: Border.all(color: Tw.line),
                 boxShadow: const [BoxShadow(color: Color(0xCC000000), blurRadius: 100, offset: Offset(0, 40))],
               ),
               child: SingleChildScrollView(
@@ -431,7 +431,7 @@ class _TicketDetailState extends State<_TicketDetail> {
                         NetImage(v['coverImage'] as String),
                         const DecoratedBox(
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Colors.transparent, Tw.slate900]),
+                            gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Colors.transparent, Tw.panel]),
                           ),
                         ),
                       ]),
@@ -441,40 +441,40 @@ class _TicketDetailState extends State<_TicketDetail> {
                     child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                       Text(safeStr(v?['name'] ?? t['venueName'] ?? t['venueId']), textAlign: TextAlign.center, style: tw(20, weight: black)),
                       const SizedBox(height: 8),
-                      Text(_cap(safeStr(t['tierName'] ?? t['ticketType'])), textAlign: TextAlign.center, style: tw(12, color: Tw.slate500)),
+                      Text(_cap(safeStr(t['tierName'] ?? t['ticketType'])), textAlign: TextAlign.center, style: tw(12, color: Tw.inkDim)),
                       if (safeStr(t['eventTitle']).isNotEmpty) ...[
                         const SizedBox(height: 4),
-                        Text(safeStr(t['eventTitle']), textAlign: TextAlign.center, style: tw(12, color: Tw.slate400)),
+                        Text(safeStr(t['eventTitle']), textAlign: TextAlign.center, style: tw(12, color: Tw.inkSoft)),
                       ],
                       if (safeStr(t['transferredFromName']).isNotEmpty) ...[
                         const SizedBox(height: 8),
                         Center(
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                            decoration: BoxDecoration(color: Tw.fuchsia500.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(99)),
+                            decoration: BoxDecoration(color: Tw.party.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(99)),
                             child: Row(mainAxisSize: MainAxisSize.min, children: [
-                              const Icon(Icons.card_giftcard, size: 12, color: Tw.fuchsia300),
+                              const Icon(Icons.card_giftcard, size: 12, color: Tw.sun),
                               const SizedBox(width: 4),
-                              Text('Recibida de @${t['transferredFromName']}', style: tw(10, weight: bold, color: Tw.fuchsia300)),
+                              Text('Recibida de @${t['transferredFromName']}', style: tw(10, weight: bold, color: Tw.sun)),
                             ]),
                           ),
                         ),
                       ],
                       const SizedBox(height: 8),
                       if (t['channel'] == 'free_claim')
-                        Text(context.t('buy.free', fallback: 'GRATIS'), textAlign: TextAlign.center, style: tw(18, weight: black, color: Tw.emerald400))
+                        Text(context.t('buy.free', fallback: 'GRATIS'), textAlign: TextAlign.center, style: tw(18, weight: black, color: Tw.live))
                       else if (price != null && price > 0)
                         Text('${(price / 100).toStringAsFixed(2)} ${currencySymbol(widget.currency)}',
-                            textAlign: TextAlign.center, style: tw(18, weight: black, color: Tw.fuchsia400)),
+                            textAlign: TextAlign.center, style: tw(18, weight: black, color: Tw.sun)),
                       if (pricing is Map && safeStr(pricing['description']).isNotEmpty)
-                        Text(safeStr(pricing['description']), textAlign: TextAlign.center, style: tw(12, color: Tw.slate400)),
+                        Text(safeStr(pricing['description']), textAlign: TextAlign.center, style: tw(12, color: Tw.inkSoft)),
                       const SizedBox(height: 8),
                       Center(
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                          decoration: BoxDecoration(color: valid ? Tw.green500.withValues(alpha: 0.2) : Tw.slate800, borderRadius: BorderRadius.circular(99)),
+                          decoration: BoxDecoration(color: valid ? Tw.live.withValues(alpha: 0.2) : Tw.line, borderRadius: BorderRadius.circular(99)),
                           child: Label(valid ? context.t('wallet.ticket_valid', fallback: 'Válida') : context.t('wallet.ticket_used', fallback: 'Usada'),
-                              color: valid ? Tw.green400 : Tw.slate500),
+                              color: valid ? Tw.live : Tw.inkDim),
                         ),
                       ),
                       const SizedBox(height: 24),
@@ -490,16 +490,16 @@ class _TicketDetailState extends State<_TicketDetail> {
                         Padding(
                           padding: const EdgeInsets.only(bottom: 24),
                           child: Center(
-                            child: Container(width: 232, height: 232, decoration: BoxDecoration(color: Tw.slate800, borderRadius: BorderRadius.circular(24))),
+                            child: Container(width: 232, height: 232, decoration: BoxDecoration(color: Tw.line, borderRadius: BorderRadius.circular(24))),
                           ),
                         ),
                       if (status == 'used')
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 24),
                           child: Column(children: [
-                            const Icon(Icons.check_circle, size: 48, color: Tw.slate600),
+                            const Icon(Icons.check_circle, size: 48, color: Tw.inkDim),
                             const SizedBox(height: 8),
-                            Text(context.t('wallet.ticket_already_scanned', fallback: 'Esta entrada ya fue escaneada'), style: tw(14, color: Tw.slate500)),
+                            Text(context.t('wallet.ticket_already_scanned', fallback: 'Esta entrada ya fue escaneada'), style: tw(14, color: Tw.inkDim)),
                           ]),
                         ),
                       if (valid) ...[
@@ -511,17 +511,17 @@ class _TicketDetailState extends State<_TicketDetail> {
                             margin: const EdgeInsets.only(bottom: 8),
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
-                              color: Tw.emerald500.withValues(alpha: 0.1),
+                              color: Tw.live.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: Tw.emerald500.withValues(alpha: 0.2)),
+                              border: Border.all(color: Tw.live.withValues(alpha: 0.2)),
                             ),
                             child: Row(children: [
                               Expanded(
                                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                                   Row(children: [
-                                    const Icon(Icons.storefront, size: 12, color: Tw.emerald400),
+                                    const Icon(Icons.storefront, size: 12, color: Tw.live),
                                     const SizedBox(width: 4),
-                                    Label('En venta pública', color: Tw.emerald400, tracking: 0),
+                                    Label('En venta pública', color: Tw.live, tracking: 0),
                                   ]),
                                   Text(
                                     '${t['resalePrice'] != null ? '${(asInt(t['resalePrice']) / 100).toStringAsFixed(2)}€' : ''} (0% comisión)',
@@ -533,8 +533,8 @@ class _TicketDetailState extends State<_TicketDetail> {
                                 onTap: _cancelListing,
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                  decoration: BoxDecoration(color: Tw.w(0.1), borderRadius: BorderRadius.circular(8)),
-                                  child: Label(_cancellingListing ? '...' : 'Retirar', weight: bold, color: Tw.slate300, tracking: 0.05),
+                                  decoration: BoxDecoration(color: Tw.lineSoft, borderRadius: BorderRadius.circular(8)),
+                                  child: Label(_cancellingListing ? '...' : 'Retirar', weight: bold, color: Tw.inkSoft, tracking: 0.05),
                                 ),
                               ),
                             ]),
@@ -552,7 +552,7 @@ class _TicketDetailState extends State<_TicketDetail> {
                             }
                           }),
                         _gradBtn(Icons.send, context.t('wallet.transfer_ticket', fallback: 'Transferir entrada gratis a un colega'),
-                            const LinearGradient(colors: [Tw.fuchsia600, Color(0xFFDB2777)]), () async {
+                            const LinearGradient(colors: [Tw.party, Color(0xFFDB2777)]), () async {
                           final msg = await showWebModal<String>(context, TransferTicketModal(ticket: t));
                           if (msg != null && mounted) {
                             Navigator.of(this.context).pop();
@@ -575,17 +575,17 @@ class _TicketDetailState extends State<_TicketDetail> {
                           margin: const EdgeInsets.only(bottom: 8),
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: Tw.amber500.withValues(alpha: 0.1),
+                            color: Tw.sun.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: Tw.amber500.withValues(alpha: 0.3)),
+                            border: Border.all(color: Tw.sun.withValues(alpha: 0.3)),
                           ),
                           child: Row(children: [
                             Expanded(
                               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                                 Row(children: [
-                                  const Icon(Icons.hourglass_top, size: 12, color: Tw.amber400),
+                                  const Icon(Icons.hourglass_top, size: 12, color: Tw.sun),
                                   const SizedBox(width: 4),
-                                  Flexible(child: Text(context.t('buyback.pending_label', fallback: 'En espera de comprador'), style: tw(12, weight: bold, color: Tw.amber400))),
+                                  Flexible(child: Text(context.t('buyback.pending_label', fallback: 'En espera de comprador'), style: tw(12, weight: bold, color: Tw.sun))),
                                 ]),
                                 const SizedBox(height: 2),
                                 Text(context.t('buyback.pending_description', fallback: 'Recibirás tu reembolso cuando alguien compre esta entrada.'),
@@ -596,9 +596,9 @@ class _TicketDetailState extends State<_TicketDetail> {
                               onTap: _cancelBuyback,
                               child: Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                decoration: BoxDecoration(color: Tw.w(0.1), borderRadius: BorderRadius.circular(8)),
+                                decoration: BoxDecoration(color: Tw.lineSoft, borderRadius: BorderRadius.circular(8)),
                                 child: Label(_cancellingBuyback ? '...' : context.t('buyback.cancel_button', fallback: 'Cancelar'),
-                                    weight: bold, color: Tw.slate300, tracking: 0.05),
+                                    weight: bold, color: Tw.inkSoft, tracking: 0.05),
                               ),
                             ),
                           ]),
@@ -607,11 +607,11 @@ class _TicketDetailState extends State<_TicketDetail> {
                         opacity: 0.5,
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 12),
-                          decoration: BoxDecoration(color: Tw.black, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.2))),
+                          decoration: BoxDecoration(color: Tw.nightDeep, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
                           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                            const Icon(Icons.account_balance_wallet, size: 14, color: Tw.slate500),
+                            const Icon(Icons.account_balance_wallet, size: 14, color: Tw.inkDim),
                             const SizedBox(width: 8),
-                            Text(context.t('wallet.add_to_apple_wallet', fallback: 'Añadir a Apple Wallet'), style: tw(12, weight: bold, color: Tw.slate500)),
+                            Text(context.t('wallet.add_to_apple_wallet', fallback: 'Añadir a Apple Wallet'), style: tw(12, weight: bold, color: Tw.inkDim)),
                           ]),
                         ),
                       ),
@@ -619,17 +619,17 @@ class _TicketDetailState extends State<_TicketDetail> {
                       Container(
                         constraints: const BoxConstraints(maxHeight: 128),
                         padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(color: Tw.slate950, borderRadius: BorderRadius.circular(12)),
+                        decoration: BoxDecoration(color: Tw.night, borderRadius: BorderRadius.circular(12)),
                         child: SingleChildScrollView(
                           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                            Label(context.t('wallet.conditions_title', fallback: 'Condiciones'), size: 8, weight: bold, color: Tw.slate400, tracking: 0),
+                            Label(context.t('wallet.conditions_title', fallback: 'Condiciones'), size: 8, weight: bold, color: Tw.inkSoft, tracking: 0),
                             const SizedBox(height: 8),
                             for (final k in [
                               ('wallet.conditions_1', 'Entrada con traspaso P2P instantáneo y sin comisiones intermediarias.'),
                               ('wallet.conditions_2', 'Válida para una sola entrada.'),
                               ('wallet.conditions_3', 'No se admiten devoluciones directas en taquilla.'),
                             ]) ...[
-                              Text(context.t(k.$1, fallback: k.$2), style: tw(8, color: Tw.slate500, height: 1.25)),
+                              Text(context.t(k.$1, fallback: k.$2), style: tw(8, color: Tw.inkDim, height: 1.25)),
                               const SizedBox(height: 8),
                             ],
                           ]),
@@ -640,7 +640,7 @@ class _TicketDetailState extends State<_TicketDetail> {
                         onTap: () => Navigator.of(context).pop(),
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 16),
-                          decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16)),
+                          decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16)),
                           child: Label(context.t('wallet.close', fallback: 'Cerrar'), size: 12, tracking: 0.2, align: TextAlign.center),
                         ),
                       ),
@@ -674,9 +674,9 @@ class _TicketCard extends StatelessWidget {
     final amount = pricing is Map ? asDouble(pricing['amount']) : null;
     final transferredTab = tab == 'transferred';
     final valid = t['status'] == 'valid';
-    final accent = valid ? (transferredTab ? Tw.fuchsia400 : Tw.green400) : Tw.slate600;
-    final accentBg = valid ? (transferredTab ? Tw.fuchsia500.withValues(alpha: 0.2) : Tw.green500.withValues(alpha: 0.2)) : Tw.slate800;
-    final border = valid ? (transferredTab ? Tw.fuchsia500.withValues(alpha: 0.3) : Tw.green500.withValues(alpha: 0.2)) : Tw.w(0.1);
+    final accent = valid ? (transferredTab ? Tw.sun : Tw.live) : Tw.inkDim;
+    final accentBg = valid ? (transferredTab ? Tw.party.withValues(alpha: 0.2) : Tw.live.withValues(alpha: 0.2)) : Tw.line;
+    final border = valid ? (transferredTab ? Tw.party.withValues(alpha: 0.3) : Tw.live.withValues(alpha: 0.2)) : Tw.lineSoft;
     final purchased = parseDate(t['purchasedAt']);
 
     final String statusLabel;
@@ -696,7 +696,7 @@ class _TicketCard extends StatelessWidget {
         onTap: onSelect,
         child: Container(
           clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(24), border: Border.all(color: border)),
+          decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(24), border: Border.all(color: border)),
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             if (venue?['coverImage'] is String && (venue!['coverImage'] as String).isNotEmpty) NetImage(venue!['coverImage'] as String, height: 80),
             Padding(
@@ -713,56 +713,56 @@ class _TicketCard extends StatelessWidget {
                   Expanded(
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Text(safeStr(venue?['name'] ?? t['venueName'] ?? t['venueId']), style: tw(14, weight: black)),
-                      Text(_cap(safeStr(t['tierName'] ?? (pricing is Map ? pricing['name'] : null) ?? t['ticketType'])), style: tw(10, color: Tw.slate500)),
-                      if (safeStr(t['eventTitle']).isNotEmpty) Text(safeStr(t['eventTitle']), style: tw(10, color: Tw.slate400)),
+                      Text(_cap(safeStr(t['tierName'] ?? (pricing is Map ? pricing['name'] : null) ?? t['ticketType'])), style: tw(10, color: Tw.inkDim)),
+                      if (safeStr(t['eventTitle']).isNotEmpty) Text(safeStr(t['eventTitle']), style: tw(10, color: Tw.inkSoft)),
                       if (t['isListedForResale'] == true && !transferredTab)
                         Container(
                           margin: const EdgeInsets.only(top: 4),
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                           decoration: BoxDecoration(
-                            color: Tw.emerald500.withValues(alpha: 0.1),
+                            color: Tw.live.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(99),
-                            border: Border.all(color: Tw.emerald500.withValues(alpha: 0.2)),
+                            border: Border.all(color: Tw.live.withValues(alpha: 0.2)),
                           ),
                           child: Row(mainAxisSize: MainAxisSize.min, children: [
-                            const Icon(Icons.storefront, size: 10, color: Tw.emerald400),
+                            const Icon(Icons.storefront, size: 10, color: Tw.live),
                             const SizedBox(width: 4),
                             Label('En venta ${t['resalePrice'] != null ? '${(asInt(t['resalePrice']) / 100).toStringAsFixed(2)}€' : ''}',
-                                size: 9, color: Tw.emerald400, tracking: 0.05),
+                                size: 9, color: Tw.live, tracking: 0.05),
                           ]),
                         ),
                       if (safeStr(t['transferredFromName']).isNotEmpty && !transferredTab)
                         Padding(
                           padding: const EdgeInsets.only(top: 2),
                           child: Row(children: [
-                            const Icon(Icons.card_giftcard, size: 10, color: Tw.fuchsia400),
+                            const Icon(Icons.card_giftcard, size: 10, color: Tw.sun),
                             const SizedBox(width: 4),
-                            Text('Recibida de @${t['transferredFromName']}', style: tw(9, weight: bold, color: Tw.fuchsia400)),
+                            Text('Recibida de @${t['transferredFromName']}', style: tw(9, weight: bold, color: Tw.sun)),
                           ]),
                         ),
                     ]),
                   ),
                   Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
                     if (t['channel'] == 'free_claim')
-                      Text(context.t('buy.free', fallback: 'GRATIS'), style: tw(14, weight: black, color: Tw.emerald400))
+                      Text(context.t('buy.free', fallback: 'GRATIS'), style: tw(14, weight: black, color: Tw.live))
                     else if (amount != null && amount > 0)
-                      Text('${(amount / 100).toStringAsFixed(2)} ${currencySymbol(currency)}', style: tw(14, weight: black, color: Tw.fuchsia400)),
-                    Label(statusLabel, color: valid ? accent : Tw.slate500),
-                    if (purchased != null) Text(DateFormat('d/M/yyyy').format(purchased), style: tw(9, color: Tw.slate600)),
+                      Text('${(amount / 100).toStringAsFixed(2)} ${currencySymbol(currency)}', style: tw(14, weight: black, color: Tw.sun)),
+                    Label(statusLabel, color: valid ? accent : Tw.inkDim),
+                    if (purchased != null) Text(DateFormat('d/M/yyyy').format(purchased), style: tw(9, color: Tw.inkDim)),
                   ]),
                 ]),
                 if (transferredTab) ...[
                   const SizedBox(height: 12),
-                  Divider(color: Tw.w(0.05), height: 1),
+                  Divider(color: Tw.lineSoft, height: 1),
                   const SizedBox(height: 12),
                   Row(children: [
-                    const Icon(Icons.person, size: 12, color: Tw.fuchsia400),
+                    const Icon(Icons.person, size: 12, color: Tw.sun),
                     const SizedBox(width: 4),
                     Expanded(
                       child: Text.rich(TextSpan(children: [
                         const TextSpan(text: 'Cedida a: '),
-                        TextSpan(text: '@${safeStr(t['client_name']).isEmpty ? 'Amigo' : safeStr(t['client_name'])}', style: tw(11, weight: bold, color: Tw.slate300)),
-                      ]), style: tw(11, color: Tw.slate300)),
+                        TextSpan(text: '@${safeStr(t['client_name']).isEmpty ? 'Amigo' : safeStr(t['client_name'])}', style: tw(11, weight: bold, color: Tw.inkSoft)),
+                      ]), style: tw(11, color: Tw.inkSoft)),
                     ),
                     if (valid && t['isUsed'] != true)
                       Pressable(
@@ -783,9 +783,9 @@ class _TicketCard extends StatelessWidget {
                       )
                     else if (t['status'] == 'disputed')
                       Row(children: [
-                        const Icon(Icons.lock, size: 12, color: Tw.amber400),
+                        const Icon(Icons.lock, size: 12, color: Tw.sun),
                         const SizedBox(width: 4),
-                        Text('Bloqueada por reporte', style: tw(10, weight: bold, color: Tw.amber400)),
+                        Text('Bloqueada por reporte', style: tw(10, weight: bold, color: Tw.sun)),
                       ]),
                   ]),
                 ],
@@ -804,7 +804,7 @@ class _WalletSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget box(double h, {double? w, double r = 12}) =>
-        Container(height: h, width: w, decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(r)));
+        Container(height: h, width: w, decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(r)));
     return Scaffold(
       body: SafeArea(
         child: ListView(padding: const EdgeInsets.fromLTRB(24, 32, 24, 24), children: [

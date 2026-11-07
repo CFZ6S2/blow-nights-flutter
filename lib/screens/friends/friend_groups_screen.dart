@@ -70,9 +70,9 @@ class _FriendGroupsScreenState extends State<FriendGroupsScreen> {
       context: context,
       barrierColor: Colors.black.withValues(alpha: 0.7),
       builder: (ctx) => Dialog(
-        backgroundColor: Tw.slate900,
+        backgroundColor: Tw.panel,
         insetPadding: const EdgeInsets.all(24),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: BorderSide(color: Tw.w(0.1))),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: BorderSide(color: Tw.line)),
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -85,7 +85,7 @@ class _FriendGroupsScreenState extends State<FriendGroupsScreen> {
               autofocus: true,
               maxLength: 40,
               style: tw(14),
-              cursorColor: Tw.fuchsia500,
+              cursorColor: Tw.party,
               decoration: adminInputDecoration(i18n.t('finder.group_name_hint')),
               onSubmitted: (_) => Navigator.of(ctx).pop(true),
             ),
@@ -94,7 +94,7 @@ class _FriendGroupsScreenState extends State<FriendGroupsScreen> {
               Expanded(
                 child: TextButton(
                   onPressed: () => Navigator.of(ctx).pop(false),
-                  child: Label(i18n.t('finder.cancel'), color: Tw.slate400),
+                  child: Label(i18n.t('finder.cancel'), color: Tw.inkSoft),
                 ),
               ),
               const SizedBox(width: 12),
@@ -159,12 +159,12 @@ class _FriendGroupsScreenState extends State<FriendGroupsScreen> {
       body: SafeArea(
         child: ListView(padding: const EdgeInsets.fromLTRB(24, 24, 24, 128), children: [
           Row(children: [
-            IconButton(padding: EdgeInsets.zero, onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.slate400)),
+            IconButton(padding: EdgeInsets.zero, onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.inkSoft)),
             const SizedBox(width: 8),
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(context.t('finder.title'), style: tw(24, weight: black)),
-                Text(context.t('finder.subtitle'), style: tw(12, color: Tw.slate500)),
+                Text(context.t('finder.subtitle'), style: tw(12, color: Tw.inkDim)),
               ]),
             ),
           ]),
@@ -181,10 +181,10 @@ class _FriendGroupsScreenState extends State<FriendGroupsScreen> {
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Label(context.t('finder.how_title'), color: Tw.cyan400),
                   const SizedBox(height: 6),
-                  Text(context.t('finder.how_body'), style: tw(13, color: Tw.slate300, height: 1.5)),
+                  Text(context.t('finder.how_body'), style: tw(13, color: Tw.inkSoft, height: 1.5)),
                   if (!FinderNative.available) ...[
                     const SizedBox(height: 8),
-                    Text(context.t('finder.android_only'), style: tw(12, color: Tw.amber400)),
+                    Text(context.t('finder.android_only'), style: tw(12, color: Tw.sun)),
                   ],
                 ]),
               ),
@@ -214,9 +214,9 @@ class _FriendGroupsScreenState extends State<FriendGroupsScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 48),
               child: Column(children: [
-                const Icon(Icons.groups, size: 48, color: Tw.slate700),
+                const Icon(Icons.groups, size: 48, color: Tw.line),
                 const SizedBox(height: 12),
-                Text(context.t('finder.empty'), style: tw(15, color: Tw.slate500)),
+                Text(context.t('finder.empty'), style: tw(15, color: Tw.inkDim)),
               ]),
             )
           else
@@ -261,12 +261,12 @@ class _GroupCard extends StatelessWidget {
                 ].join('  ·  '),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: tw(12, color: Tw.slate400),
+                style: tw(12, color: Tw.inkSoft),
               ),
-              if (expires.isNotEmpty) Text(i18n.t('finder.expires', params: {'date': expires}), style: tw(11, color: Tw.slate600)),
+              if (expires.isNotEmpty) Text(i18n.t('finder.expires', params: {'date': expires}), style: tw(11, color: Tw.inkDim)),
             ]),
           ),
-          const Icon(Icons.chevron_right, color: Tw.slate600),
+          const Icon(Icons.chevron_right, color: Tw.inkDim),
         ]),
       ),
     );
@@ -327,14 +327,14 @@ class _JoinSheetState extends State<_JoinSheet> {
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
-                color: _mode == m ? Tw.fuchsia600.withValues(alpha: 0.2) : Tw.w(0.05),
+                color: _mode == m ? Tw.party.withValues(alpha: 0.2) : Tw.panelSoft,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: _mode == m ? Tw.fuchsia500.withValues(alpha: 0.5) : Tw.w(0.1)),
+                border: Border.all(color: _mode == m ? Tw.party.withValues(alpha: 0.5) : Tw.lineSoft),
               ),
               child: Column(children: [
-                Icon(icon, size: 18, color: _mode == m ? Tw.fuchsia400 : Tw.slate400),
+                Icon(icon, size: 18, color: _mode == m ? Tw.sun : Tw.inkSoft),
                 const SizedBox(height: 4),
-                Label(label, size: 9, color: _mode == m ? Tw.white : Tw.slate400, align: TextAlign.center, maxLines: 1),
+                Label(label, size: 9, color: _mode == m ? Tw.white : Tw.inkSoft, align: TextAlign.center, maxLines: 1),
               ]),
             ),
           ),
@@ -349,7 +349,7 @@ class _JoinSheetState extends State<_JoinSheet> {
             textAlign: TextAlign.center,
             maxLength: 6,
             style: tw(28, weight: black, tracking: 0.3).copyWith(fontFamily: 'monospace'),
-            cursorColor: Tw.fuchsia500,
+            cursorColor: Tw.party,
             decoration: adminInputDecoration('K7QX2M'),
             onChanged: (_) => setState(() {}),
             onSubmitted: _finish,
@@ -371,7 +371,7 @@ class _JoinSheetState extends State<_JoinSheet> {
             Icon(_nfcOk ? Icons.nfc : Icons.portable_wifi_off, size: 56, color: _nfcOk ? Tw.cyan400 : Tw.red400),
             const SizedBox(height: 16),
             Text(_nfcOk ? context.t('finder.nfc_waiting') : context.t('finder.nfc_unavailable'),
-                textAlign: TextAlign.center, style: tw(14, color: Tw.slate300, height: 1.5)),
+                textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft, height: 1.5)),
             if (_nfcOk && _miss != null) ...[
               const SizedBox(height: 12),
               Text(
@@ -381,7 +381,7 @@ class _JoinSheetState extends State<_JoinSheet> {
                   NfcInviteMiss.notInvite => context.t('finder.nfc_not_invite'),
                 },
                 textAlign: TextAlign.center,
-                style: tw(13, weight: bold, color: Tw.amber400, height: 1.4),
+                style: tw(13, weight: bold, color: Tw.sun, height: 1.4),
               ),
             ],
             if (_nfcOk) ...[
@@ -397,14 +397,14 @@ class _JoinSheetState extends State<_JoinSheet> {
       child: Container(
         padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
         decoration: BoxDecoration(
-          color: Tw.slate900,
+          color: Tw.panel,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-          border: Border.all(color: Tw.w(0.1)),
+          border: Border.all(color: Tw.line),
         ),
         child: SafeArea(
           top: false,
           child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Tw.w(0.2), borderRadius: BorderRadius.circular(2)))),
+            Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Tw.line, borderRadius: BorderRadius.circular(2)))),
             const SizedBox(height: 16),
             Text(context.t('finder.join'), style: tw(20, weight: black)),
             const SizedBox(height: 16),

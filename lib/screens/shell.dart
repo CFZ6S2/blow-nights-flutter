@@ -68,14 +68,14 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                   width: 64,
                   height: 64,
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(begin: Alignment.bottomLeft, end: Alignment.topRight, colors: [Tw.fuchsia600, Tw.indigo600]),
+                    gradient: const LinearGradient(begin: Alignment.bottomLeft, end: Alignment.topRight, colors: [Tw.sunset, Tw.party]),
                     borderRadius: BorderRadius.circular(16),
-                    boxShadow: [BoxShadow(color: Tw.fuchsia500.withValues(alpha: 0.2), blurRadius: 50, offset: const Offset(0, 25))],
+                    boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.2), blurRadius: 50, offset: const Offset(0, 25))],
                   ),
                 ),
               ),
               const SizedBox(height: 16),
-              Container(height: 12, width: 96, decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(4))),
+              Container(height: 12, width: 96, decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(4))),
             ]),
           ),
         ),
@@ -171,8 +171,8 @@ class _BottomNav extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.only(bottom: bottom),
           decoration: BoxDecoration(
-            color: Colors.black.withValues(alpha: 0.8),
-            border: Border(top: BorderSide(color: Tw.w(0.1))),
+            color: Tw.nightDeep.withValues(alpha: 0.9),
+            border: const Border(top: BorderSide(color: Tw.line)),
             boxShadow: const [BoxShadow(color: Color(0x80000000), blurRadius: 40, offset: Offset(0, -10))],
           ),
           child: Center(
@@ -200,7 +200,7 @@ class _NavButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = active ? Tw.fuchsia400 : Tw.slate500;
+    final color = active ? Tw.sun : Tw.inkDim;
     return Pressable(
       scale: 0.8,
       onTap: () {
@@ -215,19 +215,17 @@ class _NavButton extends StatelessWidget {
         width: 64,
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           Stack(clipBehavior: Clip.none, alignment: Alignment.center, children: [
-            Icon(item.icon, size: 24, color: color, shadows: active ? [Shadow(color: Tw.fuchsia600.withValues(alpha: 0.5), blurRadius: 8)] : null),
+            Icon(item.icon, size: 24, color: color, shadows: active ? [Shadow(color: Tw.sun.withValues(alpha: 0.45), blurRadius: 8)] : null),
             Positioned(
               top: -16,
               child: AnimatedOpacity(
                 opacity: active ? 1 : 0,
                 duration: const Duration(milliseconds: 250),
-                child: ImageFiltered(
-                  imageFilter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
-                  child: Container(
-                    width: 24,
-                    height: 4,
-                    decoration: BoxDecoration(color: Tw.fuchsia400.withValues(alpha: 0.8), borderRadius: BorderRadius.circular(99)),
-                  ),
+                // Web: h-1 w-7 rounded-full bg-gradient-to-r from-sunset to-party
+                child: Container(
+                  width: 28,
+                  height: 4,
+                  decoration: BoxDecoration(gradient: AppTheme.ctaGradient, borderRadius: BorderRadius.circular(99)),
                 ),
               ),
             ),
@@ -241,8 +239,8 @@ class _NavButton extends StatelessWidget {
                   height: 10,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Tw.amber400,
-                    boxShadow: [BoxShadow(color: Tw.amber400.withValues(alpha: 0.4), blurRadius: 8)],
+                    color: Tw.sun,
+                    boxShadow: [BoxShadow(color: Tw.sun.withValues(alpha: 0.4), blurRadius: 8)],
                   ),
                 ),
               ),
@@ -250,8 +248,8 @@ class _NavButton extends StatelessWidget {
           const SizedBox(height: 4),
           AnimatedDefaultTextStyle(
             duration: const Duration(milliseconds: 300),
-            style: tw(10, weight: black, color: color, tracking: -0.05),
-            child: Text(item.label.toUpperCase(), maxLines: 1, overflow: TextOverflow.ellipsis),
+            style: tw(11, weight: semibold, color: active ? Tw.white : Tw.inkDim),
+            child: Text(item.label, maxLines: 1, overflow: TextOverflow.ellipsis),
           ),
         ]),
       ),

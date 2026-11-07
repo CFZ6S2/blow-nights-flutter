@@ -98,7 +98,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
     if (auth.loading) {
       return const Scaffold(
         backgroundColor: Color(0xFF07080D),
-        body: Center(child: CircularProgressIndicator(strokeWidth: 2, color: Tw.fuchsia500)),
+        body: Center(child: CircularProgressIndicator(strokeWidth: 2, color: Tw.party)),
       );
     }
     if (!auth.isSuperAdmin) return const ForbiddenScreen(messageKey: 'super_admin_forbidden');
@@ -123,11 +123,11 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
     final top = MediaQuery.of(context).padding.top;
     return Scaffold(
       key: _scaffold,
-      backgroundColor: Tw.slate950,
+      backgroundColor: Tw.night,
       drawer: _sidebar(context, nav),
       body: Stack(children: [
         RefreshIndicator(
-          color: Tw.fuchsia500,
+          color: Tw.party,
           onRefresh: () async {
             await Future.wait([_fetchAnalytics(), _fetchData()]);
             if (mounted) setState(() {});
@@ -147,12 +147,12 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
           top: top + 12,
           right: 16,
           child: _floatingButton(
-            border: Tw.fuchsia500.withValues(alpha: 0.3),
+            border: Tw.party.withValues(alpha: 0.3),
             onTap: _goToApp,
             child: Row(mainAxisSize: MainAxisSize.min, children: [
-              const Icon(Icons.radar, size: 16, color: Tw.fuchsia400),
+              const Icon(Icons.radar, size: 16, color: Tw.sun),
               const SizedBox(width: 6),
-              Text('App', style: tw(12, weight: bold, color: Tw.fuchsia400)),
+              Text('App', style: tw(12, weight: bold, color: Tw.sun)),
             ]),
           ),
         ),
@@ -168,9 +168,9 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 12),
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: Tw.slate900.withValues(alpha: 0.9),
+            color: Tw.panel.withValues(alpha: 0.9),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: border ?? Tw.w(0.1)),
+            border: Border.all(color: border ?? Tw.line),
             boxShadow: const [BoxShadow(color: Color(0x40000000), blurRadius: 12)],
           ),
           child: child,
@@ -179,13 +179,13 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
 
   Widget _sidebar(BuildContext context, List<_NavEntry> nav) => Drawer(
         width: 256,
-        backgroundColor: Tw.slate900.withValues(alpha: 0.97),
+        backgroundColor: Tw.panel.withValues(alpha: 0.97),
         shape: const RoundedRectangleBorder(),
         child: SafeArea(
           child: Column(children: [
             Container(
               padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Tw.w(0.05)))),
+              decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Tw.lineSoft))),
               child: Row(children: [
                 Pressable(
                   onTap: () => Navigator.of(context)
@@ -194,15 +194,15 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
                   child: Container(
                     width: 32,
                     height: 32,
-                    decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(8)),
+                    decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(8)),
                     child: const Icon(Icons.arrow_back, size: 16, color: Tw.white),
                   ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Text(context.t('super_admin_title'), style: tw(16, weight: black, color: Tw.fuchsia400)),
-                    Text(context.t('super_admin_subtitle'), style: tw(10, color: Tw.slate500)),
+                    Text(context.t('super_admin_title'), style: tw(16, weight: black, color: Tw.sun)),
+                    Text(context.t('super_admin_subtitle'), style: tw(10, color: Tw.inkDim)),
                   ]),
                 ),
               ]),
@@ -217,26 +217,26 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
             ),
             Container(
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(border: Border(top: BorderSide(color: Tw.w(0.05)))),
+              decoration: BoxDecoration(border: Border(top: BorderSide(color: Tw.lineSoft))),
               child: Column(children: [
                 Pressable(
                   onTap: _goToApp,
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     decoration: BoxDecoration(
-                      color: Tw.fuchsia600.withValues(alpha: 0.2),
+                      color: Tw.party.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.3)),
+                      border: Border.all(color: Tw.party.withValues(alpha: 0.3)),
                     ),
                     child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      const Icon(Icons.radar, size: 18, color: Tw.fuchsia400),
+                      const Icon(Icons.radar, size: 18, color: Tw.sun),
                       const SizedBox(width: 8),
-                      Text(context.t('super_admin_go_to_app', fallback: 'Ir a la App'), style: tw(14, weight: bold, color: Tw.fuchsia400)),
+                      Text(context.t('super_admin_go_to_app', fallback: 'Ir a la App'), style: tw(14, weight: bold, color: Tw.sun)),
                     ]),
                   ),
                 ),
                 const SizedBox(height: 12),
-                const Label('Blow Nights Admin v2', size: 9, weight: FontWeight.w400, color: Tw.slate600),
+                const Label('Blow Nights Admin v2', size: 9, weight: FontWeight.w400, color: Tw.inkDim),
               ]),
             ),
           ]),
@@ -248,7 +248,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
     final accent = switch (item.accent) {
       'orange' => (Tw.orange600, Tw.orange400, Tw.orange500),
       'indigo' => (Tw.indigo600, Tw.indigo400, Tw.indigo500),
-      _ => (Tw.fuchsia600, Tw.fuchsia400, Tw.fuchsia500),
+      _ => (Tw.party, Tw.sun, Tw.party),
     };
     return Padding(
       padding: const EdgeInsets.only(bottom: 4),
@@ -265,9 +265,9 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
             border: Border.all(color: active ? accent.$3.withValues(alpha: 0.3) : Colors.transparent),
           ),
           child: Row(children: [
-            Icon(item.icon, size: 18, color: active ? accent.$2 : Tw.slate500),
+            Icon(item.icon, size: 18, color: active ? accent.$2 : Tw.inkDim),
             const SizedBox(width: 12),
-            Expanded(child: Text(item.label, style: tw(14, weight: semibold, color: active ? accent.$2 : Tw.slate400))),
+            Expanded(child: Text(item.label, style: tw(14, weight: semibold, color: active ? accent.$2 : Tw.inkSoft))),
             if (item.badge > 0)
               Container(
                 width: 20,
@@ -321,11 +321,11 @@ class ForbiddenScreen extends StatelessWidget {
               const SizedBox(height: 16),
               Text('403 Forbidden', style: tw(30, weight: black)),
               const SizedBox(height: 8),
-              Text(context.t(messageKey), textAlign: TextAlign.center, style: tw(15, color: Tw.slate400)),
+              Text(context.t(messageKey), textAlign: TextAlign.center, style: tw(15, color: Tw.inkSoft)),
               const SizedBox(height: 24),
               AdminButton(
                 label: context.t('super_admin_go_home'),
-                color: Tw.w(0.1),
+                color: Tw.lineSoft,
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 onTap: () => openRoute(context, AppRoute.home),
               ),

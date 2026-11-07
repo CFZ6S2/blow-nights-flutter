@@ -123,22 +123,22 @@ class _VenueConfigTabState extends State<VenueConfigTab> {
     }
   }
 
-  Widget _label(String text) => Padding(padding: const EdgeInsets.only(bottom: 8), child: Label(text, tracking: 0.2, color: Tw.slate500));
+  Widget _label(String text) => Padding(padding: const EdgeInsets.only(bottom: 8), child: Label(text, tracking: 0.2, color: Tw.inkDim));
 
   InputDecoration _deco({IconData? icon, String? hint}) => adminInputDecoration(hint).copyWith(
         fillColor: Colors.black.withValues(alpha: 0.4),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        prefixIcon: icon == null ? null : Icon(icon, size: 16, color: Tw.slate500),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: Tw.w(0.1))),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: Tw.fuchsia500)),
+        prefixIcon: icon == null ? null : Icon(icon, size: 16, color: Tw.inkDim),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: Tw.line)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: Tw.party)),
       );
 
   Widget _warn(IconData icon, String text) => Padding(
         padding: const EdgeInsets.only(top: 8),
         child: Row(children: [
-          Icon(icon, size: 12, color: Tw.amber400),
+          Icon(icon, size: 12, color: Tw.sun),
           const SizedBox(width: 4),
-          Expanded(child: Text(text, style: tw(10, color: Tw.amber400))),
+          Expanded(child: Text(text, style: tw(10, color: Tw.sun))),
         ]),
       );
 
@@ -152,17 +152,17 @@ class _VenueConfigTabState extends State<VenueConfigTab> {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: Tw.fuchsia500.withValues(alpha: 0.2),
+              color: Tw.party.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.3)),
+              border: Border.all(color: Tw.party.withValues(alpha: 0.3)),
             ),
-            child: const Icon(Icons.tune, color: Tw.fuchsia400),
+            child: const Icon(Icons.tune, color: Tw.sun),
           ),
           const SizedBox(width: 12),
           Expanded(child: Label(context.t('admin_b2b.venue_profile'), size: 16, color: Tw.white)),
         ]),
         const SizedBox(height: 16),
-        Divider(height: 1, color: Tw.w(0.1)),
+        Divider(height: 1, color: Tw.line),
         const SizedBox(height: 20),
         _label(context.t('admin_b2b.official_name')),
         TextField(controller: _name, style: tw(14), decoration: _deco(icon: Icons.storefront)),
@@ -187,7 +187,7 @@ class _VenueConfigTabState extends State<VenueConfigTab> {
         Text(
           context.t('venue_config.map_location_hint',
               fallback: 'Haz clic en el mapa para marcar la ubicación de tu local. Sin ubicación, tu local no aparecerá en el radar.'),
-          style: tw(10, color: Tw.slate500),
+          style: tw(10, color: Tw.inkDim),
         ),
         const SizedBox(height: 12),
         StorefrontLocationPicker(key: ValueKey(_mapKey), location: _location, onChange: (l) => setState(() => _location = l)),
@@ -197,7 +197,7 @@ class _VenueConfigTabState extends State<VenueConfigTab> {
         _label(context.t('venue_config.opening_schedule', fallback: 'Horario de apertura')),
         Text(
           context.t('venue_config.opening_schedule_hint', fallback: 'Marca los días que abre tu local y configura la hora de apertura y cierre.'),
-          style: tw(10, color: Tw.slate500),
+          style: tw(10, color: Tw.inkDim),
         ),
         const SizedBox(height: 12),
         for (final day in _allDays) _dayRow(context, day),
@@ -213,7 +213,7 @@ class _VenueConfigTabState extends State<VenueConfigTab> {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 8, left: 4),
-          child: Text(context.t('venue_config.external_ticket_hint'), style: tw(10, color: Tw.slate500)),
+          child: Text(context.t('venue_config.external_ticket_hint'), style: tw(10, color: Tw.inkDim)),
         ),
         const SizedBox(height: 20),
         _label(context.t('admin_b2b.venue_type')),
@@ -225,29 +225,29 @@ class _VenueConfigTabState extends State<VenueConfigTab> {
         const SizedBox(height: 20),
         Container(
           padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.05))),
+          decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.lineSoft)),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             _label(context.t('admin_b2b.visibility')),
             Row(children: [
-              Switch(value: _isActive, activeThumbColor: Tw.white, activeTrackColor: Tw.fuchsia600, onChanged: (v) => setState(() => _isActive = v)),
+              Switch(value: _isActive, activeThumbColor: Tw.white, activeTrackColor: Tw.party, onChanged: (v) => setState(() => _isActive = v)),
               const SizedBox(width: 8),
               Text(_isActive ? context.t('venue_config.active_on_map') : context.t('venue_config.hidden'),
-                  style: tw(14, weight: bold, color: _isActive ? Tw.fuchsia400 : Tw.slate500)),
+                  style: tw(14, weight: bold, color: _isActive ? Tw.sun : Tw.inkDim)),
             ]),
           ]),
         ),
         const SizedBox(height: 12),
         Container(
           padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.05))),
+          decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.lineSoft)),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             _label(context.t('venue_config.door_control_label')),
             Row(children: [
-              Switch(value: _doorControl, activeThumbColor: Tw.white, activeTrackColor: Tw.fuchsia600, onChanged: (v) => setState(() => _doorControl = v)),
+              Switch(value: _doorControl, activeThumbColor: Tw.white, activeTrackColor: Tw.party, onChanged: (v) => setState(() => _doorControl = v)),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(_doorControl ? context.t('venue_config.door_control_on') : context.t('venue_config.door_control_off'),
-                    style: tw(14, weight: bold, color: _doorControl ? Tw.fuchsia400 : Tw.slate500)),
+                    style: tw(14, weight: bold, color: _doorControl ? Tw.sun : Tw.inkDim)),
               ),
             ]),
           ]),
@@ -259,7 +259,7 @@ class _VenueConfigTabState extends State<VenueConfigTab> {
           loading: _saving,
           expand: true,
           padding: const EdgeInsets.symmetric(vertical: 20),
-          gradient: const LinearGradient(colors: [Tw.fuchsia600, Tw.indigo600]),
+          gradient: const LinearGradient(colors: [Tw.sunset, Tw.party]),
           onTap: _saving ? null : _save,
         ),
         if (_owner != null) ...[
@@ -288,7 +288,7 @@ class _VenueConfigTabState extends State<VenueConfigTab> {
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(12)),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Label(label, color: Tw.slate500, weight: bold),
+                    Label(label, color: Tw.inkDim, weight: bold),
                     const SizedBox(height: 4),
                     Text(value is String && value.isNotEmpty ? value : '—', style: tw(14, weight: bold)),
                   ]),
@@ -306,7 +306,7 @@ class _VenueConfigTabState extends State<VenueConfigTab> {
           ),
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             Text(context.t('venue_config.danger_title'), style: tw(14, weight: bold, color: Tw.red400)),
-            Text(context.t('venue_config.danger_desc'), style: tw(12, color: Tw.slate400)),
+            Text(context.t('venue_config.danger_desc'), style: tw(12, color: Tw.inkSoft)),
             const SizedBox(height: 12),
             Align(
               alignment: Alignment.centerRight,
@@ -325,7 +325,7 @@ class _VenueConfigTabState extends State<VenueConfigTab> {
           onTap: onTap,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-            decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.4), borderRadius: BorderRadius.circular(8), border: Border.all(color: Tw.w(0.1))),
+            decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.4), borderRadius: BorderRadius.circular(8), border: Border.all(color: Tw.line)),
             child: Text(v, style: tw(12)),
           ),
         );
@@ -333,24 +333,24 @@ class _VenueConfigTabState extends State<VenueConfigTab> {
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: active ? Tw.fuchsia500.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.2),
+        color: active ? Tw.party.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: active ? Tw.fuchsia500.withValues(alpha: 0.2) : Tw.w(0.05)),
+        border: Border.all(color: active ? Tw.party.withValues(alpha: 0.2) : Tw.panelSoft),
       ),
       child: Row(children: [
         Transform.scale(
           scale: 0.8,
-          child: Switch(value: active, activeThumbColor: Tw.white, activeTrackColor: Tw.fuchsia600, onChanged: (_) => _toggleDay(day)),
+          child: Switch(value: active, activeThumbColor: Tw.white, activeTrackColor: Tw.party, onChanged: (_) => _toggleDay(day)),
         ),
         SizedBox(
           width: 56,
           child: Label(context.t('venue_config.day_$day', fallback: day[0].toUpperCase() + day.substring(1)),
-              size: 12, color: active ? Tw.white : Tw.slate500, tracking: 0.05),
+              size: 12, color: active ? Tw.white : Tw.inkDim, tracking: 0.05),
         ),
         const Spacer(),
         if (active && h != null) ...[
           timeBox(h.open, () => _pickTime(day, true)),
-          Padding(padding: const EdgeInsets.symmetric(horizontal: 8), child: Text('—', style: tw(12, color: Tw.slate500))),
+          Padding(padding: const EdgeInsets.symmetric(horizontal: 8), child: Text('—', style: tw(12, color: Tw.inkDim))),
           timeBox(h.close, () => _pickTime(day, false)),
         ],
       ]),

@@ -43,9 +43,9 @@ class LanguageSelector extends StatelessWidget {
                 width: 208,
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: Tw.slate900.withValues(alpha: 0.95),
+                  color: Tw.panel.withValues(alpha: 0.95),
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Tw.w(0.1)),
+                  border: Border.all(color: Tw.line),
                   boxShadow: const [BoxShadow(color: Color(0xCC000000), blurRadius: 50, offset: Offset(0, 20))],
                 ),
                 child: GridView.count(
@@ -93,14 +93,14 @@ class _LangTile extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
-            color: active ? Tw.fuchsia600.withValues(alpha: 0.2) : Colors.transparent,
+            color: active ? Tw.party.withValues(alpha: 0.2) : Colors.transparent,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: active ? Tw.fuchsia500.withValues(alpha: 0.3) : Colors.transparent),
+            border: Border.all(color: active ? Tw.party.withValues(alpha: 0.3) : Colors.transparent),
           ),
           child: Row(children: [
             Text(lang.flag, style: const TextStyle(fontSize: 16)),
             const SizedBox(width: 8),
-            Text(lang.label, style: tw(12, weight: bold, color: active ? Tw.fuchsia400 : Tw.slate300)),
+            Text(lang.label, style: tw(12, weight: bold, color: active ? Tw.sun : Tw.inkSoft)),
           ]),
         ),
       );

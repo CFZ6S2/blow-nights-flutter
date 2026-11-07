@@ -184,9 +184,9 @@ class _EventBarScreenState extends State<EventBarScreen> {
               child: Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Tw.slate900,
+                  color: Tw.panel,
                   borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: Tw.slate700.withValues(alpha: 0.8)),
+                  border: Border.all(color: Tw.line.withValues(alpha: 0.8)),
                 ),
                 child: SingleChildScrollView(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, mainAxisSize: MainAxisSize.min, children: [
@@ -196,13 +196,13 @@ class _EventBarScreenState extends State<EventBarScreen> {
                         onTap: () => Navigator.of(ctx).pop(),
                         child: Container(
                           padding: const EdgeInsets.all(4),
-                          decoration: const BoxDecoration(color: Tw.slate800, shape: BoxShape.circle),
-                          child: const Icon(Icons.close, size: 16, color: Tw.slate400),
+                          decoration: const BoxDecoration(color: Tw.line, shape: BoxShape.circle),
+                          child: const Icon(Icons.close, size: 16, color: Tw.inkSoft),
                         ),
                       ),
                     ]),
                     const SizedBox(height: 12),
-                    Text(ctx.t('bar_select_mixer', fallback: 'Elige tu acompañamiento / refresco:'), style: tw(12, weight: bold, color: Tw.slate400)),
+                    Text(ctx.t('bar_select_mixer', fallback: 'Elige tu acompañamiento / refresco:'), style: tw(12, weight: bold, color: Tw.inkSoft)),
                     const SizedBox(height: 8),
                     GridView.count(
                       crossAxisCount: 2,
@@ -220,12 +220,12 @@ class _EventBarScreenState extends State<EventBarScreen> {
                               alignment: Alignment.centerLeft,
                               padding: const EdgeInsets.symmetric(horizontal: 8),
                               decoration: BoxDecoration(
-                                color: mixer == m ? Tw.white : Tw.slate800,
+                                color: mixer == m ? Tw.white : Tw.line,
                                 borderRadius: BorderRadius.circular(12),
-                                border: Border.all(color: mixer == m ? Tw.white : Tw.slate700),
+                                border: Border.all(color: mixer == m ? Tw.white : Tw.line),
                               ),
                               child: Text(m, maxLines: 1, overflow: TextOverflow.ellipsis,
-                                  style: tw(12, weight: bold, color: mixer == m ? Tw.black : Tw.slate300)),
+                                  style: tw(12, weight: bold, color: mixer == m ? Tw.night : Tw.inkSoft)),
                             ),
                           ),
                       ],
@@ -237,19 +237,19 @@ class _EventBarScreenState extends State<EventBarScreen> {
                         decoration: BoxDecoration(
                           color: const Color(0xFF451A03).withValues(alpha: 0.3),
                           borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: Tw.amber500.withValues(alpha: 0.4)),
+                          border: Border.all(color: Tw.sun.withValues(alpha: 0.4)),
                         ),
                         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                           Row(children: [
                             Expanded(
-                              child: Label(ctx.t('bar_premium_upgrade', fallback: '¿MEJORAR A PREMIUM?'), color: Tw.amber400, tracking: 0.025),
+                              child: Label(ctx.t('bar_premium_upgrade', fallback: '¿MEJORAR A PREMIUM?'), color: Tw.sun, tracking: 0.025),
                             ),
-                            Text('+${item.upsell!.addonPrice.toStringAsFixed(2)} €', style: tw(12, weight: black, color: Tw.amber400)),
+                            Text('+${item.upsell!.addonPrice.toStringAsFixed(2)} €', style: tw(12, weight: black, color: Tw.sun)),
                           ]),
                           const SizedBox(height: 4),
                           Text(item.upsell!.title, style: tw(12, weight: bold, color: const Color(0xFFE2E8F0))),
                           const SizedBox(height: 2),
-                          Text(item.upsell!.description, style: tw(11, color: Tw.slate400)),
+                          Text(item.upsell!.description, style: tw(11, color: Tw.inkSoft)),
                           const SizedBox(height: 10),
                           Pressable(
                             onTap: () => setSheet(() => premium = !premium),
@@ -257,12 +257,12 @@ class _EventBarScreenState extends State<EventBarScreen> {
                               padding: const EdgeInsets.symmetric(vertical: 8),
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                color: premium ? Tw.amber400 : Tw.slate800,
+                                color: premium ? Tw.sun : Tw.line,
                                 borderRadius: BorderRadius.circular(12),
-                                border: premium ? null : Border.all(color: Tw.slate700),
+                                border: premium ? null : Border.all(color: Tw.line),
                               ),
                               child: Text(premium ? '✓ Premium Activada' : '+ Añadir mejora Premium',
-                                  style: tw(12, weight: black, color: premium ? Tw.black : Tw.slate300)),
+                                  style: tw(12, weight: black, color: premium ? Tw.night : Tw.inkSoft)),
                             ),
                           ),
                         ]),
@@ -272,9 +272,9 @@ class _EventBarScreenState extends State<EventBarScreen> {
                     Container(
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        color: Tw.slate800.withValues(alpha: 0.7),
+                        color: Tw.line.withValues(alpha: 0.7),
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Tw.slate700.withValues(alpha: 0.6)),
+                        border: Border.all(color: Tw.line.withValues(alpha: 0.6)),
                       ),
                       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                         GestureDetector(
@@ -289,7 +289,7 @@ class _EventBarScreenState extends State<EventBarScreen> {
                               height: 20,
                               child: Checkbox(
                                 value: _gifting,
-                                activeColor: Tw.fuchsia500,
+                                activeColor: Tw.party,
                                 onChanged: (v) => setSheet(() => setState(() => _gifting = v ?? false)),
                               ),
                             ),
@@ -298,7 +298,7 @@ class _EventBarScreenState extends State<EventBarScreen> {
                         if (_gifting) ...[
                           const SizedBox(height: 10),
                           Text(ctx.t('bar_gift_nick_label', fallback: '@nick del colega (debe tener la app):'),
-                              style: tw(11, color: Tw.slate400)),
+                              style: tw(11, color: Tw.inkSoft)),
                           const SizedBox(height: 4),
                           TextField(
                             controller: _nick,
@@ -306,24 +306,24 @@ class _EventBarScreenState extends State<EventBarScreen> {
                             decoration: InputDecoration(
                               hintText: '@usuario',
                               isDense: true,
-                              fillColor: Tw.slate900,
+                              fillColor: Tw.panel,
                               contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                              enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.slate700)),
-                              focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.fuchsia500)),
+                              enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.line)),
+                              focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.party)),
                             ),
                           ),
                           const SizedBox(height: 4),
                           Text(ctx.t('bar_gift_hint', fallback: 'El ticket QR llegará directo a su app para que lo canjee en la barra.'),
-                              style: tw(10, color: Tw.slate400, height: 1.25)),
+                              style: tw(10, color: Tw.inkSoft, height: 1.25)),
                         ],
                       ]),
                     ),
                     const SizedBox(height: 16),
                     Container(
                       padding: const EdgeInsets.only(top: 8),
-                      decoration: const BoxDecoration(border: Border(top: BorderSide(color: Tw.slate800))),
+                      decoration: const BoxDecoration(border: Border(top: BorderSide(color: Tw.line))),
                       child: Row(crossAxisAlignment: CrossAxisAlignment.baseline, textBaseline: TextBaseline.alphabetic, children: [
-                        Expanded(child: Text('Total a pagar:', style: tw(12, color: Tw.slate400))),
+                        Expanded(child: Text('Total a pagar:', style: tw(12, color: Tw.inkSoft))),
                         Text('${total.toStringAsFixed(2)} €', style: tw(20, weight: black)),
                       ]),
                     ),
@@ -336,9 +336,9 @@ class _EventBarScreenState extends State<EventBarScreen> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         decoration: BoxDecoration(
-                          gradient: const LinearGradient(colors: [Tw.fuchsia600, Tw.amber500]),
+                          gradient: const LinearGradient(colors: [Tw.party, Tw.sun]),
                           borderRadius: BorderRadius.circular(12),
-                          boxShadow: [BoxShadow(color: Tw.fuchsia600.withValues(alpha: 0.3), blurRadius: 25)],
+                          boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.3), blurRadius: 25)],
                         ),
                         child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                           const Icon(Icons.credit_card, size: 16, color: Tw.white),
@@ -361,21 +361,21 @@ class _EventBarScreenState extends State<EventBarScreen> {
   Widget build(BuildContext context) {
     final items = _cat == 'all' ? _menu : _menu.where((i) => i.category == _cat).toList();
     return Scaffold(
-      backgroundColor: Tw.black,
+      backgroundColor: Tw.nightDeep,
       body: Column(children: [
         Container(
           padding: EdgeInsets.fromLTRB(16, MediaQuery.of(context).padding.top + 14, 16, 14),
           decoration: BoxDecoration(
-            color: Tw.slate950.withValues(alpha: 0.9),
-            border: Border(bottom: BorderSide(color: Tw.slate800.withValues(alpha: 0.8))),
+            color: Tw.night.withValues(alpha: 0.9),
+            border: Border(bottom: BorderSide(color: Tw.line.withValues(alpha: 0.8))),
           ),
           child: Row(children: [
             Pressable(
               onTap: () => Navigator.of(context).maybePop(),
               child: Container(
                 padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(color: Tw.slate900, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.slate800)),
-                child: const Icon(Icons.arrow_back, size: 16, color: Tw.slate400),
+                decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
+                child: const Icon(Icons.arrow_back, size: 16, color: Tw.inkSoft),
               ),
             ),
             const SizedBox(width: 12),
@@ -386,11 +386,11 @@ class _EventBarScreenState extends State<EventBarScreen> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     decoration: BoxDecoration(
-                      color: Tw.emerald500.withValues(alpha: 0.2),
+                      color: Tw.live.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(99),
-                      border: Border.all(color: Tw.emerald500.withValues(alpha: 0.3)),
+                      border: Border.all(color: Tw.live.withValues(alpha: 0.3)),
                     ),
-                    child: Text('PAGO DIRECTO', style: tw(10, weight: bold, color: Tw.emerald400)),
+                    child: Text('PAGO DIRECTO', style: tw(10, weight: bold, color: Tw.live)),
                   ),
                 ]),
                 const SizedBox(height: 2),
@@ -398,7 +398,7 @@ class _EventBarScreenState extends State<EventBarScreen> {
                   safeStr(_event?['title']).isNotEmpty
                       ? safeStr(_event!['title'])
                       : context.t('event_bar_subtitle', fallback: 'Pide en el móvil • Cero colas • Solo pagas lo que bebes'),
-                  style: tw(11, weight: medium, color: Tw.slate400),
+                  style: tw(11, weight: medium, color: Tw.inkSoft),
                 ),
               ]),
             ),
@@ -413,9 +413,9 @@ class _EventBarScreenState extends State<EventBarScreen> {
                   border: Border.all(color: const Color(0xFF86198F).withValues(alpha: 0.6)),
                 ),
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  const Icon(Icons.wine_bar, size: 16, color: Tw.fuchsia400),
+                  const Icon(Icons.wine_bar, size: 16, color: Tw.sun),
                   const SizedBox(width: 6),
-                  Text(context.t('event_bar_my_drinks', fallback: 'Mis Copas'), style: tw(12, weight: bold, color: Tw.fuchsia400)),
+                  Text(context.t('event_bar_my_drinks', fallback: 'Mis Copas'), style: tw(12, weight: bold, color: Tw.sun)),
                 ]),
               ),
             ),
@@ -427,22 +427,22 @@ class _EventBarScreenState extends State<EventBarScreen> {
               margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.slate900, Color(0xE60F172A), Tw.slate950]),
+                gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.panel, Color(0xE60F172A), Tw.night]),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Tw.slate800),
+                border: Border.all(color: Tw.line),
               ),
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Row(children: [
-                  const Icon(Icons.bolt, size: 16, color: Tw.amber400),
+                  const Icon(Icons.bolt, size: 16, color: Tw.sun),
                   const SizedBox(width: 8),
-                  Expanded(child: Label(context.t('bar_manifesto_badge', fallback: 'Sin pulseras ni saldos atrapados'), size: 12, color: Tw.amber400, tracking: 0.05)),
+                  Expanded(child: Label(context.t('bar_manifesto_badge', fallback: 'Sin pulseras ni saldos atrapados'), size: 12, color: Tw.sun, tracking: 0.05)),
                 ]),
                 const SizedBox(height: 4),
                 Text(
                   context.t('bar_manifesto_text',
                       fallback:
                           'En Blow Nights solo pagas la copa que quieres tomarte. Sin recargas mínimas de 20€ ni 2€ perdidos al final de la noche. Pagas con Apple/Google Pay o tarjeta y te la sirven en 1 segundo.'),
-                  style: tw(12, color: Tw.slate300, height: 1.6),
+                  style: tw(12, color: Tw.inkSoft, height: 1.6),
                 ),
               ]),
             ),
@@ -469,11 +469,11 @@ class _EventBarScreenState extends State<EventBarScreen> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                         decoration: BoxDecoration(
-                          color: _cat == id ? Tw.white : Tw.slate900,
+                          color: _cat == id ? Tw.white : Tw.panel,
                           borderRadius: BorderRadius.circular(12),
-                          border: _cat == id ? null : Border.all(color: Tw.slate800),
+                          border: _cat == id ? null : Border.all(color: Tw.line),
                         ),
-                        child: Text(label, style: tw(12, weight: bold, color: _cat == id ? Tw.black : Tw.slate400)),
+                        child: Text(label, style: tw(12, weight: bold, color: _cat == id ? Tw.night : Tw.inkSoft)),
                       ),
                     ),
                   ),
@@ -490,17 +490,17 @@ class _EventBarScreenState extends State<EventBarScreen> {
   Widget _drinkCard(BuildContext context, _Drink item) {
     final buying = _purchasingId == item.id;
     final color = item.category == 'cerveza'
-        ? Tw.amber400
+        ? Tw.sun
         : item.category == 'chupito'
             ? const Color(0xFFFB923C)
-            : Tw.fuchsia400;
+            : Tw.sun;
     return Container(
       margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Tw.slate900.withValues(alpha: 0.9),
+        color: Tw.panel.withValues(alpha: 0.9),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Tw.slate800),
+        border: Border.all(color: Tw.line),
       ),
       child: Row(children: [
         Container(
@@ -518,21 +518,21 @@ class _EventBarScreenState extends State<EventBarScreen> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                   decoration: BoxDecoration(
-                    color: Tw.amber500.withValues(alpha: 0.2),
+                    color: Tw.sun.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(4),
-                    border: Border.all(color: Tw.amber500.withValues(alpha: 0.3)),
+                    border: Border.all(color: Tw.sun.withValues(alpha: 0.3)),
                   ),
                   child: Row(mainAxisSize: MainAxisSize.min, children: [
-                    const Icon(Icons.local_fire_department, size: 12, color: Tw.amber400),
+                    const Icon(Icons.local_fire_department, size: 12, color: Tw.sun),
                     const SizedBox(width: 2),
-                    Text('TOP', style: tw(9, weight: bold, color: Tw.amber400)),
+                    Text('TOP', style: tw(9, weight: bold, color: Tw.sun)),
                   ]),
                 ),
             ]),
             if (item.mixers.isNotEmpty)
-              Padding(padding: const EdgeInsets.only(top: 2), child: Text('Elige refresco al pedir', style: tw(11, color: Tw.slate400))),
+              Padding(padding: const EdgeInsets.only(top: 2), child: Text('Elige refresco al pedir', style: tw(11, color: Tw.inkSoft))),
             const SizedBox(height: 4),
-            Text('${item.price.toStringAsFixed(2)} €', style: tw(14, weight: black, color: Tw.emerald400)),
+            Text('${item.price.toStringAsFixed(2)} €', style: tw(14, weight: black, color: Tw.live)),
           ]),
         ),
         const SizedBox(width: 12),
@@ -544,9 +544,9 @@ class _EventBarScreenState extends State<EventBarScreen> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                gradient: const LinearGradient(colors: [Tw.fuchsia600, Tw.amber500]),
+                gradient: const LinearGradient(colors: [Tw.party, Tw.sun]),
                 borderRadius: BorderRadius.circular(12),
-                boxShadow: [BoxShadow(color: Tw.fuchsia600.withValues(alpha: 0.2), blurRadius: 15)],
+                boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.2), blurRadius: 15)],
               ),
               child: buying
                   ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Tw.white))

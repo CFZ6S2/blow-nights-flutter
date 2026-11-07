@@ -47,7 +47,7 @@ class _TerritoryMapPickerState extends State<TerritoryMapPicker> {
       Container(
         height: 350,
         clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
         child: Stack(children: [
           FlutterMap(
             options: MapOptions(
@@ -65,14 +65,14 @@ class _TerritoryMapPickerState extends State<TerritoryMapPicker> {
                 PolygonLayer(polygons: [
                   Polygon(
                     points: latLngs,
-                    color: Tw.fuchsia500.withValues(alpha: 0.15),
-                    borderColor: Tw.fuchsia500,
+                    color: Tw.party.withValues(alpha: 0.15),
+                    borderColor: Tw.party,
                     borderStrokeWidth: 2,
                   ),
                 ])
               else if (latLngs.length >= 2)
                 PolylineLayer(polylines: [
-                  Polyline(points: latLngs, color: Tw.fuchsia500, strokeWidth: 2, pattern: StrokePattern.dashed(segments: const [8, 8])),
+                  Polyline(points: latLngs, color: Tw.party, strokeWidth: 2, pattern: StrokePattern.dashed(segments: const [8, 8])),
                 ]),
               MarkerLayer(markers: [
                 for (var i = 0; i < latLngs.length; i++)
@@ -82,7 +82,7 @@ class _TerritoryMapPickerState extends State<TerritoryMapPicker> {
                     height: 12,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: i == 0 ? Tw.green500 : Tw.fuchsia500,
+                        color: i == 0 ? Tw.live : Tw.party,
                         shape: BoxShape.circle,
                         border: Border.all(color: Tw.white, width: 2),
                         boxShadow: const [BoxShadow(color: Color(0x66000000), blurRadius: 4)],
@@ -108,7 +108,7 @@ class _TerritoryMapPickerState extends State<TerritoryMapPicker> {
       Row(children: [
         AdminButton(
           label: 'Deshacer punto',
-          color: Tw.w(0.1),
+          color: Tw.lineSoft,
           onTap: _points.isEmpty
               ? null
               : () {
@@ -162,7 +162,7 @@ class TerritoryPreviewMap extends StatelessWidget {
     return Container(
       height: 300,
       clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
       child: Stack(children: [
         FlutterMap(
           key: ValueKey('$center-$zoom'),
@@ -171,13 +171,13 @@ class TerritoryPreviewMap extends StatelessWidget {
             const Basemap(),
             MarkerLayer(markers: [
               for (final v in venues)
-                Marker(point: LatLng(v.lat, v.lng), width: 12, height: 12, child: Tooltip(message: v.name, child: dot(Tw.fuchsia500, 12))),
+                Marker(point: LatLng(v.lat, v.lng), width: 12, height: 12, child: Tooltip(message: v.name, child: dot(Tw.party, 12))),
               if (testPoint != null)
                 Marker(
                   point: LatLng(testPoint!.lat, testPoint!.lng),
                   width: 16,
                   height: 16,
-                  child: Tooltip(message: testPoint!.label, child: dot(Tw.amber400, 16)),
+                  child: Tooltip(message: testPoint!.label, child: dot(Tw.sun, 16)),
                 ),
             ]),
           ],
@@ -189,9 +189,9 @@ class TerritoryPreviewMap extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.7), borderRadius: BorderRadius.circular(8)),
             child: Row(mainAxisSize: MainAxisSize.min, children: [
-              dot(Tw.fuchsia500, 8),
+              dot(Tw.party, 8),
               Text(' ${venues.length} venues', style: tw(10, weight: bold)),
-              if (testPoint != null) ...[const SizedBox(width: 8), dot(Tw.amber400, 8), Text(' test', style: tw(10, weight: bold))],
+              if (testPoint != null) ...[const SizedBox(width: 8), dot(Tw.sun, 8), Text(' test', style: tw(10, weight: bold))],
             ]),
           ),
         ),

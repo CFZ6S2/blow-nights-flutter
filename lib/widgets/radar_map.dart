@@ -416,7 +416,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
         decoration: BoxDecoration(
           color: Basemap.background,
           borderRadius: BorderRadius.circular(40),
-          border: Border.all(color: Tw.w(0.1)),
+          border: Border.all(color: Tw.line),
           boxShadow: const [BoxShadow(color: Color(0x80000000), blurRadius: 50, offset: Offset(0, 25))],
         ),
         child: Stack(children: [
@@ -424,7 +424,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
           if (_mode == RadarMode.swipe)
             Positioned.fill(
               child: Container(
-                color: Tw.slate950,
+                color: Tw.night,
                 child: SwipeCards(
                   users: _filteredUsers,
                   onSwipe: (id, dir) => setState(() {
@@ -435,7 +435,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
               ),
             ),
           if (_loading && context.watch<AuthProvider>().user != null)
-            Positioned.fill(child: IgnorePointer(child: Container(color: Tw.slate900))),
+            Positioned.fill(child: IgnorePointer(child: Container(color: Tw.panel))),
           if (_addingPin) _pinOverlay(context),
           if (!_addingPin && _mode != RadarMode.swipe) _bottomControls(),
           if (_mode != RadarMode.swipe) _locationNeeded(context),
@@ -463,12 +463,12 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Tw.slate900.withValues(alpha: 0.95),
+          color: Tw.panel.withValues(alpha: 0.95),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Tw.w(0.1)),
+          border: Border.all(color: Tw.line),
         ),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Text(context.t('city.location_needed'), textAlign: TextAlign.center, style: tw(12, weight: bold, color: Tw.slate300)),
+          Text(context.t('city.location_needed'), textAlign: TextAlign.center, style: tw(12, weight: bold, color: Tw.inkSoft)),
           const SizedBox(height: 12),
           Pressable(
             onTap: () {
@@ -477,7 +477,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
             },
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(color: Tw.fuchsia600, borderRadius: BorderRadius.circular(12)),
+              decoration: BoxDecoration(color: Tw.party, borderRadius: BorderRadius.circular(12)),
               child: Label(context.t('city.enable_location'), size: 11, weight: black, color: Tw.white),
             ),
           ),
@@ -513,8 +513,8 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
   Marker _userMarker(UserProfile u, int index) {
     final boosted = parseDate(u.data['boostedUntil'])?.isAfter(DateTime.now()) ?? false;
     final vip = ['plus', 'black'].contains(u.membershipTier);
-    final border = boosted ? Tw.white : vip ? const Color(0xFFEAB308) : Tw.fuchsia500;
-    final glow = boosted ? Tw.w(0.6) : vip ? const Color(0x66EAB308) : Tw.fuchsia500.withValues(alpha: 0.4);
+    final border = boosted ? Tw.white : vip ? const Color(0xFFEAB308) : Tw.party;
+    final glow = boosted ? Tw.w(0.6) : vip ? const Color(0x66EAB308) : Tw.party.withValues(alpha: 0.4);
     return Marker(
       point: LatLng(u.lat!, u.lng!),
       width: 72,
@@ -541,7 +541,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
                       width: 48,
                       height: 48,
                       decoration: BoxDecoration(shape: BoxShape.circle, boxShadow: [
-                        BoxShadow(color: boosted ? Tw.amber400 : Tw.fuchsia500.withValues(alpha: 0.4), blurRadius: 24, spreadRadius: 4),
+                        BoxShadow(color: boosted ? Tw.sun : Tw.party.withValues(alpha: 0.4), blurRadius: 24, spreadRadius: 4),
                       ]),
                     ),
                   ),
@@ -556,7 +556,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
                     border: Border.all(color: border, width: 2),
                     boxShadow: [BoxShadow(color: glow, blurRadius: 15)],
                   ),
-                  child: ClipOval(child: NetImage(u.fotoUrl, placeholder: Container(color: Tw.slate800, child: const Icon(Icons.public, color: Tw.slate500)))),
+                  child: ClipOval(child: NetImage(u.fotoUrl, placeholder: Container(color: Tw.line, child: const Icon(Icons.public, color: Tw.inkDim)))),
                 ),
               ),
               if (u.mood != null && u.mood!.isNotEmpty)
@@ -569,8 +569,8 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Tw.w(0.1),
-                        border: Border.all(color: Tw.w(0.2)),
+                        color: Tw.lineSoft,
+                        border: Border.all(color: Tw.line),
                       ),
                       child: Text(u.mood!, style: const TextStyle(fontSize: 18)),
                     ),
@@ -584,8 +584,8 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
                   height: 16,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: u.online ? Tw.green500 : Tw.slate500,
-                    border: Border.all(color: Tw.slate950, width: 2),
+                    color: u.online ? Tw.live : Tw.inkDim,
+                    border: Border.all(color: Tw.night, width: 2),
                   ),
                 ),
               ),
@@ -595,7 +595,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
                   left: 8,
                   child: Container(
                     padding: const EdgeInsets.all(2),
-                    decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.blue500, border: Border.all(color: Tw.slate950, width: 2)),
+                    decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.blue500, border: Border.all(color: Tw.night, width: 2)),
                     child: const Icon(Icons.verified, size: 10, color: Tw.white),
                   ),
                 ),
@@ -610,9 +610,9 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
         constraints: const BoxConstraints(minWidth: 160),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Tw.slate900.withValues(alpha: 0.9),
+          color: Tw.panel.withValues(alpha: 0.9),
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: Tw.w(0.2)),
+          border: Border.all(color: Tw.line),
         ),
         child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(mainAxisSize: MainAxisSize.min, children: [
@@ -622,11 +622,11 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
           ]),
           const SizedBox(height: 8),
           Wrap(spacing: 8, children: [
-            _tag(u.rol, Tw.w(0.05), Tw.slate300),
-            _tag(u.intencion, Tw.fuchsia500.withValues(alpha: 0.1), Tw.fuchsia400),
+            _tag(u.rol, Tw.panelSoft, Tw.inkSoft),
+            _tag(u.intencion, Tw.party.withValues(alpha: 0.1), Tw.sun),
           ]),
           const SizedBox(height: 12),
-          Divider(color: Tw.w(0.05), height: 1),
+          Divider(color: Tw.lineSoft, height: 1),
           const SizedBox(height: 12),
           Center(child: Label(context.read<I18n>().t('map_view_profile', fallback: 'Ver Perfil'), color: Tw.w(0.4), tracking: 0.2)),
         ]),
@@ -668,12 +668,12 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
       color = Tw.teal400;
       icon = Icons.celebration;
     } else if (reference) {
-      color = Tw.slate300;
+      color = Tw.inkSoft;
     } else if (unclaimed) {
-      color = isPaying ? const Color(0xFFEAB308) : Tw.amber400;
+      color = isPaying ? const Color(0xFFEAB308) : Tw.sun;
       icon = Icons.storefront;
     } else if (cruising) {
-      color = isPaying ? Tw.emerald500 : Tw.emerald400;
+      color = isPaying ? Tw.live : Tw.live;
       icon = Icons.park;
     } else if (type == 'sauna') {
       color = Tw.red500;
@@ -716,7 +716,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: color,
-                  border: Border.all(color: Tw.slate950, width: 2),
+                  border: Border.all(color: Tw.night, width: 2),
                   boxShadow: [BoxShadow(color: color.withValues(alpha: 0.8), blurRadius: 10)],
                 ),
                 child: Center(child: Container(width: 4, height: 4, decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.w(0.8)))),
@@ -761,7 +761,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: Tw.slate900,
+                  color: Tw.panel,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: boosted ? const Color(0xFFFACC15) : color, width: 2),
                   boxShadow: [
@@ -786,7 +786,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
                       gradient: const LinearGradient(colors: [Color(0xFFFDE047), Color(0xFFD97706)]),
                       border: Border.all(color: const Color(0xFFFEF08A)),
                     ),
-                    child: const Icon(Icons.star, size: 12, color: Tw.black),
+                    child: const Icon(Icons.star, size: 12, color: Tw.nightDeep),
                   ),
                 ),
               ),
@@ -804,7 +804,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
             margin: const EdgeInsets.all(16),
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Tw.slate900.withValues(alpha: 0.95),
+              color: Tw.panel.withValues(alpha: 0.95),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: Tw.teal500.withValues(alpha: 0.3)),
             ),
@@ -813,16 +813,16 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
               const SizedBox(height: 4),
               Text(safeStr(v['eventTitle']).isNotEmpty ? safeStr(v['eventTitle']) : safeStr(v['name']), style: tw(18, weight: black)),
               const SizedBox(height: 4),
-              Text([v['eventDate'], v['eventTime']].where((x) => x != null && '$x'.isNotEmpty).join(' · '), style: tw(12, color: Tw.slate300)),
-              Text([safeStr(v['name']), safeStr(v['address'])].where((x) => x.isNotEmpty).join(' · '), style: tw(12, color: Tw.slate400)),
+              Text([v['eventDate'], v['eventTime']].where((x) => x != null && '$x'.isNotEmpty).join(' · '), style: tw(12, color: Tw.inkSoft)),
+              Text([safeStr(v['name']), safeStr(v['address'])].where((x) => x.isNotEmpty).join(' · '), style: tw(12, color: Tw.inkSoft)),
               if (safeStr(v['rrppName']).isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
                   child: Text(ctx.t('map_rrpp_party_by', params: {'name': safeStr(v['rrppName'])}, fallback: 'Organiza: ${safeStr(v['rrppName'])}'),
-                      style: tw(12, color: Tw.slate300)),
+                      style: tw(12, color: Tw.inkSoft)),
                 ),
               const SizedBox(height: 12),
-              Text(ctx.t('map_rrpp_party_ticket', fallback: 'Pide tu entrada al RRPP; esta fiesta no vende entradas en la app.'), style: tw(11, color: Tw.slate500)),
+              Text(ctx.t('map_rrpp_party_ticket', fallback: 'Pide tu entrada al RRPP; esta fiesta no vende entradas en la app.'), style: tw(11, color: Tw.inkDim)),
             ]),
           ),
         ),
@@ -831,9 +831,9 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
   Widget _countBadge(int count, double size) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
         decoration: BoxDecoration(
-          color: Tw.fuchsia600,
+          color: Tw.party,
           borderRadius: BorderRadius.circular(99),
-          border: Border.all(color: Tw.slate950, width: 2),
+          border: Border.all(color: Tw.night, width: 2),
         ),
         child: Row(mainAxisSize: MainAxisSize.min, children: [
           Icon(Icons.person, size: size + 1, color: Tw.white),
@@ -859,9 +859,9 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: Tw.slate900.withValues(alpha: 0.95),
+        color: Tw.panel.withValues(alpha: 0.95),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Tw.w(0.2)),
+        border: Border.all(color: Tw.line),
         boxShadow: const [BoxShadow(color: Color(0x99000000), blurRadius: 30, offset: Offset(0, 10))],
       ),
       child: Column(mainAxisSize: MainAxisSize.min, children: [
@@ -870,18 +870,18 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
           Container(
             margin: const EdgeInsets.only(top: 4),
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-            decoration: BoxDecoration(color: Tw.fuchsia500.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(99)),
-            child: Text('$count ${count == 1 ? 'persona ahora' : 'personas ahora'}', style: tw(10, weight: black, color: Tw.fuchsia400)),
+            decoration: BoxDecoration(color: Tw.party.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(99)),
+            child: Text('$count ${count == 1 ? 'persona ahora' : 'personas ahora'}', style: tw(10, weight: black, color: Tw.sun)),
           ),
         const SizedBox(height: 2),
         isRRPPParty(v)
             ? Label(i18n.t('map_rrpp_party', fallback: 'Fiesta RRPP · entrada con el RRPP'), size: 9, weight: bold, color: const Color(0xFF5EEAD4))
             : reference
-            ? Label(i18n.t('reference_venue.badge'), size: 9, weight: bold, color: Tw.slate300)
+            ? Label(i18n.t('reference_venue.badge'), size: 9, weight: bold, color: Tw.inkSoft)
             : unclaimed
-            ? Label(i18n.t('map_pending_verification', fallback: '🟡 Pendiente Verificación'), size: 9, weight: bold, color: Tw.amber400)
+            ? Label(i18n.t('map_pending_verification', fallback: '🟡 Pendiente Verificación'), size: 9, weight: bold, color: Tw.sun)
             : Label(safeStr(v['type']).isEmpty ? 'Local' : safeStr(v['type']), size: 9, weight: bold),
-        if (days.isNotEmpty) Label(scheduleText(), size: 8, weight: bold, color: isOpen ? Tw.green400 : Tw.slate500),
+        if (days.isNotEmpty) Label(scheduleText(), size: 8, weight: bold, color: isOpen ? Tw.live : Tw.inkDim),
       ]),
     );
   }
@@ -894,7 +894,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
     final spots = asInt(c['max_capacity']) - (c['accepted_users'] is List ? (c['accepted_users'] as List).length : 0);
     final commercial = c['type'] == 'commercial';
     final i18n = context.read<I18n>();
-    final accent = commercial ? Tw.amber400 : Tw.fuchsia400;
+    final accent = commercial ? Tw.sun : Tw.sun;
     return Marker(
       point: LatLng(lat, lng),
       width: 56,
@@ -909,7 +909,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
           tooltip: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: Tw.slate900.withValues(alpha: 0.9),
+              color: Tw.panel.withValues(alpha: 0.9),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: accent.withValues(alpha: 0.3)),
             ),
@@ -928,7 +928,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(shape: BoxShape.circle, boxShadow: [
-                  BoxShadow(color: (commercial ? Tw.amber500 : Tw.fuchsia500).withValues(alpha: 0.3), blurRadius: 24, spreadRadius: 4),
+                  BoxShadow(color: (commercial ? Tw.sun : Tw.party).withValues(alpha: 0.3), blurRadius: 24, spreadRadius: 4),
                 ]),
               ),
             ),
@@ -940,9 +940,9 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: commercial ? const [Tw.amber400, Tw.orange500] : const [Tw.fuchsia600, Color(0xFF7E22CE)],
+                  colors: commercial ? const [Tw.sun, Tw.orange500] : const [Tw.party, Color(0xFF7E22CE)],
                 ),
-                border: Border.all(color: commercial ? const Color(0xFFFCD34D) : Tw.fuchsia400, width: 2),
+                border: Border.all(color: commercial ? const Color(0xFFFCD34D) : Tw.sun, width: 2),
               ),
               child: Icon(commercial ? Icons.vpn_key : Icons.local_fire_department, color: Tw.white, size: 20),
             ),
@@ -952,7 +952,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
-                  color: Tw.black,
+                  color: Tw.nightDeep,
                   borderRadius: BorderRadius.circular(99),
                   border: Border.all(color: accent.withValues(alpha: 0.5)),
                 ),
@@ -975,10 +975,10 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
             height: size,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: active ? Tw.fuchsia600.withValues(alpha: 0.8) : Tw.slate900.withValues(alpha: 0.6),
+              color: active ? Tw.party.withValues(alpha: 0.8) : Tw.panel.withValues(alpha: 0.6),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: active ? Tw.fuchsia400 : Tw.w(0.1)),
-              boxShadow: active ? [BoxShadow(color: Tw.fuchsia500.withValues(alpha: 0.4), blurRadius: 20)] : null,
+              border: Border.all(color: active ? Tw.sun : Tw.line),
+              boxShadow: active ? [BoxShadow(color: Tw.party.withValues(alpha: 0.4), blurRadius: 20)] : null,
             ),
             child: child,
           ),
@@ -1000,7 +1000,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
           child: Icon(_addingPin ? Icons.close : Icons.add_location, color: Tw.white, size: 20),
         ),
         const SizedBox(width: 8),
-        glassBtn(onTap: _centerOnUser, child: const Icon(Icons.my_location, color: Tw.fuchsia400, size: 20)),
+        glassBtn(onTap: _centerOnUser, child: const Icon(Icons.my_location, color: Tw.sun, size: 20)),
       ]),
     );
   }
@@ -1011,15 +1011,15 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
             child: Transform.translate(
               offset: const Offset(0, -24),
               child: Column(mainAxisSize: MainAxisSize.min, children: [
-                Icon(Icons.local_fire_department, size: 36, color: Tw.fuchsia500,
-                    shadows: [Shadow(color: Tw.fuchsia500.withValues(alpha: 0.8), blurRadius: 15)]),
+                Icon(Icons.local_fire_department, size: 36, color: Tw.party,
+                    shadows: [Shadow(color: Tw.party.withValues(alpha: 0.8), blurRadius: 15)]),
                 Container(
                   width: 6,
                   height: 6,
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Tw.fuchsia500,
-                    boxShadow: [BoxShadow(color: Tw.fuchsia500, blurRadius: 10)],
+                    color: Tw.party,
+                    boxShadow: [BoxShadow(color: Tw.party, blurRadius: 10)],
                   ),
                 ),
               ]),
@@ -1032,15 +1032,15 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
             child: Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Tw.slate900.withValues(alpha: 0.95),
+                color: Tw.panel.withValues(alpha: 0.95),
                 borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: Tw.w(0.1)),
+                border: Border.all(color: Tw.line),
                 boxShadow: const [BoxShadow(color: Color(0xCC000000), blurRadius: 50, offset: Offset(0, 20))],
               ),
               child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                 Row(children: [
                   Expanded(child: Text(context.t('map.create_chill', fallback: 'Crear Punto de Encuentro'), style: tw(14, weight: black, tracking: -0.025))),
-                  GestureDetector(onTap: () => setState(() => _addingPin = false), child: const Icon(Icons.close, size: 18, color: Tw.slate500)),
+                  GestureDetector(onTap: () => setState(() => _addingPin = false), child: const Icon(Icons.close, size: 18, color: Tw.inkDim)),
                 ]),
                 const SizedBox(height: 16),
                 TextField(
@@ -1051,8 +1051,8 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
                     hintText: context.t('map.pin_name', fallback: 'Nombre (ej. Previa en mi casa...)'),
                     fillColor: Colors.black.withValues(alpha: 0.4),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Tw.w(0.1))),
-                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.fuchsia500)),
+                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Tw.line)),
+                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.party)),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -1064,13 +1064,13 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       decoration: BoxDecoration(color: Tw.white, borderRadius: BorderRadius.circular(12)),
                       child: Label(_savingPin ? context.t('map.saving', fallback: 'Guardando...') : context.t('map.save', fallback: 'Fijar Aquí'),
-                          color: Tw.black, align: TextAlign.center),
+                          color: Tw.nightDeep, align: TextAlign.center),
                     ),
                   ),
                 ),
                 const SizedBox(height: 12),
                 Label(context.t('map_event_expires_24h', fallback: 'Este evento desaparecerá en 24h'), size: 9, weight: FontWeight.w400,
-                    color: Tw.slate500, align: TextAlign.center),
+                    color: Tw.inkDim, align: TextAlign.center),
               ]),
             ),
           ),
@@ -1088,17 +1088,17 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
             duration: const Duration(milliseconds: 200),
             padding: const EdgeInsets.symmetric(vertical: 10),
             decoration: BoxDecoration(
-              color: active && !swipe ? Tw.fuchsia600 : null,
-              gradient: active && swipe ? const LinearGradient(colors: [Tw.orange500, Tw.amber500]) : null,
+              color: active && !swipe ? Tw.party : null,
+              gradient: active && swipe ? const LinearGradient(colors: [Tw.orange500, Tw.sun]) : null,
               borderRadius: BorderRadius.circular(12),
               boxShadow: active
-                  ? [BoxShadow(color: (swipe ? Tw.amber500 : Tw.fuchsia500).withValues(alpha: swipe ? 0.5 : 0.3), blurRadius: 15)]
+                  ? [BoxShadow(color: (swipe ? Tw.sun : Tw.party).withValues(alpha: swipe ? 0.5 : 0.3), blurRadius: 15)]
                   : null,
             ),
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text(emoji, style: const TextStyle(fontSize: 11)),
               const SizedBox(width: 6),
-              Flexible(child: Label(label, color: active ? Tw.white : Tw.slate400, tracking: 0, maxLines: 1)),
+              Flexible(child: Label(label, color: active ? Tw.white : Tw.inkSoft, tracking: 0, maxLines: 1)),
             ]),
           ),
         ),
@@ -1110,7 +1110,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
       decoration: BoxDecoration(
         color: Colors.black.withValues(alpha: 0.4),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Tw.w(0.1)),
+        border: Border.all(color: Tw.line),
       ),
       child: Row(children: [
         chip(RadarMode.places, '📍', context.t('map.mode_places', fallback: 'Lugares')),
@@ -1121,7 +1121,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
   }
 
   Widget _categoryChips(BuildContext context) {
-    Widget chip({required bool active, required Widget leading, required String label, required VoidCallback onTap, Color activeColor = Tw.fuchsia500}) =>
+    Widget chip({required bool active, required Widget leading, required String label, required VoidCallback onTap, Color activeColor = Tw.party}) =>
         Padding(
           padding: const EdgeInsets.only(right: 8),
           child: Pressable(
@@ -1129,15 +1129,15 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               decoration: BoxDecoration(
-                color: active ? activeColor : Tw.w(0.05),
+                color: active ? activeColor : Tw.panelSoft,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: active ? activeColor : Tw.w(0.05)),
+                border: Border.all(color: active ? activeColor : Tw.lineSoft),
                 boxShadow: active ? [BoxShadow(color: activeColor.withValues(alpha: 0.2), blurRadius: 15)] : null,
               ),
               child: Row(children: [
                 leading,
                 const SizedBox(width: 6),
-                Label(label, color: active ? Tw.white : Tw.slate400, tracking: 0.05),
+                Label(label, color: active ? Tw.white : Tw.inkSoft, tracking: 0.05),
               ]),
             ),
           ),
@@ -1154,8 +1154,8 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
           ),
         chip(
           active: _openNow,
-          activeColor: Tw.green500,
-          leading: Icon(Icons.schedule, size: 14, color: _openNow ? Tw.white : Tw.slate400),
+          activeColor: Tw.live,
+          leading: Icon(Icons.schedule, size: 14, color: _openNow ? Tw.white : Tw.inkSoft),
           label: context.t('venuesPage.open_now', fallback: 'Abierto'),
           onTap: () => setState(() => _openNow = !_openNow),
         ),
@@ -1166,14 +1166,14 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
   Widget _refine(BuildContext context, bool active) {
     return Container(
       clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+      decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
       child: Column(children: [
         InkWell(
           onTap: () => _tap(() => setState(() => _filtersOpen = !_filtersOpen)),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: Row(children: [
-              const Icon(Icons.tune, size: 14, color: Tw.fuchsia400),
+              const Icon(Icons.tune, size: 14, color: Tw.sun),
               const SizedBox(width: 8),
               Label(context.t('map.refine', fallback: 'Refinar Búsqueda')),
               if (active) ...[
@@ -1184,8 +1184,8 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
                     height: 8,
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Tw.fuchsia500,
-                      boxShadow: [BoxShadow(color: Tw.fuchsia500, blurRadius: 6)],
+                      color: Tw.party,
+                      boxShadow: [BoxShadow(color: Tw.party, blurRadius: 6)],
                     ),
                   ),
                 ),
@@ -1194,7 +1194,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
               AnimatedRotation(
                 turns: _filtersOpen ? 0.5 : 0,
                 duration: const Duration(milliseconds: 200),
-                child: const Icon(Icons.expand_more, color: Tw.slate400, size: 20),
+                child: const Icon(Icons.expand_more, color: Tw.inkSoft, size: 20),
               ),
             ]),
           ),
@@ -1206,7 +1206,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
               ? const SizedBox(width: double.infinity)
               : Container(
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-                  decoration: BoxDecoration(border: Border(top: BorderSide(color: Tw.w(0.05)))),
+                  decoration: BoxDecoration(border: Border(top: BorderSide(color: Tw.lineSoft))),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                     _searchBox(context),
                     if (_mode != RadarMode.places) ..._userFilters(context),
@@ -1222,10 +1222,10 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
         decoration: BoxDecoration(
           color: Colors.black.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Tw.w(0.1)),
+          border: Border.all(color: Tw.line),
         ),
         child: Row(children: [
-          const Icon(Icons.search, size: 16, color: Tw.slate400),
+          const Icon(Icons.search, size: 16, color: Tw.inkSoft),
           const SizedBox(width: 12),
           Expanded(
             child: TextField(
@@ -1250,7 +1250,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
                 _query = '';
                 _queryCtrl.clear();
               }),
-              child: const Icon(Icons.close, size: 14, color: Tw.slate500),
+              child: const Icon(Icons.close, size: 14, color: Tw.inkDim),
             ),
         ]),
       );
@@ -1258,14 +1258,14 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
   List<Widget> _userFilters(BuildContext context) {
     final vip = _isVipUser;
     Widget header(String label, String value) => Row(children: [
-          Expanded(child: Label(label, color: Tw.slate500, tracking: 0.2)),
-          Text(value, style: tw(14, weight: black, color: Tw.fuchsia400)),
+          Expanded(child: Label(label, color: Tw.inkDim, tracking: 0.2)),
+          Text(value, style: tw(14, weight: black, color: Tw.sun)),
         ]);
     final sliderTheme = SliderTheme.of(context).copyWith(
       trackHeight: 4,
-      activeTrackColor: Tw.fuchsia500,
-      inactiveTrackColor: Tw.w(0.05),
-      thumbColor: Tw.fuchsia500,
+      activeTrackColor: Tw.party,
+      inactiveTrackColor: Tw.panelSoft,
+      thumbColor: Tw.party,
       overlayShape: SliderComponentShape.noOverlay,
       rangeThumbShape: const RoundRangeSliderThumbShape(enabledThumbRadius: 8),
       thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
@@ -1276,11 +1276,11 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
-                color: active ? Tw.fuchsia500 : Tw.w(0.05),
+                color: active ? Tw.party : Tw.panelSoft,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: active ? Tw.fuchsia500 : Tw.w(0.05)),
+                border: Border.all(color: active ? Tw.party : Tw.lineSoft),
               ),
-              child: Label(label, color: active ? Tw.white : Tw.slate400, align: TextAlign.center),
+              child: Label(label, color: active ? Tw.white : Tw.inkSoft, align: TextAlign.center),
             ),
           ),
         );
@@ -1296,14 +1296,14 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
             child: Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: on ? onColor.withValues(alpha: 0.2) : Tw.w(0.05),
+                color: on ? onColor.withValues(alpha: 0.2) : Tw.panelSoft,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: on ? onColor.withValues(alpha: 0.5) : Tw.w(0.05)),
+                border: Border.all(color: on ? onColor.withValues(alpha: 0.5) : Tw.panelSoft),
               ),
               child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Icon(on ? Icons.check_box : Icons.check_box_outline_blank, size: 12, color: on ? onColor : Tw.slate400),
+                Icon(on ? Icons.check_box : Icons.check_box_outline_blank, size: 12, color: on ? onColor : Tw.inkSoft),
                 const SizedBox(width: 8),
-                Flexible(child: Label(label, color: on ? onColor : Tw.slate400, tracking: 0.05, maxLines: 1)),
+                Flexible(child: Label(label, color: on ? onColor : Tw.inkSoft, tracking: 0.05, maxLines: 1)),
                 if (!vip) ...[const SizedBox(width: 6), const Icon(Icons.lock, size: 12, color: Color(0xFFEAB308))],
               ]),
             ),
@@ -1328,15 +1328,15 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4),
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: const [
-          Label('1 km', size: 8, color: Tw.slate600),
-          Label('100 km', size: 8, color: Tw.slate600),
+          Label('1 km', size: 8, color: Tw.inkDim),
+          Label('100 km', size: 8, color: Tw.inkDim),
         ]),
       ),
       const SizedBox(height: 20),
       Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Expanded(
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            Label(context.t('map.role', fallback: 'Rol'), color: Tw.slate500, tracking: 0.2),
+            Label(context.t('map.role', fallback: 'Rol'), color: Tw.inkDim, tracking: 0.2),
             const SizedBox(height: 8),
             for (final r in platformRoles) ...[
               Row(children: [
@@ -1350,7 +1350,7 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
         const SizedBox(width: 16),
         Expanded(
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            Label(context.t('map.intent', fallback: 'Busco...'), color: Tw.slate500, tracking: 0.2),
+            Label(context.t('map.intent', fallback: 'Busco...'), color: Tw.inkDim, tracking: 0.2),
             const SizedBox(height: 8),
             for (final i in ['conocer', 'quedar']) ...[
               Row(children: [
@@ -1362,10 +1362,10 @@ class _RadarMapState extends State<RadarMap> with TickerProviderStateMixin {
         ),
       ]),
       const SizedBox(height: 20),
-      Label(context.t('map.vip_filters', fallback: 'Filtros VIP'), color: Tw.slate500, tracking: 0.2),
+      Label(context.t('map.vip_filters', fallback: 'Filtros VIP'), color: Tw.inkDim, tracking: 0.2),
       const SizedBox(height: 8),
       Row(children: [
-        vipToggle(context.t('map.photo_only', fallback: 'Con foto'), _onlyPhoto, Tw.fuchsia400, () => setState(() => _onlyPhoto = !_onlyPhoto)),
+        vipToggle(context.t('map.photo_only', fallback: 'Con foto'), _onlyPhoto, Tw.sun, () => setState(() => _onlyPhoto = !_onlyPhoto)),
         const SizedBox(width: 8),
         vipToggle(context.t('map.vip_only', fallback: 'Solo VIP'), _onlyPremium, const Color(0xFFEAB308),
             () => setState(() => _onlyPremium = !_onlyPremium)),

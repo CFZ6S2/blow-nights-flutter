@@ -59,14 +59,14 @@ class _DashboardPanelState extends State<DashboardPanel> {
     double ratio(int v) => total > 0 ? v / total * 100 : 0;
 
     final tiles = [
-      (context.t('super_admin.users_stat'), n('totalUsers'), Icons.people, Tw.fuchsia400, false),
-      (context.t('super_admin.online_now_stat'), n('onlineUsers'), Icons.circle, Tw.green400, false),
+      (context.t('super_admin.users_stat'), n('totalUsers'), Icons.people, Tw.sun, false),
+      (context.t('super_admin.online_now_stat'), n('onlineUsers'), Icons.circle, Tw.live, false),
       (context.t('super_admin.premium_stat'), n('premiumUsers'), Icons.star, Tw.yellow400, false),
       (context.t('super_admin.venues_stat'), n('totalVenues'), Icons.storefront, Tw.indigo400, false),
       (context.t('super_admin.cities_stat'), n('totalCities'), Icons.location_city, Tw.blue400, false),
       (context.t('super_admin.promoters_stat'), n('totalPromoters'), Icons.badge, Tw.purple400, true),
       (context.t('super_admin.pending_partners_stat'), n('pendingPartnerApps'), Icons.pending, Tw.orange400, false),
-      (context.t('super_admin.pending_rrpp_stat'), n('pendingRrppApps'), Icons.pending_actions, Tw.amber400, false),
+      (context.t('super_admin.pending_rrpp_stat'), n('pendingRrppApps'), Icons.pending_actions, Tw.sun, false),
     ];
 
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -108,7 +108,7 @@ class _DashboardPanelState extends State<DashboardPanel> {
                     if (n('pendingVerifications') > 0)
                       context.t('super_admin.pending_verifications_notice', count: n('pendingVerifications')),
                   ].join(' '),
-                  style: tw(14, color: Tw.slate400),
+                  style: tw(14, color: Tw.inkSoft),
                 ),
               ]),
             ),
@@ -121,7 +121,7 @@ class _DashboardPanelState extends State<DashboardPanel> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Label(context.t('super_admin.platform_summary'), size: 13),
           const SizedBox(height: 16),
-          _ratio(context.t('super_admin.online_ratio'), ratio(n('onlineUsers')), Tw.green500),
+          _ratio(context.t('super_admin.online_ratio'), ratio(n('onlineUsers')), Tw.live),
           const SizedBox(height: 12),
           _ratio(context.t('super_admin.premium_ratio'), ratio(n('premiumUsers')), Tw.yellow500),
         ]),
@@ -129,24 +129,24 @@ class _DashboardPanelState extends State<DashboardPanel> {
       const SizedBox(height: 24),
       AdminCard(
         radius: 16,
-        color: Tw.slate900,
-        borderColor: Tw.fuchsia500.withValues(alpha: 0.2),
+        color: Tw.panel,
+        borderColor: Tw.party.withValues(alpha: 0.2),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
-            Expanded(child: Label(context.t('super_admin.modules_control'), size: 13, color: Tw.fuchsia400)),
+            Expanded(child: Label(context.t('super_admin.modules_control'), size: 13, color: Tw.sun)),
             Pressable(
               onTap: () => widget.onSelectTab('modulos'),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: Tw.fuchsia500.withValues(alpha: 0.1),
+                  color: Tw.party.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Tw.fuchsia500.withValues(alpha: 0.2)),
+                  border: Border.all(color: Tw.party.withValues(alpha: 0.2)),
                 ),
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  const Icon(Icons.tune, size: 12, color: Tw.fuchsia400),
+                  const Icon(Icons.tune, size: 12, color: Tw.sun),
                   const SizedBox(width: 4),
-                  Label(context.t('super_admin.open_modules_panel'), color: Tw.fuchsia400, tracking: 0.05),
+                  Label(context.t('super_admin.open_modules_panel'), color: Tw.sun, tracking: 0.05),
                 ]),
               ),
             ),
@@ -154,11 +154,11 @@ class _DashboardPanelState extends State<DashboardPanel> {
           const SizedBox(height: 16),
           Container(
             padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.05))),
+            decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.lineSoft)),
             child: Row(children: [
-              const PulseDot(color: Tw.emerald400),
+              const PulseDot(color: Tw.live),
               const SizedBox(width: 8),
-              Expanded(child: Text(context.t('super_admin.granular_management'), style: tw(12, weight: medium, color: Tw.slate300))),
+              Expanded(child: Text(context.t('super_admin.granular_management'), style: tw(12, weight: medium, color: Tw.inkSoft))),
               Flexible(child: Label(context.t('super_admin.ticketing_cashless_sub'), tracking: 0.05, align: TextAlign.end)),
             ]),
           ),
@@ -174,7 +174,7 @@ class _DashboardPanelState extends State<DashboardPanel> {
             _quick(Icons.handshake, Tw.orange400, '${context.t('super_admin.quick_requests')} (${n('pendingPartnerApps') + n('pendingRrppApps')})', 'solicitudes'),
             _quick(Icons.storefront, Tw.indigo400, '${context.t('super_admin.quick_venues')} (${n('totalVenues')})', 'locales'),
             _quick(Icons.people, Tw.blue400, '${context.t('super_admin.quick_users')} (${n('totalUsers')})', 'usuarios'),
-            _quick(Icons.location_city, Tw.green400, '${context.t('super_admin.quick_cities')} (${n('totalCities')})', 'ciudades'),
+            _quick(Icons.location_city, Tw.live, '${context.t('super_admin.quick_cities')} (${n('totalCities')})', 'ciudades'),
           ]),
         ]),
       ),
@@ -183,7 +183,7 @@ class _DashboardPanelState extends State<DashboardPanel> {
 
   Widget _ratio(String label, double pct, Color color) => Column(children: [
         Row(children: [
-          Expanded(child: Text(label, style: tw(14, color: Tw.slate400))),
+          Expanded(child: Text(label, style: tw(14, color: Tw.inkSoft))),
           Text('${pct.toStringAsFixed(1)}%', style: tw(14, weight: bold)),
         ]),
         const SizedBox(height: 8),
@@ -192,7 +192,7 @@ class _DashboardPanelState extends State<DashboardPanel> {
           child: LinearProgressIndicator(
             value: (pct / 100).clamp(0, 1),
             minHeight: 8,
-            backgroundColor: Tw.w(0.05),
+            backgroundColor: Tw.panelSoft,
             valueColor: AlwaysStoppedAnimation(color),
           ),
         ),
@@ -202,7 +202,7 @@ class _DashboardPanelState extends State<DashboardPanel> {
         onTap: () => widget.onSelectTab(tab),
         child: Container(
           padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.1))),
+          decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Icon(icon, size: 16, color: color),
             const SizedBox(height: 4),

@@ -61,10 +61,10 @@ class AdminCard extends StatelessWidget {
         width: double.infinity,
         padding: padding,
         decoration: BoxDecoration(
-          color: gradient == null ? (color ?? Tw.w(0.05)) : null,
+          color: gradient == null ? (color ?? Tw.panelSoft) : null,
           gradient: gradient,
           borderRadius: BorderRadius.circular(radius),
-          border: Border.all(color: borderColor ?? Tw.w(0.1)),
+          border: Border.all(color: borderColor ?? Tw.line),
         ),
         child: child,
       );
@@ -75,7 +75,7 @@ class AdminSectionTitle extends StatelessWidget {
   final String text;
   final Color color;
   final IconData? icon;
-  const AdminSectionTitle(this.text, {super.key, this.color = Tw.slate300, this.icon});
+  const AdminSectionTitle(this.text, {super.key, this.color = Tw.inkSoft, this.icon});
 
   @override
   Widget build(BuildContext context) => Row(children: [
@@ -111,13 +111,13 @@ class AdminStat extends StatelessWidget {
                 Icon(icon, size: 20, color: color),
                 const SizedBox(height: 4),
                 Text(value, style: tw(24, weight: black)),
-                Label(label, color: Tw.slate500, align: TextAlign.center, maxLines: 2),
+                Label(label, color: Tw.inkDim, align: TextAlign.center, maxLines: 2),
               ])
             : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Row(children: [
                   Icon(icon, size: 14, color: color),
                   const SizedBox(width: 6),
-                  Expanded(child: Label(label, color: Tw.slate500, maxLines: 2)),
+                  Expanded(child: Label(label, color: Tw.inkDim, maxLines: 2)),
                   ?trailing,
                 ]),
                 const SizedBox(height: 8),
@@ -170,7 +170,7 @@ class AdminButton extends StatelessWidget {
     required this.label,
     this.icon,
     this.onTap,
-    this.color = Tw.fuchsia600,
+    this.color = Tw.party,
     this.textColor,
     this.outlined = false,
     this.loading = false,
@@ -222,7 +222,7 @@ class AdminBadge extends StatelessWidget {
   final String text;
   final Color color;
   final Color? background;
-  const AdminBadge(this.text, {super.key, this.color = Tw.slate400, this.background});
+  const AdminBadge(this.text, {super.key, this.color = Tw.inkSoft, this.background});
 
   @override
   Widget build(BuildContext context) => Container(
@@ -232,14 +232,14 @@ class AdminBadge extends StatelessWidget {
       );
 }
 
-InputDecoration adminInputDecoration(String? hint, {Color focus = Tw.fuchsia500}) => InputDecoration(
+InputDecoration adminInputDecoration(String? hint, {Color focus = Tw.party}) => InputDecoration(
       hintText: hint,
-      hintStyle: tw(14, color: Tw.slate500),
+      hintStyle: tw(14, color: Tw.inkDim),
       isDense: true,
       filled: true,
       fillColor: Colors.black.withValues(alpha: 0.3),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Tw.w(0.1))),
+      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Tw.line)),
       focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: focus)),
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
     );
@@ -263,7 +263,7 @@ class AdminInput extends StatelessWidget {
     this.keyboardType,
     this.maxLines = 1,
     this.obscure = false,
-    this.focus = Tw.fuchsia500,
+    this.focus = Tw.party,
   });
 
   @override
@@ -298,17 +298,17 @@ class AdminSelect<T> extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.black.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(dense ? 8 : 12),
-        border: Border.all(color: Tw.w(0.1)),
+        border: Border.all(color: Tw.line),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<T>(
           value: hasValue ? value : null,
           isExpanded: !dense,
           isDense: dense,
-          dropdownColor: Tw.slate900,
+          dropdownColor: Tw.panel,
           borderRadius: BorderRadius.circular(12),
-          iconEnabledColor: Tw.slate400,
-          hint: hint == null ? null : Text(hint!, style: tw(dense ? 12 : 14, color: Tw.slate500)),
+          iconEnabledColor: Tw.inkSoft,
+          hint: hint == null ? null : Text(hint!, style: tw(dense ? 12 : 14, color: Tw.inkDim)),
           style: tw(dense ? 12 : 14),
           items: [
             for (final (v, label) in items)
@@ -327,7 +327,7 @@ class AdminToggle extends StatelessWidget {
   final bool busy;
   final VoidCallback? onTap;
   final Color activeColor;
-  const AdminToggle({super.key, required this.value, this.busy = false, this.onTap, this.activeColor = Tw.fuchsia600});
+  const AdminToggle({super.key, required this.value, this.busy = false, this.onTap, this.activeColor = Tw.party});
 
   @override
   Widget build(BuildContext context) => GestureDetector(
@@ -339,7 +339,7 @@ class AdminToggle extends StatelessWidget {
             width: 56,
             height: 28,
             padding: const EdgeInsets.all(2),
-            decoration: BoxDecoration(color: value ? activeColor : Tw.slate800, borderRadius: BorderRadius.circular(99)),
+            decoration: BoxDecoration(color: value ? activeColor : Tw.line, borderRadius: BorderRadius.circular(99)),
             child: AnimatedAlign(
               duration: const Duration(milliseconds: 200),
               alignment: value ? Alignment.centerRight : Alignment.centerLeft,
@@ -349,8 +349,8 @@ class AdminToggle extends StatelessWidget {
                 alignment: Alignment.center,
                 decoration: const BoxDecoration(color: Tw.white, shape: BoxShape.circle),
                 child: busy
-                    ? const SizedBox(width: 12, height: 12, child: CircularProgressIndicator(strokeWidth: 2, color: Tw.slate400))
-                    : Text(value ? '✓' : '✕', style: tw(10, weight: black, color: value ? activeColor : Tw.slate400)),
+                    ? const SizedBox(width: 12, height: 12, child: CircularProgressIndicator(strokeWidth: 2, color: Tw.inkSoft))
+                    : Text(value ? '✓' : '✕', style: tw(10, weight: black, color: value ? activeColor : Tw.inkSoft)),
               ),
             ),
           ),
@@ -364,7 +364,7 @@ class AdminChips<T> extends StatelessWidget {
   final T selected;
   final ValueChanged<T> onSelect;
   final Color color;
-  const AdminChips({super.key, required this.items, required this.selected, required this.onSelect, this.color = Tw.fuchsia600});
+  const AdminChips({super.key, required this.items, required this.selected, required this.onSelect, this.color = Tw.party});
 
   @override
   Widget build(BuildContext context) => SingleChildScrollView(
@@ -376,12 +376,12 @@ class AdminChips<T> extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
-                  color: v == selected ? color : Tw.w(0.05),
+                  color: v == selected ? color : Tw.panelSoft,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: v == selected ? color : Tw.w(0.05)),
+                  border: Border.all(color: v == selected ? color : Tw.lineSoft),
                 ),
                 child: Text(label.toUpperCase(),
-                    style: tw(12, weight: bold, tracking: 0.05, color: v == selected ? Tw.white : Tw.slate400)),
+                    style: tw(12, weight: bold, tracking: 0.05, color: v == selected ? Tw.white : Tw.inkSoft)),
               ),
             ),
             const SizedBox(width: 8),
@@ -401,10 +401,10 @@ class AdminEmpty extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 60),
         child: Column(children: [
           if (loading) ...[
-            const SizedBox(width: 28, height: 28, child: CircularProgressIndicator(strokeWidth: 2, color: Tw.fuchsia500)),
+            const SizedBox(width: 28, height: 28, child: CircularProgressIndicator(strokeWidth: 2, color: Tw.party)),
             const SizedBox(height: 16),
           ],
-          Text(text, textAlign: TextAlign.center, style: tw(14, color: Tw.slate500)),
+          Text(text, textAlign: TextAlign.center, style: tw(14, color: Tw.inkDim)),
         ]),
       );
 }
@@ -417,13 +417,13 @@ Future<String?> promptInput(BuildContext context,
     context: context,
     barrierColor: Colors.black.withValues(alpha: 0.7),
     builder: (ctx) => Dialog(
-      backgroundColor: Tw.slate900,
+      backgroundColor: Tw.panel,
       insetPadding: const EdgeInsets.all(24),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: BorderSide(color: Tw.w(0.1))),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: BorderSide(color: Tw.line)),
       child: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Text(message, textAlign: TextAlign.center, style: tw(14, weight: medium, color: Tw.slate300, height: 1.5)),
+          Text(message, textAlign: TextAlign.center, style: tw(14, weight: medium, color: Tw.inkSoft, height: 1.5)),
           const SizedBox(height: 16),
           TextField(
             controller: ctrl,
@@ -437,7 +437,7 @@ Future<String?> promptInput(BuildContext context,
             Expanded(
               child: AdminButton(
                 label: 'Cancelar',
-                color: Tw.slate400,
+                color: Tw.inkSoft,
                 outlined: true,
                 expand: true,
                 onTap: () => Navigator.of(ctx).pop(),
@@ -463,7 +463,7 @@ Future<T?> showAdminSheet<T>(BuildContext context, {required String title, requi
     showModalBottomSheet<T>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Tw.slate900,
+      backgroundColor: Tw.panel,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
       builder: (ctx) => Padding(
         padding: EdgeInsets.only(bottom: MediaQuery.of(ctx).viewInsets.bottom),
@@ -474,7 +474,7 @@ Future<T?> showAdminSheet<T>(BuildContext context, {required String title, requi
               padding: const EdgeInsets.fromLTRB(24, 16, 12, 8),
               child: Row(children: [
                 Expanded(child: Text(title, style: tw(18, weight: black))),
-                IconButton(onPressed: () => Navigator.of(ctx).pop(), icon: const Icon(Icons.close, color: Tw.slate400)),
+                IconButton(onPressed: () => Navigator.of(ctx).pop(), icon: const Icon(Icons.close, color: Tw.inkSoft)),
               ]),
             ),
             Flexible(
@@ -496,7 +496,7 @@ class FieldLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.only(bottom: 6, top: 12),
-        child: Label(text, size: 11, weight: bold, color: Tw.slate500),
+        child: Label(text, size: 11, weight: bold, color: Tw.inkDim),
       );
 }
 
@@ -509,12 +509,12 @@ class AdminTopBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
-    Widget btn(IconData icon, VoidCallback onTap, {Color hover = Tw.slate400}) => Pressable(
+    Widget btn(IconData icon, VoidCallback onTap, {Color hover = Tw.inkSoft}) => Pressable(
           onTap: onTap,
           child: Container(
             width: 40,
             height: 40,
-            decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.1))),
+            decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
             child: Icon(icon, size: 18, color: hover),
           ),
         );

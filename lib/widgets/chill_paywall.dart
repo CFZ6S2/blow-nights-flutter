@@ -14,25 +14,25 @@ Future<void> showChillPaywall(BuildContext context) => showModalBottomSheet(
       builder: (ctx) => Container(
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
-          gradient: const LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Tw.slate900, Tw.black]),
+          gradient: const LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Tw.panel, Tw.nightDeep]),
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-          border: Border.all(color: Tw.slate700),
+          border: Border.all(color: Tw.line),
         ),
         child: SafeArea(
           top: false,
           child: Stack(children: [
-            Positioned(top: -64, left: 0, right: 0, child: Center(child: Orb(color: Tw.slate500.withValues(alpha: 0.1), size: 256))),
+            Positioned(top: -64, left: 0, right: 0, child: Center(child: Orb(color: Tw.inkDim.withValues(alpha: 0.1), size: 256))),
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 24, 24, 40),
               child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                 Align(
                   alignment: Alignment.topRight,
-                  child: GestureDetector(onTap: () => Navigator.of(ctx).pop(), child: const Icon(Icons.close, color: Tw.slate600)),
+                  child: GestureDetector(onTap: () => Navigator.of(ctx).pop(), child: const Icon(Icons.close, color: Tw.inkDim)),
                 ),
                 Center(
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                    decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(99), border: Border.all(color: Tw.w(0.1))),
+                    decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(99), border: Border.all(color: Tw.line)),
                     child: Row(mainAxisSize: MainAxisSize.min, children: [
                       Icon(Icons.nightlife, size: 14, color: Tw.w(0.7)),
                       const SizedBox(width: 8),
@@ -43,7 +43,7 @@ Future<void> showChillPaywall(BuildContext context) => showModalBottomSheet(
                 const SizedBox(height: 16),
                 Text(ctx.t('paywall.only_black'), textAlign: TextAlign.center, style: tw(24, weight: black, height: 1.2)),
                 const SizedBox(height: 8),
-                Text(ctx.t('paywall.black_desc'), textAlign: TextAlign.center, style: tw(14, color: Tw.slate400)),
+                Text(ctx.t('paywall.black_desc'), textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft)),
                 const SizedBox(height: 32),
                 Pressable(
                   onTap: () {
@@ -57,7 +57,7 @@ Future<void> showChillPaywall(BuildContext context) => showModalBottomSheet(
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [BoxShadow(color: Tw.w(0.3), blurRadius: 20)],
                     ),
-                    child: Label(ctx.t('paywall.view_plans'), color: Tw.black, align: TextAlign.center),
+                    child: Label(ctx.t('paywall.view_plans'), color: Tw.nightDeep, align: TextAlign.center),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -67,7 +67,7 @@ Future<void> showChillPaywall(BuildContext context) => showModalBottomSheet(
                     child: Row(children: [
                       const Icon(Icons.check, size: 14, color: Color(0xFFF1F5F9)),
                       const SizedBox(width: 8),
-                      Expanded(child: Text(ctx.t(k), style: tw(12, color: Tw.slate400))),
+                      Expanded(child: Text(ctx.t(k), style: tw(12, color: Tw.inkSoft))),
                     ]),
                   ),
               ]),

@@ -180,12 +180,12 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
     if (auth.user == null) {
       return _message(
         icon: Icons.lock,
-        iconColor: Tw.amber400,
+        iconColor: Tw.sun,
         title: 'Inicia sesión',
         desc: 'Para acceder a la barra digital y pedir consumiciones necesitas identificarte con tu cuenta.',
         action: GradientButton(
           label: 'Iniciar sesión',
-          gradient: const LinearGradient(colors: [Tw.fuchsia600, Color(0xFFDB2777)]),
+          gradient: const LinearGradient(colors: [Tw.party, Color(0xFFDB2777)]),
           radius: 12,
           fontSize: 14,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -217,7 +217,7 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
     final filtered = _category == 'all' ? _products : _products.where((p) => p['category'] == _category).toList();
 
     return Scaffold(
-      backgroundColor: Tw.black,
+      backgroundColor: Tw.nightDeep,
       body: Column(children: [
         _header(context, venueName, closed),
         Expanded(
@@ -259,13 +259,13 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                         decoration: BoxDecoration(
-                          color: _category == c ? Tw.fuchsia600 : Tw.slate900,
+                          color: _category == c ? Tw.party : Tw.panel,
                           borderRadius: BorderRadius.circular(12),
-                          border: _category == c ? null : Border.all(color: Tw.slate800),
+                          border: _category == c ? null : Border.all(color: Tw.line),
                         ),
                         child: Text(
                           c == 'all' ? '✨ Todo' : '${_categoryEmoji[c] ?? ''} ${_categoryLabel[c] ?? c}',
-                          style: tw(12, weight: bold, color: _category == c ? Tw.white : Tw.slate300),
+                          style: tw(12, weight: bold, color: _category == c ? Tw.white : Tw.inkSoft),
                         ),
                       ),
                     ),
@@ -277,9 +277,9 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 80),
                 child: Column(children: [
-                  const Icon(Icons.inventory_2, size: 36, color: Tw.slate600),
+                  const Icon(Icons.inventory_2, size: 36, color: Tw.inkDim),
                   const SizedBox(height: 12),
-                  Text('No hay productos disponibles en este local ahora mismo.', textAlign: TextAlign.center, style: tw(14, color: Tw.slate500)),
+                  Text('No hay productos disponibles en este local ahora mismo.', textAlign: TextAlign.center, style: tw(14, color: Tw.inkDim)),
                 ]),
               )
             else
@@ -293,17 +293,17 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
   Widget _header(BuildContext context, String venueName, bool closed) => Container(
         padding: EdgeInsets.fromLTRB(16, MediaQuery.of(context).padding.top + 14, 16, 14),
         decoration: BoxDecoration(
-          color: Tw.slate950.withValues(alpha: 0.9),
-          border: Border(bottom: BorderSide(color: Tw.slate800.withValues(alpha: 0.8))),
+          color: Tw.night.withValues(alpha: 0.9),
+          border: Border(bottom: BorderSide(color: Tw.line.withValues(alpha: 0.8))),
         ),
         child: Row(children: [
           Container(
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              gradient: const LinearGradient(begin: Alignment.bottomLeft, end: Alignment.topRight, colors: [Tw.fuchsia600, Tw.amber400]),
+              gradient: const LinearGradient(begin: Alignment.bottomLeft, end: Alignment.topRight, colors: [Tw.party, Tw.sun]),
               borderRadius: BorderRadius.circular(16),
-              boxShadow: [BoxShadow(color: Tw.fuchsia600.withValues(alpha: 0.3), blurRadius: 15)],
+              boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.3), blurRadius: 15)],
             ),
             child: const Icon(Icons.local_bar, color: Tw.white),
           ),
@@ -318,11 +318,11 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
                 if (closed)
                   _badge('CERRADA', const Color(0xFFFB7185), const Color(0xFFF43F5E))
                 else
-                  _badge('ABIERTA', Tw.emerald400, Tw.emerald500, dot: true),
+                  _badge('ABIERTA', Tw.live, Tw.live, dot: true),
               ]),
               const SizedBox(height: 2),
               Text('Barra Digital Cashless • 1 Ticket = 1 Copa',
-                  maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(11, weight: medium, color: Tw.slate400)),
+                  maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(11, weight: medium, color: Tw.inkSoft)),
             ]),
           ),
           const SizedBox(width: 8),
@@ -330,7 +330,7 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
             onTap: () => openRoute(context, AppRoute.consumption),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(color: Tw.slate800, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.slate700)),
+              decoration: BoxDecoration(color: Tw.line, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
               child: Text('Mis copas', style: tw(12, weight: bold)),
             ),
           ),
@@ -391,9 +391,9 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
       margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Tw.slate900.withValues(alpha: 0.9),
+        color: Tw.panel.withValues(alpha: 0.9),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Tw.slate800.withValues(alpha: 0.8)),
+        border: Border.all(color: Tw.line.withValues(alpha: 0.8)),
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
@@ -405,7 +405,7 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
         if (safeStr(p['description']).isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(left: 32, top: 4),
-            child: Text(safeStr(p['description']), style: tw(12, color: Tw.slate400)),
+            child: Text(safeStr(p['description']), style: tw(12, color: Tw.inkSoft)),
           ),
         if (mixers.isNotEmpty)
           Padding(
@@ -419,8 +419,8 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
                     onTap: () => setState(() => _mixers[id] = m),
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                      decoration: BoxDecoration(color: selected == m ? Tw.fuchsia600 : Tw.slate800, borderRadius: BorderRadius.circular(8)),
-                      child: Text(m, style: tw(11, weight: selected == m ? bold : medium, color: selected == m ? Tw.white : Tw.slate300)),
+                      decoration: BoxDecoration(color: selected == m ? Tw.party : Tw.line, borderRadius: BorderRadius.circular(8)),
+                      child: Text(m, style: tw(11, weight: selected == m ? bold : medium, color: selected == m ? Tw.white : Tw.inkSoft)),
                     ),
                   ),
               ]),
@@ -429,14 +429,14 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
         const SizedBox(height: 16),
         Container(
           padding: const EdgeInsets.only(top: 12),
-          decoration: BoxDecoration(border: Border(top: BorderSide(color: Tw.slate800.withValues(alpha: 0.6)))),
+          decoration: BoxDecoration(border: Border(top: BorderSide(color: Tw.line.withValues(alpha: 0.6)))),
           child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text('${price.toStringAsFixed(2)} €', style: tw(18, weight: black, color: Tw.amber400)),
+            Text('${price.toStringAsFixed(2)} €', style: tw(18, weight: black, color: Tw.sun)),
             if (outOfStock)
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(color: Tw.slate800, borderRadius: BorderRadius.circular(12)),
-                child: Text('Agotado', style: tw(12, weight: bold, color: Tw.slate500)),
+                decoration: BoxDecoration(color: Tw.line, borderRadius: BorderRadius.circular(12)),
+                child: Text('Agotado', style: tw(12, weight: bold, color: Tw.inkDim)),
               )
             else
               Opacity(
@@ -447,7 +447,7 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
-                      gradient: const LinearGradient(colors: [Tw.fuchsia600, Color(0xFFDB2777)]),
+                      gradient: const LinearGradient(colors: [Tw.party, Color(0xFFDB2777)]),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(mainAxisSize: MainAxisSize.min, children: [
@@ -471,7 +471,7 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
   }
 
   Widget _skeleton() => Scaffold(
-        backgroundColor: Tw.black,
+        backgroundColor: Tw.nightDeep,
         body: Padding(
           padding: EdgeInsets.fromLTRB(16, MediaQuery.of(context).padding.top + 16, 16, 0),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -485,20 +485,20 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
       );
 
   Widget _box(double w, double h, double r) =>
-      Container(width: w, height: h, decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(r)));
+      Container(width: w, height: h, decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(r)));
 
   Widget _slateButton(String label, VoidCallback onTap) => Pressable(
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          decoration: BoxDecoration(color: Tw.slate800, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.slate700)),
+          decoration: BoxDecoration(color: Tw.line, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
           child: Text(label, style: tw(14, weight: bold)),
         ),
       );
 
   Widget _message({IconData? icon, Color? iconColor, IconData? boxedIcon, required String title, required String desc, required Widget action}) =>
       Scaffold(
-        backgroundColor: Tw.black,
+        backgroundColor: Tw.nightDeep,
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(24),
@@ -508,15 +508,15 @@ class _BarOrderScreenState extends State<BarOrderScreen> {
                 Container(
                   width: 64,
                   height: 64,
-                  decoration: BoxDecoration(color: Tw.slate900, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.slate800)),
-                  child: Icon(boxedIcon, size: 30, color: Tw.fuchsia400),
+                  decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.line)),
+                  child: Icon(boxedIcon, size: 30, color: Tw.sun),
                 ),
               const SizedBox(height: 16),
               Text(title, textAlign: TextAlign.center, style: tw(20, weight: black)),
               const SizedBox(height: 8),
               ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 384),
-                child: Text(desc, textAlign: TextAlign.center, style: tw(14, color: Tw.slate400)),
+                child: Text(desc, textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft)),
               ),
               const SizedBox(height: 24),
               action,

@@ -31,7 +31,7 @@ Future<void> _copy(BuildContext context, String text) async {
   if (context.mounted) showToast(context, context.read<I18n>().t('rrpp_copied', fallback: 'Copiado'));
 }
 
-InputDecoration _field(String hint) => adminInputDecoration(hint, focus: Tw.emerald500).copyWith(fillColor: Colors.black.withValues(alpha: 0.6));
+InputDecoration _field(String hint) => adminInputDecoration(hint, focus: Tw.live).copyWith(fillColor: Colors.black.withValues(alpha: 0.6));
 
 // ─────────────────────────────────────────────────────────────────────────────
 /// Sign-up (business login, "Soy RRPP independiente"): granted at once by submitRRPPApplication, then the panel.
@@ -126,9 +126,9 @@ class _RRPPSignupFormState extends State<RRPPSignupForm> {
   Widget _input(String label, TextEditingController c, {String? hint, TextInputType? type, bool obscure = false, bool enabled = true}) => Padding(
         padding: const EdgeInsets.only(bottom: 14),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Label(label, size: 10, weight: black, color: Tw.slate500, tracking: 0.2),
+          Label(label, size: 10, weight: black, color: Tw.inkDim, tracking: 0.2),
           const SizedBox(height: 6),
-          TextField(controller: c, enabled: enabled, keyboardType: type, obscureText: obscure, style: tw(14), decoration: adminInputDecoration(hint, focus: Tw.emerald500)),
+          TextField(controller: c, enabled: enabled, keyboardType: type, obscureText: obscure, style: tw(14), decoration: adminInputDecoration(hint, focus: Tw.live)),
         ]),
       );
 
@@ -137,25 +137,25 @@ class _RRPPSignupFormState extends State<RRPPSignupForm> {
     final user = context.watch<AuthProvider>().user;
     return Container(
       padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.w(0.1))),
+      decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.line)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Align(
           alignment: Alignment.centerLeft,
           child: GestureDetector(
             onTap: widget.onBack,
             child: Row(mainAxisSize: MainAxisSize.min, children: [
-              const Icon(Icons.arrow_back, size: 16, color: Tw.slate500),
+              const Icon(Icons.arrow_back, size: 16, color: Tw.inkDim),
               const SizedBox(width: 8),
-              Label(context.t('business_login_back', fallback: 'Volver'), size: 12, weight: bold, color: Tw.slate500, tracking: 0.05),
+              Label(context.t('business_login_back', fallback: 'Volver'), size: 12, weight: bold, color: Tw.inkDim, tracking: 0.05),
             ]),
           ),
         ),
         const SizedBox(height: 20),
         Container(
           padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(color: Tw.emerald600.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.emerald500.withValues(alpha: 0.2))),
+          decoration: BoxDecoration(color: Tw.emerald600.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.live.withValues(alpha: 0.2))),
           child: Row(children: [
-            const Icon(Icons.confirmation_number, color: Tw.emerald400),
+            const Icon(Icons.confirmation_number, color: Tw.live),
             const SizedBox(width: 12),
             Expanded(child: Label(context.t('business_login_become_rrpp', fallback: 'Soy RRPP independiente'), size: 13, weight: black, color: const Color(0xFF6EE7B7), tracking: 0.05)),
           ]),
@@ -167,19 +167,19 @@ class _RRPPSignupFormState extends State<RRPPSignupForm> {
           ('rrpp_signup_point_venue', 'Si quieres vender entradas desde la app, da de alta tu local o pide al local que te añada a su equipo de RRPP.'),
           ('rrpp_signup_point_welcome', 'Empiezas con 25 QR de regalo.'),
         ])
-          Padding(padding: const EdgeInsets.only(bottom: 6), child: Text('• ${context.t(k, fallback: f)}', style: tw(12, color: Tw.slate300, height: 1.5))),
+          Padding(padding: const EdgeInsets.only(bottom: 6), child: Text('• ${context.t(k, fallback: f)}', style: tw(12, color: Tw.inkSoft, height: 1.5))),
         const SizedBox(height: 16),
         if (user == null) ...[
           AdminButton(
             label: context.t('business_login_continue_with_google', fallback: 'Continuar con Google'),
             color: Tw.white,
-            textColor: Tw.slate900,
+            textColor: Tw.panel,
             expand: true,
             padding: const EdgeInsets.symmetric(vertical: 14),
             onTap: _loading ? null : () => context.read<AuthProvider>().loginWithGoogle().catchError((_) {}),
           ),
           const SizedBox(height: 12),
-          Center(child: Label(context.t('business_login_or_fill_form', fallback: 'o completa el formulario'), color: Tw.slate600)),
+          Center(child: Label(context.t('business_login_or_fill_form', fallback: 'o completa el formulario'), color: Tw.inkDim)),
           const SizedBox(height: 12),
         ],
         if (_error.isNotEmpty)
@@ -188,7 +188,7 @@ class _RRPPSignupFormState extends State<RRPPSignupForm> {
         _input(context.t('business_login_contact_email', fallback: 'Email de Contacto'), _email, hint: 'tu@email.com', type: TextInputType.emailAddress, enabled: user == null),
         if (user == null) _input(context.t('business_login_create_password', fallback: 'Crear Contraseña'), _password, hint: '••••••••', obscure: true),
         _input(context.t('business_login_phone', fallback: 'Teléfono'), _phone, hint: '+34 600 000 000', type: TextInputType.phone),
-        Label(context.t('rrpp_signup_city', fallback: 'Tu ciudad'), size: 10, weight: black, color: Tw.slate500, tracking: 0.2),
+        Label(context.t('rrpp_signup_city', fallback: 'Tu ciudad'), size: 10, weight: black, color: Tw.inkDim, tracking: 0.2),
         const SizedBox(height: 6),
         AdminSelect<String>(
           value: _cityId.isEmpty ? null : _cityId,
@@ -198,7 +198,7 @@ class _RRPPSignupFormState extends State<RRPPSignupForm> {
         ),
         if (_cityId == _otherCity) ...[
           const SizedBox(height: 8),
-          TextField(controller: _otherCityName, style: tw(14), decoration: adminInputDecoration(context.t('rrpp_signup_city_placeholder', fallback: 'Escribe tu ciudad'), focus: Tw.emerald500)),
+          TextField(controller: _otherCityName, style: tw(14), decoration: adminInputDecoration(context.t('rrpp_signup_city_placeholder', fallback: 'Escribe tu ciudad'), focus: Tw.live)),
         ],
         const SizedBox(height: 14),
         CheckboxListTile(
@@ -206,17 +206,17 @@ class _RRPPSignupFormState extends State<RRPPSignupForm> {
           onChanged: (v) => setState(() => _accepted = v ?? false),
           contentPadding: EdgeInsets.zero,
           controlAffinity: ListTileControlAffinity.leading,
-          activeColor: Tw.emerald500,
+          activeColor: Tw.live,
           title: Text(
             context.t('rrpp_signup_accept', fallback: 'Entiendo que desde la app no se cobra: cobro yo a mis invitados, y para vender entradas en la app tengo que dar de alta un local.'),
-            style: tw(12, color: Tw.slate300, height: 1.5),
+            style: tw(12, color: Tw.inkSoft, height: 1.5),
           ),
         ),
         const SizedBox(height: 8),
         AdminButton(
           label: _loading ? context.t('business_login_processing', fallback: 'Procesando...') : context.t('rrpp_signup_submit', fallback: 'Crear mi cuenta de RRPP'),
-          color: Tw.emerald500,
-          textColor: Tw.slate950,
+          color: Tw.live,
+          textColor: Tw.night,
           expand: true,
           loading: _loading,
           padding: const EdgeInsets.symmetric(vertical: 16),
@@ -270,14 +270,14 @@ class _RRPPPanelState extends State<RRPPPanel> {
   Future<void> _buy() async {
     final qty = await showModalBottomSheet<int>(
       context: context,
-      backgroundColor: Tw.slate900,
+      backgroundColor: Tw.panel,
       builder: (ctx) => SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             Text(ctx.t('rrpp_panel_buy_title', fallback: 'Comprar QR'), style: tw(18, weight: black)),
             const SizedBox(height: 4),
-            Text(ctx.t('rrpp_panel_buy_desc', fallback: '0,50 € por QR. Cada QR es un pase para un invitado.'), style: tw(12, color: Tw.slate400)),
+            Text(ctx.t('rrpp_panel_buy_desc', fallback: '0,50 € por QR. Cada QR es un pase para un invitado.'), style: tw(12, color: Tw.inkSoft)),
             const SizedBox(height: 16),
             Wrap(spacing: 12, runSpacing: 12, children: [
               for (final q in _packs)
@@ -286,10 +286,10 @@ class _RRPPPanelState extends State<RRPPPanel> {
                   child: Container(
                     width: 130,
                     padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.1))),
+                    decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
                     child: Column(children: [
                       Text('$q', style: tw(20, weight: black)),
-                      Text('${(q * 0.5).toStringAsFixed(2).replaceAll('.', ',')} €', style: tw(12, weight: bold, color: Tw.emerald400)),
+                      Text('${(q * 0.5).toStringAsFixed(2).replaceAll('.', ',')} €', style: tw(12, weight: bold, color: Tw.live)),
                     ]),
                   ),
                 ),
@@ -310,7 +310,7 @@ class _RRPPPanelState extends State<RRPPPanel> {
   Widget _box(Widget child) => Container(
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+        decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
         child: child,
       );
 
@@ -326,26 +326,26 @@ class _RRPPPanelState extends State<RRPPPanel> {
     final top = MediaQuery.of(context).padding.top;
     final event = _events.where((e) => e['eventId'] == _selected).firstOrNull;
     return Scaffold(
-      backgroundColor: Tw.slate950,
+      backgroundColor: Tw.night,
       body: Column(children: [
         Container(
           padding: EdgeInsets.fromLTRB(8, top + 8, 16, 8),
-          decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.4), border: Border(bottom: BorderSide(color: Tw.w(0.1)))),
+          decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.4), border: Border(bottom: BorderSide(color: Tw.line))),
           child: Row(children: [
-            IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.slate400)),
-            const Icon(Icons.confirmation_number, color: Tw.emerald400),
+            IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.arrow_back, color: Tw.inkSoft)),
+            const Icon(Icons.confirmation_number, color: Tw.live),
             const SizedBox(width: 8),
             Expanded(child: Text(context.t('rrpp_panel_title', fallback: 'RRPP independiente'), overflow: TextOverflow.ellipsis, style: tw(16, weight: bold))),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              decoration: BoxDecoration(color: Tw.emerald500.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8), border: Border.all(color: Tw.emerald500.withValues(alpha: 0.3))),
-              child: Text(_quota == null ? '…' : context.t('rrpp_panel_balance', fallback: '{{count}} QR', params: {'count': _quota}), style: tw(13, weight: black, color: Tw.emerald400)),
+              decoration: BoxDecoration(color: Tw.live.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8), border: Border.all(color: Tw.live.withValues(alpha: 0.3))),
+              child: Text(_quota == null ? '…' : context.t('rrpp_panel_balance', fallback: '{{count}} QR', params: {'count': _quota}), style: tw(13, weight: black, color: Tw.live)),
             ),
             const SizedBox(width: 8),
             AdminButton(
               label: context.t('rrpp_panel_buy', fallback: '+ Comprar QR'),
-              color: Tw.emerald500,
-              textColor: Tw.slate950,
+              color: Tw.live,
+              textColor: Tw.night,
               fontSize: 11,
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               onTap: _buy,
@@ -356,27 +356,27 @@ class _RRPPPanelState extends State<RRPPPanel> {
           child: RefreshIndicator(
             onRefresh: _load,
             child: ListView(padding: const EdgeInsets.fromLTRB(16, 20, 16, 80), children: [
-              if (widget.success) _banner(context.t('rrpp_panel_paid', fallback: 'Pago completado: tus QR ya están en tu saldo.'), Tw.emerald400),
+              if (widget.success) _banner(context.t('rrpp_panel_paid', fallback: 'Pago completado: tus QR ya están en tu saldo.'), Tw.live),
               if (_error.isNotEmpty) _banner(_error, Tw.red400),
-              if (_notice.isNotEmpty) _banner(_notice, Tw.emerald400),
+              if (_notice.isNotEmpty) _banner(_notice, Tw.live),
               Container(
                 margin: const EdgeInsets.only(bottom: 16),
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(color: Tw.amber500.withValues(alpha: 0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.amber500.withValues(alpha: 0.2))),
+                decoration: BoxDecoration(color: Tw.sun.withValues(alpha: 0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.sun.withValues(alpha: 0.2))),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Text.rich(TextSpan(children: [
-                    TextSpan(text: '${context.t('rrpp_panel_rule_title', fallback: 'Desde la app no se cobra.')} ', style: tw(13, weight: bold, color: Tw.amber400)),
-                    TextSpan(text: context.t('rrpp_panel_rule_text', fallback: 'Cada pase gasta 1 QR de tu saldo; a tus invitados les cobras tú, por fuera.'), style: tw(13, color: Tw.slate300)),
+                    TextSpan(text: '${context.t('rrpp_panel_rule_title', fallback: 'Desde la app no se cobra.')} ', style: tw(13, weight: bold, color: Tw.sun)),
+                    TextSpan(text: context.t('rrpp_panel_rule_text', fallback: 'Cada pase gasta 1 QR de tu saldo; a tus invitados les cobras tú, por fuera.'), style: tw(13, color: Tw.inkSoft)),
                   ])),
                   const SizedBox(height: 8),
                   Text(
                     context.t('rrpp_panel_rule_venue', fallback: '¿Quieres vender entradas desde la app? Da de alta tu local, o pide al local con el que trabajas que te añada a su equipo de RRPP.'),
-                    style: tw(12, color: Tw.slate400),
+                    style: tw(12, color: Tw.inkSoft),
                   ),
                   TextButton(
                     onPressed: () => openRoute(context, AppRoute.business, args: {'type': 'venue'}),
                     style: TextButton.styleFrom(padding: EdgeInsets.zero, alignment: Alignment.centerLeft),
-                    child: Text(context.t('rrpp_panel_register_venue', fallback: 'Dar de alta un local'), style: tw(12, weight: bold, color: Tw.emerald400)),
+                    child: Text(context.t('rrpp_panel_register_venue', fallback: 'Dar de alta un local'), style: tw(12, weight: bold, color: Tw.live)),
                   ),
                 ]),
               ),
@@ -386,7 +386,7 @@ class _RRPPPanelState extends State<RRPPPanel> {
                   TextButton(
                     onPressed: () => setState(() => _creating = !_creating),
                     child: Text(_creating ? context.t('rrpp_panel_close', fallback: 'Cerrar') : context.t('rrpp_panel_new_event', fallback: '+ Nuevo evento'),
-                        style: tw(12, weight: bold, color: Tw.emerald400)),
+                        style: tw(12, weight: bold, color: Tw.live)),
                   ),
                 ]),
                 if (_creating)
@@ -403,7 +403,7 @@ class _RRPPPanelState extends State<RRPPPanel> {
                     },
                   ),
                 if (_events.isEmpty && !_creating)
-                  Text(context.t('rrpp_panel_no_events', fallback: 'Aún no tienes eventos. Crea uno para emitir pases y conseguir el enlace de puerta.'), style: tw(13, color: Tw.slate500))
+                  Text(context.t('rrpp_panel_no_events', fallback: 'Aún no tienes eventos. Crea uno para emitir pases y conseguir el enlace de puerta.'), style: tw(13, color: Tw.inkDim))
                 else
                   for (final e in _events)
                     Pressable(
@@ -412,9 +412,9 @@ class _RRPPPanelState extends State<RRPPPanel> {
                         margin: const EdgeInsets.only(top: 8),
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: e['eventId'] == _selected ? Tw.emerald500.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.2),
+                          color: e['eventId'] == _selected ? Tw.live.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: e['eventId'] == _selected ? Tw.emerald500.withValues(alpha: 0.5) : Tw.w(0.1)),
+                          border: Border.all(color: e['eventId'] == _selected ? Tw.live.withValues(alpha: 0.5) : Tw.lineSoft),
                         ),
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                           Text('${e['title'] ?? ''}', style: tw(14, weight: bold)),
@@ -424,7 +424,7 @@ class _RRPPPanelState extends State<RRPPPanel> {
                               '${e['venueName'] ?? ''}',
                               if (e['external'] != true) context.t('rrpp_panel_app_venue', fallback: 'local de la app'),
                             ].join(' · '),
-                            style: tw(12, color: Tw.slate400),
+                            style: tw(12, color: Tw.inkSoft),
                           ),
                         ]),
                       ),
@@ -524,7 +524,7 @@ class _NewEventFormState extends State<_NewEventForm> {
     return Container(
       margin: const EdgeInsets.only(top: 8, bottom: 12),
       padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.w(0.1))),
+      decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         TextField(controller: _title, style: tw(14), onChanged: (_) => setState(() {}), decoration: _field(context.t('rrpp_event_title', fallback: 'Nombre del evento'))),
         const SizedBox(height: 10),
@@ -532,7 +532,7 @@ class _NewEventFormState extends State<_NewEventForm> {
           Expanded(
             child: AdminButton(
               label: _date == null ? context.t('rrpp_event_date', fallback: 'Fecha') : '${_date!.day}/${_date!.month}/${_date!.year}',
-              color: Tw.w(0.08),
+              color: Tw.panelSoft,
               onTap: () async {
                 final now = DateTime.now();
                 final d = await showDatePicker(context: context, firstDate: DateTime(now.year, now.month, now.day), lastDate: now.add(const Duration(days: 365)), initialDate: _date ?? now);
@@ -544,7 +544,7 @@ class _NewEventFormState extends State<_NewEventForm> {
           Expanded(
             child: AdminButton(
               label: _time == null ? context.t('rrpp_event_time', fallback: 'Hora') : '${_two(_time!.hour)}:${_two(_time!.minute)}',
-              color: Tw.w(0.08),
+              color: Tw.panelSoft,
               onTap: () async {
                 final t = await showTimePicker(context: context, initialTime: _time ?? const TimeOfDay(hour: 23, minute: 0));
                 if (t != null) setState(() => _time = t);
@@ -579,8 +579,8 @@ class _NewEventFormState extends State<_NewEventForm> {
               child: Container(
                 margin: const EdgeInsets.only(top: 6),
                 padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(color: _venueId == v['id'] ? Tw.emerald500.withValues(alpha: 0.2) : Tw.w(0.05), borderRadius: BorderRadius.circular(8)),
-                child: Text('${v['name']}${v['address'] != null ? ' · ${v['address']}' : ''}', style: tw(12, color: Tw.slate300)),
+                decoration: BoxDecoration(color: _venueId == v['id'] ? Tw.live.withValues(alpha: 0.2) : Tw.panelSoft, borderRadius: BorderRadius.circular(8)),
+                child: Text('${v['name']}${v['address'] != null ? ' · ${v['address']}' : ''}', style: tw(12, color: Tw.inkSoft)),
               ),
             ),
         ] else ...[
@@ -593,13 +593,13 @@ class _NewEventFormState extends State<_NewEventForm> {
           ),
           const SizedBox(height: 6),
           Text(context.t('rrpp_event_radar', fallback: 'Saldrá en el radar como fiesta RRPP hasta el día siguiente, con el aviso de que la entrada se consigue contigo.'),
-              style: tw(11, color: Tw.slate500)),
+              style: tw(11, color: Tw.inkDim)),
         ],
         const SizedBox(height: 12),
         AdminButton(
           label: _saving ? context.t('business_login_processing', fallback: 'Procesando...') : context.t('rrpp_event_create', fallback: 'Crear evento'),
-          color: Tw.emerald500,
-          textColor: Tw.slate950,
+          color: Tw.live,
+          textColor: Tw.night,
           expand: true,
           loading: _saving,
           padding: const EdgeInsets.symmetric(vertical: 12),
@@ -667,7 +667,7 @@ class _EventDetailState extends State<_EventDetail> {
   Widget _box(Widget child) => Container(
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(color: Tw.w(0.05), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.w(0.1))),
+        decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
         child: child,
       );
 
@@ -680,16 +680,16 @@ class _EventDetailState extends State<_EventDetail> {
         Text(context.t('rrpp_door_title', fallback: 'Enlace de puerta'), style: tw(15, weight: bold)),
         const SizedBox(height: 4),
         Text(context.t('rrpp_door_desc', fallback: 'Pásaselo a quien escanee en la puerta: no necesita cuenta. Si tiene cuenta, puede guardarlo y escanear desde la app.'),
-            style: tw(12, color: Tw.slate400)),
+            style: tw(12, color: Tw.inkSoft)),
         const SizedBox(height: 12),
         Center(
           child: Container(padding: const EdgeInsets.all(10), color: Tw.white, child: QrImageView(data: door, size: 150, backgroundColor: Tw.white)),
         ),
         const SizedBox(height: 10),
-        Text(door, style: tw(10, color: Tw.slate500).copyWith(fontFamily: 'monospace')),
+        Text(door, style: tw(10, color: Tw.inkDim).copyWith(fontFamily: 'monospace')),
         const SizedBox(height: 10),
         Row(children: [
-          Expanded(child: AdminButton(label: context.t('rrpp_copy', fallback: 'Copiar'), color: Tw.w(0.1), expand: true, onTap: () => _copy(context, door))),
+          Expanded(child: AdminButton(label: context.t('rrpp_copy', fallback: 'Copiar'), color: Tw.lineSoft, expand: true, onTap: () => _copy(context, door))),
           const SizedBox(width: 10),
           Expanded(
             child: AdminButton(
@@ -705,7 +705,7 @@ class _EventDetailState extends State<_EventDetail> {
         Text(context.t('rrpp_issue_title', fallback: 'Emitir pases'), style: tw(15, weight: bold)),
         const SizedBox(height: 4),
         Text(context.t('rrpp_issue_desc', fallback: 'Un nombre por línea; cada pase gasta 1 QR. Cada invitado recibe su enlace con el QR, sin necesidad de cuenta.'),
-            style: tw(12, color: Tw.slate400)),
+            style: tw(12, color: Tw.inkSoft)),
         const SizedBox(height: 12),
         TextField(
           controller: _names,
@@ -717,8 +717,8 @@ class _EventDetailState extends State<_EventDetail> {
         const SizedBox(height: 12),
         AdminButton(
           label: _issuing ? context.t('rrpp_issuing', fallback: 'Emitiendo…') : context.t('rrpp_issue_submit', fallback: 'Emitir pases'),
-          color: Tw.emerald500,
-          textColor: Tw.slate950,
+          color: Tw.live,
+          textColor: Tw.night,
           expand: true,
           loading: _issuing,
           padding: const EdgeInsets.symmetric(vertical: 12),
@@ -728,11 +728,11 @@ class _EventDetailState extends State<_EventDetail> {
           Container(
             margin: const EdgeInsets.only(top: 8),
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(color: Tw.emerald500.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8)),
+            decoration: BoxDecoration(color: Tw.live.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8)),
             child: Row(children: [
               Expanded(child: Text('${p['clientName']}', overflow: TextOverflow.ellipsis, style: tw(13, weight: bold))),
-              IconButton(icon: const Icon(Icons.copy, size: 16, color: Tw.slate300), onPressed: () => _copy(context, '$webBase${p['passPath']}')),
-              IconButton(icon: const Icon(Icons.send, size: 16, color: Tw.green400), onPressed: () => _whatsapp(_passText('${p['clientName']}', '$webBase${p['passPath']}'))),
+              IconButton(icon: const Icon(Icons.copy, size: 16, color: Tw.inkSoft), onPressed: () => _copy(context, '$webBase${p['passPath']}')),
+              IconButton(icon: const Icon(Icons.send, size: 16, color: Tw.live), onPressed: () => _whatsapp(_passText('${p['clientName']}', '$webBase${p['passPath']}'))),
             ]),
           ),
       ])),
@@ -740,7 +740,7 @@ class _EventDetailState extends State<_EventDetail> {
         Text(context.t('rrpp_passes_title', fallback: 'Pases de este evento'), style: tw(15, weight: bold)),
         const SizedBox(height: 8),
         if (widget.passes.isEmpty)
-          Text(context.t('rrpp_passes_empty', fallback: 'Todavía no has emitido pases para este evento.'), style: tw(13, color: Tw.slate500))
+          Text(context.t('rrpp_passes_empty', fallback: 'Todavía no has emitido pases para este evento.'), style: tw(13, color: Tw.inkDim))
         else
           for (final p in widget.passes)
             Padding(
@@ -752,7 +752,7 @@ class _EventDetailState extends State<_EventDetail> {
                   color: p['status'] == 'used' ? const Color(0xFFD8B4FE) : const Color(0xFF6EE7B7),
                 ),
                 if (p['status'] == 'valid')
-                  TextButton(onPressed: () => _resend(p), child: Text(context.t('rrpp_pass_resend', fallback: 'Reenviar'), style: tw(11, weight: bold, color: Tw.emerald400))),
+                  TextButton(onPressed: () => _resend(p), child: Text(context.t('rrpp_pass_resend', fallback: 'Reenviar'), style: tw(11, weight: bold, color: Tw.live))),
               ]),
             ),
       ])),
@@ -812,7 +812,7 @@ class _SaveDoorBarState extends State<SaveDoorBar> {
             AdminButton(
               label: ctx.t('business_login_continue_with_google', fallback: 'Continuar con Google'),
               color: Tw.white,
-              textColor: Tw.slate900,
+              textColor: Tw.panel,
               expand: true,
               onTap: busy
                   ? null
@@ -878,7 +878,7 @@ class _SaveDoorBarState extends State<SaveDoorBar> {
 
   @override
   Widget build(BuildContext context) {
-    if (_saved) return Text(context.t('door_saved', fallback: 'Puerta guardada: la tienes en «Mis puertas».'), textAlign: TextAlign.center, style: tw(11, color: Tw.emerald400));
+    if (_saved) return Text(context.t('door_saved', fallback: 'Puerta guardada: la tienes en «Mis puertas».'), textAlign: TextAlign.center, style: tw(11, color: Tw.live));
     final user = context.watch<AuthProvider>().user;
     return TextButton(
       onPressed: _busy ? null : (user != null ? _saveNow : _signUpSheet),
@@ -889,7 +889,7 @@ class _SaveDoorBarState extends State<SaveDoorBar> {
                 ? context.t('door_save_btn', fallback: 'Guardar esta puerta en mi cuenta')
                 : context.t('door_save_prompt', fallback: 'Sin login. ¿Escaneas a menudo? Guarda esta puerta en una cuenta y ábrela desde la app.'),
         textAlign: TextAlign.center,
-        style: tw(11, color: Tw.slate500),
+        style: tw(11, color: Tw.inkDim),
       ),
     );
   }
@@ -915,22 +915,22 @@ class MyDoorsScreen extends StatelessWidget {
                   baseline: TextBaseline.alphabetic,
                   child: GestureDetector(
                     onTap: () => openRoute(context, AppRoute.login),
-                    child: Text(context.t('door_my_doors_login_link', fallback: 'inicia sesión'), style: tw(14, weight: bold, color: Tw.fuchsia400)),
+                    child: Text(context.t('door_my_doors_login_link', fallback: 'inicia sesión'), style: tw(14, weight: bold, color: Tw.sun)),
                   ),
                 ),
                 const TextSpan(text: '.'),
-              ]), style: tw(14, color: Tw.slate400)),
+              ]), style: tw(14, color: Tw.inkSoft)),
             )
           : FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
               future: FirebaseFirestore.instance.collection('users').doc(user.uid).collection('doors').orderBy('savedAt', descending: true).get(),
               builder: (context, snap) {
-                if (!snap.hasData) return const Center(child: CircularProgressIndicator(strokeWidth: 2, color: Tw.fuchsia500));
+                if (!snap.hasData) return const Center(child: CircularProgressIndicator(strokeWidth: 2, color: Tw.party));
                 final doors = snap.data!.docs.map((d) => d.data()).toList();
                 if (doors.isEmpty) {
                   return Padding(
                     padding: const EdgeInsets.all(24),
                     child: Text(context.t('door_my_doors_empty', fallback: 'Aún no tienes puertas guardadas. Abre un enlace de puerta y pulsa «Guardar esta puerta».'),
-                        style: tw(14, color: Tw.slate400)),
+                        style: tw(14, color: Tw.inkSoft)),
                   );
                 }
                 return ListView(padding: const EdgeInsets.all(16), children: [
@@ -943,7 +943,7 @@ class MyDoorsScreen extends StatelessWidget {
                         decoration: BoxDecoration(color: const Color(0xFF11131F), borderRadius: BorderRadius.circular(16), border: Border.all(color: const Color(0xFF23273F))),
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                           Text('${d['title'] ?? ''}', style: tw(15, weight: bold)),
-                          Text([d['venueName'], d['date']].where((v) => v != null && '$v'.isNotEmpty).join(' · '), style: tw(12, color: Tw.slate400)),
+                          Text([d['venueName'], d['date']].where((v) => v != null && '$v'.isNotEmpty).join(' · '), style: tw(12, color: Tw.inkSoft)),
                         ]),
                       ),
                     ),

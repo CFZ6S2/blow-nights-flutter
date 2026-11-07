@@ -131,7 +131,7 @@ class _SwipeCardsState extends State<SwipeCards> {
   Widget build(BuildContext context) {
     if (_limitExceeded) return _limitModal(context);
     if (_cards.isEmpty) {
-      return Center(child: Label(context.t('swipe.no_more_profiles'), color: Tw.slate500, weight: bold));
+      return Center(child: Label(context.t('swipe.no_more_profiles'), color: Tw.inkDim, weight: bold));
     }
     return LayoutBuilder(builder: (context, box) {
       return Stack(alignment: Alignment.center, children: [
@@ -151,9 +151,9 @@ class _SwipeCardsState extends State<SwipeCards> {
       height: h,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: Tw.slate900,
+        color: Tw.panel,
         borderRadius: BorderRadius.circular(40),
-        border: Border.all(color: Tw.w(0.1)),
+        border: Border.all(color: Tw.line),
         boxShadow: const [BoxShadow(color: Color(0x80000000), blurRadius: 50, offset: Offset(0, 25))],
       ),
       child: Stack(fit: StackFit.expand, children: [
@@ -194,7 +194,7 @@ class _SwipeCardsState extends State<SwipeCards> {
               gradient: LinearGradient(
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
-                colors: [Tw.slate950, Color(0x66020617), Colors.transparent],
+                colors: [Tw.night, Color(0x66020617), Colors.transparent],
               ),
             ),
           ),
@@ -212,7 +212,7 @@ class _SwipeCardsState extends State<SwipeCards> {
                   const SizedBox(height: 4),
                   Label(
                     '${roleLabel(c.rol, (k, f) => context.t(k, fallback: f))}  •  ${context.t('swipe.distance')}',
-                    color: Tw.slate300,
+                    color: Tw.inkSoft,
                   ),
                 ]),
               ),
@@ -222,7 +222,7 @@ class _SwipeCardsState extends State<SwipeCards> {
               child: Container(
                 width: 40,
                 height: 40,
-                decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.w(0.2), border: Border.all(color: Tw.w(0.3))),
+                decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.line, border: Border.all(color: Tw.w(0.3))),
                 child: const Icon(Icons.info, color: Tw.white, size: 20),
               ),
             ),
@@ -233,11 +233,11 @@ class _SwipeCardsState extends State<SwipeCards> {
           right: 0,
           bottom: 20,
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            _circle(56, Tw.slate900.withValues(alpha: 0.9), Tw.w(0.1), const Icon(Icons.close, color: Tw.red400, size: 26),
+            _circle(56, Tw.panel.withValues(alpha: 0.9), Tw.lineSoft, const Icon(Icons.close, color: Tw.red400, size: 26),
                 () => _action(c, 'left')),
             const SizedBox(width: 16),
-            _circle(48, Tw.slate900.withValues(alpha: 0.9), Tw.amber500.withValues(alpha: 0.4),
-                const Icon(Icons.card_giftcard, color: Tw.amber400, size: 20),
+            _circle(48, Tw.panel.withValues(alpha: 0.9), Tw.sun.withValues(alpha: 0.4),
+                const Icon(Icons.card_giftcard, color: Tw.sun, size: 20),
                 () => openRoute(context, AppRoute.entradas, args: {'gift': c.id})),
             const SizedBox(width: 16),
             Pressable(
@@ -248,9 +248,9 @@ class _SwipeCardsState extends State<SwipeCards> {
                 height: 80,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: const LinearGradient(colors: [Tw.orange500, Tw.amber500]),
+                  gradient: const LinearGradient(colors: [Tw.orange500, Tw.sun]),
                   border: Border.all(color: const Color(0x80FCD34D)),
-                  boxShadow: [BoxShadow(color: Tw.amber500.withValues(alpha: 0.6), blurRadius: 25)],
+                  boxShadow: [BoxShadow(color: Tw.sun.withValues(alpha: 0.6), blurRadius: 25)],
                 ),
                 child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                   const Icon(Icons.local_fire_department, color: Tw.white, size: 30),
@@ -259,7 +259,7 @@ class _SwipeCardsState extends State<SwipeCards> {
               ),
             ),
             const SizedBox(width: 16),
-            _circle(56, Tw.slate900.withValues(alpha: 0.9), Tw.w(0.1), const Icon(Icons.favorite, color: Tw.emerald400, size: 26),
+            _circle(56, Tw.panel.withValues(alpha: 0.9), Tw.lineSoft, const Icon(Icons.favorite, color: Tw.live, size: 26),
                 () => _action(c, 'right')),
           ]),
         ),
@@ -325,9 +325,9 @@ class _SwipeCardsState extends State<SwipeCards> {
           constraints: const BoxConstraints(maxWidth: 384),
           padding: const EdgeInsets.all(32),
           decoration: BoxDecoration(
-            color: Tw.slate900,
+            color: Tw.panel,
             borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: Tw.slate700),
+            border: Border.all(color: Tw.line),
           ),
           child: Column(mainAxisSize: MainAxisSize.min, children: [
             const Text('🔥', style: TextStyle(fontSize: 36)),
@@ -335,7 +335,7 @@ class _SwipeCardsState extends State<SwipeCards> {
             Text(context.t('swipe.limit_title').toUpperCase(), textAlign: TextAlign.center, style: tw(18, weight: black, height: 1.2)),
             const SizedBox(height: 8),
             Text(context.t(selling ? 'swipe.limit_desc' : 'swipe.limit_desc_free'), textAlign: TextAlign.center,
-                style: tw(12, weight: medium, color: Tw.slate400)),
+                style: tw(12, weight: medium, color: Tw.inkSoft)),
             const SizedBox(height: 24),
             if (selling) ...[
             Pressable(
@@ -343,9 +343,9 @@ class _SwipeCardsState extends State<SwipeCards> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                 decoration: BoxDecoration(
-                  color: Tw.slate800,
+                  color: Tw.line,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Tw.slate600),
+                  border: Border.all(color: Tw.inkDim),
                 ),
                 child: Row(children: [
                   Expanded(child: Text(context.t('swipe.pack_extra'), style: tw(14, weight: bold))),
@@ -359,9 +359,9 @@ class _SwipeCardsState extends State<SwipeCards> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(colors: [Tw.orange500, Tw.amber500]),
+                  gradient: const LinearGradient(colors: [Tw.orange500, Tw.sun]),
                   borderRadius: BorderRadius.circular(12),
-                  boxShadow: [BoxShadow(color: Tw.amber500.withValues(alpha: 0.5), blurRadius: 15)],
+                  boxShadow: [BoxShadow(color: Tw.sun.withValues(alpha: 0.5), blurRadius: 15)],
                 ),
                 child: Row(children: [
                   Expanded(child: Text(context.t('swipe.pass_unlimited'), style: tw(14, weight: black))),
@@ -374,7 +374,7 @@ class _SwipeCardsState extends State<SwipeCards> {
             GestureDetector(
               onTap: () => setState(() => _limitExceeded = false),
               child: Text(context.t('swipe.back_to_radar').toUpperCase(),
-                  style: tw(10, weight: bold, color: Tw.slate500, tracking: 0.05, decoration: TextDecoration.underline)),
+                  style: tw(10, weight: bold, color: Tw.inkDim, tracking: 0.05, decoration: TextDecoration.underline)),
             ),
           ]),
         ),

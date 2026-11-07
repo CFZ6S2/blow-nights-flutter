@@ -12,8 +12,8 @@ class ReferenceBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-        decoration: BoxDecoration(color: Tw.slate700.withValues(alpha: 0.6), borderRadius: BorderRadius.circular(6)),
-        child: Label(context.t('reference_venue.badge'), size: 8, color: Tw.slate300, tracking: 0.05),
+        decoration: BoxDecoration(color: Tw.line.withValues(alpha: 0.6), borderRadius: BorderRadius.circular(6)),
+        child: Label(context.t('reference_venue.badge'), size: 8, color: Tw.inkSoft, tracking: 0.05),
       );
 }
 
@@ -29,11 +29,11 @@ class ReferenceVenueNotice extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Tw.slate700.withValues(alpha: 0.4),
+                color: Tw.line.withValues(alpha: 0.4),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Tw.w(0.1)),
+                border: Border.all(color: Tw.line),
               ),
-              child: const Icon(Icons.place, size: 20, color: Tw.slate300),
+              child: const Icon(Icons.place, size: 20, color: Tw.inkSoft),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -42,14 +42,14 @@ class ReferenceVenueNotice extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(context.t('reference_venue.not_associated'), style: tw(14, weight: bold, color: const Color(0xFFE2E8F0))),
                 const SizedBox(height: 4),
-                Text(context.t('reference_venue.what_you_can_do'), style: tw(12, color: Tw.slate400, height: 1.5)),
+                Text(context.t('reference_venue.what_you_can_do'), style: tw(12, color: Tw.inkSoft, height: 1.5)),
               ]),
             ),
           ]),
           const SizedBox(height: 16),
-          Divider(color: Tw.w(0.1), height: 1),
+          Divider(color: Tw.line, height: 1),
           const SizedBox(height: 16),
-          Text(context.t('reference_venue.are_you_owner'), style: tw(12, color: Tw.slate300)),
+          Text(context.t('reference_venue.are_you_owner'), style: tw(12, color: Tw.inkSoft)),
           const SizedBox(height: 12),
           GradientButton(
             label: context.t('reference_venue.claim_button'),
@@ -59,10 +59,10 @@ class ReferenceVenueNotice extends StatelessWidget {
             radius: 12,
             fontSize: 12,
             padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-            gradient: const LinearGradient(colors: [Tw.purple600, Tw.indigo600]),
+            gradient: const LinearGradient(colors: [Tw.party, Tw.sunset]),
           ),
           const SizedBox(height: 12),
-          Text(context.t('reference_venue.osm_attribution'), style: tw(10, color: Tw.slate500)),
+          Text(context.t('reference_venue.osm_attribution'), style: tw(10, color: Tw.inkDim)),
         ]),
       );
 }

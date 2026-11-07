@@ -33,8 +33,8 @@ class _VenueClaimsScreenState extends State<VenueClaimsScreen> {
     'pending': (Color(0x33F59E0B), Color(0xFFFCD34D)),
     'approved': (Color(0x3310B981), Color(0xFF6EE7B7)),
     'rejected': (Color(0x33F43F5E), Color(0xFFFDA4AF)),
-    'withdrawn': (Color(0x99334155), Tw.slate300),
-    'superseded': (Color(0x99334155), Tw.slate300),
+    'withdrawn': (Color(0x99334155), Tw.inkSoft),
+    'superseded': (Color(0x99334155), Tw.inkSoft),
   };
 
   @override
@@ -88,9 +88,9 @@ class _VenueClaimsScreenState extends State<VenueClaimsScreen> {
             child: GestureDetector(
               onTap: () => Navigator.of(context).maybePop(),
               child: Row(mainAxisSize: MainAxisSize.min, children: [
-                const Icon(Icons.arrow_back, size: 14, color: Tw.slate500),
+                const Icon(Icons.arrow_back, size: 14, color: Tw.inkDim),
                 const SizedBox(width: 8),
-                Text(context.t('venueDetail.back'), style: tw(12, weight: bold, color: Tw.slate500)),
+                Text(context.t('venueDetail.back'), style: tw(12, weight: bold, color: Tw.inkDim)),
               ]),
             ),
           ),
@@ -98,9 +98,9 @@ class _VenueClaimsScreenState extends State<VenueClaimsScreen> {
           Label(context.t('venue_claim.my_claims'), size: 18, tracking: 0.1),
           const SizedBox(height: 16),
           if (claims == null)
-            Text(context.t('venue_claim.loading'), style: tw(14, color: Tw.slate500))
+            Text(context.t('venue_claim.loading'), style: tw(14, color: Tw.inkDim))
           else if (claims.isEmpty)
-            Text(context.t('venue_claim.none'), style: tw(14, color: Tw.slate500))
+            Text(context.t('venue_claim.none'), style: tw(14, color: Tw.inkDim))
           else
             for (final c in claims) ...[_claimCard(context, c), const SizedBox(height: 12)],
         ]),
@@ -128,7 +128,7 @@ class _VenueClaimsScreenState extends State<VenueClaimsScreen> {
           ),
         ]),
         const SizedBox(height: 8),
-        Text(context.t('venue_claim.explain_$status'), style: tw(12, color: Tw.slate400)),
+        Text(context.t('venue_claim.explain_$status'), style: tw(12, color: Tw.inkSoft)),
         if (status == 'rejected' && reason.isNotEmpty) ...[
           const SizedBox(height: 6),
           Text(context.t('venue_claim.reason', params: {'reason': reason}), style: tw(12, color: const Color(0xFFFDA4AF))),
@@ -147,7 +147,7 @@ class _VenueClaimsScreenState extends State<VenueClaimsScreen> {
             radius: 12,
             fontSize: 12,
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-            gradient: const LinearGradient(colors: [Tw.emerald600, Tw.emerald500]),
+            gradient: const LinearGradient(colors: [Tw.emerald600, Tw.live]),
           ),
         ],
         if (status == 'pending') ...[
@@ -159,7 +159,7 @@ class _VenueClaimsScreenState extends State<VenueClaimsScreen> {
               child: GestureDetector(
                 onTap: _busy == c['id'] ? null : () => _withdraw(c['id'] as String),
                 child: Text(context.t('venue_claim.withdraw'),
-                    style: tw(12, color: Tw.slate400).copyWith(decoration: TextDecoration.underline, decorationColor: Tw.slate400)),
+                    style: tw(12, color: Tw.inkSoft).copyWith(decoration: TextDecoration.underline, decorationColor: Tw.inkSoft)),
               ),
             ),
           ),
