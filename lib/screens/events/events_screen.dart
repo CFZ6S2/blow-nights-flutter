@@ -15,6 +15,7 @@ import '../../providers/city_provider.dart';
 import '../../services/nearby.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/common.dart';
+import '../../widgets/poster.dart';
 import '../venues/venues_screen.dart' show formatPrice;
 
 class _PublicEvent {
@@ -202,8 +203,9 @@ class _EventsScreenState extends State<EventsScreen> {
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(color: Tw.panel.withValues(alpha: 0.6), border: Border(bottom: BorderSide(color: Tw.lineSoft))),
-            child: Text(context.t('events.title', fallback: 'Eventos y Planes'), textAlign: TextAlign.center, style: tw(20, weight: black)),
+            decoration: BoxDecoration(color: Tw.night.withValues(alpha: 0.85), border: const Border(bottom: BorderSide(color: Tw.line))),
+            child: Text(context.t('events.title', fallback: 'Eventos y Planes'),
+                textAlign: TextAlign.center, style: tw(24, weight: FontWeight.w800)),
           ),
           Expanded(
             child: ListView(padding: const EdgeInsets.fromLTRB(16, 16, 16, 128), children: [
@@ -216,7 +218,7 @@ class _EventsScreenState extends State<EventsScreen> {
                   fillColor: Tw.panel,
                   contentPadding: const EdgeInsets.symmetric(vertical: 10),
                   enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.line)),
-                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.party)),
+                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.sunset)),
                 ),
               ),
               const SizedBox(height: 24),
@@ -235,12 +237,14 @@ class _EventsScreenState extends State<EventsScreen> {
                         onTap: () => setState(() => _filter = _filter == f.$1 ? null : f.$1),
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          // Web: gradient pill when on, bg-panel border-line when off.
                           decoration: BoxDecoration(
-                            color: _filter == f.$1 ? Tw.party : Tw.panelSoft,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: _filter == f.$1 ? Tw.party : Tw.line),
+                            gradient: _filter == f.$1 ? AppTheme.ctaGradient : null,
+                            color: _filter == f.$1 ? null : Tw.panel,
+                            borderRadius: BorderRadius.circular(99),
+                            border: Border.all(color: _filter == f.$1 ? Colors.transparent : Tw.line),
                           ),
-                          child: Label(f.$2, size: 12, weight: bold, color: _filter == f.$1 ? Tw.white : Tw.inkSoft, tracking: 0.05),
+                          child: Text(f.$2, style: tw(14, weight: semibold, color: _filter == f.$1 ? Tw.white : Tw.inkSoft)),
                         ),
                       ),
                     ),
@@ -260,7 +264,7 @@ class _EventsScreenState extends State<EventsScreen> {
                           ? context.t('events.noSearchResults', fallback: 'No se encontraron eventos')
                           : context.t('events.no_events', fallback: 'No hay eventos para estos filtros'),
                       textAlign: TextAlign.center,
-                      style: tw(16, color: Tw.inkDim),
+                      style: tw(16, color: Tw.inkSoft),
                     ),
                     if (q.isNotEmpty || _filter != null) ...[
                       const SizedBox(height: 12),
@@ -291,7 +295,7 @@ class _EventsScreenState extends State<EventsScreen> {
   Widget _card(BuildContext context, _PublicEvent e, String currency) {
     final (label, color) = switch (e.source) {
       'chill' => ('Plan', Tw.sun),
-      'independent' => (context.t('events.source_event', fallback: 'Evento'), Tw.sun),
+      'independent' => (context.t('events.source_event', fallback: 'Evento'), Tw.party),
       _ => ('Local', Tw.live),
     };
     void open() {
@@ -319,54 +323,56 @@ class _EventsScreenState extends State<EventsScreen> {
 
     return GlassCard(
       onTap: open,
-      radius: 16,
+      radius: 24,
+      color: Tw.panel,
+      padding: const EdgeInsets.all(12),
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: NetImage(
-            e.banner,
-            width: 96,
-            height: 96,
-            placeholder: Container(
-              width: 96,
-              height: 96,
-              color: Tw.line,
-              child: Icon(e.source == 'chill' ? Icons.local_fire_department : Icons.event, size: 30, color: Tw.inkDim),
-            ),
-          ),
+        Poster(
+          type: e.source == 'chill' ? 'bar' : 'event',
+          imageUrl: e.banner,
+          width: 96,
+          height: 96,
+          shade: false,
+          radius: BorderRadius.circular(16),
+          child: (e.banner ?? '').isEmpty
+              ? Center(child: Icon(e.source == 'chill' ? Icons.local_fire_department : Icons.event, size: 30, color: Tw.white))
+              : null,
         ),
         const SizedBox(width: 16),
         Expanded(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Expanded(child: Text(e.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(14, weight: black))),
+              Expanded(
+                child: Text(e.title,
+                    maxLines: 2, overflow: TextOverflow.ellipsis, style: tw(16, weight: FontWeight.w800, height: 1.2, party: true)),
+              ),
               const SizedBox(width: 8),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.2),
+                  color: color.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(99),
-                  border: Border.all(color: color.withValues(alpha: 0.3)),
+                  border: Border.all(color: color.withValues(alpha: 0.4)),
                 ),
-                child: Label(label, size: 9, weight: bold, color: color, tracking: 0),
+                child: Text(label, style: tw(12, weight: semibold, color: color == Tw.party ? Tw.white : color)),
               ),
             ]),
             const SizedBox(height: 6),
-            Text(_formatDate(context, e.date), style: tw(12, color: Tw.inkSoft)),
+            Text(_formatDate(context, e.date), style: tw(14, weight: semibold, color: Tw.sun)),
             if (e.venueName != null && e.venueName!.isNotEmpty) ...[
-              const SizedBox(height: 6),
-              Text(e.venueName!, style: tw(12, color: Tw.inkDim)),
+              const SizedBox(height: 4),
+              Text(e.venueName!, maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(12, color: Tw.inkSoft)),
             ],
             if (e.hostNick != null && e.hostNick!.isNotEmpty) ...[
-              const SizedBox(height: 6),
-              Text('por ${e.hostNick}', style: tw(12, color: Tw.inkDim)),
+              const SizedBox(height: 4),
+              Text('por ${e.hostNick}', maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(12, color: Tw.inkSoft)),
             ],
             const SizedBox(height: 8),
             Wrap(spacing: 12, runSpacing: 4, crossAxisAlignment: WrapCrossAlignment.center, children: [
               (e.priceFrom ?? 0) > 0
                   ? Text('${context.t('events.from', fallback: 'Desde')} ${formatPrice(e.priceFrom!, currency)}',
-                      style: tw(12, weight: bold, color: Tw.sun))
-                  : Text(context.t('events.free_label', fallback: 'Gratis'), style: tw(12, weight: bold, color: Tw.live)),
+                      style: tw(14, weight: bold))
+                  : Text(context.t('events.free_label', fallback: 'Gratis'), style: tw(14, weight: bold, color: Tw.live)),
               ?capacity,
             ]),
           ]),
@@ -377,16 +383,16 @@ class _EventsScreenState extends State<EventsScreen> {
 
   Widget _pill(String text, Color c) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-        decoration: BoxDecoration(color: c.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(99)),
-        child: Text(text, style: tw(10, weight: bold, color: c)),
+        decoration: BoxDecoration(color: c.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(99)),
+        child: Text(text, style: tw(12, weight: bold, color: c)),
       );
 
   Widget _skeletonRow() => Container(
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
+        decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.line)),
         child: Row(children: [
-          Container(width: 96, height: 96, decoration: BoxDecoration(color: Tw.line, borderRadius: BorderRadius.circular(12))),
+          Container(width: 96, height: 96, decoration: BoxDecoration(color: Tw.line, borderRadius: BorderRadius.circular(16))),
           const SizedBox(width: 16),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

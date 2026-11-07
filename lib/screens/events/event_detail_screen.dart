@@ -9,6 +9,7 @@ import '../../navigation.dart';
 import '../../providers/city_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/common.dart';
+import '../../widgets/poster.dart';
 import '../venues/venues_screen.dart' show formatPrice;
 
 /// Port of app/events/[eventId]/EventDetailClient.tsx
@@ -103,37 +104,32 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
     return Scaffold(
       body: Stack(children: [
         ListView(padding: const EdgeInsets.only(bottom: 160), children: [
-          if (hero != null && hero.isNotEmpty)
-            SizedBox(
-              height: 288 + top,
-              child: Stack(fit: StackFit.expand, children: [
-                NetImage(hero),
-                const DecoratedBox(
+          Poster(
+            type: 'event',
+            imageUrl: hero,
+            height: 288 + top,
+            child: Stack(children: [
+              const Positioned.fill(
+                child: DecoratedBox(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [Color(0x4D000000), Colors.transparent, Tw.night],
+                      stops: [0.6, 1],
+                      colors: [Colors.transparent, Tw.night],
                     ),
                   ),
                 ),
-                backBtn(Colors.black.withValues(alpha: 0.5)),
-              ]),
-            )
-          else
-            Container(
-              height: 192 + top,
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Color(0x4D701A75), Color(0x4D312E81)]),
               ),
-              child: Stack(children: [backBtn(Tw.lineSoft)]),
-            ),
+              backBtn(Tw.nightDeep.withValues(alpha: 0.5)),
+            ]),
+          ),
           Transform.translate(
             offset: const Offset(0, -32),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                Text(safeStr(e['title']), style: tw(30, weight: black, height: 1.2)),
+                Text(safeStr(e['title']), style: tw(32, weight: FontWeight.w800, tracking: -0.025, height: 1.05)),
                 const SizedBox(height: 12),
                 Row(children: [
                   const Icon(Icons.calendar_today, size: 16, color: Tw.sun),
@@ -141,7 +137,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                   Expanded(
                     child: Text(
                       start == null ? '' : '${DateFormat("EEEE, d 'de' MMMM 'de' y", 'es').format(start)} ${DateFormat('HH:mm').format(start)}',
-                      style: tw(14, color: Tw.inkSoft),
+                      style: tw(14, weight: semibold, color: Tw.sun),
                     ),
                   ),
                 ]),
@@ -161,9 +157,9 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                 if (safeStr(e['description']).isNotEmpty) ...[
                   const SizedBox(height: 24),
                   GlassCard(
-                    radius: 16,
+                    color: Tw.panel.withValues(alpha: 0.8),
                     padding: const EdgeInsets.all(20),
-                    child: Text(safeStr(e['description']), style: tw(14, color: Tw.inkSoft, height: 1.6)),
+                    child: Text(safeStr(e['description']), style: tw(15, color: Tw.inkSoft, height: 1.6)),
                   ),
                 ],
                 if (tags.isNotEmpty) ...[
@@ -172,14 +168,14 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                     for (final t in tags)
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                        decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(99), border: Border.all(color: Tw.line)),
-                        child: Label(t, weight: bold, tracking: 0),
+                        decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(99), border: Border.all(color: Tw.line)),
+                        child: Text(t, style: tw(12, weight: semibold, color: Tw.inkSoft)),
                       ),
                   ]),
                 ],
                 if (tiers.isNotEmpty) ...[
                   const SizedBox(height: 24),
-                  Label(context.t('events.tickets', fallback: 'Entradas'), size: 14, tracking: 0.05),
+                  Text(context.t('events.tickets', fallback: 'Entradas'), style: tw(24, weight: FontWeight.w800, tracking: -0.025)),
                   const SizedBox(height: 12),
                   for (final tier in tiers) _tierRow(context, tier, currency),
                 ],
@@ -189,8 +185,9 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                     onTap: () => openInApp(ext),
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 16),
-                      decoration: BoxDecoration(color: Tw.party, borderRadius: BorderRadius.circular(16)),
-                      child: Label(context.t('events.buy_tickets', fallback: 'Comprar entradas'), size: 14, color: Tw.white, align: TextAlign.center),
+                      decoration: BoxDecoration(gradient: AppTheme.ctaGradient, borderRadius: BorderRadius.circular(16)),
+                      child: Text(context.t('events.buy_tickets', fallback: 'Comprar entradas'),
+                          textAlign: TextAlign.center, style: tw(16, weight: bold)),
                     ),
                   ),
                 ],
@@ -207,21 +204,20 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
               onTap: () => openRoute(context, AppRoute.buy, args: {'venue': safeStr(e['venueId']), 'event': e['id'] as String}),
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                decoration: BoxDecoration(
-                  color: Tw.party,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.3), blurRadius: 40, offset: const Offset(0, 10))],
+                decoration: const BoxDecoration(
+                  gradient: AppTheme.ctaGradient,
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                  boxShadow: [BoxShadow(color: Color(0xB3E8318A), blurRadius: 30, spreadRadius: -12, offset: Offset(0, 12))],
                 ),
                 child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   const Icon(Icons.confirmation_number, color: Tw.white),
                   const SizedBox(width: 12),
                   Flexible(
-                    child: Label(
+                    child: Text(
                       minPrice == 0
                           ? context.t('events.reserve', fallback: 'Reservar plaza')
                           : '${context.t('events.buy_from', fallback: 'Comprar desde')} ${formatPrice(minPrice, currency)}',
-                      size: 14,
-                      color: Tw.white,
+                      style: tw(16, weight: bold),
                     ),
                   ),
                 ]),
@@ -243,15 +239,15 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: soldOut ? Tw.panelSoft : Tw.panelSoft,
+          color: Tw.panel.withValues(alpha: 0.8),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: soldOut ? Tw.lineSoft : Tw.line),
         ),
         child: Row(children: [
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(safeStr(tier['name']), style: tw(14, weight: bold)),
-              if (available != null) Text('${sold ?? 0}/$available ${context.t('events.sold', fallback: 'vendidas')}', style: tw(10, color: Tw.inkDim)),
+              Text(safeStr(tier['name']), style: tw(16, weight: bold, party: true)),
+              if (available != null) Text('${sold ?? 0}/$available ${context.t('events.sold', fallback: 'vendidas')}', style: tw(12, color: Tw.inkDim)),
             ]),
           ),
           Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
