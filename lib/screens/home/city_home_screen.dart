@@ -11,6 +11,7 @@ import '../../providers/city_provider.dart';
 import '../../providers/venues_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/common.dart';
+import '../../widgets/poster.dart';
 import '../../widgets/language_selector.dart';
 
 /// Port of app/[city]/page.tsx
@@ -30,8 +31,8 @@ class CityHomeScreen extends StatelessWidget {
     final greeting = hour >= 5 && hour < 14
         ? context.t('home.greeting_morning', fallback: 'Buenos dias')
         : hour < 21
-            ? context.t('home.greeting_afternoon', fallback: 'Buenas tardes')
-            : context.t('home.greeting_night', fallback: 'Buenas noches');
+        ? context.t('home.greeting_afternoon', fallback: 'Buenas tardes')
+        : context.t('home.greeting_night', fallback: 'Buenas noches');
 
     if (auth.loading || data.loading || city.loading) return const _HomeSkeleton();
 
@@ -55,105 +56,149 @@ class CityHomeScreen extends StatelessWidget {
     final venues = indexed.map((e) => e.value).take(10).toList();
 
     return Scaffold(
-      body: SafeArea(
-        bottom: false,
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(24, 24, 24, 112),
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Label(greeting, size: 12, weight: bold, color: Tw.sun),
-                    const SizedBox(height: 4),
-                    Text(city.currentCity?.name ?? context.t('city.near_you'), style: tw(24, weight: black)),
-                  ]),
-                ),
-                const Padding(padding: EdgeInsets.only(top: 4), child: LanguageSelector()),
-              ],
-            ),
-            const SizedBox(height: 24),
-            _RadarCard(onTap: () => openRoute(context, AppRoute.map)),
-            if (user != null) ...[
-              const SizedBox(height: 24),
-              _QuickLinks(),
-            ],
-            if (venues.isNotEmpty) ...[
-              const SizedBox(height: 24),
-              Label(context.t('radar.status', fallback: 'Estado del Radar'), size: 14, tracking: 0.05),
-              const SizedBox(height: 12),
-              for (var i = 0; i < venues.length; i++)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: _FadeIn(
-                    delay: Duration(milliseconds: i * 50),
-                    child: _VenueStatusCard(
-                      venue: venues[i],
-                      checks: checks(venues[i]),
-                      hasEventToday: hasEvent(venues[i]),
-                      loggedIn: user != null,
+      body: PartyGlow(
+        child: SafeArea(
+          bottom: false,
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(16, 24, 16, 112),
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          greeting,
+                          style: tw(14, weight: semibold, color: Tw.sun),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          city.currentCity?.name ?? context.t('city.near_you'),
+                          style: tw(30, weight: FontWeight.w800, tracking: -0.025, height: 1.15),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-            ],
-            if (events.isNotEmpty) ...[
-              const SizedBox(height: 12),
-              Row(children: [
-                Expanded(child: Label(context.t('events.title', fallback: 'Eventos y Planes'), size: 14, tracking: 0.05)),
-                GestureDetector(
-                  onTap: () => openRoute(context, AppRoute.events),
-                  child: Label(context.t('city.see_more', fallback: 'Ver más'), color: Tw.party),
-                ),
-              ]),
-              const SizedBox(height: 12),
-              SizedBox(
-                height: 158,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: events.length > 5 ? 5 : events.length,
-                  separatorBuilder: (_, _) => const SizedBox(width: 12),
-                  itemBuilder: (_, i) => _EventMiniCard(event: events[i]),
-                ),
+                  const Padding(padding: EdgeInsets.only(top: 4), child: LanguageSelector()),
+                ],
               ),
-            ],
-            if (events.isEmpty && venues.isEmpty)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 64),
-                child: Column(children: [
-                  const Icon(Icons.explore, size: 48, color: Tw.line),
-                  const SizedBox(height: 16),
-                  Text(context.t('home.empty', fallback: 'Todavia no hay actividad en tu ciudad'),
-                      textAlign: TextAlign.center, style: tw(14, color: Tw.inkDim)),
-                  if (user != null) ...[
-                    const SizedBox(height: 16),
-                    Pressable(
-                      onTap: () => openRoute(context, AppRoute.venues),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                        decoration: BoxDecoration(color: Tw.party, borderRadius: BorderRadius.circular(16)),
-                        child: Label(context.t('home.explore', fallback: 'Explorar locales'), size: 12, color: Tw.white),
+              const SizedBox(height: 24),
+              _RadarCard(onTap: () => openRoute(context, AppRoute.map)),
+              if (user != null) ...[const SizedBox(height: 24), _QuickLinks()],
+              if (venues.isNotEmpty) ...[
+                const SizedBox(height: 24),
+                Text(
+                  context.t('radar.status', fallback: 'Estado del Radar'),
+                  style: tw(20, weight: FontWeight.w800),
+                ),
+                const SizedBox(height: 12),
+                for (var i = 0; i < venues.length; i++)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: _FadeIn(
+                      delay: Duration(milliseconds: i * 50),
+                      child: _VenueStatusCard(
+                        venue: venues[i],
+                        checks: checks(venues[i]),
+                        hasEventToday: hasEvent(venues[i]),
+                        loggedIn: user != null,
+                      ),
+                    ),
+                  ),
+              ],
+              if (events.isNotEmpty) ...[
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        context.t('events.title', fallback: 'Eventos y Planes'),
+                        style: tw(20, weight: FontWeight.w800),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => openRoute(context, AppRoute.events),
+                      child: Text(
+                        context.t('city.see_more', fallback: 'Ver más'),
+                        style: tw(14, weight: bold, color: Tw.sun),
                       ),
                     ),
                   ],
-                ]),
-              ),
-            if (user == null)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 24),
-                child: Column(children: [
-                  Text(context.t('home.register_cta', fallback: 'Regístrate para acceder a todas las funciones'),
-                      textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft)),
-                  const SizedBox(height: 12),
-                  GradientButton(
-                    label: context.t('home.register_btn', fallback: 'Crear Cuenta'),
-                    fontSize: 12,
-                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                    onTap: () => openRoute(context, AppRoute.login),
+                ),
+                const SizedBox(height: 12),
+                SizedBox(
+                  height: 208,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: events.length > 5 ? 5 : events.length,
+                    separatorBuilder: (_, _) => const SizedBox(width: 12),
+                    itemBuilder: (_, i) => _EventMiniCard(event: events[i]),
                   ),
-                ]),
-              ),
-          ],
+                ),
+              ],
+              if (events.isEmpty && venues.isEmpty)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 64),
+                  child: Column(
+                    children: [
+                      Poster(
+                        kind: PosterKind.violet,
+                        width: 80,
+                        height: 80,
+                        shade: false,
+                        radius: BorderRadius.circular(24),
+                        child: const Center(child: Icon(Icons.explore, size: 36, color: Tw.white)),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        context.t('home.empty', fallback: 'Todavia no hay actividad en tu ciudad'),
+                        textAlign: TextAlign.center,
+                        style: tw(16, color: Tw.inkSoft),
+                      ),
+                      if (user != null) ...[
+                        const SizedBox(height: 16),
+                        Pressable(
+                          onTap: () => openRoute(context, AppRoute.venues),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                            decoration: BoxDecoration(
+                              gradient: AppTheme.ctaGradient,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Text(
+                              context.t('home.explore', fallback: 'Explorar locales'),
+                              style: tw(14, weight: bold),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              if (user == null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24),
+                  child: Column(
+                    children: [
+                      Text(
+                        context.t('home.register_cta', fallback: 'Regístrate para acceder a todas las funciones'),
+                        textAlign: TextAlign.center,
+                        style: tw(14, color: Tw.inkSoft),
+                      ),
+                      const SizedBox(height: 12),
+                      GradientButton(
+                        label: context.t('home.register_btn', fallback: 'Crear Cuenta'),
+                        fontSize: 12,
+                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                        onTap: () => openRoute(context, AppRoute.login),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );
@@ -165,36 +210,67 @@ class _RadarCard extends StatelessWidget {
   const _RadarCard({required this.onTap});
 
   @override
-  Widget build(BuildContext context) => GlassCard(
-        onTap: onTap,
-        padding: const EdgeInsets.all(24),
-        radius: 24,
-        borderColor: Tw.party.withValues(alpha: 0.3),
-        gradient: LinearGradient(colors: [
-          Tw.party.withValues(alpha: 0.2),
-          Tw.indigo600.withValues(alpha: 0.2),
-        ]),
-        child: Row(children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: Tw.party.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: const Icon(Icons.radar, color: Tw.sun, size: 24),
+  Widget build(BuildContext context) => Pressable(
+    onTap: onTap,
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: Tw.line),
+      ),
+      child: Poster(
+        kind: PosterKind.club,
+        height: 160,
+        radius: BorderRadius.circular(23),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      color: Tw.night.withValues(alpha: 0.4),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: Tw.w(0.2)),
+                    ),
+                    child: const Icon(Icons.radar, color: Tw.sun, size: 24),
+                  ),
+                  const Spacer(),
+                  const LiveBars(),
+                ],
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          context.t('radar.open', fallback: 'Abrir Radar'),
+                          style: tw(24, weight: FontWeight.w800, height: 1.2),
+                        ),
+                        Text(
+                          context.t('radar.view_map', fallback: 'Ver mapa en tiempo real'),
+                          style: tw(14, color: Tw.inkSoft),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  const CtaCircle(icon: Icons.arrow_forward),
+                ],
+              ),
+            ],
           ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(context.t('radar.open', fallback: 'Abrir Radar'), style: tw(18, weight: black)),
-              const SizedBox(height: 2),
-              Label(context.t('radar.view_map', fallback: 'Ver mapa en tiempo real'), weight: bold),
-            ]),
-          ),
-          const Icon(Icons.arrow_forward, color: Tw.inkDim),
-        ]),
-      );
+        ),
+      ),
+    ),
+  );
 }
 
 class _QuickLinks extends StatelessWidget {
@@ -202,29 +278,48 @@ class _QuickLinks extends StatelessWidget {
   Widget build(BuildContext context) {
     final unread = context.watch<UnreadChats>().count;
     Widget tile(IconData icon, Color color, String label, AppRoute route, {int badge = 0}) => Expanded(
-          child: GlassCard(
-            onTap: () => openRoute(context, route),
-            radius: 16,
-            padding: const EdgeInsets.all(16),
-            child: Stack(clipBehavior: Clip.none, children: [
-              Center(
-                child: Column(mainAxisSize: MainAxisSize.min, children: [
-                  Icon(icon, color: color, size: 20),
+      child: GlassCard(
+        onTap: () => openRoute(context, route),
+        radius: 16,
+        color: Tw.panel,
+        padding: const EdgeInsets.all(16),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(icon, color: color, size: 24),
                   const SizedBox(height: 8),
-                  Label(label, size: 9, tracking: 0.05),
-                ]),
+                  Text(
+                    label,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: tw(12, weight: semibold, color: Tw.inkSoft),
+                  ),
+                ],
               ),
-              if (badge > 0) Positioned(top: -20, right: -20, child: CountBadge(badge)),
-            ]),
-          ),
-        );
-    return Row(children: [
-      tile(Icons.chat, Tw.blue400, context.t('nav.chat', fallback: 'Chat'), AppRoute.chat, badge: unread),
-      const SizedBox(width: 12),
-      tile(Icons.visibility, Tw.purple400, context.t('profile.my_visits', fallback: 'Visitas'), AppRoute.visits),
-      const SizedBox(width: 12),
-      tile(Icons.confirmation_number, Tw.sun, context.t('profile.tickets', fallback: 'Entradas'), AppRoute.tickets),
-    ]);
+            ),
+            if (badge > 0) Positioned(top: -20, right: -20, child: CountBadge(badge)),
+          ],
+        ),
+      ),
+    );
+    return Row(
+      children: [
+        tile(Icons.chat, Tw.live, context.t('nav.chat', fallback: 'Chat'), AppRoute.chat, badge: unread),
+        const SizedBox(width: 12),
+        tile(Icons.visibility, Tw.sun, context.t('profile.my_visits', fallback: 'Visitas'), AppRoute.visits),
+        const SizedBox(width: 12),
+        tile(
+          Icons.confirmation_number,
+          Tw.sunset,
+          context.t('profile.tickets', fallback: 'Entradas'),
+          AppRoute.tickets,
+        ),
+      ],
+    );
   }
 }
 
@@ -233,7 +328,12 @@ class _VenueStatusCard extends StatelessWidget {
   final int checks;
   final bool hasEventToday;
   final bool loggedIn;
-  const _VenueStatusCard({required this.venue, required this.checks, required this.hasEventToday, required this.loggedIn});
+  const _VenueStatusCard({
+    required this.venue,
+    required this.checks,
+    required this.hasEventToday,
+    required this.loggedIn,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -269,47 +369,78 @@ class _VenueStatusCard extends StatelessWidget {
     return GlassCard(
       onTap: loggedIn ? () => openRoute(context, AppRoute.venues, args: {'highlight': venue.id}) : null,
       radius: 24,
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Row(children: [
-          Text(icon, style: const TextStyle(fontSize: 18)),
-          const SizedBox(width: 8),
-          Expanded(child: Label(label, size: 14, color: color, tracking: 0.05, maxLines: 1)),
-        ]),
-        const SizedBox(height: 8),
-        Row(children: [
+      color: Tw.panel,
+      padding: const EdgeInsets.all(12),
+      child: Row(
+        children: [
+          Poster(type: venue.type, imageUrl: venue.bannerUrl, width: 64, height: 64, radius: BorderRadius.circular(16)),
+          const SizedBox(width: 12),
           Expanded(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Wrap(crossAxisAlignment: WrapCrossAlignment.center, spacing: 8, children: [
-                Text(venue.name, style: tw(16, weight: bold)),
-                if (checks > 0)
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: Tw.party.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(99),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(icon, style: const TextStyle(fontSize: 14)),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        label,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: tw(12, weight: bold, color: color),
+                      ),
                     ),
-                    child: Text('$checks ${checks == 1 ? 'persona' : 'personas'}',
-                        style: tw(10, weight: black, color: Tw.sun)),
-                  ),
-              ]),
-              if (venue.address.isNotEmpty) ...[
-                const SizedBox(height: 2),
-                Text('📍 ${venue.address}', style: tw(12, color: Tw.inkDim)),
-              ],
-              if (checks > 0 || status == VenueOpenStatus.open) ...[
-                const SizedBox(height: 2),
-                Text(
-                  checks > 0
-                      ? '$checks ${checks == 1 ? 'persona ahora' : 'personas ahora'}'
-                      : context.t('radar.no_queue', fallback: 'Sin cola'),
-                  style: tw(12, color: Tw.inkDim),
+                  ],
                 ),
+                const SizedBox(height: 2),
+                Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        venue.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: tw(16, weight: FontWeight.w800, party: true),
+                      ),
+                    ),
+                    if (checks > 0) ...[
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: Tw.party.withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(99),
+                        ),
+                        child: Text('$checks ${checks == 1 ? 'persona' : 'personas'}', style: tw(12, weight: bold)),
+                      ),
+                    ],
+                  ],
+                ),
+                if (venue.address.isNotEmpty) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    '📍 ${venue.address}',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: tw(12, color: Tw.inkDim),
+                  ),
+                ],
+                if (checks > 0 || status == VenueOpenStatus.open) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    checks > 0
+                        ? '$checks ${checks == 1 ? 'persona ahora' : 'personas ahora'}'
+                        : context.t('radar.no_queue', fallback: 'Sin cola'),
+                    style: tw(12, color: Tw.inkDim),
+                  ),
+                ],
               ],
-            ]),
+            ),
           ),
           if (loggedIn) const Icon(Icons.chevron_right, color: Tw.inkDim),
-        ]),
-      ]),
+        ],
+      ),
     );
   }
 }
@@ -328,49 +459,59 @@ class _EventMiniCard extends StatelessWidget {
     final timeLabel = today
         ? context.t('events.today', fallback: 'Hoy')
         : tomorrow
-            ? context.t('events.tomorrow', fallback: 'Mañana')
-            : d != null
-                ? DateFormat('EEE d', 'es').format(d)
-                : '';
+        ? context.t('events.tomorrow', fallback: 'Mañana')
+        : d != null
+        ? DateFormat('EEE d', 'es').format(d)
+        : '';
     final timeStr = d != null ? DateFormat('HH:mm').format(d) : '';
 
     return Pressable(
       onTap: () => openRoute(context, AppRoute.eventDetail, args: {'eventId': event.id}),
       child: Container(
         width: 200,
-        clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
-          color: Tw.panelSoft,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(24),
           border: Border.all(color: Tw.line),
         ),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          NetImage(
-            event.bannerUrl,
-            width: 200,
-            height: 96,
-            placeholder: Container(
-              width: 200,
-              height: 96,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [Tw.party.withValues(alpha: 0.2), Tw.indigo600.withValues(alpha: 0.2)],
+        child: Poster(
+          type: 'event',
+          imageUrl: event.bannerUrl,
+          radius: BorderRadius.circular(23),
+          child: Stack(
+            children: [
+              if (timeLabel.isNotEmpty)
+                Positioned(
+                  top: 12,
+                  left: 12,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(color: Tw.sun, borderRadius: BorderRadius.circular(99)),
+                    child: Text(
+                      timeLabel,
+                      style: tw(12, weight: bold, color: Tw.night),
+                    ),
+                  ),
+                ),
+              Positioned(
+                left: 12,
+                right: 12,
+                bottom: 12,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      event.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: tw(16, weight: FontWeight.w800, height: 1.2, party: true),
+                    ),
+                    if (timeStr.isNotEmpty) Text(timeStr, style: tw(12, color: Tw.inkSoft)),
+                  ],
                 ),
               ),
-              child: const Icon(Icons.event, size: 30, color: Tw.inkDim),
-            ),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(event.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(12, weight: black)),
-              const SizedBox(height: 4),
-              Text('$timeLabel${timeStr.isNotEmpty ? ' · $timeStr' : ''}', style: tw(10, color: Tw.inkDim)),
-            ]),
-          ),
-        ]),
+        ),
       ),
     );
   }
@@ -383,12 +524,15 @@ class _FadeIn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => TweenAnimationBuilder<double>(
-        tween: Tween(begin: 0, end: 1),
-        duration: const Duration(milliseconds: 300) + delay,
-        curve: Interval(delay.inMilliseconds / (300 + delay.inMilliseconds), 1, curve: Curves.easeOut),
-        builder: (_, v, c) => Opacity(opacity: v, child: Transform.translate(offset: Offset(0, 10 * (1 - v)), child: c)),
-        child: child,
-      );
+    tween: Tween(begin: 0, end: 1),
+    duration: const Duration(milliseconds: 300) + delay,
+    curve: Interval(delay.inMilliseconds / (300 + delay.inMilliseconds), 1, curve: Curves.easeOut),
+    builder: (_, v, c) => Opacity(
+      opacity: v,
+      child: Transform.translate(offset: Offset(0, 10 * (1 - v)), child: c),
+    ),
+    child: child,
+  );
 }
 
 class _HomeSkeleton extends StatelessWidget {
@@ -397,35 +541,40 @@ class _HomeSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget box(double h, {double? w, double r = 24, Color? c}) => Container(
-          height: h,
-          width: w,
-          decoration: BoxDecoration(color: c ?? Tw.panelSoft, borderRadius: BorderRadius.circular(r)),
-        );
+      height: h,
+      width: w,
+      decoration: BoxDecoration(color: c ?? Tw.panelSoft, borderRadius: BorderRadius.circular(r)),
+    );
     return Scaffold(
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            box(12, w: 96, r: 4, c: Tw.party.withValues(alpha: 0.2)),
-            const SizedBox(height: 8),
-            box(28, w: 160, r: 12),
-            const SizedBox(height: 24),
-            box(80),
-            const SizedBox(height: 24),
-            Row(children: [
-              Expanded(child: box(80, r: 16)),
-              const SizedBox(width: 12),
-              Expanded(child: box(80, r: 16)),
-              const SizedBox(width: 12),
-              Expanded(child: box(80, r: 16)),
-            ]),
-            const SizedBox(height: 24),
-            box(16, w: 128, r: 4),
-            const SizedBox(height: 12),
-            box(112),
-            const SizedBox(height: 12),
-            box(112),
-          ]),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              box(12, w: 96, r: 4, c: Tw.party.withValues(alpha: 0.2)),
+              const SizedBox(height: 8),
+              box(28, w: 160, r: 12),
+              const SizedBox(height: 24),
+              box(80),
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  Expanded(child: box(80, r: 16)),
+                  const SizedBox(width: 12),
+                  Expanded(child: box(80, r: 16)),
+                  const SizedBox(width: 12),
+                  Expanded(child: box(80, r: 16)),
+                ],
+              ),
+              const SizedBox(height: 24),
+              box(16, w: 128, r: 4),
+              const SizedBox(height: 12),
+              box(112),
+              const SizedBox(height: 12),
+              box(112),
+            ],
+          ),
         ),
       ),
     );

@@ -17,6 +17,7 @@ import '../../services/venue_hours.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/city_selector.dart';
 import '../../widgets/common.dart';
+import '../../widgets/poster.dart';
 
 String formatPrice(num amount, [String currency = 'eur']) {
   final sym = switch (currency.toLowerCase()) { 'eur' => '€', 'gbp' => '£', _ => currency.toUpperCase() };
@@ -184,19 +185,19 @@ class _VenuesScreenState extends State<VenuesScreen> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(children: [
-        Positioned(top: -size.height * 0.1, left: -size.width * 0.2, child: Orb(color: Tw.party.withValues(alpha: 0.1), size: size.width * 0.8)),
-        Positioned(top: size.height * 0.2, right: -size.width * 0.2, child: Orb(color: Tw.indigo600.withValues(alpha: 0.1), size: size.width * 0.7)),
+        Positioned(top: -size.height * 0.1, left: -size.width * 0.2, child: Orb(color: Tw.party.withValues(alpha: 0.15), size: size.width * 0.8)),
+        Positioned(top: size.height * 0.2, right: -size.width * 0.2, child: Orb(color: Tw.sunset.withValues(alpha: 0.1), size: size.width * 0.7)),
         SafeArea(
           bottom: false,
           child: ListView(
-            padding: const EdgeInsets.fromLTRB(24, 32, 24, 128),
+            padding: const EdgeInsets.fromLTRB(16, 32, 16, 128),
             children: [
               Row(children: [
-                Expanded(child: Text(context.t('venuesPage.whereTo'), style: tw(24, weight: black, tracking: -0.025))),
+                Expanded(child: Text(context.t('venuesPage.whereTo'), style: tw(30, weight: FontWeight.w800, tracking: -0.025))),
                 const CitySelector(),
               ]),
               const SizedBox(height: 12),
-              Text(context.t('venuesPage.selectVenue'), style: tw(12, color: Tw.inkDim)),
+              Text(context.t('venuesPage.selectVenue'), style: tw(14, color: Tw.inkDim)),
               const SizedBox(height: 24),
               if (active != null) ...[_checkinBanner(context, active), const SizedBox(height: 24)],
               _visibilityRow(context),
@@ -205,14 +206,14 @@ class _VenuesScreenState extends State<VenuesScreen> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Tw.red500.withValues(alpha: 0.05),
+                    color: Tw.sunset.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Tw.red500.withValues(alpha: 0.1)),
+                    border: Border.all(color: Tw.sunset.withValues(alpha: 0.3)),
                   ),
                   child: Text.rich(TextSpan(children: [
-                    WidgetSpan(child: Icon(Icons.info, size: 10, color: Tw.red400.withValues(alpha: 0.8))),
+                    const WidgetSpan(child: Icon(Icons.info, size: 14, color: Tw.sunset)),
                     TextSpan(text: ' ${context.t('venuesPage.anonInfo')}'),
-                  ]), style: tw(10, weight: bold, color: Tw.red400.withValues(alpha: 0.8))),
+                  ]), style: tw(12, weight: medium, color: Tw.inkSoft)),
                 ),
               ],
               const SizedBox(height: 24),
@@ -225,7 +226,7 @@ class _VenuesScreenState extends State<VenuesScreen> {
                   fillColor: Tw.panel,
                   contentPadding: const EdgeInsets.symmetric(vertical: 10),
                   enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.line)),
-                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.party)),
+                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Tw.sunset)),
                 ),
               ),
               const SizedBox(height: 24),
@@ -239,20 +240,20 @@ class _VenuesScreenState extends State<VenuesScreen> {
                     decoration: BoxDecoration(
                       color: _openNow ? Tw.live.withValues(alpha: 0.2) : Tw.panel,
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: _openNow ? Tw.live.withValues(alpha: 0.3) : Tw.line),
+                      border: Border.all(color: _openNow ? Tw.live.withValues(alpha: 0.5) : Tw.line),
                     ),
                     child: Row(children: [
                       Icon(Icons.schedule, size: 14, color: _openNow ? Tw.live : Tw.inkSoft),
                       const SizedBox(width: 4),
-                      Label(context.t('venuesPage.open_now', fallback: 'Abierto'), size: 12,
-                          color: _openNow ? Tw.live : Tw.inkSoft, tracking: 0.05),
+                      Text(context.t('venuesPage.open_now', fallback: 'Abierto'),
+                          style: tw(14, weight: semibold, color: _openNow ? Tw.live : Tw.inkSoft)),
                     ]),
                   ),
                 ),
               ]),
               if (_category != 'all') ...[
                 const SizedBox(height: 24),
-                Label(venueTypes[_category]?.hours ?? '', color: Tw.inkDim),
+                Text(venueTypes[_category]?.hours ?? '', style: tw(12, weight: semibold, color: Tw.inkDim)),
               ],
               if (shown.isNotEmpty && (q.isNotEmpty || _openNow || _category != 'all')) ...[
                 const SizedBox(height: 24),
@@ -288,9 +289,9 @@ class _VenuesScreenState extends State<VenuesScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [Tw.live.withValues(alpha: 0.1), Tw.live.withValues(alpha: 0.1)]),
+        gradient: LinearGradient(colors: [Tw.live.withValues(alpha: 0.15), Tw.panel]),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Tw.live.withValues(alpha: 0.2)),
+        border: Border.all(color: Tw.live.withValues(alpha: 0.4)),
       ),
       child: Row(children: [
         Container(
@@ -302,14 +303,14 @@ class _VenuesScreenState extends State<VenuesScreen> {
         const SizedBox(width: 12),
         Expanded(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(safeStr(c['venueName']), style: tw(14, weight: black)),
+            Text(safeStr(c['venueName']), style: tw(16, weight: FontWeight.w800, party: true)),
             Text(
               vis == 'anonymous'
                   ? context.t('venuesPage.anonMode')
                   : vis == 'ghost'
                       ? context.t('venuesPage.ghostMode')
                       : context.t('venuesPage.visibleAll'),
-              style: tw(10, color: Tw.inkDim),
+              style: tw(12, color: Tw.inkSoft),
             ),
           ]),
         ),
@@ -317,8 +318,9 @@ class _VenuesScreenState extends State<VenuesScreen> {
           onTap: _checkout,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
-            child: Text(context.t('venuesPage.exit'), style: tw(12, weight: bold)),
+            decoration: BoxDecoration(
+                color: Tw.nightDeep.withValues(alpha: 0.6), borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
+            child: Text(context.t('venuesPage.exit'), style: tw(14, weight: semibold)),
           ),
         ),
       ]),
@@ -334,14 +336,17 @@ class _VenuesScreenState extends State<VenuesScreen> {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 12),
             decoration: BoxDecoration(
-              color: on ? color.withValues(alpha: 0.2) : Tw.panelSoft,
+              color: on ? color.withValues(alpha: 0.2) : Tw.panel,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: on ? color.withValues(alpha: 0.3) : Tw.lineSoft),
+              border: Border.all(color: on ? color.withValues(alpha: 0.5) : Tw.line),
             ),
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Icon(icon, size: 14, color: on ? _light(color) : Tw.inkDim),
               const SizedBox(width: 4),
-              Flexible(child: Label(label, color: on ? _light(color) : Tw.inkDim, maxLines: 1)),
+              Flexible(
+                child: Text(label,
+                    maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(12, weight: semibold, color: on ? _light(color) : Tw.inkSoft)),
+              ),
             ]),
           ),
         ),
@@ -408,7 +413,7 @@ class _VenuesScreenState extends State<VenuesScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
         decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(12), border: Border.all(color: Tw.line)),
         child: Row(children: [
-          Expanded(child: Text(label, overflow: TextOverflow.ellipsis, style: tw(14, weight: medium, color: const Color(0xFFE2E8F0)))),
+          Expanded(child: Text(label, overflow: TextOverflow.ellipsis, style: tw(14, weight: medium, color: Tw.inkSoft))),
           const Text('▼', style: TextStyle(fontSize: 10, color: Tw.inkSoft)),
         ]),
       ),
@@ -491,14 +496,14 @@ class _VenueCard extends StatelessWidget {
     return Container(
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: isHere ? Tw.live.withValues(alpha: 0.05) : Tw.panelSoft,
+        color: isHere ? Tw.live.withValues(alpha: 0.05) : Tw.panel,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: isHere ? Tw.live.withValues(alpha: 0.3) : Tw.lineSoft),
+        border: Border.all(color: isHere ? Tw.live.withValues(alpha: 0.4) : Tw.line),
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         if (v.bannerUrl != null && v.bannerUrl!.isNotEmpty) GestureDetector(onTap: open, child: NetImage(v.bannerUrl, height: 128)),
         Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(16),
           child: Column(children: [
             Row(children: [
               Expanded(
@@ -506,17 +511,19 @@ class _VenueCard extends StatelessWidget {
                   onTap: open,
                   behavior: HitTestBehavior.opaque,
                   child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Container(
-                      width: 48,
-                      height: 48,
-                      decoration: BoxDecoration(color: Tw.lineSoft, borderRadius: BorderRadius.circular(16)),
-                      child: Icon(v.meta?.icon ?? Icons.place, color: Tw.sun),
+                    Poster(
+                      type: v.type,
+                      width: 56,
+                      height: 56,
+                      shade: false,
+                      radius: BorderRadius.circular(16),
+                      child: Center(child: Icon(v.meta?.icon ?? Icons.place, color: Tw.white, size: 24)),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                         Wrap(spacing: 8, runSpacing: 4, crossAxisAlignment: WrapCrossAlignment.center, children: [
-                          Text(v.name, style: tw(14, weight: black)),
+                          Text(v.name, style: tw(16, weight: FontWeight.w800, party: true)),
                           if (_cruising.contains(v.type)) _tag('18+', Tw.red500.withValues(alpha: 0.2), Tw.red400),
                           if (v.isUnclaimedReference)
                             _tag(context.t('reference_venue.badge'), Tw.line.withValues(alpha: 0.6), Tw.inkSoft)
@@ -528,7 +535,7 @@ class _VenueCard extends StatelessWidget {
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                               decoration: BoxDecoration(color: Tw.party.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(99)),
-                              child: Text('$live ${context.t('venuesPage.people', count: live)}', style: tw(10, weight: black, color: Tw.sun)),
+                              child: Text('$live ${context.t('venuesPage.people', count: live)}', style: tw(12, weight: bold)),
                             ),
                           if (v.openingDays.isNotEmpty)
                             isOpen
@@ -540,15 +547,15 @@ class _VenueCard extends StatelessWidget {
                             [if (v.address.isNotEmpty) v.address, ?distLabel].join(' · '),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: tw(10, color: Tw.inkDim),
+                            style: tw(12, color: Tw.inkDim),
                           ),
-                        if (sched != null) Text('${context.t('venuesPage.today_hours', fallback: 'Hoy')}: $sched', style: tw(10, color: Tw.inkDim)),
+                        if (sched != null) Text('${context.t('venuesPage.today_hours', fallback: 'Hoy')}: $sched', style: tw(12, color: Tw.inkDim)),
                         if (promo is Map && promo['active'] == true)
                           Container(
                             margin: const EdgeInsets.only(top: 8),
                             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                             decoration: BoxDecoration(
-                              gradient: LinearGradient(colors: [Tw.sun.withValues(alpha: 0.2), Tw.purple500.withValues(alpha: 0.2)]),
+                              gradient: LinearGradient(colors: [Tw.sun.withValues(alpha: 0.2), Tw.party.withValues(alpha: 0.2)]),
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(color: Tw.sun.withValues(alpha: 0.4)),
                             ),
@@ -557,7 +564,7 @@ class _VenueCard extends StatelessWidget {
                               const SizedBox(width: 8),
                               Expanded(
                                 child: Text(safeStr(promo['text']),
-                                    maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(12, weight: medium, color: const Color(0xFFFCD34D))),
+                                    maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(12, weight: semibold, color: Tw.sun)),
                               ),
                             ]),
                           ),
@@ -569,7 +576,7 @@ class _VenueCard extends StatelessWidget {
               const SizedBox(width: 12),
               if (isHere)
                 Row(children: [
-                  Label(context.t('venuesPage.here'), color: Tw.live),
+                  Text(context.t('venuesPage.here'), style: tw(12, weight: bold, color: Tw.live)),
                   const SizedBox(width: 8),
                   Container(width: 8, height: 8, decoration: const BoxDecoration(shape: BoxShape.circle, color: Tw.live)),
                 ])
@@ -580,8 +587,9 @@ class _VenueCard extends StatelessWidget {
                     opacity: 0.6,
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                      decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
-                      child: Label(context.t('venuesPage.closed_now', fallback: 'Cerrado'), color: Tw.inkDim),
+                      decoration: BoxDecoration(
+                          color: Tw.nightDeep.withValues(alpha: 0.6), borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
+                      child: Text(context.t('venuesPage.closed_now', fallback: 'Cerrado'), style: tw(14, weight: semibold, color: Tw.inkDim)),
                     ),
                   ),
                 )
@@ -593,8 +601,12 @@ class _VenueCard extends StatelessWidget {
                     scale: 0.95,
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                      decoration: BoxDecoration(color: Tw.party, borderRadius: BorderRadius.circular(16)),
-                      child: Label(checkingIn ? '...' : context.t('venuesPage.go'), color: Tw.white),
+                      decoration: BoxDecoration(
+                        gradient: AppTheme.ctaGradient,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: const [BoxShadow(color: Color(0xB3E8318A), blurRadius: 30, spreadRadius: -12, offset: Offset(0, 12))],
+                      ),
+                      child: Text(checkingIn ? '...' : context.t('venuesPage.go'), style: tw(14, weight: bold)),
                     ),
                   ),
                 ),
@@ -612,7 +624,7 @@ class _VenueCard extends StatelessWidget {
                     for (final t in tiers) _price('${t['name']}: ${formatPrice(asDouble(t['price']) ?? 0, currency)}'),
                   ]),
                 ),
-                GestureDetector(onTap: open, child: Label(context.t('venuesPage.tickets'), color: const Color(0xFFEAB308))),
+                GestureDetector(onTap: open, child: Text(context.t('venuesPage.tickets'), style: tw(14, weight: bold, color: Tw.sun))),
               ]),
             ],
           ]),
@@ -632,13 +644,13 @@ class _VenueCard extends StatelessWidget {
   Widget _tag(String text, Color bg, Color fg) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
         decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(6)),
-        child: Label(text, size: 8, color: fg, tracking: 0.05),
+        child: Text(text, style: tw(12, weight: semibold, color: fg)),
       );
 
   Widget _price(String text) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(8)),
-        child: Text(text, style: tw(9, color: Tw.inkSoft)),
+        decoration: BoxDecoration(color: Tw.nightDeep.withValues(alpha: 0.6), borderRadius: BorderRadius.circular(8)),
+        child: Text(text, style: tw(12, color: Tw.inkSoft)),
       );
 }
 

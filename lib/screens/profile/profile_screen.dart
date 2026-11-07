@@ -193,10 +193,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             : Tw.inkDim;
 
     final menu = <(String, IconData, AppRoute, Color)>[
-      (context.t('profile.my_visits', fallback: 'Visitas a mi perfil'), Icons.visibility, AppRoute.visits, Tw.purple400),
+      (context.t('profile.my_visits', fallback: 'Visitas a mi perfil'), Icons.visibility, AppRoute.visits, Tw.sun),
       (context.t('profile.my_plans', fallback: 'Mis Chills'), Icons.groups, AppRoute.myPlans, Tw.sun),
       (context.t('profile.my_tickets', fallback: 'Mis Entradas'), Icons.confirmation_number, AppRoute.tickets, Tw.sun),
-      (context.t('profile.my_chats', fallback: 'Mis Chats'), Icons.chat, AppRoute.chat, Tw.blue400),
+      (context.t('profile.my_chats', fallback: 'Mis Chats'), Icons.chat, AppRoute.chat, Tw.live),
       if (context.watch<PlatformSettings>().flag('moduleFriendFinder'))
         (context.t('finder.title'), Icons.bluetooth_searching, AppRoute.friendGroups, Tw.cyan400),
       (context.t('profile.edit_profile', fallback: 'Ajustes'), Icons.settings, AppRoute.setupProfile, const Color(0xFFE2E8F0)),
@@ -214,7 +214,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       body: Stack(children: [
         Positioned(top: -size.height * 0.1, left: -size.width * 0.2, child: Orb(color: Tw.party.withValues(alpha: 0.1), size: size.width * 0.8)),
-        Positioned(top: size.height * 0.2, right: -size.width * 0.2, child: Orb(color: Tw.indigo600.withValues(alpha: 0.1), size: size.width * 0.7)),
+        Positioned(top: size.height * 0.2, right: -size.width * 0.2, child: Orb(color: Tw.sunset.withValues(alpha: 0.1), size: size.width * 0.7)),
         SafeArea(
           bottom: false,
           child: ListView(padding: const EdgeInsets.fromLTRB(24, 32, 24, 128), children: [
@@ -224,16 +224,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Container(
                   width: 128,
                   height: 128,
+                  // Web: .bn-ring avatar (sunset -> sun -> party ring around a round photo).
                   padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Tw.party, Tw.indigo600]),
-                    borderRadius: BorderRadius.circular(40),
-                    border: Border.all(color: Tw.party.withValues(alpha: 0.3), width: 2),
-                    boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.2), blurRadius: 50, offset: const Offset(0, 20))],
+                    shape: BoxShape.circle,
+                    gradient: const SweepGradient(colors: [Tw.sunset, Tw.sun, Tw.party, Tw.sunset]),
+                    boxShadow: [BoxShadow(color: Tw.party.withValues(alpha: 0.25), blurRadius: 50, offset: const Offset(0, 20))],
                   ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(35),
-                    child: NetImage(p.fotoUrl, placeholder: Container(color: Tw.line, child: const Icon(Icons.public, size: 48, color: Tw.inkDim))),
+                  child: Container(
+                    decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Tw.night, width: 4)),
+                    child: ClipOval(
+                      child: NetImage(p.fotoUrl, placeholder: Container(color: Tw.panel, child: const Icon(Icons.public, size: 48, color: Tw.inkDim))),
+                    ),
                   ),
                 ),
                 if (vip)
@@ -253,7 +255,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             const SizedBox(height: 16),
             Wrap(alignment: WrapAlignment.center, crossAxisAlignment: WrapCrossAlignment.center, spacing: 8, children: [
-              Text('${p.nick}${p.edad != null ? ', ${p.edad}' : ''}', style: tw(30, weight: black, tracking: -0.025)),
+              Text('${p.nick}${p.edad != null ? ', ${p.edad}' : ''}', style: tw(30, weight: FontWeight.w800, tracking: -0.025)),
               if (p.verified) const Icon(Icons.verified, size: 20, color: Tw.blue500),
               if (vip)
                 Container(

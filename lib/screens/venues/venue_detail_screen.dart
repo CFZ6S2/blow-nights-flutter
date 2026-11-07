@@ -20,6 +20,7 @@ import '../../providers/platform_settings.dart';
 import '../../services/venue_hours.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/common.dart';
+import '../../widgets/poster.dart';
 import '../../widgets/basemap.dart';
 import '../../widgets/reference_venue.dart';
 import '../../widgets/venue_reviews.dart';
@@ -44,8 +45,6 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
   List<({String id, String name, double price})> _drinks = [];
   int _checkins = 0;
   String? _purchasing;
-  int _gallery = 0;
-  final _pager = PageController();
   final List<StreamSubscription> _subs = [];
 
   bool get _isEvent => widget.type == 'event';
@@ -89,7 +88,6 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
     for (final s in _subs) {
       s.cancel();
     }
-    _pager.dispose();
     super.dispose();
   }
 
@@ -192,96 +190,139 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
     final iconColor = v.type == 'chill' ? Tw.red500 : v.type == 'cruising' ? Tw.live : Tw.sun;
     final size = MediaQuery.of(context).size;
 
+    final openNow = v.openingDays.isNotEmpty && isVenueOpenNow(v.openingDays, v.openingHours).isOpen;
+    // The first photo goes on the poster; the rest stay in the gallery below (web: Poster + photo strip).
+    final gallery = photos.length > 1 ? photos.sublist(1) : const <String>[];
+
     return Scaffold(
       body: Stack(children: [
-        Positioned(top: -size.height * 0.1, left: -size.width * 0.2, child: Orb(color: Tw.party.withValues(alpha: 0.1), size: size.width * 0.8)),
+        Positioned(top: -size.height * 0.1, left: -size.width * 0.2, child: Orb(color: Tw.party.withValues(alpha: 0.12), size: size.width * 0.8)),
         SafeArea(
-          child: ListView(padding: const EdgeInsets.fromLTRB(24, 24, 24, 128), children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: GestureDetector(
-                onTap: () => Navigator.of(context).maybePop(),
-                child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  const Icon(Icons.arrow_back, size: 14, color: Tw.inkDim),
-                  const SizedBox(width: 8),
-                  Text(context.t('venueDetail.back'), style: tw(12, weight: bold, color: Tw.inkDim)),
-                ]),
-              ),
+          child: ListView(padding: const EdgeInsets.fromLTRB(16, 16, 16, 128), children: [
+            // Hero poster (web: Poster h-72 rounded-[28px]) with the back button and the open / boosted pills.
+            Poster(
+              type: v.type,
+              imageUrl: photos.isNotEmpty ? photos.first : null,
+              height: 288,
+              radius: BorderRadius.circular(28),
+              child: Stack(children: [
+                Positioned(
+                  top: 16,
+                  left: 16,
+                  child: Pressable(
+                    onTap: () => Navigator.of(context).maybePop(),
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(shape: BoxShape.circle, color: Tw.nightDeep.withValues(alpha: 0.5)),
+                      child: Semantics(
+                        label: context.t('venueDetail.back'),
+                        child: const Icon(Icons.arrow_back, size: 20, color: Tw.white),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 16,
+                  right: 16,
+                  bottom: 16,
+                  child: Wrap(spacing: 8, runSpacing: 8, children: [
+                    if (v.openingDays.isNotEmpty)
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(color: Tw.nightDeep.withValues(alpha: 0.6), borderRadius: BorderRadius.circular(99)),
+                        child: Row(mainAxisSize: MainAxisSize.min, children: [
+                          Container(
+                            width: 8,
+                            height: 8,
+                            decoration: BoxDecoration(shape: BoxShape.circle, color: openNow ? Tw.live : Tw.inkDim),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            openNow ? context.t('venuesPage.open_now', fallback: 'Abierto') : _nextOpeningLabel(context, v),
+                            style: tw(12, weight: bold),
+                          ),
+                          if (openNow && sched != null) Text(' · $sched', style: tw(12, weight: medium, color: Tw.inkSoft)),
+                        ]),
+                      ),
+                    if (v.boosted)
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(color: Tw.party, borderRadius: BorderRadius.circular(99)),
+                        child: const Icon(Icons.local_fire_department, size: 14, color: Tw.white),
+                      ),
+                  ]),
+                ),
+              ]),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
+            // Header: ring avatar (.bn-ring) + name in the party font.
             Row(children: [
               Container(
-                width: 64,
-                height: 64,
-                decoration: BoxDecoration(
-                  color: Tw.lineSoft,
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: community ? (v.type == 'chill' ? Tw.red500 : Tw.live) : Colors.transparent, width: 2),
+                width: 80,
+                height: 80,
+                padding: const EdgeInsets.all(3),
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: SweepGradient(colors: [Tw.sunset, Tw.sun, Tw.party, Tw.sunset]),
                 ),
-                child: Icon(iconData, size: 30, color: iconColor),
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Tw.panel,
+                    border: Border.all(color: community ? (v.type == 'chill' ? Tw.red500 : Tw.live) : Tw.night, width: 4),
+                  ),
+                  child: Icon(iconData, size: 30, color: iconColor),
+                ),
               ),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  if (reference) ...[const ReferenceBadge(), const SizedBox(height: 4)],
-                  Text(title, style: tw(24, weight: black, tracking: -0.025)),
-                  if (v.address.isNotEmpty) Text(v.address, style: tw(12, color: Tw.inkDim)),
-                  if (v.openingDays.isNotEmpty) ...[
-                    const SizedBox(height: 4),
-                    Row(children: [
-                      Label(isVenueOpenNow(v.openingDays, v.openingHours).isOpen
-                              ? context.t('venuesPage.open_now', fallback: 'Abierto')
-                              : _nextOpeningLabel(context, v),
-                          color: isVenueOpenNow(v.openingDays, v.openingHours).isOpen ? Tw.live : Tw.inkDim, tracking: 0.05),
-                      if (sched != null) ...[const SizedBox(width: 8), Text(sched, style: tw(10, color: Tw.inkDim))],
-                    ]),
-                  ],
+                  Text(title, style: tw(32, weight: FontWeight.w800, tracking: -0.025, height: 0.95)),
+                  if (v.address.isNotEmpty) ...[const SizedBox(height: 4), Text(v.address, style: tw(14, color: Tw.inkDim))],
+                  if (reference) ...[const SizedBox(height: 4), const ReferenceBadge()],
                 ]),
               ),
             ]),
-            const SizedBox(height: 16),
-            Wrap(spacing: 12, runSpacing: 8, children: [
-              isOpen
-                  ? _chip('$_checkins ${context.t('venueDetail.peopleGo', count: _checkins)}', Tw.party.withValues(alpha: 0.1),
-                      Tw.party.withValues(alpha: 0.2), Tw.sun)
-                  : _chip(_nextOpeningLabel(context, v), Tw.line.withValues(alpha: 0.6), Tw.lineSoft, Tw.inkSoft),
-              if (v.capacity != null)
-                _chip('${context.t('venueDetail.capacity')} ${v.capacity}', Tw.panelSoft, Tw.lineSoft, Tw.inkDim),
-            ]),
-            if (photos.isNotEmpty) ...[
-              const SizedBox(height: 24),
+            const SizedBox(height: 20),
+            // Live card: bouncing bars + people going (web: CARD p-4 with .bn-eq).
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Tw.panel.withValues(alpha: 0.8),
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(color: Tw.line),
+              ),
+              child: Row(children: [
+                const LiveBars(),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    Text(
+                      isOpen ? '$_checkins ${context.t('venueDetail.peopleGo', count: _checkins)}' : _nextOpeningLabel(context, v),
+                      style: tw(16, weight: bold),
+                    ),
+                    if (v.capacity != null)
+                      Text('${context.t('venueDetail.capacity')} ${v.capacity}', style: tw(12, color: Tw.inkDim)),
+                  ]),
+                ),
+              ]),
+            ),
+            if (gallery.isNotEmpty) ...[
+              const SizedBox(height: 20),
               SizedBox(
-                height: 224,
-                child: Stack(children: [
-                  PageView.builder(
-                    controller: _pager,
-                    itemCount: photos.length,
-                    onPageChanged: (i) => setState(() => _gallery = i),
-                    itemBuilder: (_, i) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: ClipRRect(borderRadius: BorderRadius.circular(24), child: NetImage(photos[i])),
-                    ),
+                height: 128,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: gallery.length,
+                  separatorBuilder: (_, _) => const SizedBox(width: 8),
+                  itemBuilder: (_, i) => Container(
+                    width: 192,
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
+                    child: NetImage(gallery[i]),
                   ),
-                  if (photos.length > 1) ...[
-                    Positioned(
-                      bottom: 12,
-                      left: 0,
-                      right: 0,
-                      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                        for (var i = 0; i < photos.length; i++)
-                          AnimatedContainer(
-                            duration: const Duration(milliseconds: 200),
-                            margin: const EdgeInsets.symmetric(horizontal: 3),
-                            width: i == _gallery ? 16 : 6,
-                            height: 6,
-                            decoration: BoxDecoration(color: i == _gallery ? Tw.white : Tw.w(0.4), borderRadius: BorderRadius.circular(99)),
-                          ),
-                      ]),
-                    ),
-                    if (_gallery > 0) _galleryArrow(Icons.chevron_left, Alignment.centerLeft, -1),
-                    if (_gallery < photos.length - 1) _galleryArrow(Icons.chevron_right, Alignment.centerRight, 1),
-                  ],
-                ]),
+                ),
               ),
             ],
             if (v.address.isNotEmpty || loc != null) ...[
@@ -308,10 +349,11 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
               ]),
             ],
             if (v.description.isNotEmpty) ...[
-              const SizedBox(height: 24),
+              const SizedBox(height: 20),
               GlassCard(
-                padding: const EdgeInsets.all(24),
-                child: Text(v.description, style: tw(14, color: Tw.inkSoft, height: 1.6)),
+                color: Tw.panel.withValues(alpha: 0.8),
+                padding: const EdgeInsets.all(20),
+                child: Text(v.description, style: tw(15, color: Tw.inkSoft, height: 1.6)),
               ),
             ],
             if (v.openingDays.isNotEmpty && v.openingHours.isNotEmpty) ...[
@@ -345,15 +387,15 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     decoration: BoxDecoration(
-                      gradient: const LinearGradient(colors: [Color(0xFFE11D48), Tw.orange500]),
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [BoxShadow(color: const Color(0xFFE11D48).withValues(alpha: 0.3), blurRadius: 30, offset: const Offset(0, 10))],
+                      gradient: AppTheme.ctaGradient,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: const [BoxShadow(color: Color(0xB3E8318A), blurRadius: 30, spreadRadius: -12, offset: Offset(0, 12))],
                     ),
-                    child: Label(context.t('venueDetail.buyOfficialTicket'), size: 14, color: Tw.white, align: TextAlign.center),
+                    child: Text(context.t('venueDetail.buyOfficialTicket'), textAlign: TextAlign.center, style: tw(16, weight: bold)),
                   ),
                 ),
                 const SizedBox(height: 16),
-                Text(context.t('venueDetail.redirectTaquilla'), textAlign: TextAlign.center, style: tw(10, color: Tw.inkDim)),
+                Text(context.t('venueDetail.redirectTaquilla'), textAlign: TextAlign.center, style: tw(12, color: Tw.inkDim)),
               ])
             else if (!ticketingOn)
               GlassCard(
@@ -361,13 +403,14 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                 child: Column(children: [
                   const Icon(Icons.confirmation_number, size: 30, color: Tw.inkDim),
                   const SizedBox(height: 8),
-                  Label(context.t('venue_detail_online_unavailable', fallback: 'Venta online no disponible'), size: 14, color: Tw.inkSoft, tracking: 0.05),
+                  Text(context.t('venue_detail_online_unavailable', fallback: 'Venta online no disponible'),
+                      textAlign: TextAlign.center, style: tw(18, weight: bold, party: true)),
                   const SizedBox(height: 8),
                   Text(
                     context.t('venue_detail_online_paused',
                         fallback: 'La venta anticipada de entradas para este local está temporalmente pausada o solo disponible en taquilla física.'),
                     textAlign: TextAlign.center,
-                    style: tw(12, color: Tw.inkSoft),
+                    style: tw(14, color: Tw.inkDim),
                   ),
                 ]),
               )
@@ -397,46 +440,26 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
     );
   }
 
-  Widget _galleryArrow(IconData icon, Alignment align, int delta) => Align(
-        alignment: align,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: GestureDetector(
-            onTap: () => _pager.animateToPage(_gallery + delta, duration: const Duration(milliseconds: 300), curve: Curves.easeOut),
-            child: Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.black.withValues(alpha: 0.6)),
-              child: Icon(icon, color: Tw.white, size: 18),
-            ),
-          ),
-        ),
-      );
-
-  Widget _chip(String text, Color bg, Color border, Color fg) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(16), border: Border.all(color: border)),
-        child: Label(text, color: fg),
-      );
-
   Widget _actionBtn(IconData icon, String label, VoidCallback onTap) => GlassCard(
         onTap: onTap,
         radius: 16,
+        color: Tw.panel.withValues(alpha: 0.8),
         padding: const EdgeInsets.symmetric(vertical: 12),
         child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Icon(icon, size: 16, color: Tw.sun),
+          Icon(icon, size: 18, color: Tw.sun),
           const SizedBox(width: 8),
-          Text(label, style: tw(12, weight: bold, color: Tw.inkSoft)),
+          Text(label, style: tw(14, weight: bold, color: Tw.inkSoft)),
         ]),
       );
 
   Widget _scheduleCard(BuildContext context, Venue v) => GlassCard(
+        color: Tw.panel.withValues(alpha: 0.8),
         padding: const EdgeInsets.all(20),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
-            const Icon(Icons.schedule, size: 14, color: Tw.inkSoft),
+            const Icon(Icons.schedule, size: 18, color: Tw.sun),
             const SizedBox(width: 8),
-            Label(context.t('venueDetail.schedule', fallback: 'Horario'), size: 12),
+            Text(context.t('venueDetail.schedule', fallback: 'Horario'), style: tw(18, weight: bold, party: true)),
           ]),
           const SizedBox(height: 12),
           GridView.count(
@@ -454,7 +477,7 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     decoration: BoxDecoration(
-                      color: v.openingDays.contains(day) ? Tw.panelSoft : null,
+                      color: v.openingDays.contains(day) ? Tw.nightDeep.withValues(alpha: 0.6) : null,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(children: [
@@ -463,7 +486,7 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                         v.openingDays.contains(day) && v.openingHours[day] != null
                             ? '${v.openingHours[day]!.open} – ${v.openingHours[day]!.close}'
                             : '—',
-                        style: tw(11, color: Tw.inkSoft),
+                        style: tw(11, color: Tw.inkDim),
                       ),
                     ]),
                   ),
@@ -476,7 +499,7 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
   Widget _miniMap(double lat, double lng, String name) => Container(
         height: 192,
         clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), border: Border.all(color: Tw.line)),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(24), border: Border.all(color: Tw.line)),
         child: FlutterMap(
           options: MapOptions(
             initialCenter: LatLng(lat, lng),
@@ -521,13 +544,14 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
   Widget _communitySection(BuildContext context, Venue v) {
     final auth = context.watch<AuthProvider>();
     return GlassCard(
+      color: Tw.panel.withValues(alpha: 0.8),
       padding: const EdgeInsets.all(32),
       child: Column(children: [
-        const Icon(Icons.forum, size: 36, color: Tw.line),
+        const Icon(Icons.forum, size: 36, color: Tw.inkDim),
         const SizedBox(height: 12),
         Text(context.t('venueDetail.communitySpot'), textAlign: TextAlign.center, style: tw(14, color: Tw.inkSoft)),
         const SizedBox(height: 8),
-        Text(context.t('venueDetail.joinChat'), textAlign: TextAlign.center, style: tw(10, color: Tw.inkDim)),
+        Text(context.t('venueDetail.joinChat'), textAlign: TextAlign.center, style: tw(12, color: Tw.inkDim)),
         if (v.data['createdBy'] == auth.user?.uid && auth.user != null) ...[
           const SizedBox(height: 24),
           Pressable(
@@ -567,10 +591,10 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
             scale: 0.95,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              decoration: BoxDecoration(gradient: AppTheme.ctaGradient, borderRadius: BorderRadius.circular(16)),
+              decoration: BoxDecoration(gradient: AppTheme.ctaGradient, borderRadius: BorderRadius.circular(12)),
               child: _purchasing == id
                   ? const SizedBox(width: 14, height: 14, child: CircularProgressIndicator(strokeWidth: 2, color: Tw.white))
-                  : Label(label ?? context.t('venueDetail.buy'), color: Tw.white),
+                  : Text(label ?? context.t('venueDetail.buy'), style: tw(14, weight: bold)),
             ),
           ),
         );
@@ -578,17 +602,18 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
     Widget tierCard(String id, String name, String? sub, String price, Object? quota) => Padding(
           padding: const EdgeInsets.only(bottom: 16),
           child: GlassCard(
-            padding: const EdgeInsets.all(24),
+            color: Tw.panel.withValues(alpha: 0.8),
+            padding: const EdgeInsets.all(20),
             child: Row(children: [
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(name, style: tw(14, weight: black)),
-                  if (sub != null && sub.isNotEmpty) ...[const SizedBox(height: 4), Text(sub, style: tw(10, color: Tw.inkDim))],
+                  Text(name, style: tw(18, weight: bold, party: true)),
+                  if (sub != null && sub.isNotEmpty) ...[const SizedBox(height: 4), Text(sub, style: tw(12, color: Tw.inkDim))],
                   const SizedBox(height: 8),
-                  Text(price, style: tw(18, weight: black, color: Tw.sun)),
+                  Text(price, style: tw(20, weight: FontWeight.w800, color: Tw.sun)),
                   if (quota != null) ...[
                     const SizedBox(height: 4),
-                    Text('${context.t('venueDetail.limitedSpots')} $quota', style: tw(9, color: Tw.inkDim)),
+                    Text('${context.t('venueDetail.limitedSpots')} $quota', style: tw(12, color: Tw.inkDim)),
                   ],
                 ]),
               ),
@@ -600,38 +625,31 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       if (_events.isNotEmpty) ...[
         Row(children: [
-          const Icon(Icons.event, size: 16, color: Tw.sun),
-          const SizedBox(width: 8),
-          Expanded(child: Label(context.t('venueDetail.events', fallback: 'Próximos Eventos & Fiestas'), size: 14, color: Tw.sun, tracking: 0.2)),
+          Expanded(
+            child: Text(context.t('venueDetail.events', fallback: 'Próximos Eventos & Fiestas'),
+                style: tw(24, weight: FontWeight.w800, tracking: -0.025)),
+          ),
+          const SizedBox(width: 12),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            decoration: BoxDecoration(color: Tw.panelSoft, borderRadius: BorderRadius.circular(99), border: Border.all(color: Tw.line)),
-            child: Text('${_events.length} ${_events.length == 1 ? 'evento' : 'eventos'}', style: tw(10, weight: bold, color: Tw.inkDim)),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            decoration: BoxDecoration(color: Tw.panel, borderRadius: BorderRadius.circular(99), border: Border.all(color: Tw.line)),
+            child: Text('${_events.length} ${_events.length == 1 ? 'evento' : 'eventos'}', style: tw(12, weight: bold, color: Tw.inkSoft)),
           ),
         ]),
         const SizedBox(height: 16),
         for (final evt in _events) ...[
           GlassCard(
-            padding: const EdgeInsets.all(20),
+            color: Tw.panel.withValues(alpha: 0.8),
+            padding: const EdgeInsets.all(16),
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
               Row(children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: NetImage(
-                    evt['banner_url'] as String?,
-                    width: 80,
-                    height: 80,
-                    placeholder: Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        color: Tw.party.withValues(alpha: 0.2),
-                        border: Border.all(color: Tw.party.withValues(alpha: 0.3)),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: const Icon(Icons.event, size: 30, color: Tw.sun),
-                    ),
-                  ),
+                Poster(
+                  type: widget.type ?? 'event',
+                  imageUrl: evt['banner_url'] as String?,
+                  width: 80,
+                  height: 80,
+                  shade: false,
+                  radius: BorderRadius.circular(16),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
@@ -639,14 +657,15 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                       decoration: BoxDecoration(color: Tw.live.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(6)),
-                      child: Label(context.t('events.source_venue', fallback: 'Local'), size: 8, color: Tw.live, tracking: 0.05),
+                      child: Text(context.t('events.source_venue', fallback: 'Local'), style: tw(12, weight: semibold, color: Tw.live)),
                     ),
                     const SizedBox(height: 4),
-                    Text(safeStr(evt['title']), maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(16, weight: black)),
+                    Text(safeStr(evt['title']),
+                        maxLines: 1, overflow: TextOverflow.ellipsis, style: tw(18, weight: bold, party: true)),
                     if (parseDate(evt['start_date'] ?? evt['date']) != null)
                       Text(
                         '${DateFormat('EEE, d MMM', 'es').format(parseDate(evt['start_date'] ?? evt['date'])!)} · ${DateFormat('HH:mm').format(parseDate(evt['start_date'] ?? evt['date'])!)}',
-                        style: tw(12, color: Tw.inkSoft),
+                        style: tw(14, weight: semibold, color: Tw.sun),
                       ),
                   ]),
                 ),
@@ -655,22 +674,22 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                 const SizedBox(height: 16),
                 Divider(color: Tw.lineSoft, height: 1),
                 const SizedBox(height: 12),
-                Label('Entradas disponibles'),
+                Text('Entradas disponibles', style: tw(12, weight: semibold, color: Tw.inkSoft)),
                 const SizedBox(height: 8),
                 for (final tier in (evt['ticket_tiers'] as List).whereType<Map>())
                   Container(
                     margin: const EdgeInsets.only(bottom: 8),
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.4),
+                      color: Tw.nightDeep.withValues(alpha: 0.6),
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Tw.lineSoft),
+                      border: Border.all(color: Tw.line),
                     ),
                     child: Row(children: [
                       Expanded(
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                          Text(safeStr(tier['name']), style: tw(12, weight: black)),
-                          if (safeStr(tier['perks']).isNotEmpty) Text(safeStr(tier['perks']), style: tw(10, color: Tw.inkSoft)),
+                          Text(safeStr(tier['name']), style: tw(14, weight: bold)),
+                          if (safeStr(tier['perks']).isNotEmpty) Text(safeStr(tier['perks']), style: tw(12, color: Tw.inkSoft)),
                           const SizedBox(height: 4),
                           Text(
                             (asDouble(tier['price']) ?? 0) == 0
@@ -689,11 +708,11 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
                           child: Row(mainAxisSize: MainAxisSize.min, children: [
                             const Icon(Icons.confirmation_number, size: 12, color: Tw.white),
                             const SizedBox(width: 6),
-                            Label(
+                            Text(
                               (asDouble(tier['price']) ?? 0) == 0
                                   ? context.t('events.claim_free', fallback: 'Obtener')
                                   : context.t('venueDetail.buy', fallback: 'Comprar'),
-                              color: Tw.white,
+                              style: tw(14, weight: bold),
                             ),
                           ]),
                         ),
@@ -708,7 +727,7 @@ class _VenueDetailScreenState extends State<VenueDetailScreen> {
       ],
       if (pricing.isNotEmpty || tiers.isNotEmpty) ...[
         const SizedBox(height: 8),
-        Label(context.t('venueDetail.availableTickets'), size: 14, color: Tw.inkDim, tracking: 0.2),
+        Text(context.t('venueDetail.availableTickets'), style: tw(24, weight: FontWeight.w800, tracking: -0.025)),
         const SizedBox(height: 16),
         for (final e in pricing.entries)
           tierCard(
