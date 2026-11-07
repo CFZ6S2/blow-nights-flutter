@@ -15,6 +15,7 @@ import '../../theme/app_theme.dart';
 import '../../widgets/common.dart';
 import '../../widgets/dynamic_qr.dart';
 import '../../widgets/ticket_modals.dart';
+import '../../services/ticket_qr.dart';
 
 String currencySymbol(String c) => switch (c.toLowerCase()) { 'eur' => '€', 'gbp' => '£', _ => c.toUpperCase() };
 
@@ -481,7 +482,8 @@ class _TicketDetailState extends State<_TicketDetail> {
                         Padding(
                           padding: const EdgeInsets.only(bottom: 24),
                           child: Center(
-                            child: DynamicQR(ticketId: t['id'] as String, secretKey: _secrets!['secretKey'] as String?),
+                            // TCS Gate tickets: TCS's id and key (services/ticket_qr.dart).
+                            child: DynamicQR(ticketId: ticketQrSource(t, _secrets).id, secretKey: ticketQrSource(t, _secrets).secretKey),
                           ),
                         )
                       else if (valid && !_secretsLoaded)
@@ -501,7 +503,10 @@ class _TicketDetailState extends State<_TicketDetail> {
                           ]),
                         ),
                       if (valid) ...[
-                        if (t['isListedForResale'] == true)
+                        // TCS Gate tickets can't be resold or bought back yet (functions/modules/tickets.js); passing them on works.
+                        if (isTcsTicket(t))
+                          const SizedBox.shrink()
+                        else if (t['isListedForResale'] == true)
                           Container(
                             margin: const EdgeInsets.only(bottom: 8),
                             padding: const EdgeInsets.all(12),
@@ -554,7 +559,7 @@ class _TicketDetailState extends State<_TicketDetail> {
                             widget.onToast(msg.isEmpty ? '¡Entrada transferida con éxito a tu colega!' : msg);
                           }
                         }),
-                        if (t['channel'] == 'stripe' && asInt(t['priceCents']) > 0 && status != 'buyback_listed')
+                        if (t['channel'] == 'stripe' && asInt(t['priceCents']) > 0 && status != 'buyback_listed' && !isTcsTicket(t))
                           _gradBtn(Icons.undo, context.t('buyback.button', fallback: 'No puedo ir — solicitar recompra'),
                               const LinearGradient(colors: [Color(0xFFD97706), Color(0xFFEA580C)]), () async {
                             final msg = await showWebModal<String>(

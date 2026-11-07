@@ -9,6 +9,7 @@ import '../../providers/auth_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/common.dart';
 import '../../widgets/dynamic_qr.dart';
+import '../../services/ticket_qr.dart';
 
 /// sessionStorage 'lastGuestAccess' equivalent: lives for the app session.
 String? _lastGuestAccess;
@@ -46,8 +47,11 @@ class _PassScreenState extends State<PassScreen> {
         if (snap.exists) {
           final t = <String, dynamic>{'id': snap.id, ...?snap.data()};
           // Only the key that draws the dynamic QR: no static code or PIN is shown (2026-10-13).
+          // With TCS Gate, TCS's ticket id and key (services/ticket_qr.dart).
           final secrets = await db.doc('tickets/${widget.id}/private/secrets').get();
-          if (secrets.exists) t['secretKey'] = secrets.data()?['secretKey'];
+          final qr = ticketQrSource(t, secrets.exists ? secrets.data() : null);
+          t['qrTicketId'] = qr.id;
+          t['secretKey'] = qr.secretKey;
           _ticket = t;
         }
       }
@@ -214,7 +218,8 @@ class _PassScreenState extends State<PassScreen> {
                           ]),
                         )
                       else if (t['secretKey'] != null)
-                        DynamicQR(ticketId: safeStr(t['id']), secretKey: t['secretKey'] as String?, size: 170)
+                        // getGuestTicket already returns qrTicketId (TCS's id for TCS Gate tickets).
+                        DynamicQR(ticketId: safeStr(t['qrTicketId']).isNotEmpty ? safeStr(t['qrTicketId']) : safeStr(t['id']), secretKey: t['secretKey'] as String?, size: 170)
                       else
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 24),
