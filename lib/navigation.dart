@@ -17,8 +17,6 @@ import 'screens/business/business_landing_screen.dart';
 import 'screens/business/business_login_screen.dart';
 import 'screens/business/business_screens.dart';
 import 'screens/business/city_partners_screen.dart';
-import 'screens/business/investors_screen.dart';
-import 'screens/business/kiosk_screen.dart';
 import 'screens/business/partner_apply_screen.dart';
 import 'screens/business/partners_landing_screen.dart';
 import 'screens/business/promoter_screens.dart';
@@ -103,9 +101,7 @@ enum AppRoute {
   barScanner,
   staffJoin,
   staffHome,
-  kiosk,
   partnersApply,
-  investors,
   businessClaim,
   businessStripe,
   setupStripe,
@@ -167,13 +163,11 @@ final Map<AppRoute, Widget Function(Map<String, String> args)> screenRegistry = 
   AppRoute.setupStripe: (_) => const SetupStripeScreen(),
   AppRoute.pr: (a) => PromoterScreen(token: a['token'], eventId: a['event'], venueId: a['venue'], success: a['success'] != null),
   AppRoute.prJoin: (_) => const PrJoinScreen(),
-  AppRoute.kiosk: (_) => const KioskScreen(),
   AppRoute.partnersApply: (_) => const PartnerApplyScreen(),
   AppRoute.discover: (_) => const DiscoverScreen(),
   AppRoute.businessLanding: (_) => const BusinessLandingScreen(),
   AppRoute.partners: (_) => const PartnersLandingScreen(),
   AppRoute.cityPartners: (a) => CityPartnersScreen(citySlug: a['city'] ?? 'madrid'),
-  AppRoute.investors: (_) => const InvestorsScreen(),
   AppRoute.localEntradas: (a) => LocalEntradasScreen(slug: a['slug'] ?? '', giftUserId: a['gift'], refCode: a['ref'] ?? ''),
   AppRoute.barScanner: (a) => BarScannerScreen(venueId: a['venue'] ?? ''),
   AppRoute.staffJoin: (a) => StaffJoinScreen(invite: a['i'] ?? ''),
