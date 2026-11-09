@@ -71,3 +71,24 @@ jobs:
       # App Check debug token and can't call Firebase; it is not uploaded. Builds to install still come from a machine
       # with dart_defines.json.
       - run: flutter build apk --release --target-platform android-arm64
+
+  build-ios:
+    name: Build iOS (unsigned)
+    needs: analyze-test
+    # macOS runners are free because this repo is public. Only on pull requests, like the APK.
+    if: github.event_name == 'pull_request'
+    runs-on: macos-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.5'
+          channel: stable
+          cache: true
+
+      # Compile check only: no Apple developer account yet, so nothing is signed or uploaded. There is no
+      # GoogleService-Info.plist either, so this build would crash at start on a real iPhone (Firebase has no config).
+      # flutter creates ios/Podfile on the first build if it is missing.
+      - run: flutter build ios --release --no-codesign
