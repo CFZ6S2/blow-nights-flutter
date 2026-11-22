@@ -2,6 +2,35 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.133269024822-niqd27ki4iu2f3ubp3gn6af1v2utav4e</string>
+			</array>
+		</dict>
+	</array>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Blow Nights usa Bluetooth para encontrar a tus amigos cerca dentro del local.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Blow Nights usa la cámara para leer los QR de las entradas y para hacer fotos de tu perfil.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Blow Nights usa tu ubicación para enseñarte los locales, fiestas y gente que hay cerca de ti.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Blow Nights usa el micrófono para grabar notas de voz en el chat.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Blow Nights usa tus fotos para que elijas las imágenes de tu perfil.</string>
+	<key>NFCReaderUsageDescription</key>
+	<string>Blow Nights usa NFC para validar entradas y consumiciones.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -15,7 +44,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>blow_nights</string>
+	<string>Blow Nights</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>

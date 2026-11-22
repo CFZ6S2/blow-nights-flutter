@@ -88,7 +88,6 @@ jobs:
           channel: stable
           cache: true
 
-      # Compile check only: no Apple developer account yet, so nothing is signed or uploaded. There is no
-      # GoogleService-Info.plist either, so this build would crash at start on a real iPhone (Firebase has no config).
-      # flutter creates ios/Podfile on the first build if it is missing.
+      # Compile check only: nothing is signed or uploaded here. Signing and the TestFlight upload live in
+      # ios-testflight.yml (run by hand once the Apple developer account exists).
       - run: flutter build ios --release --no-codesign
